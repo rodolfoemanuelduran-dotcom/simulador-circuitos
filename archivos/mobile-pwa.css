@@ -1,0 +1,114 @@
+/* Adaptación compartida para teléfonos. La lógica eléctrica no se modifica. */
+@media (max-width: 950px) and (orientation: landscape) {
+  html,body{width:100%;height:100%;overflow:hidden!important}
+  body{min-height:0!important;padding:max(3px,env(safe-area-inset-top)) max(5px,env(safe-area-inset-right)) max(3px,env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left))!important}
+  main{width:100%;height:100%;max-width:none!important;display:flex!important;flex-direction:column!important;min-height:0!important}
+  header{flex:0 0 auto!important;min-height:48px;margin-bottom:3px!important;padding-right:104px!important;gap:6px!important;align-items:center!important;flex-direction:row!important;justify-content:space-between!important}
+  header>div:first-child{min-width:0!important}
+  h1{font-size:1rem!important;line-height:1.05!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  header p,.safety{display:none!important}
+  .status{padding:5px 8px!important;border-radius:9px!important;font-size:.67rem!important}
+  .layout{flex:1 1 auto!important;grid-template-columns:clamp(132px,19vw,162px) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) auto!important;gap:4px!important;min-width:0!important;min-height:0!important}
+  .panel{grid-column:1!important;grid-row:1 / span 2!important;display:block!important;padding:6px!important;border-radius:11px!important;min-width:0!important;min-height:0!important;overflow:hidden!important}
+  .panel h2{font-size:.75rem!important;margin-bottom:2px!important}
+  .panel>p{display:none!important}
+  .challenge{gap:3px!important;margin-bottom:4px!important}
+  .challenge button{padding:4px 2px!important;min-height:44px!important;font-size:.62rem!important;border-radius:7px!important}
+  .choice{min-height:44px!important;padding:5px!important;margin-bottom:4px!important;border-radius:9px!important;font-size:.67rem!important}
+  .choice small{display:none!important}
+  .sample{height:7px!important;margin-bottom:4px!important}
+  .left-count{font-size:.55rem!important;margin-top:1px!important}
+  .guide{padding-top:4px!important;margin-top:1px!important;font-size:.57rem!important;line-height:1.2!important}
+  .board,.acboard{grid-column:2!important;grid-row:1!important;width:100%!important;height:auto!important;min-width:0!important;min-height:0!important;border-radius:12px!important}
+  .board-note{font-size:.53rem!important;top:4px!important;left:7px!important}
+  .board .device{zoom:.76}
+  .board .combo-unit{zoom:.66}
+  .board .motor{zoom:.66}
+  .board .rod{zoom:.72}
+  .board .supply{zoom:.72}
+  .board .lamp{zoom:.74}
+  .rail-bank{zoom:.76;top:22px!important}
+  .acboard .rail-bank{zoom:.64;top:18px!important}
+  .acboard .combo-unit{zoom:.54;z-index:8}
+  .acboard .lamp{zoom:.55}
+  .acboard .motor{zoom:.48}
+  .acboard .rod{zoom:.6}
+  .layout>.hint{grid-column:2!important;grid-row:2!important;max-height:34px!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important}
+  .toolbar{flex:0 0 auto!important;margin-top:3px!important;gap:4px!important;min-height:30px!important}
+  .hint{padding:4px 7px!important;font-size:.58rem!important;border-radius:8px!important;line-height:1.15!important}
+  .progress{font-size:.59rem!important}
+  .actions{gap:3px!important}
+  .actions button,.toolbar button{min-height:44px!important;padding:4px 7px!important;border-radius:8px!important;font-size:.63rem!important}
+  .terminal{min-width:28px;min-height:28px}
+  .terminal:before{content:"";position:absolute;inset:-13px;border-radius:50%}
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+  .progress{font-size:0!important}.progress b{font-size:.59rem!important}
+  .toolbar .hint{white-space:nowrap;text-overflow:ellipsis}
+}
+
+/* El tomacorriente doble se organiza en horizontal en teléfonos: conserva las
+   dos cajas transparentes y el conducto guía sin esconder el módulo inferior. */
+@media (max-width: 950px) and (orientation: landscape) {
+  .oct-box{left:29%!important;top:78px!important;transform:translateX(-50%) scale(.65)!important;transform-origin:top center!important}
+  .junctions{left:29%!important;top:96px!important;transform:translateX(-50%) scale(.65)!important;transform-origin:top center!important}
+  .conduit{left:46%!important;top:120px!important;width:70px!important;height:44px!important;transform:translateX(-50%) rotate(90deg) scale(.55)!important;transform-origin:center!important}
+  .rect-box{left:65%!important;top:87px!important;transform:translateX(-50%) scale(.62)!important;transform-origin:top center!important}
+  .double-module{left:65%!important;top:100px!important;transform:translateX(-50%) scale(.62)!important;transform-origin:top center!important}
+  .toma-doble-app .board>.rod{left:3%!important;bottom:0!important;transform:scale(.75)!important;transform-origin:bottom left!important}
+  .toma-doble-app .board>.motor{right:7%!important;bottom:7%!important;transform:scale(.72)!important;transform-origin:bottom right!important}
+}
+
+@media (max-width: 700px) and (orientation: portrait) {
+  html,body{width:100%;height:100%;overflow:hidden!important}
+  body:after{content:"Gira el teléfono para practicar en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+  body>main{visibility:hidden;pointer-events:none}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+
+/* ---- Teléfonos en horizontal: más espacio de trabajo, controles compactos ----
+   Se reducen barras, botones y tamaño de los componentes para que la mesa de
+   cableado ocupe la mayor parte de la pantalla. La lógica no cambia. */
+@media (max-width: 950px) and (orientation: landscape) {
+  body{padding:max(2px,env(safe-area-inset-top)) max(4px,env(safe-area-inset-right)) max(2px,env(safe-area-inset-bottom)) max(4px,env(safe-area-inset-left))!important}
+  header{min-height:28px!important;margin-bottom:2px!important;padding-right:84px!important;gap:5px!important}
+  h1{font-size:.84rem!important}
+  .status{padding:3px 8px!important;font-size:.6rem!important;gap:5px!important}
+  .status i{width:8px!important;height:8px!important}
+  .autor-badge{padding:3px 8px!important;font-size:.58rem!important}
+  .layout{grid-template-columns:clamp(100px,13.5vw,118px) minmax(0,1fr)!important;gap:3px!important}
+  .panel{padding:4px!important;border-radius:9px!important}
+  .panel h2{font-size:.66rem!important}
+  .challenge{gap:2px!important;margin-bottom:3px!important}
+  .challenge button{min-height:30px!important;font-size:.56rem!important;padding:2px!important}
+  .choice{min-height:34px!important;padding:3px 4px!important;margin-bottom:3px!important;font-size:.58rem!important;border-width:1px!important}
+  .choice strong{font-size:.58rem!important}
+  .sample{height:5px!important;margin-bottom:2px!important}
+  .guide{font-size:.52rem!important;line-height:1.15!important}
+  .toolbar{min-height:28px!important;margin-top:2px!important;gap:3px!important}
+  .actions button,.toolbar button{min-height:30px!important;padding:2px 8px!important;font-size:.58rem!important;border-radius:7px!important}
+  .progress{font-size:.55rem!important}
+  .hint{padding:2px 6px!important;font-size:.55rem!important;max-height:26px!important;line-height:1.1!important}
+  .board .device{zoom:.58}
+  .board .combo-unit{zoom:.52}
+  .board .motor{zoom:.5}
+  .board .rod{zoom:.56}
+  .board .supply{zoom:.56}
+  .board .lamp{zoom:.56}
+  .rail-bank{zoom:.6;top:20px!important}
+  .acboard .rail-bank{zoom:.52;top:16px!important}
+  .acboard .combo-unit{zoom:.44}
+  .acboard .lamp{zoom:.46}
+  .acboard .motor{zoom:.4}
+  .acboard .rod{zoom:.5}
+  .board-note{display:none!important}
+}
+@media (max-height: 400px) and (orientation: landscape) {
+  header{min-height:24px!important}
+  .toolbar{min-height:26px!important}
+  .actions button,.toolbar button{min-height:26px!important}
+}

@@ -1,0 +1,306 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Serie, paralelo y mixtos</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--tx);font:14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{font:inherit;color:inherit}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:#08141f;border-bottom:1px solid #20364f}
+.ttl{min-width:0;flex:1 1 auto}.ttl h1{margin:0;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttl small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--p2);font-size:.75rem;font-weight:650;white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis}
+.status i{flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:var(--bl)}.status.ready i{background:var(--yl)}.status.on i{background:var(--gr);box-shadow:0 0 10px #5ce0a099}.status.error i{background:var(--rd);box-shadow:0 0 10px #ff6b6b99}
+.tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button:disabled{opacity:.35}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1}
+.top .autor-badge{margin-left:6px}
+.work{flex:1 1 auto;min-height:0;display:flex}
+.panel{flex:0 0 280px;overflow:auto;padding:10px 12px;background:var(--p);border-right:1px solid var(--line);font-size:.8rem}
+.panel.closed{display:none}
+.panel h2{margin:0 0 3px;font-size:.95rem}.panel h3{margin:12px 0 5px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.panel p{margin:4px 0;color:var(--mu)}.panel .goal{padding:7px 9px;border-left:3px solid var(--bl);background:#10263a;border-radius:0 8px 8px 0;color:var(--tx)}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.btn{padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--p2);cursor:pointer;font-size:.76rem}.btn:disabled{opacity:.35;cursor:default}.btn.primary{background:#eaf8ff;color:#06101c;border-color:#fff;font-weight:700}
+.colors{display:flex;gap:7px}.colors button{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}.colors button[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px #fff3}
+.meter{padding:8px;border-radius:10px;background:#0a1623;border:1px solid var(--line);font-variant-numeric:tabular-nums}.meter b{color:var(--tx)}.meter .big{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px}.meter .big div{padding:5px 7px;border-radius:7px;background:#06101a;color:#8ff0b8;font:700 1rem ui-monospace,Consolas,monospace}.meter .big small{display:block;color:var(--mu);font:600 .62rem system-ui}
+.bands{display:inline-flex;gap:2px;vertical-align:middle;margin-right:5px}.bands i{display:block;width:7px;height:14px;border-radius:1px}
+table{width:100%;border-collapse:collapse;font-size:.72rem;font-variant-numeric:tabular-nums}th,td{padding:3px 4px;text-align:right;border-bottom:1px solid #1e3248}th:first-child,td:first-child{text-align:left}th{color:var(--mu);font-weight:600}tr.sel td{background:#173651}
+.result{margin-top:10px;padding:9px;border-radius:10px;background:#12382f;border:1px solid var(--gr);color:#d6ffe9}
+.boardwrap{position:relative;flex:1 1 auto;min-width:0;background:radial-gradient(circle at 50% 45%,#17304b,var(--p) 70%)}
+#board{position:absolute;inset:0;width:100%;height:100%;touch-action:none;user-select:none;-webkit-user-select:none}
+.hint{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);width:min(780px,94%);padding:6px 11px;border-radius:10px;border:1px solid #2b435f;background:#07111fe6;color:var(--mu);font-size:.78rem;text-align:center;pointer-events:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hint.error{background:#421d28ee;color:#ffd1d1;border-color:#ff6969}.hint.ok{background:#12382fee;color:#bfffe0;border-color:var(--gr)}.hint strong{color:var(--tx)}
+/* esquema */
+.tx{fill:#dbe7f4;font:600 14px system-ui,sans-serif;text-anchor:middle}.tv{fill:#8ff0b8;font:600 13px ui-monospace,Consolas,monospace;text-anchor:middle}
+.sel-box{fill:none;stroke:#79d9f1;stroke-width:2;stroke-dasharray:6 5}
+.wshadow{fill:none;stroke:#02060ccc;stroke-width:13;stroke-linecap:round}.wire{fill:none;stroke-width:7;stroke-linecap:round}.wire.sel{stroke-width:9}
+.flow{fill:none;stroke:#fff7b0;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:4 17;animation:flow .55s linear infinite}@keyframes flow{to{stroke-dashoffset:-21}}
+.term-ring{fill:#14243a;stroke:#d5deea;stroke-width:3.5}.term-dot{fill:#d89559}.connected .term-dot{fill:var(--gr)}.term:hover .term-ring{stroke:#79d9f1}.term.drop .term-ring{stroke:#79d9f1;stroke-width:5}
+@media (max-width:950px){
+ .panel{position:absolute;z-index:6;left:0;top:0;bottom:0;width:min(310px,72%);box-shadow:8px 0 24px #000a;flex:none}
+ .panel.closed{display:block;transform:translateX(-105%);visibility:hidden}
+ .work{position:relative}
+}
+@media (max-height:520px){
+ header.top{min-height:34px;padding-top:2px;padding-bottom:2px;gap:6px}
+ .ttl h1{font-size:.82rem}.ttl small{display:none}.status{padding:3px 8px;font-size:.66rem;max-width:150px}
+ .tools button{width:30px;height:30px;font-size:.85rem;border-radius:8px}
+ .top .autor-badge{padding:3px 8px;font-size:.62rem}
+ .hint{font-size:.66rem;padding:3px 8px;bottom:3px}
+}
+@media (max-width:700px) and (orientation:portrait){
+ body:after{content:"Gira el teléfono para practicar en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,sans-serif}
+}
+@media (prefers-reduced-motion:reduce){.flow{animation:none}}
+</style></head><body>
+<header class="top">
+ <div class="ttl"><h1 id="title">Redes</h1><small id="sub"></small></div>
+ <div id="status" class="status"><i></i><span id="statusText"></span></div>
+ <div class="tools">
+  <button id="bPanel" title="Consigna y mediciones" aria-label="Consigna y mediciones" aria-pressed="true">☰</button>
+  <button id="bUndo" title="Quitar último cable" aria-label="Quitar último cable">↶</button>
+  <button id="bDel" title="Quitar cable seleccionado" aria-label="Quitar cable seleccionado" disabled>🗑</button>
+  <button id="bReset" title="Reiniciar" aria-label="Reiniciar">↻</button>
+  <button id="bSound" title="Sonidos" aria-label="Sonidos" aria-pressed="true">🔊</button>
+ </div>
+</header>
+<div class="work">
+ <aside id="panel" class="panel">
+  <h2 id="pTitle"></h2><p id="pDesc"></p>
+  <div class="goal" id="pGoal"></div>
+  <div class="row"><button class="btn" id="tipBtn">💡 Pista</button><button class="btn" id="solBtn">👁 Ver solución</button></div>
+  <p id="pTip" hidden></p>
+  <h3>Color del cable</h3><div class="colors" id="colors"></div>
+  <h3>Multímetro</h3>
+  <div class="meter" id="meter"></div>
+  <div class="row"><button class="btn" id="replBtn" hidden>🔧 Reemplazar</button><button class="btn" id="tblBtn">📋 Tabla</button><button class="btn" id="valsBtn" aria-pressed="true">Valores en el esquema</button></div>
+  <div id="table" hidden></div>
+  <div class="result" id="result" hidden></div>
+ </aside>
+ <section class="boardwrap" id="boardwrap">
+  <svg id="board" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" role="application" aria-label="Mesa de cableado">
+   <defs><radialGradient id="glow"><stop offset="0" stop-color="#ffe98a" stop-opacity=".95"/><stop offset=".55" stop-color="#ffd65a" stop-opacity=".45"/><stop offset="1" stop-color="#ffd65a" stop-opacity="0"/></radialGradient>
+   <radialGradient id="glowR"><stop offset="0" stop-color="#ff8d8d" stop-opacity=".95"/><stop offset=".55" stop-color="#ff4d4d" stop-opacity=".45"/><stop offset="1" stop-color="#ff4d4d" stop-opacity="0"/></radialGradient>
+   <linearGradient id="batg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b6678"/><stop offset=".5" stop-color="#2b3442"/><stop offset="1" stop-color="#1a212c"/></linearGradient>
+   <pattern id="gridp" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#2a4565" stroke-opacity=".35"/></pattern></defs>
+   <rect id="gridrect" x="-2000" y="-2000" width="5000" height="5000" fill="url(#gridp)"/>
+   <g id="gWires"></g><g id="gComps"></g><g id="gTerms"></g><g id="gOver"><path id="prevS" class="wshadow" d=""/><path id="prev" class="wire" d="" stroke-dasharray="12 9"/></g>
+  </svg>
+  <div id="hint" class="hint"></div>
+ </section>
+</div>
+<script src="redes-datos.js"></script>
+<script>
+(()=>{
+const D=window.REDES,$=s=>document.querySelector(s),svg=$('#board'),gW=$('#gWires'),gC=$('#gComps'),gT=$('#gTerms'),prev=$('#prev'),prevS=$('#prevS');
+const params=new URLSearchParams(location.search);
+const sc=D.items[params.get('c')]||D.items[D.order[0]];
+const H=500;let W=1000;
+const WIRE_COLORS=[['red','Rojo','#e5484d'],['blue','Celeste','#4db5ee'],['green','Verde','#3ecf7a'],['yellow','Amarillo','#f2c94c'],['gray','Gris','#c3ccd8']];
+const wcol=k=>WIRE_COLORS.find(c=>c[0]===k)[2];
+const cm={};sc.comps.forEach(c=>cm[c.id]=c);
+const bat=sc.comps.find(c=>c.t==='bat');
+const sws=sc.comps.filter(c=>c.t==='sw');
+let links=[],swState={},broken={},color='red',selComp=null,selWire=null,drag=null,showVals=!sc.fault,tableOn=false,soundOn=true,faultId=null,attempts=0,fixed=false,done=false,lastSim=null,lastDiag=null;
+
+/* ---------- ubicación ---------- */
+const SLOTS=[[.3,.2],[.5,.2],[.7,.2],[.9,.2],[.9,.8],[.7,.8],[.5,.8],[.3,.8]];
+(function place(){let k=0;sc.comps.forEach(c=>{if(c.t==='bat'){c.fx=.1;c.fy=.5}else{const s=(sc.pos&&sc.pos[c.id])||SLOTS[k++];c.fx=s[0];c.fy=s[1]}})})();
+const tids=c=>c.t==='bat'?[c.id+'.n',c.id+'.p']:c.t==='led'?[c.id+'.a',c.id+'.k']:[c.id+'.a',c.id+'.b'];
+const allT=sc.comps.flatMap(tids);
+const isRight=t=>/\.(p|b|k)$/.test(t);
+function tp(t){const c=cm[t.split('.')[0]],r=isRight(t);return{x:c.fx*W+(r?62:-62),y:c.fy*H,dir:r?1:-1}}
+
+/* ---------- formato ---------- */
+const dc=s=>String(s).replace('.',',');
+const fV=v=>dc((Math.abs(v)<.005?0:Math.abs(v)).toFixed(2))+' V';
+const fI=i=>{i=Math.abs(i);if(i<1e-6)return'0 mA';if(i>=1)return dc(i.toFixed(2))+' A';const m=i*1000;return dc(m.toFixed(m<10?2:m<100?1:0))+' mA'};
+const fR=r=>r>=1000?dc(+(r/1000).toFixed(2))+' kΩ':dc(+r.toFixed(1))+' Ω';
+const fP=p=>{p=Math.abs(p);return dc(p<1?(p*1000).toFixed(p<.01?2:0)+' mW':p.toFixed(2)+' W')};
+const DIG=['#111','#7b4a1e','#d33','#f80','#fd2','#3a3','#36e','#94c','#888','#eee'],DIGN=['negro','marrón','rojo','naranja','amarillo','verde','azul','violeta','gris','blanco'];
+function bands(r){const e=Math.floor(Math.log10(r)),d=Math.round(r/Math.pow(10,e-1));return[Math.floor(d/10),d%10,e-1]}
+
+/* ---------- audio ---------- */
+let actx=null;
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
+function tone(f,d,ty='sine',v=.05,dl=0){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+dl;o.type=ty;o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v,s+.012);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.02)}
+function play(n){if(n==='connect'){tone(520,.09,'sine',.05);tone(720,.11,'sine',.04,.07)}if(n==='error'){tone(170,.16,'sawtooth',.05);tone(125,.18,'sawtooth',.04,.1)}if(n==='switch'){tone(250,.055,'square',.03);tone(390,.045,'square',.02,.045)}if(n==='success'){tone(523,.18,'sine',.05);tone(659,.2,'sine',.045,.1);tone(784,.25,'sine',.04,.2)}if(n==='short'){tone(92,.38,'sawtooth',.07);tone(62,.42,'square',.05,.06)}if(n==='remove'){tone(430,.08,'sine',.04);tone(260,.11,'sine',.035,.06)}if(n==='select')tone(330,.06,'sine',.03)}
+
+/* ---------- motor eléctrico ---------- */
+function solveLinear(A,b){const n=b.length;for(let i=0;i<n;i++){let p=i;for(let r=i+1;r<n;r++)if(Math.abs(A[r][i])>Math.abs(A[p][i]))p=r;[A[i],A[p]]=[A[p],A[i]];[b[i],b[p]]=[b[p],b[i]];const d=A[i][i]||1e-12;for(let r=i+1;r<n;r++){const f=A[r][i]/d;if(!f)continue;for(let c=i;c<n;c++)A[r][c]-=f*A[i][c];b[r]-=f*b[i]}}const x=new Array(n).fill(0);for(let i=n-1;i>=0;i--){let s=b[i];for(let c=i+1;c<n;c++)s-=A[i][c]*x[c];x[i]=s/(A[i][i]||1e-12)}return x}
+const VF=2,RS=10;
+function simulate(lk,o={}){
+ const par={};allT.forEach(t=>par[t]=t);const find=t=>par[t]===t?t:(par[t]=find(par[t]));const join=(a,b)=>{a=find(a);b=find(b);if(a!==b)par[b]=a};
+ const closed=c=>o.allClosed||!!swState[c.id];
+ lk.forEach(l=>join(l.a,l.b));sws.forEach(c=>{if(closed(c))join(c.id+'.a',c.id+'.b')});
+ const P=find(bat.id+'.p'),N=find(bat.id+'.n'),out={short:P===N,c:{},flows:lk.map(()=>0),ibat:0};
+ const dead=c=>!o.ignoreBroken&&!!broken[c.id];
+ if(out.short){sc.comps.forEach(c=>out.c[c.id]={v:0,i:0,p:0,level:0});out.c[bat.id].v=bat.v;return out}
+ const nets=[...new Set(allT.map(find))].filter(n=>n!==P&&n!==N),idx=new Map(nets.map((n,i)=>[n,i])),n=nets.length;
+ const els=[];sc.comps.forEach(c=>{if(c.t==='lamp'||c.t==='res')els.push({c,a:c.id+'.a',b:c.id+'.b',g:1/c.r,open:dead(c)});else if(c.t==='fuse')els.push({c,a:c.id+'.a',b:c.id+'.b',g:20,open:dead(c)});else if(c.t==='led')els.push({c,a:c.id+'.a',b:c.id+'.k',led:true,on:false,open:dead(c)})});
+ let V=[];const nv=net=>net===P?bat.v:net===N?0:V[idx.get(net)];
+ for(let it=0;it<14;it++){
+  const A=Array.from({length:n},()=>new Array(n).fill(0)),bb=new Array(n).fill(0);for(let k=0;k<n;k++)A[k][k]+=1e-9;
+  const stamp=(na,nb,g,j)=>{const ia=idx.get(na),ib=idx.get(nb);if(na===nb)return;if(ia!==undefined){A[ia][ia]+=g;if(ib!==undefined)A[ia][ib]-=g;else bb[ia]+=g*(nb===P?bat.v:0);bb[ia]+=j}if(ib!==undefined){A[ib][ib]+=g;if(ia!==undefined)A[ib][ia]-=g;else bb[ib]+=g*(na===P?bat.v:0);bb[ib]-=j}};
+  els.forEach(e=>{if(e.open)return;const na=find(e.a),nb=find(e.b);if(e.led){if(e.on)stamp(na,nb,1/RS,VF/RS)}else stamp(na,nb,e.g,0)});
+  V=solveLinear(A,bb);let changed=false;
+  els.forEach(e=>{if(!e.led||e.open)return;const vab=nv(find(e.a))-nv(find(e.b));if(e.on&&(vab-VF)/RS<0){e.on=false;changed=true}else if(!e.on&&vab>VF+1e-6){e.on=true;changed=true}});
+  if(!changed||!els.some(e=>e.led))break;
+ }
+ const inj={};allT.forEach(t=>inj[t]=0);
+ els.forEach(e=>{const c=e.c,va=nv(find(e.a)),vb=nv(find(e.b)),v=va-vb;let i=0;if(!e.open){i=e.led?(e.on?Math.max(0,(v-VF)/RS):0):v*e.g}inj[e.a]+=i;inj[e.b]-=i;
+  let level=0;if(c.t==='lamp')level=Math.min(1,(v*i)/(c.vr*c.vr/c.r));else if(c.t==='led')level=Math.min(1,i/.015);
+  out.c[c.id]={v,i,p:v*i,level}});
+ let ibat=0;els.forEach(e=>{const na=find(e.a),nb=find(e.b),i=out.c[e.c.id].i;if(na===P&&nb!==P)ibat+=i;if(nb===P&&na!==P)ibat-=i});
+ out.ibat=ibat;out.c[bat.id]={v:bat.v,i:ibat,p:bat.v*ibat,level:0};inj[bat.id+'.p']-=ibat;inj[bat.id+'.n']+=ibat;
+ const adj={};allT.forEach(t=>adj[t]=[]);const edges=[];lk.forEach((l,i)=>edges.push({a:l.a,b:l.b,link:i}));sws.forEach(c=>{if(closed(c))edges.push({a:c.id+'.a',b:c.id+'.b',sw:c.id})});
+ edges.forEach((e,k)=>{adj[e.a].push([e.b,k]);adj[e.b].push([e.a,k])});
+ const seen=new Set(),fe=new Array(edges.length).fill(0);
+ for(const root of allT){if(seen.has(root))continue;const order=[],parent=new Map();seen.add(root);const q=[root];while(q.length){const t=q.shift();order.push(t);for(const[u,k]of adj[t])if(!seen.has(u)){seen.add(u);parent.set(u,[t,k]);q.push(u)}}
+  const sum=new Map(order.map(t=>[t,inj[t]]));for(let i=order.length-1;i>0;i--){const t=order[i],[p,k]=parent.get(t),s=sum.get(t);sum.set(p,sum.get(p)+s);fe[k]=edges[k].a===p?s:-s}}
+ edges.forEach((e,k)=>{if(e.link!==undefined)out.flows[e.link]=fe[k]});
+ sws.forEach(c=>{const va=nv(find(c.id+'.a')),vb=nv(find(c.id+'.b'));const e=edges.findIndex(x=>x.sw===c.id);out.c[c.id]={v:va-vb,i:e>=0?Math.abs(fe[e]):0,p:0,level:0}});
+ return out;
+}
+function settle(){let sim,events=[];for(let k=0;k<6;k++){sim=simulate(links);let ch=false;sc.comps.forEach(c=>{if(broken[c.id])return;if(c.t==='fuse'&&Math.abs(sim.c[c.id].i)>c.amp){broken[c.id]=true;ch=true;events.push(c.id)}if(c.t==='led'&&sim.c[c.id].i>.03){broken[c.id]=true;ch=true;events.push(c.id)}});if(!ch)break}return{sim,events}}
+const sig=s=>sc.comps.filter(c=>c.t!=='bat').map(c=>{const r=s.c[c.id];return c.t+'|'+(c.r||c.amp||0)+'|'+r.v.toFixed(2)+'|'+r.i.toFixed(3)}).sort().join(';');
+const refLinks=sc.sol.map(p=>({a:p[0],b:p[1]}));
+const refSig=sc.check||sc.fault?null:sig(simulate(refLinks,{allClosed:true,ignoreBroken:true}));
+
+/* ---------- diagnóstico ---------- */
+function diagnose(sim,evs){
+ const allClosed=sws.every(c=>swState[c.id]),brokenList=sc.comps.filter(c=>broken[c.id]);
+ const lit=sc.comps.filter(c=>c.t==='lamp'&&sim.c[c.id].level>.01).length;
+ let d={cls:'',head:'',text:'',done:false,status:'ready'};
+ const rt=sim.ibat>1e-6?bat.v/sim.ibat:null,tot=rt?' Resistencia equivalente Rt = '+fR(rt)+' · corriente total '+fI(sim.ibat)+'.':'';
+ if(sim.short)return{cls:'error',head:'CORTOCIRCUITO',text:'Un cable o una llave une directamente + con − sin resistencia. En la realidad el conductor se calentaría y el fusible o la batería sufrirían. Quitá el último cable.',status:'error'};
+ if(sc.fault){
+  if(fixed&&allClosed&&lit+sc.comps.filter(c=>c.t==='res').length>0&&sim.ibat>1e-4)return{cls:'ok',head:'Falla reparada',text:'Reemplazaste '+faultId+' y el circuito funciona.'+tot+' Intentos fallidos: '+attempts+'.',done:true,status:'on'};
+  if(!allClosed)return{cls:'',head:'Cerrá la llave',text:'Con la llave abierta no circula corriente. Cerrala y observá el circuito; después medí cada componente tocándolo.',status:'ready'};
+  return{cls:'error',head:'Algo no anda',text:'Tocá cada componente para leer su tensión y corriente. Identificá el dañado y usá “Reemplazar”.'+tot,status:'error'};
+ }
+ if(brokenList.length&&!(sc.check&&sc.check({sim,broken,allClosed,fmtI:fI})))d={cls:'error',head:brokenList[0].t==='fuse'?'Fusible fundido':'Componente quemado',text:'Se superó el valor máximo de '+brokenList[0].name+'. Reemplazalo y corregí la causa de la sobrecarga.',status:'error'};
+ if(brokenList.length){const r=sc.check&&sc.check({sim,broken,allClosed,fmtI:fI});if(r)return Object.assign({status:'error'},r);return d}
+ if(sc.check){const r=sc.check({sim,broken,allClosed,fmtI:fI});if(r)return Object.assign({status:r.done?'on':'ready'},r)}
+ else{
+  const u=simulate(links,{allClosed:true,ignoreBroken:true});
+  if(!u.short&&sig(u)===refSig){if(allClosed&&sim.ibat>1e-6)return{cls:'ok',head:'Desafío completado',text:'La red coincide con la consigna.'+tot,done:true,status:'on'};return{cls:'',head:'Circuito correcto',text:'La conexión es la pedida. Cerrá '+(sws.length>1?'las llaves':'la llave')+' para verificar tensiones y brillo.',status:'ready'}}
+ }
+ if(!links.length)return{cls:'',head:'Consigna',text:sc.goal,status:''};
+ if(!allClosed)return{cls:'',head:'Llave abierta',text:'Cerrá '+(sws.length>1?'las llaves':'la llave')+' para ver el funcionamiento.'+tot,status:'ready'};
+ if(sim.ibat<1e-6)return{cls:'',head:'Circuito abierto',text:'No hay un camino cerrado desde el + hasta el −. Revisá que cada borne esté conectado y que la corriente pueda volver a la batería.',status:'ready'};
+ return{cls:'',head:'Funciona, pero no es lo pedido',text:'Medí tensiones y corrientes y compará con la consigna.'+tot,status:'ready'};
+}
+
+/* ---------- dibujo ---------- */
+const esc=s=>String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+function wirePath(a,b,rev){const A=tp(a),B=tp(b),d=Math.hypot(A.x-B.x,A.y-B.y),k=Math.max(40,Math.min(170,d*.4));let p=[A,{x:A.x+A.dir*k,y:A.y},{x:B.x+B.dir*k,y:B.y},B];if(rev)p.reverse();return'M'+p[0].x.toFixed(1)+' '+p[0].y.toFixed(1)+' C'+p[1].x.toFixed(1)+' '+p[1].y.toFixed(1)+' '+p[2].x.toFixed(1)+' '+p[2].y.toFixed(1)+' '+p[3].x.toFixed(1)+' '+p[3].y.toFixed(1)}
+function compBody(c,r,sim){
+ const lead=(a,b)=>`<line x1="${a}" y1="0" x2="${b}" y2="0" stroke="#aeb9c7" stroke-width="5" stroke-linecap="round"/>`;
+ const bk=!!broken[c.id];
+ if(c.t==='bat')return`${lead(-62,-50)}${lead(50,62)}<rect x="-50" y="-26" width="100" height="52" rx="9" fill="url(#batg)" stroke="#c7d0db55" stroke-width="2"/><rect x="-50" y="-26" width="32" height="52" rx="9" fill="#4db5ee33"/><rect x="18" y="-26" width="32" height="52" rx="9" fill="#ff6b6b33"/><text class="tx" y="6" style="font-size:19px;fill:#fff">${c.v} V</text><text x="-39" y="7" fill="#79d9f1" style="font:800 20px system-ui;text-anchor:middle">−</text><text x="39" y="8" fill="#ff8d8d" style="font:800 20px system-ui;text-anchor:middle">+</text>`;
+ if(c.t==='sw'){const on=!!swState[c.id];return`${lead(-62,-32)}${lead(32,62)}<circle cx="-32" cy="0" r="6" fill="#d5deea"/><circle cx="32" cy="0" r="6" fill="#d5deea"/><line x1="-32" y1="0" x2="${on?30:22}" y2="${on?0:-30}" stroke="${on?'#5ce0a0':'#b7c0cd'}" stroke-width="7" stroke-linecap="round" style="transition:.15s"/><rect data-sw="1" x="-48" y="-44" width="96" height="64" fill="transparent" style="cursor:pointer"/><text class="tx" y="-48" style="font-size:12px;fill:#a8b7ca">${on?'CERRADA':'ABIERTA'}</text>`}
+ if(c.t==='lamp'){const lv=r?Math.sqrt(r.level):0,lit=r&&r.level>.01&&!bk;return`${lead(-62,-14)}${lead(14,62)}${lit?`<circle cx="0" cy="-18" r="${28+40*lv}" fill="url(#glow)" opacity="${.35+.65*lv}"/>`:''}<rect x="-15" y="2" width="30" height="20" rx="3" fill="#6b7788"/><path d="M-15 8h30M-15 14h30" stroke="#3b4656" stroke-width="3"/><circle cx="0" cy="-16" r="26" fill="${lit?'#ffe98a':'#26364b'}" fill-opacity="${lit?(.55+.45*lv):1}" stroke="${lit?'#fff0a1':'#aab6c5'}" stroke-width="3.5"/><path d="M-9 4 L-9 -8 Q0 -22 9 -8 L9 4" fill="none" stroke="${lit?'#fff':'#7e8da1'}" stroke-width="2.5"/>`}
+ if(c.t==='res'){const[b1,b2,m]=bands(c.r);const bb=(x,col)=>`<rect x="${x}" y="-13" width="7" height="26" fill="${col}"/>`;return`${lead(-62,-36)}${lead(36,62)}<rect x="-36" y="-13" width="72" height="26" rx="9" fill="#d8c9a3" stroke="#00000044"/>${bb(-22,DIG[b1])}${bb(-9,DIG[b2])}${bb(4,DIG[Math.max(0,m)])}${bb(22,'#d4af37')}`}
+ if(c.t==='fuse')return`${lead(-62,-34)}${lead(34,62)}<rect x="-34" y="-13" width="68" height="26" rx="6" fill="#cfe9f544" stroke="#cfe9f5" stroke-width="2.5"/><rect x="-40" y="-13" width="9" height="26" rx="2" fill="#b9a36a"/><rect x="31" y="-13" width="9" height="26" rx="2" fill="#b9a36a"/>${bk?`<path d="M-31 0 L-9 0 M9 0 L31 0" stroke="#999" stroke-width="2.5"/><circle cx="0" cy="0" r="9" fill="#2a1d18" opacity=".7"/>`:`<path d="M-31 0 L31 0" stroke="${r&&Math.abs(r.i)>c.amp*.8?'#ff8a4d':'#d9dfe6'}" stroke-width="2.5"/>`}`;
+ if(c.t==='led'){const lv=r?r.level:0,on=lv>.02&&!bk;return`${lead(-62,-16)}${lead(20,62)}${on?`<circle cx="0" cy="0" r="${34+26*lv}" fill="url(#glowR)" opacity="${.45+.55*lv}"/>`:''}<path d="M-16 -22 L-16 22 L18 0 Z" fill="${on?'#ff6b6b':bk?'#2b2020':'#5a3a3a'}" stroke="#e8c0c0" stroke-width="3" stroke-linejoin="round"/><line x1="19" y1="-22" x2="19" y2="22" stroke="#e8c0c0" stroke-width="4"/><path d="M6 -26 l10 -10 m-6 0 h6 v6 M-4 -26 l10 -10 m-6 0 h6 v6" stroke="${on?'#ffd0d0':'#8d7777'}" stroke-width="2" fill="none"/><text x="-48" y="-12" class="tx" style="font-size:11px;fill:#a8b7ca">A</text><text x="48" y="-12" class="tx" style="font-size:11px;fill:#a8b7ca">K</text>`}
+ return'';
+}
+function render(){
+ // cables
+ let w='';
+ links.forEach((l,i)=>{const fl=lastSim?lastSim.flows[i]:0,d=wirePath(l.a,l.b,false),sel=selWire===i;w+=`<path class="wshadow" d="${d}"/><path class="wire${sel?' sel':''}" d="${d}" stroke="${wcol(l.color)}"/>`;if(Math.abs(fl)>1e-4)w+=`<path class="flow" d="${wirePath(l.a,l.b,fl<0)}"/>`;w+=`<path data-w="${i}" d="${d}" fill="none" stroke="transparent" stroke-width="22" pointer-events="stroke"/>`;if(l.locked)w+=''});
+ gW.innerHTML=w;
+ // componentes
+ let s='';
+ sc.comps.forEach(c=>{const r=lastSim?lastSim.c[c.id]:null,x=c.fx*W,y=c.fy*H,sel=selComp===c.id;
+  let nm=c.t==='lamp'?c.id+' · '+fR(c.r):c.t==='res'?c.id+' · '+fR(c.r):c.t==='sw'?c.name:c.t==='fuse'?'Fusible '+c.amp+' A':c.t==='led'?'LED':c.name;
+  if(sc.fault&&(c.t==='lamp'||c.t==='res'))nm=c.id+(c.t==='res'?' · '+fR(c.r):'');
+  let vals='';if(showVals&&r&&c.t!=='bat'&&c.t!=='sw'||showVals&&r&&c.t==='sw'&&swState[c.id]&&false)vals=`<text class="tv" y="82">${fV(r.v)} · ${fI(r.i)}</text>`;
+  if(c.t==='bat'&&r&&showVals)vals=`<text class="tv" y="82">${fI(r.i)} entregados</text>`;
+  s+=`<g data-c="${c.id}" transform="translate(${x} ${y})"><rect x="-70" y="-48" width="140" height="${showVals?100:84}" fill="transparent"/>${sel?'<rect class="sel-box" x="-68" y="-50" width="136" height="'+(showVals?106:90)+'" rx="12"/>':''}${compBody(c,r,lastSim)}<text class="tx" y="${c.t==='lamp'?46:c.t==='bat'?50:42}" style="${broken[c.id]&&!sc.fault?'fill:#ff9a9a':''}">${esc(nm)}${broken[c.id]&&!sc.fault?' ✖':''}</text>${showVals?vals.replace('y="82"','y="'+(c.t==='lamp'?64:c.t==='bat'?68:60)+'"'):''}</g>`});
+ gC.innerHTML=s;
+ // bornes
+ let t='';allT.forEach(id=>{const p=tp(id),con=links.some(l=>l.a===id||l.b===id),lab=id.endsWith('.p')?'+':id.endsWith('.n')?'−':'';
+  t+=`<g class="term${con?' connected':''}" data-t="${id}" transform="translate(${p.x} ${p.y})" style="cursor:crosshair"><circle class="term-ring" r="13"/><circle class="term-dot" r="5"/>${lab?`<text x="0" y="-19" class="tx" style="font-size:15px;fill:${lab==='+'?'#ff8d8d':'#79d9f1'}">${lab}</text>`:''}<circle r="29" fill="transparent"/></g>`});
+ gT.innerHTML=t;
+}
+function updatePreview(pos){if(!drag){prev.setAttribute('d','');prevS.setAttribute('d','');return}
+ const A=tp(drag.from);let end=pos,dir=-A.dir;let best=null,bd=36;allT.forEach(id=>{if(id===drag.from)return;const p=tp(id),dd=Math.hypot(p.x-pos.x,p.y-pos.y);if(dd<bd){bd=dd;best=id}});
+ gT.querySelectorAll('.drop').forEach(e=>e.classList.remove('drop'));
+ let d;if(best){gT.querySelector('[data-t="'+best+'"]')?.classList.add('drop');d=wirePath(drag.from,best,false)}else{const k=Math.max(30,Math.min(120,Math.hypot(A.x-pos.x,A.y-pos.y)*.4));d=`M${A.x} ${A.y} C${A.x+A.dir*k} ${A.y} ${pos.x} ${pos.y} ${pos.x} ${pos.y}`}
+ drag.best=best;prev.setAttribute('d',d);prevS.setAttribute('d',d);prev.setAttribute('stroke',wcol(color))}
+
+/* ---------- panel ---------- */
+function meterHTML(){
+ if(!selComp)return'<span style="color:var(--mu)">Tocá un componente del esquema para medir su tensión y corriente.</span>';
+ const c=cm[selComp],r=lastSim?lastSim.c[c.id]:{v:0,i:0,p:0};let extra='';
+ if(c.t==='res'){const[b1,b2,m]=bands(c.r);extra=`<div style="margin-top:5px"><span class="bands">${[DIG[b1],DIG[b2],DIG[Math.max(0,m)],'#d4af37'].map(x=>`<i style="background:${x}"></i>`).join('')}</span>${DIGN[b1]}-${DIGN[b2]}-${DIGN[Math.max(0,m)]}-dorado = <b>${fR(c.r)}</b> ±5 %</div>`}
+ else if(c.t==='lamp'&&!sc.fault)extra=`<div style="margin-top:5px">Resistencia del filamento: <b>${fR(c.r)}</b> · nominal 12 V / ${fI(12/c.r)}</div>`;
+ else if(c.t==='fuse')extra=`<div style="margin-top:5px">Corriente máxima: <b>${c.amp} A</b>${broken[c.id]?' · <b style="color:#ff9a9a">FUNDIDO</b>':''}</div>`;
+ else if(c.t==='led')extra=`<div style="margin-top:5px">Cae ≈ ${VF} V · máx. 30 mA${broken[c.id]?' · <b style="color:#ff9a9a">QUEMADO</b>':''}</div>`;
+ return`<b>${esc(c.t==='bat'?c.name:c.t==='sw'?c.name:c.t==='fuse'?c.name:c.t==='led'?'LED':c.id)}</b><div class="big"><div><small>TENSIÓN</small>${fV(r.v)}</div><div><small>CORRIENTE</small>${fI(r.i)}</div></div>${c.t!=='sw'&&c.t!=='bat'?`<div style="margin-top:5px;color:var(--mu)">Potencia: ${fP(r.p)}</div>`:''}${extra}`}
+function tableHTML(){let h='<table><tr><th>Elemento</th><th>V</th><th>I</th><th>P</th></tr>';sc.comps.forEach(c=>{const r=lastSim.c[c.id];h+=`<tr class="${selComp===c.id?'sel':''}"><td>${esc(c.t==='bat'?'Batería':c.id)}</td><td>${dc(r.v.toFixed(2))}</td><td>${fI(r.i)}</td><td>${c.t==='bat'||c.t==='sw'?'—':fP(r.p)}</td></tr>`});return h+'</table>'}
+function updatePanel(){
+ $('#meter').innerHTML=meterHTML();
+ const t=$('#table');t.hidden=!tableOn;if(tableOn&&lastSim)t.innerHTML=tableHTML();
+ const c=selComp?cm[selComp]:null,canRepl=c&&['lamp','res','fuse','led'].includes(c.t)&&(sc.fault||broken[c.id]);
+ const rb=$('#replBtn');rb.hidden=!(sc.fault||sc.comps.some(x=>broken[x.id]));rb.disabled=!canRepl;rb.textContent=c&&canRepl?'🔧 Reemplazar '+c.id:'🔧 Reemplazar (elegí uno)';
+ const rs=$('#result');if(lastDiag&&lastDiag.done){const nx=D.order[D.order.indexOf(sc.id)+1];rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:#d6ffe9;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">Siguiente práctica ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{location.search='?c='+nx}}else rs.hidden=true;
+ $('#bDel').disabled=selWire===null||!!links[selWire]?.locked;$('#bUndo').disabled=!links.some(l=>!l.locked);
+}
+function update(){
+ const{sim,events}=settle();lastSim=sim;const d=diagnose(sim,events);lastDiag=d;
+ render();
+ const st=$('#status');st.className='status '+(d.status||'');$('#statusText').textContent=d.head||'Consigna';
+ const h=$('#hint');h.className='hint '+(d.cls||'');h.innerHTML='<strong>'+esc(d.head)+':</strong> '+esc(d.text);
+ updatePanel();
+ if(events.length){play('error');play('short')}else if(sim.short&&!update.wasShort)play('short');update.wasShort=sim.short;
+ if(d.done&&!done){done=true;play('success')}if(!d.done)done=false;
+}
+
+/* ---------- interacción ---------- */
+function toSvg(e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+svg.addEventListener('pointerdown',e=>{
+ const t=e.target.closest('[data-t]');
+ if(t){e.preventDefault();audio();drag={from:t.dataset.t,id:e.pointerId};try{svg.setPointerCapture(e.pointerId)}catch{}selWire=null;updatePreview(toSvg(e));return}
+ const w=e.target.closest('[data-w]');if(w){selWire=+w.dataset.w;selComp=null;play('select');render();updatePanel();return}
+ const c=e.target.closest('[data-c]');
+ if(c){const comp=cm[c.dataset.c];selComp=comp.id;selWire=null;if(comp.t==='sw'&&e.target.closest('[data-sw]')){swState[comp.id]=!swState[comp.id];play('switch');update();return}play('select');render();updatePanel();return}
+ selComp=null;selWire=null;render();updatePanel()});
+svg.addEventListener('pointermove',e=>{if(drag&&drag.id===e.pointerId)updatePreview(toSvg(e))});
+function endDrag(e){if(!drag||drag.id!==e.pointerId)return;const from=drag.from,best=drag.best;drag=null;updatePreview();
+ if(best&&best!==from){const dup=links.some(l=>(l.a===from&&l.b===best)||(l.a===best&&l.b===from));if(!dup){links.push({a:from,b:best,color});play('connect')}else play('error')}else play('error');update()}
+svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',endDrag);
+
+function buildColors(){const el=$('#colors');el.innerHTML='';WIRE_COLORS.forEach(([k,n,c])=>{const b=document.createElement('button');b.style.background=c;b.title=n;b.setAttribute('aria-label','Cable '+n);b.setAttribute('aria-pressed',String(k===color));b.onclick=()=>{color=k;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true')};el.append(b)})}
+function reset(first){
+ links=[];swState={};broken={};selComp=null;selWire=null;attempts=0;fixed=false;done=false;
+ if(sc.fault){links=sc.sol.map(p=>({a:p[0],b:p[1],color:p[1]==='B.n'||p[0]==='B.n'?'blue':'red',locked:true}));faultId=sc.fault[Math.floor(Math.random()*sc.fault.length)];broken[faultId]=true}
+ if(!first)play('remove');update()}
+function replaceSel(){if(!selComp)return;const c=cm[selComp];
+ if(sc.fault){if(c.id===faultId&&broken[c.id]){delete broken[c.id];fixed=true;play('success')}else{attempts++;play('error');$('#hint').className='hint error';$('#hint').innerHTML='<strong>'+c.id+' estaba en buen estado.</strong> Medí otra vez: el dañado tiene tensión pero no deja pasar corriente.';lastSim=simulate(links);updatePanel();setTimeout(update,2600);return}}
+ else if(broken[c.id]){delete broken[c.id];play('connect')}
+ update()}
+
+$('#bUndo').onclick=()=>{for(let i=links.length-1;i>=0;i--)if(!links[i].locked){links.splice(i,1);selWire=null;play('remove');update();return}};
+$('#bDel').onclick=()=>{if(selWire!==null&&links[selWire]&&!links[selWire].locked){links.splice(selWire,1);selWire=null;play('remove');update()}};
+$('#bReset').onclick=()=>reset(false);
+$('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('select')}};
+const panel=$('#panel');const phone=()=>matchMedia('(max-width:950px)').matches;
+function setPanel(open){panel.classList.toggle('closed',!open);$('#bPanel').setAttribute('aria-pressed',String(open))}
+$('#bPanel').onclick=()=>setPanel(panel.classList.contains('closed'));
+$('#tipBtn').onclick=()=>{const p=$('#pTip');p.hidden=!p.hidden;p.textContent='💡 '+sc.tip};
+$('#solBtn').onclick=()=>{links=sc.sol.map(p=>({a:p[0],b:p[1],color:p[0]==='B.n'||p[1]==='B.n'?'blue':'red'}));swState={};sws.forEach(c=>swState[c.id]=true);broken={};selWire=null;play('connect');update()};
+$('#replBtn').onclick=replaceSel;
+$('#tblBtn').onclick=()=>{tableOn=!tableOn;updatePanel()};
+$('#valsBtn').onclick=e=>{showVals=!showVals;e.currentTarget.setAttribute('aria-pressed',String(showVals));render()};
+if(sc.fault){$('#solBtn').hidden=true;$('#tblBtn').hidden=true;$('#valsBtn').setAttribute('aria-pressed','false')}
+$('#valsBtn').setAttribute('aria-pressed',String(showVals));
+
+/* ---------- vista adaptable ---------- */
+const wrap=$('#boardwrap');
+function fit(){const r=wrap.getBoundingClientRect();if(!r.width||!r.height)return;const a=Math.max(1.55,Math.min(2.5,r.width/r.height));W=Math.round(H*a);svg.setAttribute('viewBox','0 0 '+W+' '+H);if(lastSim)render()}
+new ResizeObserver(fit).observe(wrap);
+
+document.title=sc.title;$('#title').textContent=sc.title;$('#sub').textContent=D.groups.find(g=>g.id===sc.group).title+' · '+sc.desc;
+$('#pTitle').textContent=sc.title;$('#pDesc').textContent=sc.desc;$('#pGoal').innerHTML='<b>Consigna:</b> '+esc(sc.goal);
+buildColors();setPanel(!phone());fit();reset(true);
+})();
+</script><script src="autor.js"></script></body></html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CA · Tomacorriente doble</title>
+<link rel="stylesheet" href="circuito-ca-toma-doble.css">
+<link rel="stylesheet" href="mobile-pwa.css">
+</head>
+<body class="toma-doble-app">
+<main>
+  <header>
+    <div><h1>Tomacorriente doble</h1><p>Derivación mediante caja octogonal, sin puentes entre tomas.</p></div>
+    <div id="status" class="status"><i></i><span id="statusText">Comienza el cableado</span></div>
+  </header>
+
+  <div class="layout">
+    <aside class="panel">
+      <h2>Conductores</h2>
+      <p>Selecciona un color y arrastra entre bornes.</p>
+      <button class="choice" data-type="brown" aria-pressed="true"><span class="sample brown"></span><strong>Marrón · Fase</strong><small>L · conductor activo</small></button>
+      <button class="choice" data-type="blue" aria-pressed="false"><span class="sample blue"></span><strong>Celeste · Neutro</strong><small>N · conductor de servicio</small></button>
+      <button class="choice earth" data-type="earth" aria-pressed="false"><span class="sample"></span><strong>Verde/amarillo</strong><small>PE · protección</small></button>
+      <div class="guide"><b>Consigna</b><br>Alimenta los dos tomas desde los conectores de la caja octogonal. Cada toma necesita su propio ramal L, N y PE. No se admiten puentes entre tomacorrientes.</div>
+    </aside>
+
+    <section id="board" class="board" aria-label="Tablero interactivo de tomacorriente doble">
+      <div class="grid"></div>
+      <div class="board-note">SIMULACIÓN DIDÁCTICA · 230 V~ · LAS CAJAS SON GUÍAS NO INTERACTIVAS</div>
+      <svg id="wires" aria-hidden="true"></svg>
+
+      <div class="rail-bank">
+        <span>TOCA UNA LÍNEA Y ARRASTRA</span>
+        <div class="bus phase" data-bus="L"></div>
+        <div class="bus neutral" data-bus="N"></div>
+        <div class="bus earthline" data-bus="PE"></div>
+      </div>
+
+      <div class="oct-box" aria-hidden="true"><div class="oct-glass"></div></div>
+      <div class="junctions" aria-label="Conectores de derivación de la caja octogonal">
+        <div class="junction j-l"><b>L</b><button class="terminal" data-id="jL1" aria-label="Conector fase 1"></button><button class="terminal" data-id="jL2" aria-label="Conector fase 2"></button><button class="terminal" data-id="jL3" aria-label="Conector fase 3"></button></div>
+        <div class="junction j-n"><b>N</b><button class="terminal" data-id="jN1" aria-label="Conector neutro 1"></button><button class="terminal" data-id="jN2" aria-label="Conector neutro 2"></button><button class="terminal" data-id="jN3" aria-label="Conector neutro 3"></button></div>
+        <div class="junction j-pe"><b>PE</b><button class="terminal" data-id="jPE1" aria-label="Conector tierra 1"></button><button class="terminal" data-id="jPE2" aria-label="Conector tierra 2"></button><button class="terminal" data-id="jPE3" aria-label="Conector tierra 3"></button><button class="terminal" data-id="jPE4" aria-label="Conector tierra 4"></button></div>
+      </div>
+
+      <div class="conduit" aria-hidden="true"><i></i><i></i><i></i></div>
+
+      <div class="rect-box" aria-hidden="true"><div class="rect-glass"></div></div>
+      <div class="double-module" aria-label="Módulo de dos tomacorrientes">
+        <div id="socket1" class="socket socket1"><span class="hole a"></span><span class="hole b"></span><span class="hole g"></span><em>1</em></div>
+        <div id="socket2" class="socket socket2"><span class="hole a"></span><span class="hole b"></span><span class="hole g"></span><em>2</em></div>
+        <button class="terminal t1-l" data-id="t1L" aria-label="Fase toma 1"></button><button class="terminal t1-n" data-id="t1N" aria-label="Neutro toma 1"></button><button class="terminal t1-pe" data-id="t1PE" aria-label="Tierra toma 1"></button>
+        <button class="terminal t2-l" data-id="t2L" aria-label="Fase toma 2"></button><button class="terminal t2-n" data-id="t2N" aria-label="Neutro toma 2"></button><button class="terminal t2-pe" data-id="t2PE" aria-label="Tierra toma 2"></button>
+        <span class="mark m1l">L</span><span class="mark m1n">N</span><span class="mark m1pe">PE</span><span class="mark m2l">L</span><span class="mark m2n">N</span><span class="mark m2pe">PE</span>
+      </div>
+
+      <div class="rod" aria-label="Jabalina de puesta a tierra"><span>PE</span><i class="soil"></i><i class="metal"></i><i class="clamp"></i><button class="terminal" data-id="rodPE" aria-label="Borne de jabalina"></button></div>
+
+      <div id="motor" class="motor" aria-label="Motor transparente de prueba">
+        <div class="motor-shell"><span class="stator"></span><span class="rotor"></span><span class="shaft"></span><span class="fan"><i></i></span></div>
+        <span class="plug" aria-label="Ficha móvil del motor"></span><span class="motor-note">ARRASTRA LA FICHA A UN TOMA</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="toolbar">
+    <div id="hint" class="hint"><strong>Circuito incompleto:</strong> crea las derivaciones dentro de la caja octogonal.</div>
+    <div class="actions"><button id="sound" aria-pressed="true">🔊 Sonidos</button><button id="unplug" disabled>⏏ Desenchufar motor</button><button id="undo" disabled>↶ Quitar último</button><button id="reset">↻ Reiniciar</button></div>
+  </div>
+</main>
+<script src="circuito-ca-toma-doble.js"></script>
+<script src="autor.js"></script></body>
+</html>
