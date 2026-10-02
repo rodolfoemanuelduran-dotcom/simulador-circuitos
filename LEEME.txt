@@ -1,0 +1,90 @@
+SIMULADORES DE CIRCUITOS ELECTRICOS
+===================================
+
+Escuela Técnica Crucero ARA General Belgrano
+Escuela Técnica N.º 1 de Bella Vista
+Autor: ver archivos/autor.js
+
+CONTENIDO (27 practicas, todas en archivos/circuito-redes.html)
+- Circuitos basicos: circuito simple, serie y paralelo de tres lamparas,
+  llave doble, llave triple y llaves de combinacion (conmutadores).
+- En serie: dos y cuatro lamparas, tres resistores, divisor de tension.
+- En paralelo: dos y cuatro lamparas, tres resistores.
+- Mixtos: L1 + (L2 || L3), (L1 + L2) || L3, resistores, pares de lamparas,
+  llaves generales y de rama.
+- Corriente alterna: circuito 1P y T, circuito 2P y T, tomacorriente doble
+  con caja octogonal (fase, neutro, tierra, motor y jabalina).
+- Corriente alterna, origen: '¿De donde viene la corriente electrica?' (mapa del
+  recorrido del rio al tomacorriente: archivos/energia.html).
+- Corriente alterna, casas: croquis de dos plantas 'Escalera y pasillo con
+  combinacion' en 4 pasos: ubicar puntos, trazar circuitos IUG/TUG, cablear la
+  escalera y cablear el pasillo (archivos/casa.html y casas-datos.js).
+- Proteccion: LED con resistor limitador y fusible de 2,5 A.
+- Busca la falla: componente quemado en serie, paralelo y mixto.
+
+PARA ABRIR EN ESTA PC
+Haga doble clic en 'Abrir simulador.bat' (no necesita internet ni servidor).
+
+PANTALLA PRINCIPAL
+Cuatro opciones: Corriente continua, Corriente alterna, Mando de motores
+(en construccion) y Datos curiosos sobre la electricidad. Cada una abre su lista.
+
+DATOS CURIOSOS (archivos/datos.html + datos-escenas.js y datos-escenas2.js)
+20 demostraciones interactivas: pajaro en el cable, poste bajo la lluvia, pies
+aislados, camino de la corriente, tension vs corriente, bateria vs enchufe,
+corazon, neutro, CC vs CA, tierra, diferencial, termica, calor en cables,
+banadera, incendio electrico, tension de paso, rayo, alta tension, trifasica y
+transformador. Los valores son orientativos y con fines didacticos.
+
+MANDO DE MOTORES - COMPONENTES (archivos/componente.html + comp-contactor.js)
+Visor del CONTACTOR: vistas frontal, lateral, superior, trasera e interior (corte),
+capas (carcasa, tapa, bornes, bobina, nucleo, contactos, resortes, auxiliares) con
+regulador de transparencia, lupa, camara lenta, simbolo IEC, energizar la bobina,
+fallas (bobina abierta, tension baja, contactos quemados, contactos pegados),
+paso a paso guiado, ejemplos de uso y 6 ejercicios. Cada componente nuevo se agrega
+como un archivo comp-<nombre>.js. Ya estan: contactor, rele termico, guardamotor,
+pulsadores y selectoras, temporizador y rele auxiliar.
+
+MANDO DE MOTORES - CIRCUITOS (archivos/mando.html + mando-circuitos.js)
+Cuatro circuitos trifasicos con un solucionador de redes (se accionan los pulsadores
+en el esquema): arranque directo, marcha-parada con retencion, inversion de giro con
+enclavamiento y estrella-triangulo. Cada uno tiene: guia paso a paso con preguntas de
+prediccion, narracion en vivo del camino de la corriente, mediciones (corriente,
+rpm, conexion, tension por bobinado), fallas (falta de fase, enclavamiento anulado),
+sobrecarga/cortocircuito/rotor trabado, piezas explicadas y ejercicios.
+Para agregar uno: definir un objeto en mando-circuitos.js (items, parts, pasos, ejercicios).
+
+CASAS (archivos/casa.html + casas-datos.js)
+Dormitorio, cocina, living-comedor y escalera: se ubican los puntos segun los
+muebles, se trazan los circuitos IUG/TUG, se eligen cable y termica y se cablea.
+Los valores de proteccion (1,5 mm2 + 10 A y 2,5 mm2 + 16 A) se editan en
+casas-datos.js (PROT).
+Botones superiores: fondo claro/oscuro, modo pizarra (Aa: letras y trazos
+mas grandes para proyector) y pantalla completa.
+
+COMO SE USA
+Abra MENU-CIRCUITOS.html y elija un tema y una practica. Conectar cables:
+  * Arrastre con el dedo desde un borne hasta otro, o
+  * toque un borne (se marca en amarillo) y despues toque el otro.
+Toque un cable para seleccionarlo y use el tacho para quitarlo. Toque una
+llave para abrirla o cerrarla. Toque cualquier componente para medir su
+tension y corriente con el multimetro. Arrastre la ficha del motor hasta un
+tomacorriente para enchufarlo.
+
+CELULAR
+Use el celular en posicion horizontal. El menu del celular se publica en
+internet (GitHub Pages) y funciona sin conexion una vez abierto.
+
+PARA AGREGAR O MODIFICAR CIRCUITOS
+Circuitos de cableado: archivos/redes-datos.js (tension nominal 220 V). Casas y
+lista de origen: archivos/casas-datos.js. Mando de motores:
+archivos/mando-datos.js (lista planificada). Todo se define en archivos/redes-datos.js (componentes, ubicacion y
+solucion). El motor de calculo esta en archivos/circuito-redes.html.
+La carpeta anteriores/ guarda las pantallas de la primera version.
+
+PRUEBAS (solo desarrollo)
+pruebas.js contiene pruebas automaticas de toques y de orden de la mesa.
+
+SEGURIDAD
+Estas aplicaciones son simulaciones didacticas. No reemplazan la formacion,
+las mediciones ni los procedimientos de un profesional electricista.

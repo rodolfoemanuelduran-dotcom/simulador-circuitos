@@ -1,0 +1,329 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Circuitos de mando</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;--badbg:#42202a;--badtx:#ffd1d1;--stg1:#13243a;--stg2:#08111d;--ink:#e9f1fa;--sel:#1d4d63;--dead:#5b6b7e;--coilon:#8a5a14}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#fff;--okbg:#e1f5ea;--oktx:#0b4a2b;--warnbg:#fff1cc;--warntx:#6b4a00;--badbg:#fde4e4;--badtx:#7a1212;--stg1:#fbfdff;--stg2:#dbe5f0;--ink:#14253a;--sel:#cfe8f3;--dead:#8a99ab;--coilon:#f3c97a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--tx);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;touch-action:manipulation;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{font:inherit;color:inherit}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:var(--hdr);border-bottom:1px solid var(--line)}
+.ttl{min-width:0;flex:1 1 auto}.ttl h1{margin:0;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttl small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+.top .autor-badge{margin-left:6px}
+.work{flex:1 1 auto;min-height:0;display:flex}
+.stage{position:relative;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 30%,var(--stg1),var(--stg2))}
+#st{flex:1 1 auto;min-height:0;width:100%;user-select:none;-webkit-user-select:none;touch-action:none}
+.bar{flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:6px 8px}
+.chip{padding:6px 11px;border:2px solid var(--line);border-radius:999px;background:var(--p);cursor:pointer;font-weight:700;font-size:.78rem}.chip[aria-pressed=true]{border-color:var(--bl);background:var(--sel)}
+.hint{flex:1 1 220px;padding:6px 10px;border-radius:10px;border:2px solid var(--yl);background:color-mix(in srgb,var(--p) 92%,transparent);font-weight:700;font-size:.82rem}.hint[hidden]{display:none}.hint.done{border-color:var(--gr)}
+#info{position:absolute;right:10px;top:10px;max-width:min(340px,60%);padding:9px 12px;border-radius:12px;background:color-mix(in srgb,var(--p) 95%,transparent);border:2px solid var(--bl);font-size:.8rem;box-shadow:0 6px 20px #0006}#info[hidden]{display:none}#info b{color:var(--bl)}#info button{float:right;border:0;background:none;cursor:pointer;font-size:1rem;margin:-4px -4px 0 6px}
+.panel{flex:0 0 400px;overflow:auto;padding:0 0 12px;background:var(--p);border-left:1px solid var(--line);font-size:.82rem}.panel.closed{display:none}
+.tabs{position:sticky;top:0;z-index:2;display:flex;gap:2px;padding:6px 8px 0;background:var(--p);border-bottom:1px solid var(--line)}.tabs button{flex:1;padding:7px 2px;border:0;border-bottom:3px solid transparent;background:none;cursor:pointer;font-weight:700;font-size:.72rem;color:var(--mu)}.tabs button[aria-selected=true]{color:var(--tx);border-bottom-color:var(--bl)}
+.pb{padding:10px 14px}
+.panel h2{margin:0 0 6px;font-size:1.02rem;line-height:1.25}.panel h3{margin:12px 0 5px;font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.sw{display:flex;align-items:center;gap:9px;width:100%;padding:7px 10px;margin-bottom:5px;border:2px solid var(--line);border-radius:10px;background:var(--p2);cursor:pointer;font-weight:700;text-align:left}.sw i{flex:0 0 38px;height:20px;border-radius:12px;background:#33465c;position:relative;transition:.15s}.sw i:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#cfd8e3;transition:.15s}.sw[aria-pressed=true]{border-color:var(--rd)}.sw[aria-pressed=true] i{background:#c0392b}.sw[aria-pressed=true] i:after{left:21px;background:#fff}.sw small{display:block;font-weight:500;color:var(--mu);font-size:.7rem}
+input[type=range]{width:100%;accent-color:var(--bl);height:28px}.sv{float:right;font:700 .85rem ui-monospace,Consolas,monospace;color:var(--bl)}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rd{padding:7px 9px;border-radius:9px;background:var(--p2);border:1px solid var(--line)}.rd small{display:block;color:var(--mu);font-size:.62rem;font-weight:700;letter-spacing:.04em}.rd b{font:700 .95rem ui-monospace,Consolas,monospace}.rd.on b{color:var(--gr)}.rd.bad b{color:var(--rd)}
+.vd{margin-top:9px;padding:9px 11px;border-radius:10px;border:2px solid var(--line);font-weight:700}.vd.ok{background:var(--okbg);border-color:var(--gr);color:var(--oktx)}.vd.warn{background:var(--warnbg);border-color:var(--yl);color:var(--warntx)}.vd.bad{background:var(--badbg);border-color:var(--rd);color:var(--badtx)}
+.panel p{margin:5px 0}.btn{padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--p2);cursor:pointer;font-weight:700;font-size:.78rem}.btn.pri{background:#1d4d63;border-color:var(--bl);color:#fff}.btn[disabled]{opacity:.4;cursor:default}
+.row{display:flex;gap:6px;margin-top:10px}.row .btn{flex:1}
+.card{padding:9px 11px;margin-bottom:8px;border-radius:10px;background:var(--p2);border-left:4px solid var(--bl)}.card>b:first-child{display:block;margin-bottom:2px}.card.live{border-left-color:var(--yl)}
+.steps{list-style:none;margin:0 0 6px;padding:0}.steps li{display:flex;gap:8px;padding:5px 6px;border-radius:8px;color:var(--mu);cursor:pointer}.steps li i{flex:0 0 22px;height:22px;border-radius:50%;background:var(--p2);border:1px solid var(--line);font-style:normal;text-align:center;font-weight:800;font-size:.72rem;line-height:20px}.steps li.on{background:var(--sel);color:var(--tx)}.steps li.on i{background:var(--bl);color:#04202c;border-color:var(--bl)}.steps li.done i{background:var(--gr);color:#04301c;border-color:var(--gr)}
+.q{margin:8px 0}.q button.o{display:block;width:100%;margin:5px 0;padding:9px 10px;text-align:left;border:2px solid var(--line);border-radius:10px;background:var(--p2);cursor:pointer;font-weight:600}.q button.o.ok{border-color:var(--gr);background:var(--okbg)}.q button.o.no{border-color:var(--rd);background:var(--badbg)}
+.path{font:600 .78rem ui-monospace,Consolas,monospace;color:var(--yl);line-height:1.7}
+.note{color:var(--mu);font-size:.7rem;margin-top:12px}
+.flowd{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-dasharray:2 12;animation:fl .5s linear infinite}@keyframes fl{to{stroke-dashoffset:-14}}
+.hl{filter:drop-shadow(0 0 7px #ffd65a) drop-shadow(0 0 3px #ffd65a);animation:hlp .9s ease-in-out infinite alternate}@keyframes hlp{from{opacity:.75}to{opacity:1}}
+.pulse{animation:pu 1s ease-in-out infinite}@keyframes pu{50%{opacity:.35}}
+[data-id]{cursor:pointer}[data-act]{cursor:pointer}
+.lab{fill:var(--ink);font:700 14px system-ui,sans-serif}.lab.c{text-anchor:middle}.lab.r{text-anchor:end}.lab.s{font-size:11.5px;font-weight:600;opacity:.9}.lab.t{font-size:16px}
+.pizarra .ttl h1{font-size:1.4rem}.pizarra .ttl small{font-size:.9rem}.pizarra header.top{min-height:62px}.pizarra .tools button{width:48px;height:48px;font-size:1.25rem}.pizarra .panel{flex-basis:450px;font-size:1.05rem}.pizarra .chip{font-size:1rem;padding:8px 14px}.pizarra .hint{font-size:1.05rem}.pizarra .lab{font-size:17px}.pizarra .lab.s{font-size:14px}.pizarra #info{font-size:1.05rem}
+@media (max-width:950px){.panel{position:absolute;z-index:6;right:0;top:0;bottom:0;width:min(400px,76%);box-shadow:-8px 0 24px #000a;flex:none}.panel.closed{display:block;transform:translateX(105%);visibility:hidden}.work{position:relative}}
+@media (max-height:520px){header.top{min-height:34px;padding-top:2px;padding-bottom:2px}.ttl h1{font-size:.8rem}.ttl small{display:none}.tools button{width:30px;height:30px}.top .autor-badge{padding:3px 8px;font-size:.62rem}.chip{padding:4px 8px;font-size:.7rem}}
+@media (max-width:700px) and (orientation:portrait){body:after{content:"Gira el teléfono para ver el circuito en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,sans-serif}}
+@media (prefers-reduced-motion:reduce){.flowd,.hl,.pulse{animation:none}}
+</style></head><body>
+<header class="top">
+ <div class="ttl"><h1 id="title">Circuito de mando</h1><small id="sub"></small></div>
+ <div class="tools">
+  <button id="bPanel" title="Mostrar u ocultar el panel" aria-label="Panel" aria-pressed="true">☰</button>
+  <button id="bSound" title="Sonidos" aria-label="Sonidos" aria-pressed="true">🔊</button>
+  <button id="bTheme" class="solo" title="Fondo claro u oscuro" aria-label="Cambiar tema">◐</button>
+  <button id="bProj" class="solo" title="Modo pizarra" aria-label="Modo pizarra" aria-pressed="false"><b>Aa</b></button>
+  <button id="bFull" class="solo" title="Pantalla completa" aria-label="Pantalla completa">⛶</button>
+ </div>
+</header>
+<div class="work">
+ <section class="stage">
+  <svg id="st" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Esquema eléctrico"></svg>
+  <div id="info" hidden></div>
+  <div class="bar" id="bar"></div>
+ </section>
+ <aside id="panel" class="panel"></aside>
+</div>
+<script>window.CIRCUITOS={};</script>
+<script src="mando-circuitos.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),svg=$('#st'),CS=window.CIRCUITOS;
+const params=new URLSearchParams(location.search),cid=CS[params.get('c')]?params.get('c'):Object.keys(CS)[0],CK=CS[cid];
+const fm=(n,k)=>Number(n).toFixed(k).replace('.',',');
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+const COL={F:'#c8703d',N:'#58b8e8',R:'#b5733e',S:'#9aa5b1',T:'#ee5a4d'};
+/* ------------------------------------------------------------------ estado */
+const IT={};CK.items.forEach(i=>{IT[i.id||('_'+Math.random())]=i});
+let tab='guia',sel=null,t=0,guided=CK.pasos.length?0:null,stepDone=[],predAns={},qi=0,score=0,answered=null;
+let S;
+function nuevo(){S={btn:{},sel:{},arm:{},coil:{},lamp:{},kt:{tm:0,out:false},q:{on:true,trip:'',h:0},th:{trip:false,h:0},fus:{blown:false},
+ w:0,I:0,Iph:[0,0,0],mode:'parado',dir:1,short:false,carga:'n',vel:2,T:CK.T||6,fault:{},ev:[],msg:''};
+ (CK.coils||[]).forEach(n=>{S.arm[n]=0;S.coil[n]=false});
+ (CK.init||(()=>{}))(S)}
+nuevo();
+/* ------------------------------------------------------------------ sonido */
+let soundOn=true,actx=null,nbuf=null;
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
+function tone(fq,d,ty,v,dl,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+(dl||0);o.type=ty||'sine';o.frequency.setValueAtTime(fq,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v||.05,s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.03)}
+function noise(d,v,dl,fq,q){const a=audio();if(!a)return;if(!nbuf){nbuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nbuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nbuf;fl.type='bandpass';fl.frequency.value=fq||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
+const SND={click(){tone(560,.05,'triangle',.04);noise(.03,.03,0,2500,3)},clack(){noise(.09,.2,0,900,1.2);tone(150,.12,'square',.06,0,70);tone(2300,.04,'square',.02)},tac(){noise(.06,.1,0,1800,1.5);tone(260,.06,'square',.035,0,120)},zap(){noise(.35,.12,0,4000,.7);tone(120,.3,'sawtooth',.06,0,60)},ok(){tone(660,.12,'sine',.05);tone(880,.2,'sine',.045,.09)},no(){tone(260,.18,'triangle',.06);tone(210,.22,'triangle',.05,.1)},warn(){tone(300,.2,'triangle',.05)}};
+const play=n=>{try{SND[n]&&SND[n]()}catch{}};
+/* ------------------------------------------------------------------ geometría */
+const H0={cont:64,coil:50,lamp:48,fuse:52,heater:48};
+function dims(i){return i.h||H0[i.t]||64}
+function terms(i){const x=i.x,y=i.y,h=dims(i);
+ if(i.t==='src')return[[i.n,x,y]];
+ if(i.t==='m3')return[[i.n[0],x-30,y],[i.n[1],x,y],[i.n[2],x+30,y]];
+ if(i.t==='m6')return[[i.n[0],x-40,y],[i.n[1],x,y],[i.n[2],x+40,y],[i.n[3],x-40,y+110],[i.n[4],x,y+110],[i.n[5],x+40,y+110]];
+ if(i.t==='bus')return[];
+ return[[i.n1,x,y],[i.n2,x,y+h]]}
+/* ------------------------------------------------------------------ solver */
+function closedItem(i){
+ if(i.t==='fuse')return!S.fus.blown;
+ if(i.t==='heater')return true;
+ if(i.t!=='cont')return false;
+ if(i.inter&&S.fault.sinEnclav)return true;
+ if(i.fase&&S.fault.fase)return false;
+ const [k,n]=(i.ctl||'').split(':');let act=false;
+ if(k==='coil')act=S.arm[n]>.5||(S.fault.peg&&i.peg&&S.pegado);
+ else if(k==='btn')act=!!S.btn[n];
+ else if(k==='sel')act=!!S.sel[n];
+ else if(k==='kt')act=S.kt.out;
+ else if(k==='q')act=S.q.on&&!S.q.trip;
+ else if(k==='qt')act=!!S.q.trip;
+ else if(k==='th')act=S.th.trip;
+ return i.form==='NC'?!act:act}
+function UF(){const p={};const f=a=>{if(p[a]===undefined)p[a]=a;while(p[a]!==a){p[a]=p[p[a]];a=p[a]}return a};return{f,u:(a,b)=>{p[f(a)]=f(b)}}}
+function solve(){const uf=UF();CK.items.forEach(i=>{terms(i).forEach(x=>uf.f(x[0]))});
+ const edges=[];CK.items.forEach(i=>{if(closedItem(i)){uf.u(i.n1,i.n2);edges.push(i)}});
+ S.uf=uf;S.edges=edges;
+ const rF=uf.f('F'),rN=uf.f('N');S.shortCtl=rF===rN;
+ CK.items.forEach(i=>{if(i.t==='coil'||i.t==='lamp'){const a=uf.f(i.n1),b=uf.f(i.n2);const en=!S.shortCtl&&((a===rF&&b===rN)||(a===rN&&b===rF));if(i.t==='coil')S.coil[i.id]=en;else S.lamp[i.id]=en}});
+ /* potencia */
+ const ph={R:uf.f('R'),S:uf.f('S'),T:uf.f('T')};S.phr=ph;
+ S.short=(ph.R===ph.S||ph.S===ph.T||ph.R===ph.T)||S.carga==='cc'&&false;
+ const phase=n=>{const r=uf.f(n);return r===ph.R?'R':r===ph.S?'S':r===ph.T?'T':null};
+ const M=CK.items.find(i=>i.t==='m3'||i.t==='m6');let mode='parado',dir=1,pw=[0,0,0];
+ if(M&&!S.short){const idx={R:0,S:1,T:2};
+  if(M.t==='m3'){const p=M.n.map(phase);const set=new Set(p.filter(Boolean));if(set.size===3){mode='directo';dir=perm(p.map(a=>idx[a]))}else if(set.size===2){mode='mono';p.forEach(a=>{if(a)pw[idx[a]]=1})}}
+  else{const n=M.n,p=n.map(phase),roots=n.map(a=>uf.f(a));const cnt={};roots.forEach(r=>cnt[r]=(cnt[r]||0)+1);
+   const starRoot=n.find((a,i)=>!p[i]&&cnt[roots[i]]>=3);const sr=starRoot?uf.f(starRoot):null;
+   const U1=p[0],V1=p[1],W1=p[2];
+   const star=U1&&V1&&W1&&new Set([U1,V1,W1]).size===3&&sr&&roots[3]===sr&&roots[4]===sr&&roots[5]===sr;
+   const delta=p.every(Boolean)&&new Set([U1,V1,W1]).size===3&&p[0]!==p[4]&&p[1]!==p[5]&&p[2]!==p[3]&&p[0]===p[3]&&p[1]===p[4]&&p[2]===p[5];
+   if(star){mode='estrella';dir=perm([U1,V1,W1].map(a=>idx[a]))}
+   else if(delta){mode='triangulo';dir=perm([U1,V1,W1].map(a=>idx[a]))}
+   else if(p.slice(0,3).some(Boolean)&&(p.slice(0,3).filter(Boolean).length<3)){mode='mono';p.forEach(a=>{if(a)pw[idx[a]]=1})}}
+  if(S.carga==='cc'&&mode!=='parado')S.short=true}
+ S.mode=mode;S.dir=dir;S.pw=pw}
+function perm(a){const inv=(a[0]>a[1])+(a[0]>a[2])+(a[1]>a[2]);return inv%2===0?1:-1}
+/* camino de la corriente (para la narración y el flujo) */
+function adj(){const A={};S.edges.forEach(e=>{const a=S.uf.f(e.n1);(A[e.n1]=A[e.n1]||[]).push([e.n2,e]);(A[e.n2]=A[e.n2]||[]).push([e.n1,e])});return A}
+function bfs(A,from,goal){const q=[from],par={[from]:null};while(q.length){const u=q.shift();if(u===goal)break;(A[u]||[]).forEach(([v,e])=>{if(!(v in par)){par[v]=[u,e];q.push(v)}})}if(!(goal in par))return null;const path=[],nodes=[goal];let c=goal;while(par[c]){path.unshift(par[c][1]);c=par[c][0];nodes.push(c)}return{path,nodes}}
+function flows(){const A=adj(),fi=new Set(),fn=new Set(),paths=[];
+ CK.items.forEach(i=>{if((i.t==='coil'&&S.coil[i.id])||(i.t==='lamp'&&S.lamp[i.id])){let a=i.n1,b=i.n2;if(S.uf.f(a)!==S.uf.f('F')){[a,b]=[b,a]}
+  const p1=bfs(A,'F',a),p2=bfs(A,b,'N');if(p1&&p2){p1.path.concat(p2.path).forEach(e=>fi.add(e.id));p1.nodes.concat(p2.nodes).forEach(n=>fn.add(n));paths.push({load:i,p1:p1.path,p2:p2.path})}}});
+ if(S.I>0.05&&!S.short){['R','S','T'].forEach(ph=>{CK.items.filter(i=>i.t==='m3'||i.t==='m6').forEach(M=>{M.n.slice(0,3).forEach(n=>{const r=bfs(A,ph,n);if(r){r.nodes.forEach(x=>fn.add(x));r.path.forEach(e=>fi.add(e.id))}})})});
+  if(S.mode==='estrella')CK.items.filter(i=>i.t==='m6').forEach(M=>M.n.slice(3).forEach(n=>fn.add(n)))}
+ S.flowItems=fi;S.flowNodes=fn;S.paths=paths}
+/* ------------------------------------------------------------------ dinámica */
+function paso(dt){const ev=[];dt=Math.min(dt,.05)*S.vel;
+ /* guardamotor / térmico / fusible */
+ const In=CK.In||3.6,Ir=CK.Ir||3.6;
+ /* armaduras */
+ (CK.coils||[]).forEach(n=>{const tgt=S.coil[n]?1:0,old=S.arm[n];S.arm[n]+=(tgt-old)*Math.min(1,dt*(tgt?14:5));if(old<=.5&&S.arm[n]>.5)ev.push('clack');if(old>.5&&S.arm[n]<=.5)ev.push('tac');if(S.fault.peg&&n==='KM1'&&S.arm[n]>.5)S.pegado=true;if(!S.fault.peg)S.pegado=false});
+ if(S.fault.peg&&S.pegado)S.arm.KM1=Math.max(S.arm.KM1,.6);
+ /* temporizador */
+ const kt=CK.items.find(i=>i.t==='coil'&&i.id==='KT1');if(kt){if(S.coil.KT1){S.kt.tm+=dt;if(!S.kt.out&&S.kt.tm>=S.T){S.kt.out=true;ev.push('tac')}}else{S.kt.tm=0;if(S.kt.out){S.kt.out=false;ev.push('tac')}}}
+ /* motor */
+ const mode=S.mode;let tw=0,tau=1.6;
+ if(mode==='directo'||mode==='triangulo'){tw=S.carga==='b'?0:S.carga==='s'?.97:1;tau=mode==='triangulo'?1.8:1.6}
+ else if(mode==='estrella'){tw=S.carga==='b'?0:.86;tau=3}
+ else if(mode==='mono'){tw=.05;tau=2}
+ else{tw=0;tau=4}
+ if(S.carga==='b'&&mode!=='parado')tw=0;
+ S.w+=(tw-S.w)*Math.min(1,dt/tau);if(Math.abs(tw-S.w)<.002)S.w=tw;
+ let I=0;const run=mode!=='parado'&&!S.short;
+ if(run){const base=In*(1+5*Math.pow(1-S.w,2))*(S.carga==='s'?1.5:1);I=mode==='estrella'?base/3:base;if(mode==='mono')I=In*(S.w<.3?5:2.6)}
+ if(S.short)I=In*15;
+ S.I=I;const f=mode==='mono'?1.73:1;S.Iph=S.pw.map((p,i)=>mode==='mono'?(p?I:0):(run||S.short?I:0));
+ if(mode==='estrella'||mode==='directo'||mode==='triangulo')S.Iph=[I,I,I];
+ /* protecciones */
+ const q=I/Ir;
+ if(CK.prot.q&&S.q.on&&!S.q.trip){if(S.short||I>=13*Ir){S.q.trip='mag';ev.push('zap')}else{const kf=S.w>.95?25:1,tg=Math.max(...S.Iph.map(a=>a/Ir))**2;S.q.h+=((tg)-S.q.h)*dt*kf/180;if(S.q.h>=1.25&&tg>1.25){S.q.trip='term';ev.push('clack')}}}
+ if(CK.prot.q&&(S.q.trip!==''||!S.q.on||I<.1)&&S.q.h>0)S.q.h=Math.max(0,S.q.h-dt/20);
+ if(CK.prot.th&&!S.th.trip){const kf=S.w>.95?25:1,tg=Math.max(...S.Iph.map(a=>a/Ir))**2;S.th.h+=((tg)-S.th.h)*dt*kf/180;if(S.th.h>=1.25&&tg>1.25){S.th.trip=true;ev.push('clack')}}
+ else if(CK.prot.th&&S.th.h>0&&I<.1)S.th.h=Math.max(0,S.th.h-dt/15);
+ if(CK.prot.fus&&!S.fus.blown&&(S.short||I>=12*In)&&S.I>=12*In){S.fus.blown=true;ev.push('zap')}
+ S.ev=ev}
+/* ------------------------------------------------------------------ dibujo */
+function nodeColor(n){const r=S.uf.f(n);for(const k of ['F','N','R','S','T'])if(S.uf.f(k)===r)return COL[k];return null}
+const hlSet=()=>{const h=new Set();if(guided!==null&&CK.pasos[guided])(CK.pasos[guided].hl||[]).forEach(x=>h.add(x));if(sel)h.add(sel);return h};
+function wires(){const nodes={};CK.items.forEach(i=>{terms(i).forEach(([n,x,y])=>{(nodes[n]=nodes[n]||[]).push([x,y])})});
+ const buses={};CK.items.filter(i=>i.t==='bus').forEach(b=>buses[b.n]=b);
+ let s='';
+ Object.keys(nodes).forEach(n=>{const T=nodes[n];const bus=buses[n];const c=nodeColor(n),flow=S.flowNodes.has(n),col=c||'var(--dead)';
+  let d='',dots='';
+  if(bus){let x1=bus.x1,x2=bus.x2;d+=`M${x1} ${bus.y}H${x2}`;T.forEach(([x,y])=>{d+=`M${x} ${y}V${bus.y}`})}
+  else if(T.length>=2){const xs=T.map(a=>a[0]),ys=T.map(a=>a[1]);
+   if(Math.max(...xs)-Math.min(...xs)<1){d+=`M${xs[0]} ${Math.min(...ys)}V${Math.max(...ys)}`}
+   else{const jy=(CK.nodes&&CK.nodes[n]&&CK.nodes[n].jy)||Math.round(ys.reduce((a,b)=>a+b,0)/ys.length);d+=`M${Math.min(...xs)} ${jy}H${Math.max(...xs)}`;T.forEach(([x,y])=>{d+=`M${x} ${y}V${jy}`});if(T.length>=3)T.forEach(([x])=>{dots+=`<circle cx="${x}" cy="${jy}" r="3.6" fill="${col}"/>`})}}
+  if(d){s+=`<path d="${d}" fill="none" stroke="${col}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" ${c?'':'opacity=".7"'}/>${dots}`;if(flow)s+=`<path class="flowd" d="${d}" pointer-events="none"/>`}});
+ return s}
+const hl=(id,hs)=>hs.has(id)?' class="hl"':'';
+function sw(i,hs){const x=i.x,y=i.y,h=dims(i),cl_=closedItem(i),op=i.op;
+ const y1=y+14,y2=y+h-14,ym=(y1+y2)/2,flow=S.flowItems.has(i.id);
+ let b=`<path d="M${x} ${y}V${y1}M${x} ${y2}V${y+h}" stroke="var(--dead)" stroke-width="3.6" opacity="0"/>`;
+ const act=op?(i.form==='NC'?!cl_:cl_):((i.form==='NC')?!cl_:cl_);
+ const ang=cl_?0:24;
+ if(i.form==='NC'){b+=`<path d="M${x} ${y2}L${x-(cl_?0:ang)} ${y1+4}" stroke="${flow?'#ffd65a':'var(--ink)'}" stroke-width="4.6" stroke-linecap="round"/><path d="M${x-9} ${y1+9}H${x+9}" stroke="var(--ink)" stroke-width="3"/>`}
+ else b+=`<path d="M${x} ${y2}L${x-ang} ${y1+4}" stroke="${flow?'#ffd65a':'var(--ink)'}" stroke-width="4.6" stroke-linecap="round"/>`;
+ b+=`<circle cx="${x}" cy="${y1}" r="4.4" fill="var(--ink)"/><circle cx="${x}" cy="${y2}" r="4.4" fill="var(--ink)"/>`;
+ if(i.deco==='q')b+=`<path d="M${x-8} ${ym-8}l16 16M${x+8} ${ym-8}l-16 16" stroke="var(--ink)" stroke-width="3"/>`;
+ if(op==='btn'){b+=`<path d="M${x} ${ym}H${x+30}" stroke="var(--ink)" stroke-width="2.6" stroke-dasharray="5 4"/><path d="M${x+30} ${ym-12}V${ym+12}M${x+22} ${ym-12}h16" stroke="var(--ink)" stroke-width="3.6" transform="translate(${S.btn[i.ctl.split(':')[1]]?-8:0} 0)"/>`}
+ if(op==='sel'){b+=`<path d="M${x} ${ym}H${x+24}" stroke="var(--ink)" stroke-width="2.6" stroke-dasharray="5 4"/><path d="M${x+24} ${ym-10}V${ym+10}" stroke="var(--ink)" stroke-width="3.6"/><circle cx="${x+24}" cy="${S.sel[i.ctl.split(':')[1]]?ym+10:ym-10}" r="6" fill="var(--ink)"/>`}
+ const num=i.term?`<text x="${x+10}" y="${y+11}" class="lab s">${i.term[0]}</text><text x="${x+10}" y="${y+h-3}" class="lab s">${i.term[1]}</text>`:'';
+ const lab=i.lab?`<text x="${x-12}" y="${ym+4}" class="lab r">${i.lab}</text>`:'';
+ const hit=op?`<rect x="${x-34}" y="${y-4}" width="90" height="${h+8}" fill="transparent" data-act="${op}" data-n="${i.ctl.split(':')[1]}"/>`:'';
+ return`<g data-id="${i.id}"${hl(i.id,hs).replace('class="hl"',`class="hl"`)}>${b}${num}${lab}${hit}</g>`}
+function drawItem(i,hs){const x=i.x,y=i.y,h=dims(i);let s='';
+ if(i.t==='src')return`<g data-id="${i.id||''}"><circle cx="${x}" cy="${y}" r="4.5" fill="${COL[i.n]}"/><text x="${x}" y="${y-10}" class="lab c">${i.lab||i.n}</text></g>`;
+ if(i.t==='bus')return`<text x="${i.x1-8}" y="${i.y+5}" class="lab r">${i.lab||i.n}</text>`;
+ if(i.t==='cont')return sw(i,hs);
+ if(i.t==='coil'){const en=S.coil[i.id],ym=y+h/2;return`<g data-id="${i.id}"${hl(i.id,hs)}><path d="M${x} ${y}V${y+8}M${x} ${y+h-8}V${y+h}" stroke="var(--ink)" stroke-width="3"/><rect x="${x-30}" y="${y+8}" width="60" height="${h-16}" rx="3" fill="${en?'var(--coilon)':'none'}" stroke="var(--ink)" stroke-width="3.6"/>${en?`<rect x="${x-30}" y="${y+8}" width="60" height="${h-16}" rx="3" fill="#ffb347" opacity=".3" filter="url(#fg)"/>`:''}<text x="${x}" y="${ym+5}" class="lab c">${i.lab}</text><text x="${x-34}" y="${y+14}" class="lab s r" style="text-anchor:end">A1</text><text x="${x-34}" y="${y+h-3}" class="lab s r" style="text-anchor:end">A2</text></g>`}
+ if(i.t==='lamp'){const en=S.lamp[i.id],cy=y+h/2,col=i.col||'#ffd65a';return`<g data-id="${i.id}"${hl(i.id,hs)}><path d="M${x} ${y}V${y+h/2-22}M${x} ${y+h/2+22}V${y+h}" stroke="var(--ink)" stroke-width="3"/>${en?`<circle cx="${x}" cy="${cy}" r="34" fill="${col}" opacity=".55" filter="url(#fg)"/>`:''}<circle cx="${x}" cy="${cy}" r="22" fill="${en?col:'none'}" stroke="var(--ink)" stroke-width="3.6"/><path d="M${x-15} ${cy-15}l30 30M${x+15} ${cy-15}l-30 30" stroke="var(--ink)" stroke-width="3.2"/><text x="${x+30}" y="${cy+4}" class="lab">${i.lab}</text></g>`}
+ if(i.t==='heater'){const hot=cl(S.th.h/1.25,0,1);return`<g data-id="${i.id}"${hl(i.id,hs)}><path d="M${x} ${y}V${y+8}M${x} ${y+h-8}V${y+h}" stroke="var(--ink)" stroke-width="3"/><rect x="${x-14}" y="${y+8}" width="28" height="${h-16}" fill="${S.th.h>.3?`rgb(${Math.round(120+130*hot)},${Math.round(60-20*hot)},20)`:'none'}" stroke="var(--ink)" stroke-width="3.2"/><text x="${x-20}" y="${y+h/2+4}" class="lab r">${i.lab||''}</text></g>`}
+ if(i.t==='fuse'){const bl=S.fus.blown;return`<g data-id="${i.id}"${hl(i.id,hs)}><path d="M${x} ${y}V${y+10}M${x} ${y+h-10}V${y+h}" stroke="var(--ink)" stroke-width="3"/><rect x="${x-8}" y="${y+10}" width="16" height="${h-20}" fill="none" stroke="${bl?'var(--rd)':'var(--ink)'}" stroke-width="3.2"/>${bl?`<path d="M${x-8} ${y+h/2-3}l16 6" stroke="var(--rd)" stroke-width="3"/>`:`<path d="M${x} ${y+10}V${y+h-10}" stroke="var(--ink)" stroke-width="2"/>`}<text x="${x-14}" y="${y+h/2+4}" class="lab r">${i.lab||''}</text></g>`}
+ if(i.t==='m3'||i.t==='m6'){const c6=i.t==='m6',cy=y+(c6?55:62),r=c6?62:46,run=S.mode!=='parado'&&!S.short,wn=S.w;
+  let t='';if(c6){[[x-40,y,x,y+110],[x,y,x+40,y+110],[x+40,y,x-40,y+110]].forEach((a,k)=>{t+=`<path d="M${a[0]} ${a[1]+10}L${a[2]} ${a[3]-10}" stroke="${run?['#b5733e','#9aa5b1','#ee5a4d'][k]:'var(--dead)'}" stroke-width="3" opacity=".9"/>`});
+   [['U1',-40,-8],['V1',0,-8],['W1',40,-8]].forEach(a=>t+=`<text x="${x+a[1]}" y="${y+a[2]}" class="lab c s">${a[0]}</text>`);[['W2',-40],['U2',0],['V2',40]].forEach(a=>t+=`<text x="${x+a[1]}" y="${y+126}" class="lab c s">${a[0]}</text>`)}
+  else t+=`<text x="${x-30}" y="${y-8}" class="lab c s">U</text><text x="${x}" y="${y-8}" class="lab c s">V</text><text x="${x+30}" y="${y-8}" class="lab c s">W</text>`;
+  const rot=(t0=>(t0*S.w*S.dir*540)%360)(S._t||0);
+  const rotor=`<g transform="rotate(${rot} ${x} ${cy})" opacity="${.35+.65*cl(S.w*1.2,0,1)}"><path d="M${x} ${cy-r+8}A${r-8} ${r-8} 0 0 1 ${x+r-8} ${cy}" stroke="#ffd65a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M${x} ${cy+r-8}A${r-8} ${r-8} 0 0 1 ${x-r+8} ${cy}" stroke="#ffd65a" stroke-width="5" fill="none" stroke-linecap="round" opacity=".6"/></g>`;
+  return`<g data-id="${i.id}"${hl(i.id,hs)}>${t}<circle cx="${x}" cy="${cy}" r="${r}" fill="${run?'rgba(255,214,90,.10)':'none'}" stroke="var(--ink)" stroke-width="4"/>${rotor}<text x="${x}" y="${cy-(c6?4:2)}" class="lab c t">M</text><text x="${x}" y="${cy+16}" class="lab c s">3 ~</text></g>`}
+ if(i.t==='qh'){const on=S.q.on&&!S.q.trip,tr=!!S.q.trip;return`<g data-id="Q1"${hl('Q1',hs)}><g data-act="qh"><rect x="${i.x-26}" y="${i.y}" width="52" height="${i.h}" rx="8" fill="${tr?'#c0392b':on?'#2a8f61':'#4b5866'}" stroke="var(--ink)" stroke-width="2.6"/><rect x="${i.x-9}" y="${tr?i.y+i.h/2-14:on?i.y+8:i.y+i.h-36}" width="18" height="28" rx="5" fill="#f4f7fa" stroke="#222"/><text x="${i.x}" y="${i.y-8}" class="lab c s">${tr?'TRIP':on?'ON':'OFF'}</text><text x="${i.x}" y="${i.y+i.h+16}" class="lab c">Q1</text></g></g>`}
+ return''}
+function links(){let s='';(CK.links||[]).forEach(l=>{const [k,n]=l.ctl.split(':');const en=k==='coil'?S.arm[n]>.5:k==='kt'?S.kt.out:k==='q'?(S.q.on&&!S.q.trip):false;s+=`<path d="${l.pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join('')}" fill="none" stroke="${en?'#ffb347':'var(--ink)'}" stroke-width="${en?3:2.4}" stroke-dasharray="8 6" opacity="${en?1:.55}"/>`;if(l.lab)s+=`<text x="${l.pts[0][0]}" y="${l.pts[0][1]-8}" class="lab s">${l.lab}</text>`});return s}
+function render(){const hs=hlSet();
+ let s=`<defs><filter id="fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>`;
+ s+=wires()+links();CK.items.forEach(i=>{s+=drawItem(i,hs)});
+ (CK.labels||[]).forEach(l=>{s+=`<text x="${l.x}" y="${l.y}" class="lab ${l.c||''}" pointer-events="none">${l.t}</text>`});
+ if(S.short)s+=`<g pointer-events="none" class="pulse"><rect x="270" y="20" width="460" height="34" rx="8" fill="#c0392b"/><text x="500" y="43" class="lab c" style="fill:#fff">⚡ CORTOCIRCUITO entre fases</text></g>`;
+ svg.innerHTML=s}
+/* ------------------------------------------------------------------ narración */
+const nm=e=>(CK.parts[e.id]&&CK.parts[e.id].n)||e.id;
+function pathText(p){return p.map(e=>{const k=e.ctl?e.ctl.split(':')[0]:'';let st='cerrado';return`<b>${nm(e)}</b> (${st})`}).join(' → ')}
+function narr(){let h='';
+ const act=CK.items.filter(i=>(i.t==='coil'&&S.coil[i.id])||(i.t==='lamp'&&S.lamp[i.id]));
+ if(!act.length)h+=`<div class="card"><b>Circuito de mando</b>Todavía no circula corriente por ninguna bobina ni lámpara: el camino entre F y N está interrumpido en algún contacto abierto.</div>`;
+ S.paths.forEach(p=>{h+=`<div class="card live"><b>Corriente por ${p.load.t==='coil'?'la bobina':'la lámpara'} ${nm(p.load)}</b><div class="path">F → ${p.p1.length?pathText(p.p1)+' → ':''}<b>${nm(p.load)}</b> → ${p.p2.length?pathText(p.p2)+' → ':''}N</div></div>`});
+ (CK.comentario?CK.comentario(S,{nm}):[]).forEach(c=>{h+=`<div class="card"><b>${c[0]}</b>${c[1]}</div>`});
+ return h}
+/* ------------------------------------------------------------------ paneles */
+const TABS=[['guia','Guía'],['vivo','En vivo'],['probar','Probar'],['comp','Piezas'],['ej','Ejercicios']];
+function lecturas(){const modes={parado:'detenido',directo:'directo',estrella:'ESTRELLA (Y)',triangulo:'TRIÁNGULO (Δ)',mono:'sólo 2 fases'};
+ const run=S.mode!=='parado'&&!S.short;
+ const U=S.mode==='estrella'?220:run?380:0;
+ const R=[{l:'CONEXIÓN DEL MOTOR',v:modes[S.mode],on:run},{l:'SENTIDO DE GIRO',v:run||S.w>.05?(S.dir>0?'horario ⟳':'antihorario ⟲'):'—',on:null},{l:'VELOCIDAD',v:Math.round(S.w*1450)+' rpm',on:S.w>.5},{l:'CORRIENTE DE LÍNEA',v:fm(S.I,1)+' A',on:S.I>.1,bad:S.I>1.8*(CK.In||3.6)},{l:'TENSIÓN EN CADA BOBINADO',v:U+' V',on:U>0}];
+ if(CK.prot.q)R.push({l:'GUARDAMOTOR Q1',v:S.q.trip==='mag'?'disparo magnético':S.q.trip==='term'?'disparo térmico':S.q.on?'ON · calor '+Math.round(cl(S.q.h/1.25,0,1)*100)+' %':'OFF',on:S.q.on&&!S.q.trip,bad:!!S.q.trip});
+ if(CK.prot.th)R.push({l:'RELÉ TÉRMICO F2',v:S.th.trip?'DISPARÓ':'calor '+Math.round(cl(S.th.h/1.25,0,1)*100)+' %',on:!S.th.trip,bad:S.th.trip});
+ if(CK.prot.fus)R.push({l:'FUSIBLES F1',v:S.fus.blown?'FUNDIDOS':'sanos',on:!S.fus.blown,bad:S.fus.blown});
+ if(CK.items.some(i=>i.id==='KT1'))R.push({l:'TEMPORIZADOR KT1',v:S.coil.KT1?fm(Math.min(S.kt.tm,S.T),1)+' / '+fm(S.T,0)+' s':'reposo',on:S.kt.out});
+ return R}
+function readsHTML(){return lecturas().map(r=>`<div class="rd ${r.bad?'bad':r.on?'on':''}"><small>${r.l}</small><b>${r.v}</b></div>`).join('')}
+function panel(){const p=$('#panel'),sc=p.scrollTop;let h=`<div class="tabs" role="tablist">${TABS.map(x=>`<button role="tab" data-tab="${x[0]}" aria-selected="${tab===x[0]}">${x[1]}</button>`).join('')}</div><div class="pb">`;
+ if(tab==='guia')h+=pGuia();else if(tab==='vivo')h+=`<h2>Lo que pasa ahora</h2><div id="vivo"></div><h3>Mediciones</h3><div class="reads" id="rd"></div>`;
+ else if(tab==='probar')h+=pProbar();else if(tab==='comp')h+=pComp();else h+=pEj();
+ p.innerHTML=h+'</div>';p.scrollTop=sc;bindPanel()}
+function pGuia(){let h=`<h2>${CK.titulo}</h2><p>${CK.intro}</p>`;
+ if(CK.queEs)h+=`<div class="card"><b>¿Para qué sirve?</b>${CK.queEs}</div>`;
+ h+=`<h3>Guía paso a paso</h3><ol class="steps">${CK.pasos.map((x,i)=>`<li data-g="${i}" class="${i===guided?'on':stepDone[i]?'done':''}"><i>${stepDone[i]&&i!==guided?'✓':i+1}</i><span>${x.t}</span></li>`).join('')}</ol>`;
+ if(guided!==null){const s=CK.pasos[guided];h+=`<div class="card"><b>${guided+1}. ${s.t}</b>${s.x}</div>`;
+  if(s.pred){const a=predAns[guided];h+=`<div class="q"><p><b>🤔 Antes de probar: ${s.pred.q}</b></p>${s.pred.o.map((o,i)=>`<button class="o ${a===undefined?'':i===s.pred.ok?'ok':i===a?'no':''}" data-pred="${i}" ${a!==undefined?'disabled':''}>${'ABC'[i]}) ${o}</button>`).join('')}</div>`;if(a!==undefined)h+=`<div class="vd ${a===s.pred.ok?'ok':'warn'}">${a===s.pred.ok?'¡Correcto! ':'Veamos qué pasa: '}${s.pred.why}</div>`}
+  if(s.hint&&(!s.pred||predAns[guided]!==undefined))h+=`<div class="vd warn" style="margin-top:8px">👉 ${s.hint}</div>`;
+  if(s.expl&&stepDone[guided])h+=`<div class="card" style="margin-top:8px"><b>💡 Lo que acabás de ver</b>${s.expl}</div>`;
+  h+=`<div class="row"><button class="btn" data-g="prev" ${guided===0?'disabled':''}>◀ Anterior</button><button class="btn pri" data-g="next">${guided===CK.pasos.length-1?'Terminar':'Siguiente ▶'}</button></div>`}
+ else h+=`<div class="row"><button class="btn pri" data-g="0">▶ Empezar la guía</button></div>`;
+ h+=`<p class="note">Tocá cualquier pieza del esquema para saber qué es. Los pulsadores se accionan manteniendo el dedo o el mouse apretado.</p>`;return h}
+function pProbar(){let h=`<h2>Probá y rompé cosas</h2>`;
+ h+=`<h3>Carga del motor</h3><div style="display:flex;flex-wrap:wrap;gap:5px">${[['n','Normal'],['s','Sobrecarga 1,5×'],['b','Rotor trabado'],['cc','Cortocircuito']].map(x=>`<button class="chip" data-carga="${x[0]}" aria-pressed="${S.carga===x[0]}">${x[1]}</button>`).join('')}</div>`;
+ h+=`<h3>Velocidad del tiempo</h3><div style="display:flex;gap:5px">${[[1,'×1'],[2,'×2'],[4,'×4']].map(x=>`<button class="chip" data-vel="${x[0]}" aria-pressed="${S.vel===x[0]}">${x[1]}</button>`).join('')}</div>`;
+ if(CK.items.some(i=>i.id==='KT1'))h+=`<h3>Tiempo del temporizador<span class="sv">${fm(S.T,0)} s</span></h3><input type="range" id="rT" min="2" max="12" step="1" value="${S.T}">`;
+ h+=`<h3>Fallas</h3>${CK.fallas.map(f=>`<button class="sw" data-falla="${f.id}" aria-pressed="${!!S.fault[f.id]}"><i></i><span>${f.t}<small>${f.d}</small></span></button>`).join('')}`;
+ h+=`<h3>Reponer</h3><div class="row" style="margin-top:0">${CK.prot.q?`<button class="btn" data-rep="q">Rearmar Q1</button>`:''}${CK.prot.th?`<button class="btn" data-rep="th">Rearmar F2</button>`:''}${CK.prot.fus?`<button class="btn" data-rep="fus">Cambiar fusibles</button>`:''}<button class="btn" data-rep="all">↺ Reiniciar todo</button></div>`;return h}
+function pComp(){return`<h2>Piezas del circuito</h2><p>Tocá una pieza para resaltarla en el esquema.</p>`+CK.partsList.map(id=>{const p=CK.parts[id];return`<div class="card" data-sel="${id}" style="cursor:pointer;border-left-color:${sel===id?'var(--yl)':'var(--bl)'}"><b>${p.t}</b>${p.d}</div>`}).join('')}
+function pEj(){const Q=CK.ejercicios;if(qi>=Q.length)return`<h2>Resultado</h2><div class="vd ${score>=Q.length-1?'ok':score>=Q.length/2?'warn':'bad'}">Respondiste bien ${score} de ${Q.length}.</div><p>${score===Q.length?'¡Perfecto! Entendés cómo funciona este circuito.':'Repasá la guía y probá el circuito de nuevo.'}</p><div class="row"><button class="btn pri" data-q="reset">Reintentar</button></div>`;
+ const q=Q[qi];let h=`<h2>Ejercicio ${qi+1} de ${Q.length}</h2><div class="q"><p><b>${q.q}</b></p>${q.o.map((x,i)=>`<button class="o ${answered===null?'':i===q.ok?'ok':i===answered?'no':''}" data-ans="${i}" ${answered!==null?'disabled':''}>${'ABC'[i]}) ${x}</button>`).join('')}</div>`;
+ if(answered!==null)h+=`<div class="vd ${answered===q.ok?'ok':'bad'}">${answered===q.ok?'¡Correcto! ':'No es esa. '}${q.why}</div><div class="row"><button class="btn pri" data-q="next">${qi===Q.length-1?'Ver resultado':'Siguiente ▶'}</button></div>`;return h}
+function bindPanel(){const p=$('#panel');
+ p.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;play('click');panel()});
+ p.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>guide(b.dataset.g));
+ p.querySelectorAll('[data-pred]').forEach(b=>b.onclick=()=>{predAns[guided]=+b.dataset.pred;play(+b.dataset.pred===CK.pasos[guided].pred.ok?'ok':'no');panel();bar()});
+ p.querySelectorAll('[data-carga]').forEach(b=>b.onclick=()=>{S.carga=b.dataset.carga;play('click');panel()});
+ p.querySelectorAll('[data-vel]').forEach(b=>b.onclick=()=>{S.vel=+b.dataset.vel;play('click');panel()});
+ const rT=$('#rT');if(rT)rT.oninput=()=>{S.T=+rT.value;rT.previousElementSibling.textContent=fm(S.T,0)+' s'};
+ p.querySelectorAll('[data-falla]').forEach(b=>b.onclick=()=>{const k=b.dataset.falla;S.fault[k]=!S.fault[k];play(S.fault[k]?'warn':'click');panel()});
+ p.querySelectorAll('[data-rep]').forEach(b=>b.onclick=()=>{const k=b.dataset.rep;play('tac');if(k==='q'){S.q.trip='';S.q.on=false;S.q.h=0}else if(k==='th'){if(S.th.h<.6){S.th.trip=false}else{S.msg='Esperá a que se enfríe';play('no')}}else if(k==='fus'){S.fus.blown=false}else{nuevo();guided=null}panel();bar()});
+ p.querySelectorAll('[data-sel]').forEach(b=>b.onclick=()=>{sel=sel===b.dataset.sel?null:b.dataset.sel;play('click');panel();info()});
+ p.querySelectorAll('[data-ans]').forEach(b=>b.onclick=()=>{answered=+b.dataset.ans;const q=CK.ejercicios[qi];if(answered===q.ok){score++;play('ok')}else play('no');panel()});
+ p.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const k=b.dataset.q;if(k==='next'){qi++;answered=null}else if(k==='reset'){qi=0;score=0;answered=null}play('click');panel()})}
+function guide(k){play('click');if(k==='prev')k=Math.max(0,guided-1);else if(k==='next'){k=guided+1;if(k>=CK.pasos.length){guided=null;panel();bar();return}}else k=+k;guided=k;const s=CK.pasos[k];if(s.prep){nuevo();s.prep(S)}panel();bar()}
+function bar(){const b=$('#bar');let h='';if(guided!==null){const s=CK.pasos[guided];const done=stepDone[guided];const show=!s.pred||predAns[guided]!==undefined;h+=`<div class="hint ${done?'done':''}" ${show?'':'hidden'}>${done?'✅ ¡Muy bien! Pasá al siguiente paso.':'👉 '+(s.hint||s.t)}</div>`}
+ else h+=`<div class="hint">Probá el circuito: accioná los pulsadores del esquema.</div>`;
+ h+=`<button class="chip" data-r="reset">↺ Reiniciar</button>`;b.innerHTML=h;b.querySelector('[data-r]').onclick=()=>{nuevo();guided=null;stepDone=[];play('click');panel();bar()}}
+function info(){const b=$('#info');if(!sel||!CK.parts[sel]){b.hidden=true;return}const p=CK.parts[sel];b.hidden=false;b.innerHTML=`<button aria-label="Cerrar">✕</button><b>${p.t}</b><br>${p.d}`;b.querySelector('button').onclick=()=>{sel=null;info()}}
+/* ------------------------------------------------------------------ entrada */
+let pressed=null;
+svg.addEventListener('pointerdown',e=>{audio();const a=e.target.closest('[data-act]');if(a){const k=a.dataset.act,n=a.dataset.n;
+  if(k==='btn'){S.btn[n]=true;pressed=n;play('click');try{svg.setPointerCapture(e.pointerId)}catch{}}
+  else if(k==='sel'){S.sel[n]=!S.sel[n];play('clack')}
+  else if(k==='qh'){if(S.q.trip){S.q.trip='';S.q.on=false;play('tac')}else{S.q.on=!S.q.on;play('clack')}}}
+ const d=e.target.closest('[data-id]');if(d&&d.dataset.id&&CK.parts[d.dataset.id]){sel=d.dataset.id;info()}else if(!a){sel=null;info()}});
+const rel=()=>{if(pressed){S.btn[pressed]=false;pressed=null;play('tac')}};
+addEventListener('pointerup',rel);addEventListener('pointercancel',rel);
+/* ------------------------------------------------------------------ bucle */
+let last=performance.now(),lastRd='',lastN='',lastSteps=0;
+function checkSteps(){if(guided===null)return;const s=CK.pasos[guided];if(!stepDone[guided]&&(s.wait?(!s.pred||predAns[guided]!==undefined)&&s.wait(S):(s.pred&&predAns[guided]!==undefined))){stepDone[guided]=true;play('ok');panel();bar()}}
+function loop(ts){const dt=(ts-last)/1000;last=ts;t+=dt;S._t=t;
+ if(!document.hidden&&dt>0){solve();flows();paso(dt);S.ev.forEach(play);
+  /* tras la dinámica, resolver otra vez para que el dibujo sea coherente */
+  solve();flows();render();checkSteps();
+  if(tab==='vivo'){const v=$('#vivo'),r=$('#rd');if(v){const h=narr();if(v.dataset.h!==h){v.innerHTML=h;v.dataset.h=h}}if(r){const h=readsHTML();if(r.dataset.h!==h){r.innerHTML=h;r.dataset.h=h}}}}
+ requestAnimationFrame(loop)}
+/* ------------------------------------------------------------------ ajustes */
+const embedded=window.parent!==window;if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
+const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
+function apply(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra))}
+function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
+window.addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
+$('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply();avisar()};
+$('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply();avisar()};
+const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;
+$('#bFull').onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else(el.requestFullscreen||el.webkitRequestFullscreen).call(el)};
+$('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('click')}};
+const phone=()=>matchMedia('(max-width:950px)').matches;
+function setPanel(o){$('#panel').classList.toggle('closed',!o);$('#bPanel').setAttribute('aria-pressed',String(o))}
+$('#bPanel').onclick=()=>setPanel($('#panel').classList.contains('closed'));
+document.title=CK.titulo;$('#title').textContent=CK.titulo;$('#sub').textContent='Mando de motores · Circuitos';
+apply();setPanel(!phone());if(CK.pasos[0]&&CK.pasos[0].prep)CK.pasos[0].prep(S);panel();bar();info();requestAnimationFrame(loop);
+window.__mando={render:()=>{solve();flows();render()},CK,S:()=>S,solve,flows,paso,press:(n,v)=>{S.btn[n]=v},sel:(n,v)=>{S.sel[n]=v},nuevo:()=>{nuevo()},set:(k,v)=>{S[k]=v}};
+})();
+</script><script src="autor.js"></script></body></html>

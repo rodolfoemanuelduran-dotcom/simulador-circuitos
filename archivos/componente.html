@@ -68,6 +68,11 @@ input[type=range]{width:100%;accent-color:var(--bl);height:28px}.sv{float:right;
 </div>
 <script>window.COMPONENTES={};</script>
 <script src="comp-contactor.js"></script>
+<script src="comp-termico.js"></script>
+<script src="comp-comun.js"></script>
+<script src="comp-guardamotor.js"></script>
+<script src="comp-pulsadores.js"></script>
+<script src="comp-temporizador.js"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s),svg=$('#st'),COMP=window.COMPONENTES;
@@ -75,8 +80,8 @@ const params=new URLSearchParams(location.search),cid=COMP[params.get('c')]?para
 const f=(n,d=1)=>{const x=Number(n);return isFinite(x)?x.toFixed(d).replace('.',','):'—'};
 /* ---------- estado ---------- */
 let view=CP.vistaIni,sim=false,capas=new Set(CP.capas.map(c=>c.id).filter(x=>x!=='etiq')),T=0,lupa=false,slow=false,tab='ver',sel=null,guided=null,t=0,lens={x:500,y:280};
-let ctrl={coil:false,f:{}},o=CP.init(),qi=0,score=0,answered=null,done=new Set(),shownUso=null;
-const effCtrl=()=>{if(guided===null)return{coil:ctrl.coil,hold:null,f:ctrl.f};const s=CP.pasos[guided];return{coil:!!s.coil,hold:s.hold===undefined?null:s.hold,f:ctrl.f}};
+const CTL=CP.controles||[];let ctrl={coil:false,f:{},p:{}},o=CP.init(),qi=0,score=0,answered=null,done=new Set(),shownUso=null;CTL.forEach(c=>ctrl.p[c.k]=c.v);
+const effCtrl=()=>{if(guided===null)return{coil:ctrl.coil,hold:null,f:ctrl.f,p:ctrl.p};const s=CP.pasos[guided];return{coil:!!s.coil,hold:s.hold===undefined?null:s.hold,f:Object.assign({},ctrl.f,s.f||{}),p:Object.assign({},ctrl.p,s.p||{})}};
 const hlSet=()=>{const h=new Set();if(guided!==null)(CP.pasos[guided].hl||[]).forEach(x=>h.add(x));return h};
 /* ---------- audio ---------- */
 let soundOn=true,actx=null,nbuf=null,hum=null;
@@ -99,7 +104,9 @@ function pVer(){let h=`<h2>${CP.titulo}</h2><p>${CP.intro}</p><h3>Vista</h3><div
  h+=`<h3>Transparencia de la carcasa y la tapa</h3><input type="range" id="rT" min="0" max="100" value="${Math.round(T*100)}" aria-label="Transparencia"><div style="display:flex;justify-content:space-between;color:var(--mu);font-size:.7rem"><span>opaca</span><span id="tv">${Math.round(T*100)} %</span><span>invisible</span></div>`;
  h+=`<h3>Herramientas</h3><button class="sw" data-tg="lupa" aria-pressed="${lupa}"><i></i><span>🔍 Lupa<small>Pasá el dedo o el mouse sobre el dibujo para ampliar</small></span></button><button class="sw" data-tg="slow" aria-pressed="${slow}"><i></i><span>🐌 Cámara lenta<small>Para ver el movimiento de la armadura y el rebote</small></span></button><button class="sw" data-tg="sim" aria-pressed="${sim}"><i></i><span>⏚ Símbolo IEC<small>Cambia el dibujo realista por el símbolo normalizado</small></span></button>`;
  h+=`<p class="note">Tocá cualquier pieza del dibujo para ver qué es y para qué sirve.</p>`;return h}
-function pOperar(){let h=`<h2>Accionalo</h2><button class="big" style="width:100%" data-tg="coil" aria-pressed="${ctrl.coil}">${ctrl.coil?CP.btnOff:CP.btnOn}</button><h3>Estado</h3><div class="reads" id="rd"></div><div id="vd"></div><h3>Fallas (activalas y observá)</h3>${CP.fallas.map(x=>`<button class="sw bad" data-falla="${x.id}" aria-pressed="${!!ctrl.f[x.id]}"><i></i><span>${x.t}<small>${x.d}</small></span></button>`).join('')}`;return h}
+function pOperar(){let h=`<h2>Accionalo</h2><button class="big" style="width:100%" data-tg="coil" aria-pressed="${ctrl.coil}">${ctrl.coil?CP.btnOff:CP.btnOn}</button>${pCtl()}<h3>Estado</h3><div class="reads" id="rd"></div><div id="vd"></div><h3>Fallas (activalas y observá)</h3>${CP.fallas.map(x=>`<button class="sw bad" data-falla="${x.id}" aria-pressed="${!!ctrl.f[x.id]}"><i></i><span>${x.t}<small>${x.d}</small></span></button>`).join('')}`;return h}
+function pCtl(){let h='';const P=ctrl.p;CTL.forEach(c=>{if(c.t==='choice')h+=`<h3>${c.l}</h3><div style="display:flex;flex-wrap:wrap;gap:5px">${c.o.map(x=>`<button class="chip" data-ch="${c.k}" data-v="${x[0]}" aria-pressed="${String(P[c.k])===String(x[0])}">${x[1]}</button>`).join('')}</div>`;else h+=`<h3>${c.l}<span class="sv" id="sv_${c.k}">${c.fmt(P[c.k])}</span></h3><input type="range" data-sl="${c.k}" min="${c.min}" max="${c.max}" step="${c.st}" value="${P[c.k]}">`});
+ if(CP.acciones)h+=`<div class="row">${CP.acciones.map(a=>`<button class="btn" data-ac="${a.id}">${a.t}</button>`).join('')}</div>`;return h}
 function pPasos(){let h=`<h2>Paso a paso</h2>`;if(guided===null){h+=`<p>Una explicación guiada del funcionamiento, con el dibujo animado y las piezas resaltadas.</p><button class="btn pri" style="width:100%" data-g="start">▶ Comenzar</button><ol class="steps" style="margin-top:12px">${CP.pasos.map((s,i)=>`<li data-g="${i}"><i>${i+1}</i><span>${s.t}</span></li>`).join('')}</ol>`;return h}
  const s=CP.pasos[guided];h+=`<ol class="steps">${CP.pasos.map((x,i)=>`<li class="${i===guided?'on':i<guided?'done':''}" data-g="${i}"><i>${i<guided?'✓':i+1}</i><span>${x.t}</span></li>`).join('')}</ol><div class="card"><b>${guided+1}. ${s.t}</b>${s.x}</div><div class="row"><button class="btn" data-g="prev" ${guided===0?'disabled':''}>◀ Anterior</button><button class="btn pri" data-g="next">${guided===CP.pasos.length-1?'Terminar':'Siguiente ▶'}</button></div><div class="row"><button class="btn" data-g="exit">Salir y probar libremente</button></div>`;return h}
 function pUsos(){return`<h2>Dónde se usa</h2>${CP.usos.map((u,i)=>`<div class="card"><b>${u.t}</b>${u.x}${u.sim?`<div class="row"><button class="btn" data-uso="${i}">Ver el esquema con símbolos</button></div>`:''}</div>`).join('')}`}
@@ -108,6 +115,9 @@ function pEj(){const Q=CP.ejercicios;if(qi>=Q.length)return`<h2>Resultado</h2><d
  if(q.ver)h+=`<div class="row"><button class="btn" data-q="ver">🔎 Probalo en el simulador</button></div>`;
  if(answered!==null)h+=`<div class="vd ${answered===q.ok?'ok':'bad'}">${answered===q.ok?'¡Correcto! ':'No es esa. '}${q.why}</div><div class="row"><button class="btn pri" data-q="next">${qi===Q.length-1?'Ver resultado':'Siguiente ▶'}</button></div>`;return h}
 function bindPanel(){const p=$('#panel');
+ p.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{ctrl.p[b.dataset.ch]=b.dataset.v;const c=CTL.find(x=>x.k===b.dataset.ch);if(c.num)ctrl.p[c.k]=+b.dataset.v;play('click');panel()});
+ p.querySelectorAll('[data-sl]').forEach(r=>r.oninput=()=>{const c=CTL.find(x=>x.k===r.dataset.sl);ctrl.p[c.k]=+r.value;const sv=$('#sv_'+c.k);if(sv)sv.textContent=c.fmt(+r.value)});
+ p.querySelectorAll('[data-ac]').forEach(b=>b.onclick=()=>{(CP.accion(b.dataset.ac,o,effCtrl())||[]).forEach(e=>play(e))});
  p.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;play('click');panel()});
  p.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{setView(b.dataset.view)});
  p.querySelectorAll('[data-capa]').forEach(b=>b.onclick=()=>{const k=b.dataset.capa;capas.has(k)?capas.delete(k):capas.add(k);play('click');panel()});
@@ -117,8 +127,8 @@ function bindPanel(){const p=$('#panel');
  p.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>guide(b.dataset.g));
  p.querySelectorAll('[data-uso]').forEach(b=>b.onclick=()=>{sim=true;play('click');bar();panel()});
  p.querySelectorAll('[data-ans]').forEach(b=>b.onclick=()=>{answered=+b.dataset.ans;const q=CP.ejercicios[qi];if(answered===q.ok){score++;play('ok')}else play('no');panel()});
- p.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const k=b.dataset.q;if(k==='next'){qi++;answered=null}else if(k==='reset'){qi=0;score=0;answered=null}else if(k==='ver'){const v=CP.ejercicios[qi].ver;sim=false;if(v.vista){view=v.vista;etqAuto()}ctrl.coil=!!v.coil;ctrl.f={};(v.f||[]).forEach(x=>ctrl.f[x]=true);guided=null;if(phone())setPanel(false);bar()}play('click');panel()})}
-function guide(k){play('click');if(k==='start')k=0;else if(k==='prev')k=Math.max(0,guided-1);else if(k==='next'){k=guided+1;if(k>=CP.pasos.length){guided=null;ctrl.coil=false;panel();bar();return}}else if(k==='exit'){guided=null;panel();bar();return}else k=+k;guided=k;const s=CP.pasos[k];if(s.vista){view=s.vista;sim=false;etqAuto()}if(s.sim){sim=true}panel();bar()}
+ p.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const k=b.dataset.q;if(k==='next'){qi++;answered=null}else if(k==='reset'){qi=0;score=0;answered=null}else if(k==='ver'){const v=CP.ejercicios[qi].ver;sim=false;if(v.vista){view=v.vista;etqAuto()}ctrl.coil=!!v.coil;ctrl.f={};(v.f||[]).forEach(x=>ctrl.f[x]=true);Object.assign(ctrl.p,v.p||{});if(CP.reinicio)CP.reinicio(o);guided=null;if(phone())setPanel(false);bar()}play('click');panel()})}
+function guide(k){play('click');if(k==='start')k=0;else if(k==='prev')k=Math.max(0,guided-1);else if(k==='next'){k=guided+1;if(k>=CP.pasos.length){guided=null;ctrl.coil=false;panel();bar();return}}else if(k==='exit'){guided=null;panel();bar();return}else k=+k;guided=k;const s=CP.pasos[k];if(s.ini)s.ini(o);if(s.vista){view=s.vista;sim=false;etqAuto()}if(s.sim){sim=true}panel();bar()}
 function toggle(k){play('click');if(k==='lupa')lupa=!lupa;else if(k==='slow')slow=!slow;else if(k==='sim')sim=!sim;else if(k==='coil'){if(guided!==null)guided=null;ctrl.coil=!ctrl.coil}panel();bar()}
 function etqAuto(){view==='interior'?capas.add('etiq'):capas.delete('etiq')}
 function setView(v,quiet){view=v;sim=false;etqAuto();if(!quiet)play('click');panel();bar()}
@@ -141,7 +151,7 @@ function lecturas(){if(tab!=='operar')return;const L=CP.lecturas(o,effCtrl());co
  if(vd){const h=`<div class="vd ${L.verdict.cls}">${L.verdict.t}</div>`;if(vd.dataset.h!==h){vd.innerHTML=h;vd.dataset.h=h}}}
 let last=performance.now(),lastEv=0;
 function loop(ts){const dt=Math.min(.05,(ts-last)/1000);last=ts;t+=dt;
- if(!document.hidden){const c=effCtrl(),ev=CP.paso(o,dt*(slow?.12:1),c,t);ev.forEach(e=>play(e));humOn(c.coil&&!c.f.abierta&&o.d>0.5,c.f.baja);render();lecturas()}
+ if(!document.hidden){const c=effCtrl(),ev=CP.paso(o,dt*(slow?.12:1),c,t);ev.forEach(e=>play(e));humOn(CP.hum?CP.hum(o,c):(c.coil&&!c.f.abierta&&o.d>0.5),c.f.baja);render();lecturas()}
  requestAnimationFrame(loop)}
 /* ---------- ajustes ---------- */
 const embedded=window.parent!==window;if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
