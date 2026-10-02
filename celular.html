@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Circuitos eléctricos</title>
+<meta name="theme-color" content="#071321">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Circuitos">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0e1d2f;--p2:#15293f;--tx:#f4f8ff;--mu:#a9bdd2;--bl:#79d9f1;--line:#2b425f;--hdr:#08141f;--c1:#2d7fb8;--c2:#c6842f;--c3:#3a9d6b;--c4:#8c5bd1}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--line:#b3c2d4;--hdr:#fff;--c1:#1f6fa8;--c2:#b36d18;--c3:#23824f;--c4:#7a47c2}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overscroll-behavior:none}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:50px;padding:6px 10px;background:var(--hdr);border-bottom:1px solid var(--line)}
+header h1{flex:1 1 auto;min-width:0;margin:0;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header button{flex:0 0 auto;min-width:42px;height:42px;padding:0 10px;border:1px solid var(--line);border-radius:12px;background:var(--p2);color:var(--tx);font-size:1.1rem;font-weight:700}
+header button[hidden]{display:none}
+body.play .autor-badge{display:none}
+main{flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
+#home,#cat{padding:14px;max-width:900px;margin:0 auto}
+h2{margin:6px 0 12px;font-size:1.25rem}
+.sub{color:var(--mu);margin:0 0 16px}
+.tiles{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:560px){.tiles{grid-template-columns:1fr 1fr}}
+.tile{display:flex;gap:14px;align-items:center;width:100%;padding:16px;text-align:left;border:0;border-radius:18px;color:#fff;box-shadow:0 6px 18px #0004}
+.tile .ic{flex:0 0 52px;height:52px;border-radius:14px;background:#ffffff26;display:grid;place-items:center;font-size:1.8rem}
+.tile b{display:block;font-size:1.1rem}.tile span{font-size:.82rem;opacity:.92}.tile em{display:block;font-style:normal;font-size:.72rem;font-weight:700;letter-spacing:.06em;opacity:.9;margin-top:3px}
+.t1{background:linear-gradient(135deg,#2d7fb8,#1b4f7a)}.t2{background:linear-gradient(135deg,#d89034,#9a5d14)}.t3{background:linear-gradient(135deg,#8c5bd1,#5a3490)}.t4{background:linear-gradient(135deg,#3a9d6b,#1d6a45)}
+.tip{margin:16px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;color:var(--mu);font-size:.85rem;background:var(--p)}
+.tip button{margin-top:8px;padding:9px 14px;border:0;border-radius:10px;background:var(--bl);color:#04202c;font-weight:800}
+.foot{margin:18px 0 8px;text-align:center;color:var(--mu);font-size:.78rem}.foot a{color:var(--bl)}
+input[type=search]{width:100%;padding:12px 14px;margin:0 0 12px;border:1px solid var(--line);border-radius:12px;background:var(--p);color:var(--tx);font-size:1rem}
+h3{margin:18px 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
+.item{display:block;width:100%;margin:0 0 9px;padding:13px 14px;text-align:left;border:1px solid var(--line);border-left:6px solid var(--bl);border-radius:14px;background:var(--p);color:var(--tx)}
+.item b{display:block;font-size:1rem;margin-bottom:2px}.item span{display:block;color:var(--mu);font-size:.82rem}.item i{display:inline-block;margin-top:5px;padding:1px 8px;border-radius:99px;background:var(--p2);font-style:normal;font-size:.68rem;font-weight:700;color:var(--mu)}
+.item:active{background:var(--p2)}
+#play{flex:1 1 auto;min-height:0;display:none;position:relative}
+#play iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
+body.play #home,body.play #cat,body.play main{display:none}body.play #play{display:block}
+@media (max-height:480px){header.top{min-height:38px;padding:3px 8px}header button{height:32px;min-width:36px;font-size:1rem}header h1{font-size:.95rem}#home,#cat{padding:10px}.tiles{grid-template-columns:1fr 1fr}.tile{padding:10px}.tile .ic{flex-basis:40px;height:40px;font-size:1.4rem}h2{font-size:1.05rem;margin:2px 0 8px}.sub{display:none}}
+.empty{color:var(--mu);padding:20px 0;text-align:center}
+</style>
+</head>
+<body>
+<header class="top">
+ <button id="back" aria-label="Volver" hidden>←</button>
+ <h1 id="ttl">Circuitos</h1>
+ <button id="theme" aria-label="Cambiar fondo claro u oscuro">◐</button>
+</header>
+<main id="main">
+ <section id="home"></section>
+ <section id="cat" hidden></section>
+</main>
+<section id="play"><iframe id="frm" title="Práctica" allow="fullscreen"></iframe></section>
+<script src="archivos/redes-datos.js"></script>
+<script src="archivos/casas-datos.js"></script>
+<script src="archivos/datos-datos.js"></script>
+<script src="archivos/mando-datos.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s);
+const R=window.REDES||{groups:[],order:[],items:{}},C=window.CASAS||{groups:[],order:[],items:{}},DT=window.DATOS||{groups:[],order:[],items:{}},M=window.MANDO||{groups:[],order:[],items:{}};
+const gt=(src,id)=>{const g=(src.groups||[]).find(x=>x.id===id);return g?g.title:''};
+/* ---------- catálogo ---------- */
+const ITEMS=[];
+R.order.forEach(id=>{const s=R.items[id];if(s.hidden)return;const cat=s.group==='ca'?'ca':'cc';ITEMS.push({id,cat,gr:gt(R,s.group)||s.group,t:s.title,d:s.desc,f:'circuito-redes.html?c='+id})});
+C.order.forEach(id=>{const s=C.items[id];ITEMS.push({id,cat:'ca',gr:gt(C,s.group)||'Casas',t:s.title,d:s.desc,f:s.file})});
+DT.order.forEach(id=>{const s=DT.items[id];ITEMS.push({id,cat:'datos',gr:gt(DT,s.group)||'',t:s.title,d:s.desc,f:'datos.html?c='+id})});
+M.order.forEach(id=>{const s=M.items[id];if(s.soon)return;ITEMS.push({id,cat:'mando',gr:gt(M,s.group)||'',t:s.title,d:s.desc,f:s.file||('mando.html?c='+id),adv:s.group==='tableros'})});
+const CATS=[
+ {id:'cc',t:'Corriente continua',d:'Baterías, lámparas, serie y paralelo',ic:'🔋',cl:'t1'},
+ {id:'ca',t:'Corriente alterna',d:'Del río a tu casa, llaves y tomacorrientes',ic:'🏠',cl:'t2'},
+ {id:'mando',t:'Mando de motores',d:'Contactores, relés y arranques',ic:'⚙️',cl:'t3'},
+ {id:'datos',t:'Datos curiosos',d:'Por qué el pájaro no se electrocuta y más',ic:'💡',cl:'t4'}];
+const count=c=>ITEMS.filter(i=>i.cat===c).length;
+/* ---------- ajustes ---------- */
+const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+let tema=stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+function apply(){document.documentElement.dataset.theme=tema;const m=document.querySelector('meta[name=theme-color]');if(m)m.content=tema==='light'?'#ffffff':'#071321';try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}}
+$('#theme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply()};
+/* ---------- vistas ---------- */
+let view={v:'home'};
+function home(){let h=`<h2>¿Qué querés practicar?</h2><p class="sub">Elegí un tema. Para las prácticas usá el celular en posición horizontal.</p><div class="tiles">`+CATS.map(c=>`<button class="tile ${c.cl}" data-c="${c.id}"><span class="ic">${c.ic}</span><span><b>${c.t}</b><span>${c.d}</span><em>${count(c.id)} PRÁCTICAS</em></span></button>`).join('')+`</div>`;
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+ if(!standalone)h+=`<div class="tip" id="tip">📲 <b>Usalo sin conexión:</b> ${ios?'tocá el botón Compartir y elegí “Agregar a pantalla de inicio”.':'abrí el menú del navegador y elegí “Instalar aplicación” o “Agregar a pantalla de inicio”.'}<div id="inst"></div></div>`;
+ h+=`<p class="foot">Simulador de circuitos eléctricos · Escuela Técnica Crucero ARA General Belgrano y Escuela Técnica N.º 1 de Bella Vista<br><a href="index.html?pc=1">Ver versión completa (para PC y tablet)</a></p>`;
+ $('#home').innerHTML=h;$('#home').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>go({v:'cat',c:b.dataset.c}));if(deferred)showInstall()}
+function cat(cid){const c=CATS.find(x=>x.id===cid),its=ITEMS.filter(i=>i.cat===cid);
+ let h=`<h2>${c.t}</h2>`;if(its.length>8)h+=`<input type="search" id="q" placeholder="Buscar una práctica…" autocomplete="off">`;h+=`<div id="lst"></div>`;
+ $('#cat').innerHTML=h;const draw=q=>{q=(q||'').toLowerCase().trim();let html='',last='',n=0;its.forEach(i=>{if(q&&!(i.t+' '+i.d+' '+i.gr).toLowerCase().includes(q))return;n++;if(i.gr!==last){html+=`<h3>${i.gr}</h3>`;last=i.gr}html+=`<button class="item" data-i="${i.id}"><b>${i.t}</b><span>${i.d||''}</span>${i.adv?'<i>Mejor en pantalla grande</i>':''}</button>`});$('#lst').innerHTML=html||'<p class="empty">No hay prácticas con ese texto.</p>';$('#lst').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>go({v:'play',c:cid,i:b.dataset.i}))};
+ draw();const q=$('#q');if(q)q.oninput=()=>draw(q.value)}
+function nav(u){try{$('#frm').contentWindow.location.replace(u)}catch{$('#frm').src=u}}
+function play(it){const sep=it.f.includes('?')?'&':'?';nav('archivos/'+it.f+sep+'tema='+tema+'&pizarra=0');$('#ttl').textContent=it.t;}
+function show(st){document.body.classList.toggle('play',st.v==='play');$('#back').hidden=st.v==='home';
+ $('#home').hidden=st.v!=='home';$('#cat').hidden=st.v!=='cat';
+ if(st.v==='home'){$('#ttl').textContent='Circuitos';nav('about:blank');home()}
+ else if(st.v==='cat'){$('#ttl').textContent=CATS.find(x=>x.id===st.c).t;nav('about:blank');cat(st.c);$('#main').scrollTop=0}
+ else{const it=ITEMS.find(x=>x.id===st.i&&x.cat===st.c);play(it)}
+ view=st}
+function go(st){history.pushState(st,'');show(st)}
+$('#back').onclick=()=>history.back();
+addEventListener('popstate',e=>show(e.state||{v:'home'}));
+$('#frm').addEventListener('load',()=>{if(view.v==='play'){try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}}});
+/* instalación (Android/Chrome) */
+let deferred=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;showInstall()});
+function showInstall(){const box=$('#inst');if(!box||!deferred)return;box.innerHTML='<button id="doInst">Instalar la aplicación</button>';$('#doInst').onclick=async()=>{deferred.prompt();try{await deferred.userChoice}catch{}deferred=null;box.innerHTML=''}}
+/* mensajes de las prácticas (ajustes desde adentro) */
+addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='ajustes-desde-practica'&&d.tema){tema=d.tema;stg.set('sim-tema',tema);document.documentElement.dataset.theme=tema}});
+/* service worker */
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
+apply();history.replaceState({v:'home'},'');show({v:'home'});
+window.__cel={show,go,ITEMS,CATS};
+})();
+</script>
+<script src="archivos/autor.js"></script>
+</body></html>

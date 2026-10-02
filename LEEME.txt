@@ -46,13 +46,24 @@ como un archivo comp-<nombre>.js. Ya estan: contactor, rele termico, guardamotor
 pulsadores y selectoras, temporizador y rele auxiliar.
 
 MANDO DE MOTORES - CIRCUITOS (archivos/mando.html + mando-circuitos.js)
-Cuatro circuitos trifasicos con un solucionador de redes (se accionan los pulsadores
-en el esquema): arranque directo, marcha-parada con retencion, inversion de giro con
-enclavamiento y estrella-triangulo. Cada uno tiene: guia paso a paso con preguntas de
+Ocho circuitos con un solucionador de redes (se accionan los pulsadores en el esquema):
+monofasico directo y marcha-parada; trifasico directo, marcha-parada con retencion,
+impulsos, temporizado, inversion de giro con enclavamiento y estrella-triangulo. Cada uno tiene: guia paso a paso con preguntas de
 prediccion, narracion en vivo del camino de la corriente, mediciones (corriente,
 rpm, conexion, tension por bobinado), fallas (falta de fase, enclavamiento anulado),
 sobrecarga/cortocircuito/rotor trabado, piezas explicadas y ejercicios.
 Para agregar uno: definir un objeto en mando-circuitos.js (items, parts, pasos, ejercicios).
+
+MANDO DE MOTORES - TABLEROS PARA CABLEAR (archivos/tablero.html + tablero-datos*.js + tablero-dibujo.js)
+Tableros realistas (placa con riel DIN, bornera, fusibles, guardamotor, contactores, termico,
+temporizador, motor y puerta con pulsadores): arranque directo, marcha-parada con retencion,
+inversion de giro y estrella-triangulo. Se tienden cables tocando un borne y despues otro
+(o arrastrando). Hay guia cable por cable con la explicacion de cada uno, ayuda, eleccion de
+color del cable, verificacion contra el esquema (faltan / sobran / colores), boton "Ver esquema",
+energizado con pulsadores operables, fallas (cortocircuito, bobina a 380 V, sobrecarga, rotor trabado)
+y ejercicios. Para agregar un tablero: definir bornes, cables y logica en tablero-datos.js y su
+dibujo en tablero-dibujo.js.
+Ver tambien GUIA-DOCENTE.txt.
 
 CASAS (archivos/casa.html + casas-datos.js)
 Dormitorio, cocina, living-comedor y escalera: se ubican los puntos segun los
@@ -71,9 +82,15 @@ llave para abrirla o cerrarla. Toque cualquier componente para medir su
 tension y corriente con el multimetro. Arrastre la ficha del motor hasta un
 tomacorriente para enchufarlo.
 
-CELULAR
-Use el celular en posicion horizontal. El menu del celular se publica en
-internet (GitHub Pages) y funciona sin conexion una vez abierto.
+CELULAR (celular.html)
+Version simple para telefonos: al escanear el QR (o abrir la direccion publicada) el celular se
+redirige solo a celular.html. Tiene 4 botones grandes (Corriente continua, Corriente alterna,
+Mando de motores, Datos curiosos), listas con buscador, boton Atras de Android/iPhone, fondo
+claro/oscuro y un aviso para instalarla. Cada practica se usa con el celular en posicion
+horizontal. En Mando, los esquemas y tableros tienen un boton "Ampliar" para recorrerlos con el dedo
+(en los tableros conviene tocar un borne y despues el otro). "Ver version completa" abre el menu
+de PC (index.html?pc=1). Se publica en internet (GitHub Pages) y funciona sin conexion una vez abierto.
+Codigo QR: QR-simulador-publico.png / QR-simulador-para-imprimir.png (misma direccion de siempre).
 
 PARA AGREGAR O MODIFICAR CIRCUITOS
 Circuitos de cableado: archivos/redes-datos.js (tension nominal 220 V). Casas y

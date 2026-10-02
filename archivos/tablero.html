@@ -1,0 +1,250 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Tablero de mando</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;--badbg:#42202a;--badtx:#ffd1d1;--stg1:#1b2a3d;--stg2:#0a1420;--ink:#e9f1fa;--sel:#1d4d63}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#fff;--okbg:#e1f5ea;--oktx:#0b4a2b;--warnbg:#fff1cc;--warntx:#6b4a00;--badbg:#fde4e4;--badtx:#7a1212;--stg1:#f7fafd;--stg2:#cdd9e6;--ink:#14253a;--sel:#cfe8f3}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--tx);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;touch-action:manipulation;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{font:inherit;color:inherit}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:var(--hdr);border-bottom:1px solid var(--line)}
+.ttl{min-width:0;flex:1 1 auto}.ttl h1{margin:0;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttl small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+.top .autor-badge{margin-left:6px}
+.work{flex:1 1 auto;min-height:0;display:flex}
+.stage{position:relative;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 30%,var(--stg1),var(--stg2))}
+#sv{flex:1 1 auto;min-height:0;position:relative}#sv.zoom{overflow:auto;-webkit-overflow-scrolling:touch}#sv.zoom #st{width:150%;height:auto;aspect-ratio:1000/560;touch-action:pan-x pan-y}#st{width:100%;height:100%;user-select:none;-webkit-user-select:none;touch-action:none}
+.bar{flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:6px 8px}
+.chip{padding:6px 11px;border:2px solid var(--line);border-radius:999px;background:var(--p);cursor:pointer;font-weight:700;font-size:.78rem}.chip[aria-pressed=true]{border-color:var(--bl);background:var(--sel)}.chip.pow[aria-pressed=true]{border-color:var(--rd);background:#7a1f1f;color:#fff}.chip[disabled]{opacity:.45}
+.msg{flex:1 1 200px;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:var(--p);font-weight:700;font-size:.8rem}.msg.ok{border-color:var(--gr)}.msg.bad{border-color:var(--rd)}.msg.warn{border-color:var(--yl)}
+#info{position:absolute;right:10px;top:10px;max-width:min(340px,60%);padding:9px 12px;border-radius:12px;background:color-mix(in srgb,var(--p) 95%,transparent);border:2px solid var(--bl);font-size:.8rem;box-shadow:0 6px 20px #0006}#info[hidden]{display:none}#info b{color:var(--bl)}#info button{float:right;border:0;background:none;cursor:pointer;font-size:1rem;margin:-4px -4px 0 6px}
+#esq{position:absolute;inset:6px;z-index:5;border-radius:12px;border:3px solid var(--bl);background:var(--bg);overflow:hidden;display:none}#esq.on{display:block}#esq iframe{width:100%;height:100%;border:0}#esq button{position:absolute;right:8px;top:8px;z-index:2}
+.panel{flex:0 0 400px;overflow:auto;padding:0 0 12px;background:var(--p);border-left:1px solid var(--line);font-size:.82rem}.panel.closed{display:none}
+.tabs{position:sticky;top:0;z-index:2;display:flex;gap:2px;padding:6px 8px 0;background:var(--p);border-bottom:1px solid var(--line)}.tabs button{flex:1;padding:7px 2px;border:0;border-bottom:3px solid transparent;background:none;cursor:pointer;font-weight:700;font-size:.72rem;color:var(--mu)}.tabs button[aria-selected=true]{color:var(--tx);border-bottom-color:var(--bl)}
+.pb{padding:10px 14px}
+.panel h2{margin:0 0 6px;font-size:1.02rem;line-height:1.25}.panel h3{margin:12px 0 5px;font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.vd{margin-top:9px;padding:9px 11px;border-radius:10px;border:2px solid var(--line);font-weight:700}.vd.ok{background:var(--okbg);border-color:var(--gr);color:var(--oktx)}.vd.warn{background:var(--warnbg);border-color:var(--yl);color:var(--warntx)}.vd.bad{background:var(--badbg);border-color:var(--rd);color:var(--badtx)}
+.panel p{margin:5px 0}.btn{padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--p2);cursor:pointer;font-weight:700;font-size:.78rem}.btn.pri{background:#1d4d63;border-color:var(--bl);color:#fff}.btn[disabled]{opacity:.4;cursor:default}
+.row{display:flex;gap:6px;margin-top:10px}.row .btn{flex:1}
+.card{padding:9px 11px;margin-bottom:8px;border-radius:10px;background:var(--p2);border-left:4px solid var(--bl)}.card>b:first-child{display:block;margin-bottom:2px}
+.wl{list-style:none;margin:0;padding:0}.wl li{display:flex;gap:8px;padding:6px 7px;border-radius:8px;cursor:pointer;align-items:flex-start}.wl li:hover{background:var(--p2)}.wl li.on{background:var(--sel)}.wl li i{flex:0 0 22px;height:22px;border-radius:50%;background:var(--p2);border:1px solid var(--line);font-style:normal;text-align:center;font-weight:800;font-size:.72rem;line-height:20px}.wl li.done i{background:var(--gr);color:#04301c;border-color:var(--gr)}.wl li b{display:block}.wl li .sw{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:1px solid #0006}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rd{padding:7px 9px;border-radius:9px;background:var(--p2);border:1px solid var(--line)}.rd small{display:block;color:var(--mu);font-size:.62rem;font-weight:700;letter-spacing:.04em}.rd b{font:700 .95rem ui-monospace,Consolas,monospace}.rd.on b{color:var(--gr)}.rd.bad b{color:var(--rd)}
+.q{margin:8px 0}.q button.o{display:block;width:100%;margin:5px 0;padding:9px 10px;text-align:left;border:2px solid var(--line);border-radius:10px;background:var(--p2);cursor:pointer;font-weight:600}.q button.o.ok{border-color:var(--gr);background:var(--okbg)}.q button.o.no{border-color:var(--rd);background:var(--badbg)}
+.note{color:var(--mu);font-size:.7rem;margin-top:12px}
+.hl{filter:drop-shadow(0 0 7px #ffd65a) drop-shadow(0 0 3px #ffd65a)}
+.pulse{animation:pu 1s ease-in-out infinite}@keyframes pu{50%{opacity:.35}}
+.liv{animation:lv 1.2s ease-in-out infinite alternate}@keyframes lv{from{opacity:.25}to{opacity:.7}}
+[data-p],[data-btn]{cursor:pointer}
+.lab{fill:var(--ink);font:700 13px system-ui,sans-serif}.lab.c{text-anchor:middle}.lab.s{font-size:11px;font-weight:600}.lab.t{font-size:16px}
+.pizarra .ttl h1{font-size:1.4rem}.pizarra header.top{min-height:62px}.pizarra .tools button{width:48px;height:48px;font-size:1.25rem}.pizarra .panel{flex-basis:450px;font-size:1.05rem}.pizarra .chip{font-size:1rem;padding:8px 14px}.pizarra .msg{font-size:1.05rem}
+@media (max-width:950px){.panel{position:absolute;z-index:6;right:0;top:0;bottom:0;width:min(400px,76%);box-shadow:-8px 0 24px #000a;flex:none}.panel.closed{display:block;transform:translateX(105%);visibility:hidden}.work{position:relative}}
+@media (max-height:520px){header.top{min-height:34px;padding-top:2px;padding-bottom:2px}.ttl h1{font-size:.8rem}.ttl small{display:none}.tools button{width:30px;height:30px}.top .autor-badge{padding:3px 8px;font-size:.62rem}.chip{padding:4px 8px;font-size:.7rem}}
+@media (max-width:700px) and (orientation:portrait){body:after{content:"Gira el teléfono para cablear el tablero en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,sans-serif}}
+@media (prefers-reduced-motion:reduce){.pulse,.liv{animation:none}}
+</style></head><body>
+<header class="top">
+ <div class="ttl"><h1 id="title">Tablero</h1><small id="sub"></small></div>
+ <div class="tools">
+  <button id="bPanel" title="Mostrar u ocultar el panel" aria-label="Panel" aria-pressed="true">☰</button>
+  <button id="bSound" title="Sonidos" aria-label="Sonidos" aria-pressed="true">🔊</button>
+  <button id="bTheme" class="solo" title="Fondo claro u oscuro" aria-label="Cambiar tema">◐</button>
+  <button id="bProj" class="solo" title="Modo pizarra" aria-label="Modo pizarra" aria-pressed="false"><b>Aa</b></button>
+  <button id="bFull" class="solo" title="Pantalla completa" aria-label="Pantalla completa">⛶</button>
+ </div>
+</header>
+<div class="work">
+ <section class="stage">
+  <div id="sv"><svg id="st" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Tablero eléctrico"></svg></div>
+  <div id="info" hidden></div>
+  <div id="esq"><button class="chip" id="esqX">✕ Cerrar esquema</button><iframe id="esqF" title="Esquema"></iframe></div>
+  <div class="bar" id="bar"></div>
+ </section>
+ <aside id="panel" class="panel"></aside>
+</div>
+<script src="comp-comun.js"></script>
+<script src="tablero-datos.js"></script>
+<script src="tablero-datos2.js"></script>
+<script src="tablero-dibujo.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),svg=$('#st'),TB=window.TABLEROS;
+const params=new URLSearchParams(location.search),cid=TB[params.get('c')]?params.get('c'):Object.keys(TB)[0],K=TB[cid];
+const fm=(n,k)=>Number(n).toFixed(k).replace('.',',');
+const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+const T=K.T,W=K.W,IDS=Object.keys(T);
+/* ---------------- estado ---------------- */
+let wcol='auto',wires=[],wid=1,pend=null,drag=null,selW=null,hint=null,tab='guia',selP=null,qi=0,score=0,answered=null,focusW=null,checked=null,t=0,lastMsg=null;
+let S;function nuevo(){S={power:false,btn:{},sel:{},arms:{},coils:{},burnt:{},th:{trip:false,h:0},q:{on:true,trip:'',h:0},blown:false,kt:{tm:0,out:false},carga:'n',w:0,I:0,mode:'parado',dir:1,short:null,msgs:[],uf:null,rot:0}}nuevo();
+/* ---------------- audio ---------------- */
+let soundOn=true,actx=null,nbuf=null;
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
+function tone(fq,d,ty,v,dl,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+(dl||0);o.type=ty||'sine';o.frequency.setValueAtTime(fq,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v||.05,s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.03)}
+function noise(d,v,dl,fq,q){const a=audio();if(!a)return;if(!nbuf){nbuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nbuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nbuf;fl.type='bandpass';fl.frequency.value=fq||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
+const SND={click(){tone(560,.05,'triangle',.04);noise(.03,.03,0,2500,3)},tap(){tone(420,.06,'triangle',.05);tone(640,.07,'sine',.04,.04)},wire(){tone(520,.07,'triangle',.05);tone(780,.1,'sine',.05,.06);noise(.05,.04,0,3000,2)},rm(){tone(300,.1,'triangle',.05,0,150)},ok(){tone(660,.12,'sine',.05);tone(880,.2,'sine',.045,.09);tone(1100,.25,'sine',.04,.2)},no(){tone(260,.18,'triangle',.06);tone(210,.22,'triangle',.05,.1)},clack(){noise(.09,.2,0,900,1.2);tone(150,.12,'square',.06,0,70)},tac(){noise(.06,.1,0,1800,1.5);tone(260,.06,'square',.035,0,120)},zap(){noise(.35,.12,0,4000,.7);tone(120,.3,'sawtooth',.06,0,60)}};
+const play=n=>{try{SND[n]&&SND[n]()}catch{}};
+/* ---------------- redes ---------------- */
+function UF(){const p={};const f=a=>{if(p[a]===undefined)p[a]=a;while(p[a]!==a){p[a]=p[p[a]];a=p[a]}return a};return{f,u:(a,b)=>{p[f(a)]=f(b)}}}
+function userNets(){const uf=UF();wires.forEach(w=>uf.u(w.a,w.b));return uf}
+function refNets(){const uf=UF();W.forEach(w=>uf.u(w[0],w[1]));return uf}
+/* ---------------- simulación (declarativa) ---------------- */
+function cond(c){if(!c||c==='always')return true;if(c[0]==='!')return!cond(c.slice(1));const [k,n]=c.split(':');
+ if(k==='fus')return!S.blown;if(k==='th')return!S.th.trip;if(k==='q')return S.q.on&&!S.q.trip;
+ if(k==='kt')return S.kt.out;
+ if(k==='arm')return(S.arms[n]||0)>.5;if(k==='nc')return!S.btn[n];if(k==='no')return!!S.btn[n];if(k==='sel')return!!S.sel[n];return false}
+function solve(){const uf=UF();wires.forEach(w=>uf.u(w.a,w.b));
+ K.sim.links.forEach(l=>{if(cond(l[2]))uf.u(l[0],l[1]);else{uf.f(l[0]);uf.f(l[1])}});
+ S.uf=uf;S.msgs=[];const src=K.sim.src||{R:'X1.R',S:'X1.S',T:'X1.T',N:'X1.N'};
+ const rt={};Object.keys(src).forEach(k=>rt[k]=uf.f(src[k]));S.rt=rt;
+ const ph=n=>{const r=uf.f(n);for(const k of Object.keys(rt))if(rt[k]===r)return k;return null};
+ S.short=null;const names=Object.keys(rt),sh=[];for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++)if(rt[names[i]]===rt[names[j]])sh.push(names[i]+'–'+names[j]);if(sh.length)S.short=sh.join(', ');
+ if(S.power&&S.short){if(K.prot&&K.prot.q&&!S.q.trip){S.q.trip='mag';S.msgs.push('Q1 disparó por cortocircuito')}else if(K.prot&&K.prot.fus&&!S.blown){S.blown=true}else if(!(K.prot&&K.prot.q)){S.power=false;S.cut=true}}
+ const live=S.power&&!S.short;S.live=live;
+ S.coils={};K.sim.coils.forEach(c=>{const a=ph(c.a),b=ph(c.b);let en=false,burn=false;
+  if(live&&a&&b){if((a==='N'&&b!=='N')||(b==='N'&&a!=='N'))en=true;else if(a!=='N'&&b!=='N'&&a!==b)burn=true}
+  if(burn)S.burnt[c.id]=true;S.coils[c.id]=en&&!S.burnt[c.id]});
+ const M=K.sim.motor,p=M.n.map(ph);let mode='parado',dir=1;
+ const idx={R:0,S:1,T:2},perm=q=>((q[0]>q[1])+(q[0]>q[2])+(q[1]>q[2]))%2===0?1:-1;
+ if(live&&M.t==='m3'&&!p.includes('N')){const set=new Set(p.filter(x=>x&&x!=='N'));if(set.size===3){mode='directo';dir=perm(p.map(x=>idx[x]))}else if(set.size===2)mode='mono'}
+ else if(live&&M.t==='m6'){const roots=M.n.map(n=>uf.f(n)),cnt={};roots.forEach(r=>cnt[r]=(cnt[r]||0)+1);
+  const sIdx=roots.findIndex((r,i)=>!p[i]&&cnt[r]>=3),sr=sIdx>=0?roots[sIdx]:null,u1=p[0],v1=p[1],w1=p[2];
+  const three=u1&&v1&&w1&&['R','S','T'].includes(u1)&&['R','S','T'].includes(v1)&&['R','S','T'].includes(w1)&&new Set([u1,v1,w1]).size===3;
+  if(three&&sr&&roots[3]===sr&&roots[4]===sr&&roots[5]===sr){mode='estrella';dir=perm([u1,v1,w1].map(x=>idx[x]))}
+  else if(three&&p.every(Boolean)&&p[0]===p[3]&&p[1]===p[4]&&p[2]===p[5]&&p[0]!==p[4]&&p[1]!==p[5]&&p[2]!==p[3]){mode='triangulo';dir=perm([u1,v1,w1].map(x=>idx[x]))}
+  else if(!three&&p.slice(0,3).some(x=>x&&x!=='N')){mode='mono'}}
+ S.mode=mode;S.dir=dir;S.phn=p}
+function paso(dt){dt=Math.min(dt,.05);const ev=[];
+ K.sim.coils.forEach(c=>{const old=S.arms[c.id]||0,n=old+((S.coils[c.id]?1:0)-old)*Math.min(1,dt*(S.coils[c.id]?14:6));S.arms[c.id]=n;if(old<=.5&&n>.5)ev.push('clack');if(old>.5&&n<=.5)ev.push('tac')});
+ const T0=K.sim.timer;if(T0){if(S.coils[T0.coil]){S.kt.tm+=dt*2;if(!S.kt.out&&S.kt.tm>=T0.T){S.kt.out=true;ev.push('tac')}}else{S.kt.tm=0;if(S.kt.out){S.kt.out=false;ev.push('tac')}}}
+ const lock=S.carga==='b',run3=S.mode==='directo'||S.mode==='triangulo',tw=run3?(lock?0:S.carga==='s'?.97:1):S.mode==='estrella'?(lock?0:.86):S.mode==='mono'?.05:0;S.w+=(tw-S.w)*Math.min(1,dt/(tw?(S.mode==='estrella'?3:1.6):4));
+ let I=0;const f=S.carga==='s'?1.5:1;if(run3||S.mode==='estrella')I=K.In*(1+5*Math.pow(1-S.w,2))*f/(S.mode==='estrella'?3:1);else if(S.mode==='mono')I=K.In*(S.w<.3?5:2.6);S.I=I;
+ const tg=(I/K.In)**2,P=K.prot||{};
+ if(P.th&&!S.th.trip){if(I>0){const kf=S.w>.95?25:1;S.th.h+=(tg-S.th.h)*dt*kf/180;if(S.th.h>=1.25&&tg>1.25){S.th.trip=true;ev.push('clack')}}else if(S.th.h>0)S.th.h=Math.max(0,S.th.h-dt/15)}
+ if(P.q&&S.q.on&&!S.q.trip){if(I>0){const kf=S.w>.95?25:1;S.q.h+=(tg-S.q.h)*dt*kf/180;if(S.q.h>=1.25&&tg>1.25){S.q.trip='term';ev.push('clack')}}}
+ if(P.q&&(S.q.trip||!S.q.on||I<.1)&&S.q.h>0)S.q.h=Math.max(0,S.q.h-dt/20);
+ S.rot=(S.rot+S.w*dt*600)%360;return ev}
+/* ---------------- verificación ---------------- */
+function verificar(){const un=userNets(),rn=refNets();const missing=[],extra=[];
+ /* los de referencia deben estar unidos */
+ W.forEach((w,i)=>{if(un.f(w[0])!==un.f(w[1]))missing.push(i)});
+ /* los que están unidos por el usuario y no en referencia */
+ const used=new Set();wires.forEach(w=>{used.add(w.a);used.add(w.b)});const ids=[...used];
+ for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++){if(un.f(ids[i])===un.f(ids[j])&&rn.f(ids[i])!==rn.f(ids[j]))extra.push([ids[i],ids[j]])}
+ const badCol=wires.filter(w=>w.col&&w.ref>=0&&w.col!==W[w.ref][2]);
+ return{missing,extra,badCol,ok:!missing.length&&!extra.length&&wires.length>0}}
+const tn=id=>T[id].part+' '+T[id].lab;
+/* ---------------- geometría de entrada ---------------- */
+function toSvg(e){const m=svg.getScreenCTM();if(!m)return{x:0,y:0};const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const r=pt.matrixTransform(m.inverse());return{x:r.x,y:r.y}}
+function nearest(p,cap){let best=null,bd=cap||34;IDS.forEach(id=>{const d=Math.hypot(T[id].x-p.x,T[id].y-p.y);if(d<bd){bd=d;best=id}});return best}
+function addWire(a,b){if(a===b)return false;if(wires.some(w=>(w.a===a&&w.b===b)||(w.a===b&&w.b===a))){return false}
+ const idx=W.findIndex(w=>(w[0]===a&&w[1]===b)||(w[0]===b&&w[1]===a));
+ wires.push({id:wid++,a,b,ref:idx,col:wcol==='auto'?null:wcol});checked=null;hint=null;play('wire');return true}
+svg.addEventListener('pointerdown',e=>{audio();const p=toSvg(e);
+ const sq=e.target.closest('[data-sel2]');if(sq){S.sel[sq.dataset.sel2]=!S.sel[sq.dataset.sel2];play('clack');return}
+ const qq=e.target.closest('[data-q1]');if(qq){if(S.q.trip){S.q.trip='';S.q.on=false;play('tac')}else{S.q.on=!S.q.on;play('clack')}return}
+ const bt=e.target.closest('[data-btn]');if(bt){S.btn[bt.dataset.btn]=true;bt.setPointerCapture&&0;play('click');svg.dataset.press=bt.dataset.btn;try{svg.setPointerCapture(e.pointerId)}catch{}return}
+ const n=nearest(p);
+ if(n){if(pend&&pend!==n){addWire(pend,n);pend=null;selW=null;panel();bar();return}drag={from:n,x:p.x,y:p.y,moved:false};selW=null;try{svg.setPointerCapture(e.pointerId)}catch{};return}
+ const w=e.target.closest('[data-w]');if(w){selW=+w.dataset.w;pend=null;play('click');bar();return}
+ const pt=e.target.closest('[data-p]');selP=pt?pt.dataset.p:null;pend=null;selW=null;info();bar()});
+svg.addEventListener('pointermove',e=>{if(drag){const p=toSvg(e);drag.x=p.x;drag.y=p.y;if(Math.hypot(p.x-T[drag.from].x,p.y-T[drag.from].y)>12)drag.moved=true}});
+const up=e=>{if(svg.dataset.press){S.btn[svg.dataset.press]=false;delete svg.dataset.press;play('tac')}
+ if(drag){const p=toSvg(e),n=nearest(p,38);if(n&&n!==drag.from){addWire(drag.from,n);pend=null;panel();bar()}else if(!drag.moved||n===drag.from){pend=pend===drag.from?null:drag.from;play('tap');bar()}drag=null}};
+svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+addEventListener('keydown',e=>{if((e.key==='Delete'||e.key==='Backspace')&&selW){quitar()}});
+function quitar(){if(selW===null)return;wires=wires.filter(w=>w.id!==selW);selW=null;checked=null;play('rm');panel();bar()}
+/* ---------------- bucle ---------------- */
+let last=performance.now();
+function loop(ts){const dt=(ts-last)/1000;last=ts;t+=dt;
+ if(!document.hidden&&dt>0){solve();const ev=paso(dt);ev.forEach(play);solve();render();lectura()}
+ requestAnimationFrame(loop)}
+function render(){const ctx={S,wires,pend,drag,selW,hint,focusW,selP,t,cl,T,K,W,CH:window.CPH};
+ svg.innerHTML=window.DIBUJOS[K.dibujo](ctx)}
+/* ---------------- paneles ---------------- */
+const TABS=[['guia','Guía'],['prueba','Probar'],['piezas','Piezas'],['ej','Ejercicios']];
+function panel(){const p=$('#panel'),sc=p.scrollTop;let h=`<div class="tabs" role="tablist">${TABS.map(x=>`<button role="tab" data-tab="${x[0]}" aria-selected="${tab===x[0]}">${x[1]}</button>`).join('')}</div><div class="pb">`;
+ if(tab==='guia')h+=pGuia();else if(tab==='prueba')h+=pPrueba();else if(tab==='piezas')h+=pPiezas();else h+=pEj();
+ p.innerHTML=h+'</div>';p.scrollTop=sc;bindPanel()}
+function doneIdx(){const un=userNets();return W.map(w=>un.f(w[0])===un.f(w[1]))}
+function pGuia(){const d=doneIdx(),n=d.filter(Boolean).length;let h=`<h2>${K.titulo}</h2><p>${K.intro}</p><h3>Colores de los cables</h3><div style="display:flex;flex-wrap:wrap;gap:8px;font-size:.74rem">${Object.keys(K.COLORS).map(k=>`<span><span class="wl"><i style="display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;background:${K.COLORS[k]};border:1px solid #0006"></i></span> ${K.NAMES[k]}</span>`).join('')}</div>`;
+ h+=`<h3>Cables a tender (${n} de ${W.length})</h3><ol class="wl">${W.map((w,i)=>`<li data-wl="${i}" class="${d[i]?'done':''} ${focusW===i?'on':''}"><i>${d[i]?'✓':i+1}</i><span><b><span class="sw" style="background:${K.COLORS[w[2]]}"></span>${tn(w[0])} → ${tn(w[1])}</b>${focusW===i?`<span>${w[3]}</span>`:''}</span></li>`).join('')}</ol>`;
+ h+=`<div class="row"><button class="btn" data-a="ayuda">💡 Ayuda: mostrame el próximo cable</button></div>`;
+ h+=`<h3>Consejos</h3>${K.consejos.map(c=>`<p>• ${c}</p>`).join('')}`;return h}
+function pPrueba(){let h=`<h2>Verificá y probá</h2><p>1) Revisá el cableado contra el esquema. 2) Recién entonces energizá el tablero y probá los pulsadores.</p><div class="row"><button class="btn pri" data-a="verificar">✔ Verificar cableado</button><button class="btn" data-a="esquema">📐 Ver esquema</button></div>`;
+ if(checked){const c=checked;if(c.ok)h+=`<div class="vd ok">✅ ¡Cableado correcto! Todos los bornes están unidos como en el esquema y no hay uniones de más. Ahora energizá el tablero y probá S1 y S0.</div>`;
+  else{h+=`<div class="vd bad">El cableado tiene diferencias:</div>`;if(c.missing.length)h+=`<h3>Faltan (${c.missing.length})</h3>`+c.missing.slice(0,6).map(i=>`<p>• Unir <b>${tn(W[i][0])}</b> con <b>${tn(W[i][1])}</b></p>`).join('')+(c.missing.length>6?`<p>… y ${c.missing.length-6} más.</p>`:'');
+   if(c.extra.length)h+=`<h3>Sobran (${c.extra.length})</h3>`+c.extra.slice(0,5).map(p=>`<p>• <b>${tn(p[0])}</b> y <b>${tn(p[1])}</b> no deben estar unidos</p>`).join('')}}
+ if(checked&&checked.badCol&&checked.badCol.length)h+=`<h3>Colores (${checked.badCol.length})</h3>`+checked.badCol.slice(0,6).map(w=>`<p>• El cable <b>${tn(w.a)} → ${tn(w.b)}</b> debería ser <b>${K.NAMES[K.W[w.ref][2]]}</b>, no ${K.NAMES[w.col]}.</p>`).join('');
+ h+=`<h3>Funcionamiento</h3><div class="reads" id="rd"></div><div id="vivo"></div>`;
+ h+=`<h3>Carga del motor</h3><div style="display:flex;flex-wrap:wrap;gap:5px">${[['n','Normal'],['s','Sobrecarga 1,5×'],['b','Rotor trabado']].map(x=>`<button class="chip" data-carga="${x[0]}" aria-pressed="${S.carga===x[0]}">${x[1]}</button>`).join('')}</div><div class="row">${K.prot.th?`<button class="btn" data-a="rearmar" ${S.th.trip?'':'disabled'}>Rearmar F2</button>`:''}${K.prot.q?`<button class="btn" data-a="rq" ${S.q.trip?'':'disabled'}>Rearmar Q1</button>`:''}${K.prot.fus?`<button class="btn" data-a="fus" ${S.blown?'':'disabled'}>Cambiar fusibles</button>`:''}<button class="btn" data-a="bobina" ${Object.values(S.burnt).some(Boolean)?'':'disabled'}>Cambiar bobina</button></div>`;
+ h+=`<div class="row"><button class="btn" data-a="limpiar">🗑 Sacar todos los cables</button><button class="btn" data-a="auto">🪄 Mostrar resuelto</button></div>`;return h}
+function pPiezas(){return`<h2>Piezas del tablero</h2><p>Tocá una pieza en el dibujo o acá para saber qué es.</p>`+K.partsList.map(id=>{const p=K.PARTES[id];return`<div class="card" data-sel="${id}" style="cursor:pointer;border-left-color:${selP===id?'var(--yl)':'var(--bl)'}"><b>${p.t}</b>${p.d}</div>`}).join('')}
+function pEj(){const Q=K.ejercicios;if(qi>=Q.length)return`<h2>Resultado</h2><div class="vd ${score>=Q.length-1?'ok':'warn'}">Respondiste bien ${score} de ${Q.length}.</div><div class="row"><button class="btn pri" data-q="reset">Reintentar</button></div>`;
+ const q=Q[qi];let h=`<h2>Ejercicio ${qi+1} de ${Q.length}</h2><div class="q"><p><b>${q.q}</b></p>${q.o.map((x,i)=>`<button class="o ${answered===null?'':i===q.ok?'ok':i===answered?'no':''}" data-ans="${i}" ${answered!==null?'disabled':''}>${'ABC'[i]}) ${x}</button>`).join('')}</div>`;
+ if(answered!==null)h+=`<div class="vd ${answered===q.ok?'ok':'bad'}">${answered===q.ok?'¡Correcto! ':'No es esa. '}${q.why}</div><div class="row"><button class="btn pri" data-q="next">${qi===Q.length-1?'Ver resultado':'Siguiente ▶'}</button></div>`;return h}
+function lectura(){if(tab!=='prueba')return;const rd=$('#rd'),v=$('#vivo');if(!rd)return;
+ const mod={parado:'detenido',directo:'3 fases',estrella:'ESTRELLA (Y)',triangulo:'TRIÁNGULO (Δ)',mono:'sólo 2 fases'};
+ const R=[{l:'TABLERO',v:S.power?(S.short?'CORTOCIRCUITO':'con tensión'):(S.cut?'cortó el general':'sin tensión'),on:S.power&&!S.short,bad:!!S.short}];
+ K.sim.coils.forEach(c=>R.push({l:'BOBINA '+c.id,v:S.burnt[c.id]?'QUEMADA':S.coils[c.id]?'energizada':'sin tensión',on:S.coils[c.id],bad:S.burnt[c.id]}));
+ R.push({l:'MOTOR',v:mod[S.mode]+(S.w>.05?' · '+Math.round(S.w*1450)+' rpm':''),on:S.mode!=='parado'&&S.mode!=='mono'&&S.w>.5},{l:'CORRIENTE DE LÍNEA',v:fm(S.I,1)+' A',on:S.I>.1},{l:'SENTIDO',v:S.w>.05?(S.dir>0?'horario ⟳':'antihorario ⟲'):'—'});
+ if(K.prot.th)R.push({l:'RELÉ TÉRMICO F2',v:S.th.trip?'DISPARÓ':'calor '+Math.round(cl(S.th.h/1.25,0,1)*100)+' %',bad:S.th.trip,on:!S.th.trip});
+ if(K.prot.q)R.push({l:'GUARDAMOTOR Q1',v:S.q.trip?'DISPARÓ ('+(S.q.trip==='mag'?'magnético':'térmico')+')':S.q.on?'ON · calor '+Math.round(cl(S.q.h/1.25,0,1)*100)+' %':'OFF',bad:!!S.q.trip,on:S.q.on&&!S.q.trip});
+ if(K.prot.fus)R.push({l:'FUSIBLES F1',v:S.blown?'FUNDIDOS':'sanos',bad:S.blown,on:!S.blown});
+ const h=R.map(r=>`<div class="rd ${r.bad?'bad':r.on?'on':''}"><small>${r.l}</small><b>${r.v}</b></div>`).join('');if(rd.dataset.h!==h){rd.innerHTML=h;rd.dataset.h=h}
+ const m=diag();const hv=m.map(x=>`<div class="vd ${x[0]}">${x[1]}</div>`).join('');if(v&&v.dataset.h!==hv){v.innerHTML=hv;v.dataset.h=hv}}
+function diag(){const m=[];
+ if(!S.power)return[['warn',S.cut?'El disyuntor general cortó por un cortocircuito. Revisá el cableado y volvé a energizar.':'El tablero está sin tensión. Primero verificá el cableado; después tocá “Energizar”.']];
+ if(S.short)return[['bad','Cortocircuito entre '+S.short+': hay que cortar la alimentación y revisar los cables.']];
+ Object.keys(S.burnt).forEach(k=>{if(S.burnt[k])m.push(['bad','La bobina '+k+' quedó conectada entre dos fases (380 V) y se quemó. Debe ir entre una fase y neutro (220 V). Cambiala con el botón de abajo.'])});
+ if(S.th.trip)m.push(['bad','Disparó el relé térmico F2. Rearmalo cuando se enfríe.']);
+ if(S.q.trip)m.push(['bad','Disparó el guardamotor Q1 ('+(S.q.trip==='mag'?'magnético: cortocircuito':'térmico: sobrecarga')+'). Tocá su palanca para rearmar.']);
+ if(S.blown)m.push(['bad','Se fundieron los fusibles F1. Cambialos.']);
+ if(K.diag)K.diag(S,m,{fm});
+ if(!m.length){if(S.mode==='parado')m.push(['ok','Tablero energizado, motor detenido. Accioná los pulsadores de la puerta.']);else if(S.mode!=='mono')m.push(['ok','El motor gira '+(S.dir>0?'en sentido horario':'en sentido antihorario')+(S.mode==='estrella'?' en ESTRELLA (220 V por bobinado)':S.mode==='triangulo'?' en TRIÁNGULO (380 V por bobinado)':'')+' con '+fm(S.I,1)+' A.']);else m.push(['warn','El motor recibe sólo dos fases: falta o está mal un cable de potencia.'])}
+ return m}
+function bindPanel(){const p=$('#panel');
+ p.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;play('click');panel()});
+ p.querySelectorAll('[data-wl]').forEach(b=>b.onclick=()=>{const i=+b.dataset.wl;focusW=focusW===i?null:i;hint=focusW===null?null:W[i];play('click');panel()});
+ p.querySelectorAll('[data-sel]').forEach(b=>b.onclick=()=>{selP=selP===b.dataset.sel?null:b.dataset.sel;play('click');panel();info()});
+ p.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>acc(b.dataset.a));
+ p.querySelectorAll('[data-carga]').forEach(b=>b.onclick=()=>{S.carga=b.dataset.carga;play('click');panel()});
+ p.querySelectorAll('[data-ans]').forEach(b=>b.onclick=()=>{answered=+b.dataset.ans;const q=K.ejercicios[qi];if(answered===q.ok){score++;play('ok')}else play('no');panel()});
+ p.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const k=b.dataset.q;if(k==='next'){qi++;answered=null}else if(k==='reset'){qi=0;score=0;answered=null}play('click');panel()})}
+function acc(a){play('click');
+ if(a==='ayuda'){const d=doneIdx(),i=d.findIndex(x=>!x);if(i<0){hint=null;focusW=null}else{focusW=i;hint=W[i]}panel();return}
+ if(a==='verificar'){checked=verificar();play(checked.ok?'ok':'no');tab='prueba';panel();bar();return}
+ if(a==='esquema'){$('#esqF').src=K.esquema;$('#esq').classList.add('on');return}
+ if(a==='rearmar'){if(S.th.h<.6){S.th.trip=false;play('tac')}else play('no')}
+ if(a==='fus'){S.blown=false}if(a==='bobina'){S.burnt={}}if(a==='rq'){S.q.trip='';S.q.on=false;S.q.h=0}
+ if(a==='limpiar'){wires=[];selW=null;pend=null;checked=null;hint=null;nuevo()}
+ if(a==='auto'){wires=[];wid=1;W.forEach((w,i)=>wires.push({id:wid++,a:w[0],b:w[1],ref:i}));checked=null;play('wire')}
+ panel();bar()}
+$('#esqX').onclick=()=>{$('#esq').classList.remove('on');$('#esqF').src='about:blank'};
+function bar(){const b=$('#bar');
+ b.innerHTML=`<button class="chip pow" id="bPow" aria-pressed="${S.power}">${S.power?'⏻ Desenergizar':'⚡ Energizar el tablero'}</button><label class="chip" style="display:inline-flex;gap:5px;align-items:center">Cable: <select id="colSel" style="font:inherit;background:var(--p2);color:var(--tx);border:1px solid var(--line);border-radius:6px"><option value="auto">color automático</option>${Object.keys(K.COLORS).map(k=>`<option value="${k}" ${wcol===k?'selected':''}>${K.NAMES[k]}</option>`).join('')}</select></label><button class="chip" id="bDel" ${selW===null?'disabled':''}>🗑 Quitar cable</button><button class="chip" id="bVer">✔ Verificar</button><button class="chip" id="bZoom" aria-pressed="${$('#sv').classList.contains('zoom')}">🔍 Ampliar</button><div class="msg ${msgCls()}" id="msg">${msgTxt()}</div>`;
+ $('#bPow').onclick=()=>{if(!S.power){const v=verificar();if(!v.ok&&!confirm('El cableado todavía no coincide con el esquema. ¿Energizar igual? (Podés provocar un cortocircuito.)')){return}S.power=true;S.blown=false;play('clack')}else{S.power=false;play('tac')}bar();panel()};
+ $('#bZoom').onclick=e=>{const z=$('#sv').classList.toggle('zoom');e.currentTarget.setAttribute('aria-pressed',String(z));play('click')};
+ $('#colSel').onchange=e=>{wcol=e.target.value;play('click')};
+ $('#bDel').onclick=quitar;$('#bVer').onclick=()=>acc('verificar')}
+const msgTxt=()=>pend?'Elegido <b>'+tn(pend)+'</b>. Tocá el otro borne para unirlos.':selW!==null?'Cable seleccionado. Tocá “Quitar cable” para sacarlo.':wires.length?wires.length+' cable'+(wires.length>1?'s':'')+' tendido'+(wires.length>1?'s':'')+'. Verificá cuando termines.':'Tocá un borne y después otro (o arrastrá) para tender un cable.';
+const msgCls=()=>pend?'warn':'';
+function info(){const b=$('#info');if(!selP||!K.PARTES[selP]){b.hidden=true;return}const p=K.PARTES[selP];b.hidden=false;b.innerHTML=`<button aria-label="Cerrar">✕</button><b>${p.t}</b><br>${p.d}`;b.querySelector('button').onclick=()=>{selP=null;info()}}
+/* actualizar mensaje barra cuando cambian pend/selW */
+let lastB='';setInterval(()=>{const m=msgTxt()+(selW??'')+wires.length+S.power;if(m!==lastB){lastB=m;const e=$('#msg');if(e){e.innerHTML=msgTxt();e.className='msg '+msgCls()}const d=$('#bDel');if(d)d.disabled=selW===null}},150);
+/* ---------------- ajustes ---------------- */
+const embedded=window.parent!==window;if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
+const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
+function apply(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra))}
+function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
+window.addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
+$('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply();avisar()};
+$('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply();avisar()};
+const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;
+$('#bFull').onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else(el.requestFullscreen||el.webkitRequestFullscreen).call(el)};
+$('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('click')}};
+const phone=()=>matchMedia('(max-width:950px)').matches;
+function setPanel(o){$('#panel').classList.toggle('closed',!o);$('#bPanel').setAttribute('aria-pressed',String(o))}
+$('#bPanel').onclick=()=>setPanel($('#panel').classList.contains('closed'));
+document.title=K.titulo;$('#title').textContent=K.titulo;$('#sub').textContent='Mando de motores · Tableros para cablear';
+apply();setPanel(!phone());panel();bar();info();requestAnimationFrame(loop);
+window.__tab={K,S:()=>S,wires:()=>wires,addWire,verificar,solve,paso,press:(n,v)=>{S.btn[n]=v},sel:(n,v)=>{S.sel[n]=v},set:(k,v)=>{S[k]=v},power:v=>{S.power=v},render:()=>{solve();render()},auto:()=>acc('auto'),clear:()=>acc('limpiar')};
+})();
+</script><script src="autor.js"></script></body></html>

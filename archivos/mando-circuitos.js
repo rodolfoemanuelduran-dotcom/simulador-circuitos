@@ -251,6 +251,178 @@ const sd={
   {q:'¿Para qué sirven los NC cruzados entre KM2 y KM3?',o:['Para encender lámparas','Para que nunca cierren al mismo tiempo','Para retener KM1'],ok:1,why:'Si cerraran juntos habría un cortocircuito entre fases.'},
   {q:'¿Qué componente define cuánto tiempo dura el arranque en estrella?',o:['El temporizador KT1','El guardamotor Q1','El pulsador S0'],ok:0,why:'KT1 mide el tiempo y cambia los contactos de estrella a triángulo.'}]
 };
+/* ============================================================ 5. MONOFÁSICO DIRECTO */
+const monoDir={
+ titulo:'Arranque directo monofásico (220 V)',
+ intro:'Un motor monofásico (por ejemplo de 0,75 kW) se alimenta con fase y neutro, 220 V. Un interruptor termomagnético (Q1) lo protege y un contactor (KM1) lo conecta con una selectora. Es el mismo principio que el trifásico pero con un solo conductor de fase conmutado.',
+ queEs:'Bombas domiciliarias, compresores chicos, portones, máquinas de taller con motor monofásico.',
+ coils:['KM1'],prot:{q:true},In:4.5,Ir:4.5,mono:true,
+ items:[
+  {t:'bus',id:'busF',n:'F',y:70,x1:100,x2:960,lab:'F'},{t:'bus',id:'busN',n:'N',y:525,x1:100,x2:960,lab:'N'},
+  pol('Q1a',140,95,'F','q1','q:Q1',{deco:'q',fase:true,term:['1','2'],lab:'Q1'}),{t:'qh',id:'Q1',x:60,y:95,h:64},
+  pol('KM1a',140,190,'q1','m1','coil:KM1',{peg:true,term:['1','2'],lab:'KM1'}),
+  {t:'m1',id:'M',x:180,y:300,n:['m1','N']},
+  {t:'cont',id:'S1',op:'sel',x:640,y:110,h:60,n1:'F',n2:'c1',ctl:'sel:S1',form:'NO',lab:'S1',term:['13','14']},
+  {t:'coil',id:'KM1',x:640,y:200,n1:'c1',n2:'N',lab:'KM1'},
+  {t:'cont',id:'KM1x',x:740,y:110,h:60,n1:'F',n2:'c2',ctl:'coil:KM1',form:'NO',lab:'KM1',term:['13','14']},
+  {t:'lamp',id:'H1',x:740,y:200,n1:'c2',n2:'N',lab:'H1 marcha',col:GRN},
+  {t:'cont',id:'Q1x',x:860,y:110,h:60,n1:'F',n2:'c3',ctl:'qt:Q1',form:'NO',lab:'Q1',term:['97','98']},
+  {t:'lamp',id:'H2',x:860,y:200,n1:'c3',n2:'N',lab:'H2 falla',col:RED}],
+ links:[{pts:[[140,222],[110,222],[110,227],[560,227],[560,225],[610,225]],ctl:'coil:KM1'},{pts:[[670,225],[705,225],[705,140],[740,140]],ctl:'coil:KM1'}],
+ labels:[{x:260,y:30,t:'POTENCIA · 220 V',c:'c t'},{x:790,y:30,t:'MANDO · 220 V',c:'c t'},{x:180,y:430,t:'Motor monofásico',c:'c s'}],
+ parts:{
+  Q1:{n:'Q1',t:'Q1 · Termomagnética',d:'Protege contra sobrecarga (térmica) y cortocircuito (magnética). Se maniobra a mano: tocala.'},
+  Q1a:{n:'Q1',t:'Contacto de Q1',d:'Interrumpe la fase. El neutro va directo al motor.'},
+  KM1a:{n:'KM1',t:'KM1 · Contacto principal',d:'Conmuta el conductor de fase hacia el motor. Aquí alcanza con un solo polo porque el neutro no se interrumpe.'},
+  KM1:{n:'KM1',t:'KM1 · Bobina',d:'Electroimán de 220 V entre fase (F) y neutro (N).'},
+  M:{n:'M',t:'M · Motor monofásico',d:'0,75 kW, 220 V, 4,5 A. Necesita un capacitor de arranque o marcha para generar el campo giratorio (no se muestra).'},
+  S1:{n:'S1',t:'S1 · Selectora ON/OFF',d:'Mantiene su posición y comanda la bobina.'},
+  KM1x:{n:'KM1 (13-14)',t:'KM1 · Auxiliar NA',d:'Enciende la lámpara de marcha.'},H1:{n:'H1',t:'H1 · Lámpara verde',d:'Marcha.'},Q1x:{n:'Q1 (97-98)',t:'Q1 · Señalización',d:'Se cierra si Q1 dispara.'},H2:{n:'H2',t:'H2 · Lámpara roja',d:'Falla de Q1.'}},
+ partsList:['Q1','KM1a','KM1','M','S1','KM1x','H1','Q1x','H2'],
+ fallas:[{id:'fase',t:'Se corta el conductor de fase',d:'Un cable de fase se corta antes del contactor.'}],
+ pasos:[
+  {t:'Reconocé el circuito',hl:['Q1','KM1a','M','S1','KM1'],x:'En monofásico sólo hay <b>fase (F)</b> y <b>neutro (N)</b>: 220 V entre ambos. Las protecciones y el contactor interrumpen la fase; el neutro va directo. El mando usa también F y N.',hint:'Tocá las piezas para leer qué son.'},
+  {t:'¿Qué tensión tiene el motor?',hl:['M'],pred:{q:'El motor monofásico está entre F y N. ¿Qué tensión recibe cuando KM1 cierra?',o:['380 V','220 V','110 V'],ok:1,why:'La tensión fase-neutro en Argentina es 220 V; 380 V es entre dos fases (trifásico).'},x:'Mirá el motor: sólo tiene dos bornes (L y N).'},
+  {t:'Arrancá el motor',hl:['S1','KM1','KM1a'],hint:'Tocá la selectora S1 para ponerla en ON.',wait:S=>S.sel.S1&&S.mode==='directo',expl:'La corriente del mando pasó por S1 y la bobina; KM1 cerró y el motor se alimentó con F y N.'},
+  {t:'Protección: sobrecarga',hl:['Q1'],prep:S=>{S.carga='s'},pred:{q:'Con sobrecarga sostenida, ¿qué hace la termomagnética?',o:['Dispara por temperatura después de un tiempo','Dispara al instante','No dispara'],ok:0,why:'La parte térmica reacciona con el calentamiento: tarda más cuanto menor es la sobrecarga.'},hint:'Poné S1 en ON y esperá.',wait:S=>S.q.trip==='term'},
+  {t:'Protección: cortocircuito',hl:['Q1'],prep:S=>{S.carga='cc'},hint:'Poné S1 en ON.',wait:S=>S.q.trip==='mag',expl:'El disparo magnético actuó en milisegundos.'}],
+ comentario(S){const c=[];if(S.sel.S1&&S.mode==='directo')c.push(['Fase y neutro','El motor se alimenta con 220 V entre F y N. Sólo la fase se interrumpe con KM1.']);if(S.q.trip)c.push(['Q1 disparó','La fase quedó abierta en Q1: el motor se detiene aunque KM1 siga cerrado.']);return c},
+ ejercicios:[
+  {q:'La tensión de un motor monofásico en Argentina es…',o:['380 V','220 V','24 V'],ok:1,why:'220 V entre fase y neutro.'},
+  {q:'¿Qué conductor interrumpe KM1 en este circuito?',o:['La fase','El neutro','El de tierra'],ok:0,why:'Se interrumpe la fase; el neutro va directo al motor.'},
+  {q:'¿Qué protege contra cortocircuito a Q1?',o:['La parte térmica','La parte magnética','La lámpara'],ok:1,why:'La magnética es instantánea.'}]
+};
+/* ============================================================ 6. MONOFÁSICO MARCHA-PARADA */
+const monoMP={
+ titulo:'Marcha-parada monofásica con retención',
+ intro:'Igual que el trifásico con pulsadores, pero con un motor monofásico de 220 V: fusible en la fase, contactor de un polo, relé térmico y retención con el contacto auxiliar.',
+ queEs:'Es el circuito típico de una bomba, una compresora o una máquina chica de taller.',
+ coils:['KM1'],prot:{th:true,fus:true},In:4.5,Ir:4.5,mono:true,
+ items:[
+  {t:'bus',id:'busF',n:'F',y:70,x1:100,x2:960,lab:'F'},{t:'bus',id:'busN',n:'N',y:525,x1:100,x2:960,lab:'N'},
+  {t:'fuse',id:'F1a',x:140,y:92,h:52,n1:'F',n2:'f1',lab:'F1'},
+  pol('KM1a',140,165,'f1','k1','coil:KM1',{lab:'KM1',term:['1','2'],fase:true}),
+  {t:'heater',id:'F2a',x:140,y:250,h:48,n1:'k1',n2:'h1',lab:'F2'},
+  {t:'m1',id:'M',x:180,y:335,n:['h1','N']},
+  {t:'cont',id:'F2n',x:620,y:90,h:52,n1:'F',n2:'d1',ctl:'th:F2',form:'NC',lab:'F2',term:['95','96']},
+  {t:'cont',id:'S0',op:'btn',x:620,y:150,h:52,n1:'d1',n2:'d2',ctl:'btn:S0',form:'NC',lab:'S0',term:['1','2']},
+  {t:'cont',id:'S1',op:'btn',x:585,y:215,h:52,n1:'d2',n2:'d3',ctl:'btn:S1',form:'NO',lab:'S1',term:['3','4']},
+  {t:'cont',id:'KM1r',x:695,y:215,h:52,n1:'d2',n2:'d3',ctl:'coil:KM1',form:'NO',lab:'KM1',term:['13','14']},
+  {t:'coil',id:'KM1',x:640,y:290,n1:'d3',n2:'N',lab:'KM1'},
+  {t:'cont',id:'KM1y',x:790,y:90,h:52,n1:'F',n2:'e1',ctl:'coil:KM1',form:'NO',lab:'KM1',term:['23','24']},
+  {t:'lamp',id:'H1',x:790,y:165,n1:'e1',n2:'N',lab:'H1 marcha',col:GRN},
+  {t:'cont',id:'F2z',x:900,y:90,h:52,n1:'F',n2:'e2',ctl:'th:F2',form:'NO',lab:'F2',term:['97','98']},
+  {t:'lamp',id:'H2',x:900,y:165,n1:'e2',n2:'N',lab:'H2 falla',col:RED}],
+ links:[{pts:[[140,197],[110,197]],ctl:'coil:KM1'},{pts:[[670,315],[740,315],[740,241],[695,241]],ctl:'coil:KM1'},{pts:[[670,320],[750,320],[750,116],[790,116]],ctl:'coil:KM1'}],
+ labels:[{x:260,y:30,t:'POTENCIA · 220 V',c:'c t'},{x:790,y:30,t:'MANDO · 220 V',c:'c t'}],
+ parts:{
+  F1a:{n:'F1',t:'F1 · Fusible',d:'Protege contra cortocircuitos en la fase.'},KM1a:{n:'KM1',t:'KM1 · Contacto principal',d:'Conmuta la fase hacia el motor.'},
+  F2a:{n:'F2',t:'F2 · Relé térmico',d:'Protege contra sobrecargas.'},M:{n:'M',t:'M · Motor monofásico',d:'0,75 kW, 220 V, 4,5 A.'},
+  F2n:{n:'F2 (95-96)',t:'F2 · NC del térmico',d:'En serie con la bobina: si dispara, abre.'},
+  S0:{n:'S0',t:'S0 · Parada (NC)',d:'Corta el mando.'},S1:{n:'S1',t:'S1 · Marcha (NA)',d:'Energiza la bobina.'},
+  KM1r:{n:'KM1 (13-14)',t:'KM1 · Retención',d:'En paralelo con S1: mantiene la bobina al soltarlo.'},KM1:{n:'KM1',t:'KM1 · Bobina',d:'220 V entre F y N.'},
+  KM1y:{n:'KM1 (23-24)',t:'KM1 · Auxiliar',d:'Lámpara de marcha.'},H1:{n:'H1',t:'H1',d:'Marcha.'},F2z:{n:'F2 (97-98)',t:'F2 · NA',d:'Se cierra al disparar.'},H2:{n:'H2',t:'H2',d:'Falla.'}},
+ partsList:['F1a','KM1a','F2a','M','F2n','S0','S1','KM1r','KM1','H1','H2'],
+ fallas:[{id:'fase',t:'Se corta la fase',d:'Cable de fase interrumpido.'}],
+ pasos:[
+  {t:'Reconocé el circuito',hl:['S0','S1','KM1r','KM1'],x:'El camino de mando es el mismo que en el trifásico: F → F2 (95-96) → S0 → [S1 ∥ KM1 (13-14)] → KM1 → N. Sólo cambia la potencia: fase y neutro.',hint:'Tocá S0, S1 y KM1 (13-14).'},
+  {t:'Presioná y soltá S1',hl:['S1','KM1r'],pred:{q:'Soltás S1. ¿Qué mantiene energizada la bobina?',o:['El propio contacto 13-14 de KM1','El fusible','S0'],ok:0,why:'La retención: el contacto auxiliar queda en paralelo con S1.'},hint:'Mantené apretado S1 y soltalo.',wait:S=>S.mode==='directo'&&!S.btn.S1&&S.arm.KM1>.9},
+  {t:'Detené con S0',hl:['S0'],prep:S=>{S.arm.KM1=1;S.w=1},hint:'Presioná S0.',wait:S=>S.mode==='parado'&&!S.btn.S0},
+  {t:'Sobrecarga',hl:['F2a','F2n'],prep:S=>{S.carga='s';S.arm.KM1=1;S.w=.97},hint:'Esperá a que dispare el térmico.',wait:S=>S.th.trip,expl:'El NC 95-96 se abrió y cortó la bobina.'}],
+ comentario(S){const c=[];if(S.coil.KM1&&!S.btn.S1&&S.arm.KM1>.9)c.push(['Retención activa','S1 está suelto; la corriente llega a la bobina por KM1 (13-14).']);if(S.th.trip)c.push(['Térmico disparado','El contacto 95-96 está abierto.']);return c},
+ ejercicios:[
+  {q:'¿Qué conductor se fusiona con F1?',o:['La fase','El neutro','Ambos siempre'],ok:0,why:'Se protege la fase; el neutro no se interrumpe.'},
+  {q:'S0 es NC porque…',o:['Es más barato','Falla de forma segura','Arranca más rápido'],ok:1,why:'Un cable cortado detiene la máquina.'},
+  {q:'El 13-14 de KM1 está sucio. ¿Qué pasa al soltar S1?',o:['El motor sigue','Se detiene','Dispara el térmico'],ok:1,why:'Sin retención la bobina se cae.'}]
+};
+/* ============================================================ 7. MARCHA POR IMPULSOS */
+const impulsos={
+ titulo:'Marcha por impulsos y marcha permanente',
+ intro:'Con una selectora S3 se elige el modo: en PERMANENTE el circuito se retiene como siempre; en IMPULSOS se anula la retención y el motor gira sólo mientras se mantiene apretado S1. Sirve para ajustar y posicionar máquinas con movimientos cortos.',
+ queEs:'Tornos, prensas, cintas y puentes grúa: el operario necesita “acercar” la pieza con pequeños giros.',
+ coils:['KM1'],prot:{q:true},In:3.6,Ir:3.6,
+ items:[
+  {t:'bus',id:'busF',n:'F',y:70,x1:600,x2:970,lab:'F'},{t:'bus',id:'busN',n:'N',y:525,x1:600,x2:970,lab:'N'},
+  R('R',100,70),R('S',190,70),R('T',280,70),
+  pol('Q1a',100,95,'R','r1','q:Q1',{deco:'q',term:['1','2']}),pol('Q1b',190,95,'S','s1','q:Q1',{deco:'q',fase:true,term:['3','4']}),pol('Q1c',280,95,'T','t1','q:Q1',{deco:'q',term:['5','6']}),{t:'qh',id:'Q1',x:40,y:95,h:64},
+  pol('KM1a',100,185,'r1','m1','coil:KM1',{lab:'KM1',term:['1','2']}),pol('KM1b',190,185,'s1','m2','coil:KM1',{term:['3','4']}),pol('KM1c',280,185,'t1','m3','coil:KM1',{term:['5','6']}),
+  {t:'m3',id:'M',x:190,y:320,n:['m1','m2','m3']},
+  {t:'cont',id:'S0',op:'btn',x:760,y:90,h:52,n1:'F',n2:'n0',ctl:'btn:S0',form:'NC',lab:'S0',term:['1','2']},
+  {t:'cont',id:'S1',op:'btn',x:650,y:152,h:52,n1:'n0',n2:'p1',ctl:'btn:S1',form:'NO',lab:'S1',term:['3','4']},
+  {t:'cont',id:'KM1r',x:810,y:152,h:52,n1:'n0',n2:'r1x',ctl:'coil:KM1',form:'NO',lab:'KM1',term:['13','14']},
+  {t:'cont',id:'S3',op:'sel',x:810,y:214,h:52,n1:'r1x',n2:'p1',ctl:'sel:S3',form:'NO',lab:'S3',term:['23','24']},
+  {t:'coil',id:'KM1',x:730,y:292,n1:'p1',n2:'N',lab:'KM1'},
+  {t:'cont',id:'KM1y',x:910,y:100,h:52,n1:'F',n2:'e1',ctl:'coil:KM1',form:'NO',lab:'KM1',term:['43','44']},
+  {t:'lamp',id:'H1',x:910,y:170,n1:'e1',n2:'N',lab:'H1',col:GRN}],
+ nodes:{p1:{jy:280}},
+ links:[{pts:[[100,217],[280,217]],ctl:'coil:KM1'},{pts:[[100,127],[280,127]],ctl:'q:Q1'}],
+ labels:[{x:190,y:30,t:'POTENCIA · 380 V',c:'c t'},{x:785,y:30,t:'MANDO · 220 V',c:'c t'},{x:880,y:262,t:'S3: ON = permanente',c:'s'},{x:880,y:278,t:'S3: OFF = impulsos',c:'s'}],
+ parts:{
+  Q1:{n:'Q1',t:'Q1 · Guardamotor',d:'Protección del motor.'},KM1a:{n:'KM1',t:'KM1 · Contactor',d:'Conecta el motor a la red.'},M:{n:'M',t:'M · Motor',d:'Trifásico 1,5 kW.'},
+  S0:{n:'S0',t:'S0 · Parada',d:'NC: corta el mando.'},S1:{n:'S1',t:'S1 · Marcha / impulso',d:'Cierra el circuito hacia la bobina. En impulsos, el motor gira sólo mientras se mantiene apretado.'},
+  KM1r:{n:'KM1 (13-14)',t:'KM1 · Contacto de retención',d:'Retiene a KM1, pero sólo si S3 deja pasar la corriente.'},
+  S3:{n:'S3',t:'S3 · Selectora permanente / impulsos',d:'Está en serie con el contacto de retención. En OFF abre ese camino y anula la retención: el modo es “impulsos”. En ON habilita la retención.'},
+  KM1:{n:'KM1',t:'KM1 · Bobina',d:'220 V.'},KM1y:{n:'KM1',t:'KM1 · Auxiliar',d:'Lámpara.'},H1:{n:'H1',t:'H1',d:'Marcha.'}},
+ partsList:['Q1','KM1a','M','S0','S1','KM1r','S3','KM1'],
+ fallas:[{id:'fase',t:'Falta la fase S',d:'Motor con 2 fases.'}],
+ pasos:[
+  {t:'Reconocé el circuito',hl:['S3','KM1r','S1'],x:'Es un circuito de marcha-parada, pero el contacto de retención <b>KM1 (13-14)</b> pasa por una selectora <b>S3</b>. Si S3 está abierta, no hay retención.',hint:'Tocá S3 y KM1 (13-14) para leer qué hacen.'},
+  {t:'Modo impulsos (S3 en OFF)',hl:['S1','S3'],pred:{q:'S3 está en OFF. Presionás S1 y lo soltás. ¿Qué pasa?',o:['El motor gira mientras S1 está apretado y se detiene al soltarlo','El motor sigue girando','No gira nunca'],ok:0,why:'Sin retención, la bobina sólo se energiza por S1.'},hint:'Mantené apretado S1 un momento y soltalo.',wait:S=>!S.btn.S1&&S.w>.05&&S.arm.KM1<.5&&!S.sel.S3,expl:'El motor giró sólo durante el impulso: así se posiciona una máquina con precisión.'},
+  {t:'Modo permanente (S3 en ON)',hl:['S3','KM1r'],pred:{q:'Ahora poné S3 en ON y presioná S1. ¿Qué cambia?',o:['Nada','Ahora hay retención y el motor sigue al soltar S1','Se funde un fusible'],ok:1,why:'S3 en ON habilita el camino de retención KM1 (13-14).'},hint:'Poné S3 en ON, presioná S1 y soltalo.',wait:S=>S.sel.S3&&!S.btn.S1&&S.arm.KM1>.9&&S.mode==='directo'},
+  {t:'Parada',hl:['S0'],hint:'Presioná S0 para detener.',wait:S=>S.sel.S3&&S.mode==='parado'&&S.w<.9}],
+ comentario(S){const c=[];if(S.sel.S3)c.push(['Modo permanente','S3 cerrada: la retención KM1 (13-14) está habilitada.']);else c.push(['Modo impulsos','S3 abierta: el contacto de retención no sirve; el motor gira sólo mientras se aprieta S1.']);return c},
+ ejercicios:[
+  {q:'¿Para qué sirve la marcha por impulsos?',o:['Para ajustar posiciones con giros cortos','Para ahorrar energía','Para invertir el giro'],ok:0,why:'El operario acerca o posiciona con movimientos pequeños.'},
+  {q:'¿Qué hace S3 abierta?',o:['Anula la retención','Corta la potencia','Enciende la lámpara'],ok:0,why:'Abre el camino del contacto 13-14.'},
+  {q:'En modo permanente se detiene con…',o:['S0','S3 nada más','Soltando S1'],ok:0,why:'S0 corta el mando y quita la retención.'}]
+};
+/* ============================================================ 8. ARRANQUE TEMPORIZADO */
+const temporizado={
+ titulo:'Arranque temporizado (retardo a la conexión)',
+ intro:'Al presionar S1 no arranca el motor enseguida: se energizan un relé auxiliar KA1 (que se retiene) y el temporizador KT1. Cuando KT1 cumple su tiempo, su contacto retardado energiza el contactor KM1 y el motor arranca.',
+ queEs:'Se usa cuando hay que esperar antes de arrancar: prelubricación, ventilación previa de un quemador, secuencia de cintas transportadoras.',
+ coils:['KM1','KA1'],prot:{q:true},In:3.6,Ir:3.6,T:5,
+ items:[
+  {t:'bus',id:'busF',n:'F',y:60,x1:600,x2:970,lab:'F'},{t:'bus',id:'busN',n:'N',y:535,x1:600,x2:970,lab:'N'},
+  R('R',100,70),R('S',190,70),R('T',280,70),
+  pol('Q1a',100,95,'R','r1','q:Q1',{deco:'q',term:['1','2']}),pol('Q1b',190,95,'S','s1','q:Q1',{deco:'q',fase:true,term:['3','4']}),pol('Q1c',280,95,'T','t1','q:Q1',{deco:'q',term:['5','6']}),{t:'qh',id:'Q1',x:40,y:95,h:64},
+  pol('KM1a',100,185,'r1','m1','coil:KM1',{lab:'KM1',term:['1','2']}),pol('KM1b',190,185,'s1','m2','coil:KM1',{term:['3','4']}),pol('KM1c',280,185,'t1','m3','coil:KM1',{term:['5','6']}),
+  {t:'m3',id:'M',x:190,y:320,n:['m1','m2','m3']},
+  {t:'cont',id:'S0',op:'btn',x:760,y:80,h:52,n1:'F',n2:'n0',ctl:'btn:S0',form:'NC',lab:'S0',term:['1','2']},
+  {t:'cont',id:'S1',op:'btn',x:670,y:142,h:52,n1:'n0',n2:'n1',ctl:'btn:S1',form:'NO',lab:'S1',term:['3','4']},
+  {t:'cont',id:'KAr',x:840,y:142,h:52,n1:'n0',n2:'n1',ctl:'coil:KA1',form:'NO',lab:'KA1',term:['13','14']},
+  {t:'coil',id:'KA1',x:650,y:262,n1:'n1',n2:'N',lab:'KA1'},{t:'coil',id:'KT1',x:735,y:262,n1:'n1',n2:'N',lab:'KT1'},
+  {t:'cont',id:'KTa',x:860,y:240,h:52,n1:'n1',n2:'g1',ctl:'kt:KT1',form:'NO',lab:'KT1',term:['15','18']},
+  {t:'coil',id:'KM1',x:860,y:320,n1:'g1',n2:'N',lab:'KM1'},
+  {t:'cont',id:'KM1y',x:940,y:240,h:52,n1:'n1',n2:'e1',ctl:'coil:KM1',form:'NO',lab:'KM1',term:['13','14']},{t:'lamp',id:'H1',x:940,y:320,n1:'e1',n2:'N',lab:'H1',col:GRN}],
+ nodes:{n1:{jy:218}},
+ links:[{pts:[[100,217],[280,217]],ctl:'coil:KM1'},{pts:[[100,127],[280,127]],ctl:'q:Q1'}],
+ labels:[{x:190,y:30,t:'POTENCIA · 380 V',c:'c t'},{x:790,y:28,t:'MANDO · 220 V',c:'c t'}],
+ parts:{
+  Q1:{n:'Q1',t:'Q1 · Guardamotor',d:'Protección del motor.'},KM1a:{n:'KM1',t:'KM1 · Contactor',d:'Conecta el motor. Su bobina recibe tensión recién cuando KT1 cumple el tiempo.'},M:{n:'M',t:'M · Motor',d:'Trifásico.'},
+  S0:{n:'S0',t:'S0 · Parada',d:'Corta el mando (NC).'},S1:{n:'S1',t:'S1 · Marcha',d:'Inicia la secuencia.'},
+  KAr:{n:'KA1 (13-14)',t:'KA1 · Retención',d:'KA1 se retiene a sí mismo para mantener alimentado al temporizador aunque se suelte S1.'},
+  KA1:{n:'KA1',t:'KA1 · Relé auxiliar',d:'Memoriza la orden de marcha.'},
+  KT1:{n:'KT1',t:'KT1 · Temporizador',d:'Cuenta el tiempo regulado desde que se energiza.'},
+  KTa:{n:'KT1 (15-18)',t:'KT1 · Contacto retardado',d:'Se cierra al cumplirse el tiempo y energiza KM1.'},
+  KM1:{n:'KM1',t:'KM1 · Bobina',d:'Cierra la potencia.'},KM1y:{n:'KM1',t:'KM1 · Auxiliar',d:'Lámpara.'},H1:{n:'H1',t:'H1',d:'Marcha.'}},
+ partsList:['Q1','KM1a','S1','KAr','KA1','KT1','KTa','KM1'],
+ fallas:[{id:'fase',t:'Falta la fase S',d:'Motor con 2 fases.'}],
+ pasos:[
+  {t:'Reconocé el circuito',hl:['KA1','KT1','KTa','KM1'],x:'S1 no alimenta a KM1 directamente. Alimenta a <b>KA1</b> (que se retiene) y a <b>KT1</b> (el temporizador). El contacto <b>KT1 (15-18)</b>, que se cierra tras el retardo, es el que energiza KM1.',hint:'Tocá KA1, KT1 y su contacto retardado.'},
+  {t:'Presioná S1',hl:['S1','KAr','KT1'],pred:{q:'Presionás S1. ¿Arranca el motor al instante?',o:['Sí','No: espera el tiempo del temporizador','Nunca arranca'],ok:1,why:'KM1 sólo se energiza cuando KT1 cierra su contacto retardado.'},hint:'Presioná S1 y soltalo. Mirá cómo cuenta KT1 en “En vivo”.',wait:S=>S.coil.KT1&&!S.btn.S1&&S.arm.KM1<.5,expl:'KA1 se retuvo y KT1 empezó a contar; el motor todavía no arrancó.'},
+  {t:'Termina el tiempo',hl:['KTa','KM1','M'],hint:'Esperá a que KT1 cumpla su tiempo.',wait:S=>S.mode==='directo',expl:'El contacto retardado se cerró, KM1 se energizó y el motor arrancó. Todo el tiempo estuvo la orden “memorizada” por KA1.'},
+  {t:'Parada',hl:['S0'],hint:'Presioná S0.',wait:S=>S.mode==='parado',expl:'S0 cortó el mando: KA1, KT1 y KM1 cayeron y el temporizador se reinició.'}],
+ comentario(S){const c=[];if(S.coil.KT1&&!S.kt.out)c.push(['Temporizando','KT1 cuenta '+S.kt.tm.toFixed(1).replace('.',',')+' s de '+S.T+' s. KM1 todavía no tiene tensión.']);if(S.kt.out&&S.coil.KM1)c.push(['Tiempo cumplido','El contacto KT1 (15-18) cerró y energizó a KM1.']);return c},
+ ejercicios:[
+  {q:'¿Qué hace KA1 en este circuito?',o:['Memoriza la orden de marcha (retención)','Mide la corriente','Protege contra cortocircuito'],ok:0,why:'Se retiene y mantiene energizado a KT1.'},
+  {q:'¿Cuándo se energiza KM1?',o:['Apenas se presiona S1','Cuando KT1 cierra su contacto retardado','Al soltar S1'],ok:1,why:'Después del tiempo regulado.'},
+  {q:'Aplicación típica de un arranque temporizado:',o:['Prelubricación antes de arrancar','Invertir el giro','Medir tensión'],ok:0,why:'Primero arranca la bomba de aceite y luego el motor principal.'}]
+};
+window.CIRCUITOS['mono-directo']=monoDir;
+window.CIRCUITOS['mono-marcha-parada']=monoMP;
+window.CIRCUITOS['tri-impulsos']=impulsos;
+window.CIRCUITOS['tri-temporizado']=temporizado;
 window.CIRCUITOS['tri-directo']=directo;
 window.CIRCUITOS['tri-enclavamiento']=enclav;
 window.CIRCUITOS['tri-inversion']=inversion;

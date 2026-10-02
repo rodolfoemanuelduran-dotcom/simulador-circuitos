@@ -1,0 +1,83 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Símbolos y designaciones</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--yl:#ffd65a;--line:#2b425f;--hdr:#08141f;--ink:#e9f1fa}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--yl:#a56a00;--line:#b3c2d4;--hdr:#fff;--ink:#14253a}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--tx);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:var(--hdr);border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:1.02rem}header small{display:block;color:var(--mu);font-size:.68rem}
+main{flex:1 1 auto;overflow:auto;padding:14px;max-width:1100px;width:100%;margin:0 auto}
+h2{margin:18px 0 8px;font-size:1.05rem;color:var(--bl)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.card{display:flex;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--p)}
+.card svg{flex:0 0 74px;height:74px}.card b{display:block}.card small{color:var(--mu)}
+table{border-collapse:collapse;width:100%;background:var(--p);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+td,th{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:var(--p2);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mu)}
+.sw{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px;border:1px solid #0006}
+.note{color:var(--mu);font-size:.78rem;margin-top:16px}
+.pizarra main{font-size:1.15rem}.pizarra .card svg{flex-basis:96px;height:96px}
+</style></head><body>
+<header class="top"><div><h1>Símbolos y designaciones</h1><small>Mando de motores · Referencia rápida (IEC 60617 / IEC 60445)</small></div></header>
+<main>
+<h2>Símbolos de los aparatos</h2>
+<div class="grid" id="sym"></div>
+<h2>Designación de letras</h2>
+<table><tr><th>Letra</th><th>Aparato</th><th>Ejemplo</th></tr>
+<tr><td><b>Q</b></td><td>Interruptores de potencia, guardamotor, termomagnética</td><td>Q1</td></tr>
+<tr><td><b>F</b></td><td>Protecciones: fusibles y relé térmico</td><td>F1 (fusibles), F2 (térmico)</td></tr>
+<tr><td><b>KM</b></td><td>Contactor de potencia</td><td>KM1, KM2, KM3</td></tr>
+<tr><td><b>KA</b></td><td>Relé auxiliar</td><td>KA1</td></tr>
+<tr><td><b>KT</b></td><td>Relé de tiempo (temporizador)</td><td>KT1</td></tr>
+<tr><td><b>S</b></td><td>Pulsadores y selectoras</td><td>S0 (parada), S1 (marcha)</td></tr>
+<tr><td><b>H</b></td><td>Lámparas de señalización</td><td>H1 (marcha), H2 (falla)</td></tr>
+<tr><td><b>M</b></td><td>Motor</td><td>M1</td></tr>
+<tr><td><b>X</b></td><td>Borneras</td><td>X1</td></tr></table>
+<h2>Numeración de bornes</h2>
+<table><tr><th>Bornes</th><th>Qué son</th></tr>
+<tr><td>1-2, 3-4, 5-6</td><td>Contactos principales (potencia). Arriba entran 1, 3, 5; salen 2, 4, 6.</td></tr>
+<tr><td>13-14, 23-24, 33-34, 43-44</td><td>Contactos auxiliares <b>NA</b> (normalmente abiertos). La 1.ª cifra es el número de contacto; la 2.ª, 3-4, indica NA.</td></tr>
+<tr><td>11-12, 21-22, 31-32, 41-42</td><td>Contactos auxiliares <b>NC</b> (normalmente cerrados). La 2.ª cifra 1-2 indica NC.</td></tr>
+<tr><td>A1 - A2</td><td>Bobina de un contactor o relé.</td></tr>
+<tr><td>95-96</td><td>Contacto NC del relé térmico (en serie con la bobina).</td></tr>
+<tr><td>97-98</td><td>Contacto NA del relé térmico (señalización de falla).</td></tr>
+<tr><td>U, V, W / U1-V1-W1, U2-V2-W2</td><td>Bornes del motor trifásico. Principios (1) y finales (2) de los bobinados.</td></tr>
+<tr><td>L1, L2, L3 · N · PE</td><td>Fases, neutro y protección (tierra).</td></tr></table>
+<h2>Colores de conductores (Argentina, AEA)</h2>
+<table><tr><th>Color</th><th>Función</th></tr>
+<tr><td><span class="sw" style="background:#a8642a"></span>Marrón</td><td>Fase R (L1)</td></tr>
+<tr><td><span class="sw" style="background:#34363c"></span>Negro</td><td>Fase S (L2)</td></tr>
+<tr><td><span class="sw" style="background:#d6342c"></span>Rojo</td><td>Fase T (L3)</td></tr>
+<tr><td><span class="sw" style="background:#4aa8e8"></span>Celeste</td><td>Neutro (N)</td></tr>
+<tr><td><span class="sw" style="background:linear-gradient(90deg,#3aa655 50%,#e5c91a 50%)"></span>Verde-amarillo</td><td>Protección (PE, tierra)</td></tr>
+<tr><td><span class="sw" style="background:#f08a1f"></span>Naranja</td><td>En este simulador: cables del circuito de mando.</td></tr></table>
+<h2>Relaciones útiles</h2>
+<table><tr><th>Concepto</th><th>Fórmula / valor</th></tr>
+<tr><td>Tensión de línea y de fase</td><td>U<sub>L</sub> = √3 · U<sub>F</sub> → 380 V = 1,73 · 220 V</td></tr>
+<tr><td>Corriente de un motor trifásico</td><td>I = P / (√3 · U · cosφ · η)</td></tr>
+<tr><td>Arranque directo</td><td>I<sub>arranque</sub> ≈ 5 a 7 · I<sub>nominal</sub></td></tr>
+<tr><td>Arranque estrella-triángulo</td><td>I<sub>Y</sub> = I<sub>Δ</sub> / 3 (también el par)</td></tr>
+<tr><td>Disparo magnético del guardamotor</td><td>≈ 13 · I<sub>r</sub></td></tr>
+<tr><td>Efecto Joule (relé térmico)</td><td>P = I² · R: el calor crece con el cuadrado de la corriente</td></tr></table>
+<p class="note">Los valores son orientativos y con fines didácticos. Consultá siempre las normas vigentes (AEA 90364, IEC 60947) y los datos del fabricante.</p>
+</main>
+<script>
+(()=>{const S=(x)=>`<svg viewBox="0 0 80 80" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round">${x}</svg>`;
+const L=[
+['Contacto NA','13-14 · normalmente abierto',S('<path d="M40 6V22M40 58V74"/><circle cx="40" cy="22" r="3" fill="var(--ink)"/><circle cx="40" cy="58" r="3" fill="var(--ink)"/><path d="M40 58L22 24"/>')],
+['Contacto NC','21-22 · normalmente cerrado',S('<path d="M40 6V22M40 58V74"/><circle cx="40" cy="22" r="3" fill="var(--ink)"/><circle cx="40" cy="58" r="3" fill="var(--ink)"/><path d="M40 58L40 22M32 28H48"/>')],
+['Bobina de contactor','A1-A2 · KM',S('<path d="M40 6V20M40 60V74"/><rect x="18" y="20" width="44" height="40" rx="2"/>')],
+['Pulsador NA (marcha)','S1 · se cierra al presionar',S('<path d="M40 6V22M40 58V74"/><circle cx="40" cy="22" r="3" fill="var(--ink)"/><circle cx="40" cy="58" r="3" fill="var(--ink)"/><path d="M40 58L22 24M44 40H62M62 30V50M54 30H70" stroke-dasharray="0"/>')],
+['Pulsador NC (parada)','S0 · se abre al presionar',S('<path d="M40 6V22M40 58V74"/><circle cx="40" cy="22" r="3" fill="var(--ink)"/><circle cx="40" cy="58" r="3" fill="var(--ink)"/><path d="M40 58L40 22M32 28H48M44 40H62M62 30V50M54 30H70"/>')],
+['Selectora','S3 · mantiene su posición',S('<path d="M40 6V22M40 58V74"/><circle cx="40" cy="22" r="3" fill="var(--ink)"/><circle cx="40" cy="58" r="3" fill="var(--ink)"/><path d="M40 58L22 24M44 40H60"/><circle cx="62" cy="40" r="5" fill="var(--ink)"/>')],
+['Lámpara','H1 · señalización',S('<path d="M40 6V20M40 60V74"/><circle cx="40" cy="40" r="20"/><path d="M26 26L54 54M54 26L26 54"/>')],
+['Fusible','F1 · protege del cortocircuito',S('<path d="M40 6V20M40 60V74"/><rect x="31" y="20" width="18" height="40"/><path d="M40 20V60"/>')],
+['Relé térmico','F2 · calefactor + contactos 95-96',S('<path d="M40 6V18M40 62V74"/><rect x="26" y="18" width="28" height="44"/><path d="M33 28c0 8 14 8 14 16s-14 8-14 12" stroke-width="2.4"/>')],
+['Guardamotor','Q1 · térmico + magnético',S('<path d="M40 6V20M40 60V74"/><circle cx="40" cy="20" r="3" fill="var(--ink)"/><path d="M40 60L22 24M32 40l16 16M48 40l-16 16"/>')],
+['Motor trifásico','M · 3~',S('<circle cx="40" cy="40" r="26"/><text x="40" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)" stroke="none">M</text><text x="40" y="56" text-anchor="middle" font-size="12" fill="var(--ink)" stroke="none">3 ~</text>')],
+['Mando mecánico','línea punteada: une contactos con la bobina',S('<path d="M8 40H72" stroke-dasharray="8 6"/>')]];
+document.getElementById('sym').innerHTML=L.map(a=>`<div class="card">${a[2]}<div><b>${a[0]}</b><small>${a[1]}</small></div></div>`).join('');
+const params=new URLSearchParams(location.search);let tema=params.get('tema')||'dark',piz=params.get('pizarra')==='1';
+function ap(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',piz)}ap();
+addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)piz=!!d.pizarra;ap()}});
+})();
+</script><script src="autor.js"></script></body></html>

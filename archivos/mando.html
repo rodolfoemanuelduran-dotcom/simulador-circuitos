@@ -11,7 +11,7 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
 .top .autor-badge{margin-left:6px}
 .work{flex:1 1 auto;min-height:0;display:flex}
 .stage{position:relative;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 30%,var(--stg1),var(--stg2))}
-#st{flex:1 1 auto;min-height:0;width:100%;user-select:none;-webkit-user-select:none;touch-action:none}
+#sv{flex:1 1 auto;min-height:0;position:relative}#sv.zoom{overflow:auto;-webkit-overflow-scrolling:touch}#sv.zoom #st{width:150%;height:auto;aspect-ratio:1000/560;touch-action:pan-x pan-y}#st{width:100%;height:100%;user-select:none;-webkit-user-select:none;touch-action:none}
 .bar{flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:6px 8px}
 .chip{padding:6px 11px;border:2px solid var(--line);border-radius:999px;background:var(--p);cursor:pointer;font-weight:700;font-size:.78rem}.chip[aria-pressed=true]{border-color:var(--bl);background:var(--sel)}
 .hint{flex:1 1 220px;padding:6px 10px;border-radius:10px;border:2px solid var(--yl);background:color-mix(in srgb,var(--p) 92%,transparent);font-weight:700;font-size:.82rem}.hint[hidden]{display:none}.hint.done{border-color:var(--gr)}
@@ -54,7 +54,7 @@ input[type=range]{width:100%;accent-color:var(--bl);height:28px}.sv{float:right;
 </header>
 <div class="work">
  <section class="stage">
-  <svg id="st" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Esquema eléctrico"></svg>
+  <div id="sv"><svg id="st" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Esquema eléctrico"></svg></div>
   <div id="info" hidden></div>
   <div class="bar" id="bar"></div>
  </section>
@@ -90,6 +90,7 @@ const H0={cont:64,coil:50,lamp:48,fuse:52,heater:48};
 function dims(i){return i.h||H0[i.t]||64}
 function terms(i){const x=i.x,y=i.y,h=dims(i);
  if(i.t==='src')return[[i.n,x,y]];
+ if(i.t==='m1')return[[i.n[0],x-20,y],[i.n[1],x+20,y]];
  if(i.t==='m3')return[[i.n[0],x-30,y],[i.n[1],x,y],[i.n[2],x+30,y]];
  if(i.t==='m6')return[[i.n[0],x-40,y],[i.n[1],x,y],[i.n[2],x+40,y],[i.n[3],x-40,y+110],[i.n[4],x,y+110],[i.n[5],x+40,y+110]];
  if(i.t==='bus')return[];
@@ -118,11 +119,12 @@ function solve(){const uf=UF();CK.items.forEach(i=>{terms(i).forEach(x=>uf.f(x[0
  CK.items.forEach(i=>{if(i.t==='coil'||i.t==='lamp'){const a=uf.f(i.n1),b=uf.f(i.n2);const en=!S.shortCtl&&((a===rF&&b===rN)||(a===rN&&b===rF));if(i.t==='coil')S.coil[i.id]=en;else S.lamp[i.id]=en}});
  /* potencia */
  const ph={R:uf.f('R'),S:uf.f('S'),T:uf.f('T')};S.phr=ph;
- S.short=(ph.R===ph.S||ph.S===ph.T||ph.R===ph.T)||S.carga==='cc'&&false;
+ S.short=(ph.R===ph.S||ph.S===ph.T||ph.R===ph.T)||(S.shortCtl&&!!CK.mono);
  const phase=n=>{const r=uf.f(n);return r===ph.R?'R':r===ph.S?'S':r===ph.T?'T':null};
- const M=CK.items.find(i=>i.t==='m3'||i.t==='m6');let mode='parado',dir=1,pw=[0,0,0];
+ const M=CK.items.find(i=>i.t==='m1'||i.t==='m3'||i.t==='m6');let mode='parado',dir=1,pw=[0,0,0];
  if(M&&!S.short){const idx={R:0,S:1,T:2};
-  if(M.t==='m3'){const p=M.n.map(phase);const set=new Set(p.filter(Boolean));if(set.size===3){mode='directo';dir=perm(p.map(a=>idx[a]))}else if(set.size===2){mode='mono';p.forEach(a=>{if(a)pw[idx[a]]=1})}}
+  if(M.t==='m1'){const a=uf.f(M.n[0]),b=uf.f(M.n[1]);if((a===rF&&b===rN)||(a===rN&&b===rF)){mode='directo'}}
+  else if(M.t==='m3'){const p=M.n.map(phase);const set=new Set(p.filter(Boolean));if(set.size===3){mode='directo';dir=perm(p.map(a=>idx[a]))}else if(set.size===2){mode='mono';p.forEach(a=>{if(a)pw[idx[a]]=1})}}
   else{const n=M.n,p=n.map(phase),roots=n.map(a=>uf.f(a));const cnt={};roots.forEach(r=>cnt[r]=(cnt[r]||0)+1);
    const starRoot=n.find((a,i)=>!p[i]&&cnt[roots[i]]>=3);const sr=starRoot?uf.f(starRoot):null;
    const U1=p[0],V1=p[1],W1=p[2];
@@ -141,6 +143,7 @@ function flows(){const A=adj(),fi=new Set(),fn=new Set(),paths=[];
  CK.items.forEach(i=>{if((i.t==='coil'&&S.coil[i.id])||(i.t==='lamp'&&S.lamp[i.id])){let a=i.n1,b=i.n2;if(S.uf.f(a)!==S.uf.f('F')){[a,b]=[b,a]}
   const p1=bfs(A,'F',a),p2=bfs(A,b,'N');if(p1&&p2){p1.path.concat(p2.path).forEach(e=>fi.add(e.id));p1.nodes.concat(p2.nodes).forEach(n=>fn.add(n));paths.push({load:i,p1:p1.path,p2:p2.path})}}});
  if(S.I>0.05&&!S.short){['R','S','T'].forEach(ph=>{CK.items.filter(i=>i.t==='m3'||i.t==='m6').forEach(M=>{M.n.slice(0,3).forEach(n=>{const r=bfs(A,ph,n);if(r){r.nodes.forEach(x=>fn.add(x));r.path.forEach(e=>fi.add(e.id))}})})});
+  CK.items.filter(i=>i.t==='m1').forEach(M=>{[['F',M.n[0]],[M.n[1],'N'],['F',M.n[1]],[M.n[0],'N']].forEach(([a,b])=>{const r=bfs(A,a,b);if(r){r.nodes.forEach(x=>fn.add(x));r.path.forEach(e=>fi.add(e.id))}})});
   if(S.mode==='estrella')CK.items.filter(i=>i.t==='m6').forEach(M=>M.n.slice(3).forEach(n=>fn.add(n)))}
  S.flowItems=fi;S.flowNodes=fn;S.paths=paths}
 /* ------------------------------------------------------------------ dinámica */
@@ -211,6 +214,7 @@ function drawItem(i,hs){const x=i.x,y=i.y,h=dims(i);let s='';
  if(i.t==='lamp'){const en=S.lamp[i.id],cy=y+h/2,col=i.col||'#ffd65a';return`<g data-id="${i.id}"${hl(i.id,hs)}><path d="M${x} ${y}V${y+h/2-22}M${x} ${y+h/2+22}V${y+h}" stroke="var(--ink)" stroke-width="3"/>${en?`<circle cx="${x}" cy="${cy}" r="34" fill="${col}" opacity=".55" filter="url(#fg)"/>`:''}<circle cx="${x}" cy="${cy}" r="22" fill="${en?col:'none'}" stroke="var(--ink)" stroke-width="3.6"/><path d="M${x-15} ${cy-15}l30 30M${x+15} ${cy-15}l-30 30" stroke="var(--ink)" stroke-width="3.2"/><text x="${x+30}" y="${cy+4}" class="lab">${i.lab}</text></g>`}
  if(i.t==='heater'){const hot=cl(S.th.h/1.25,0,1);return`<g data-id="${i.id}"${hl(i.id,hs)}><path d="M${x} ${y}V${y+8}M${x} ${y+h-8}V${y+h}" stroke="var(--ink)" stroke-width="3"/><rect x="${x-14}" y="${y+8}" width="28" height="${h-16}" fill="${S.th.h>.3?`rgb(${Math.round(120+130*hot)},${Math.round(60-20*hot)},20)`:'none'}" stroke="var(--ink)" stroke-width="3.2"/><text x="${x-20}" y="${y+h/2+4}" class="lab r">${i.lab||''}</text></g>`}
  if(i.t==='fuse'){const bl=S.fus.blown;return`<g data-id="${i.id}"${hl(i.id,hs)}><path d="M${x} ${y}V${y+10}M${x} ${y+h-10}V${y+h}" stroke="var(--ink)" stroke-width="3"/><rect x="${x-8}" y="${y+10}" width="16" height="${h-20}" fill="none" stroke="${bl?'var(--rd)':'var(--ink)'}" stroke-width="3.2"/>${bl?`<path d="M${x-8} ${y+h/2-3}l16 6" stroke="var(--rd)" stroke-width="3"/>`:`<path d="M${x} ${y+10}V${y+h-10}" stroke="var(--ink)" stroke-width="2"/>`}<text x="${x-14}" y="${y+h/2+4}" class="lab r">${i.lab||''}</text></g>`}
+ if(i.t==='m1'){const cy=y+52,r=40,run=S.mode!=='parado'&&!S.short;const rot=((S._t||0)*S.w*540)%360;return`<g data-id="${i.id}"${hl(i.id,hs)}><circle cx="${x}" cy="${cy}" r="${r}" fill="${run?'rgba(255,214,90,.10)':'none'}" stroke="var(--ink)" stroke-width="4"/><g transform="rotate(${rot} ${x} ${cy})" opacity="${.35+.65*cl(S.w*1.2,0,1)}"><path d="M${x} ${cy-r+7}A${r-7} ${r-7} 0 0 1 ${x+r-7} ${cy}" stroke="#ffd65a" stroke-width="5" fill="none" stroke-linecap="round"/></g><text x="${x}" y="${cy-2}" class="lab c t">M</text><text x="${x}" y="${cy+16}" class="lab c s">1 ~</text><text x="${x-20}" y="${y-8}" class="lab c s">L</text><text x="${x+20}" y="${y-8}" class="lab c s">N</text></g>`}
  if(i.t==='m3'||i.t==='m6'){const c6=i.t==='m6',cy=y+(c6?55:62),r=c6?62:46,run=S.mode!=='parado'&&!S.short,wn=S.w;
   let t='';if(c6){[[x-40,y,x,y+110],[x,y,x+40,y+110],[x+40,y,x-40,y+110]].forEach((a,k)=>{t+=`<path d="M${a[0]} ${a[1]+10}L${a[2]} ${a[3]-10}" stroke="${run?['#b5733e','#9aa5b1','#ee5a4d'][k]:'var(--dead)'}" stroke-width="3" opacity=".9"/>`});
    [['U1',-40,-8],['V1',0,-8],['W1',40,-8]].forEach(a=>t+=`<text x="${x+a[1]}" y="${y+a[2]}" class="lab c s">${a[0]}</text>`);[['W2',-40],['U2',0],['V2',40]].forEach(a=>t+=`<text x="${x+a[1]}" y="${y+126}" class="lab c s">${a[0]}</text>`)}
@@ -240,7 +244,7 @@ function narr(){let h='';
 const TABS=[['guia','Guía'],['vivo','En vivo'],['probar','Probar'],['comp','Piezas'],['ej','Ejercicios']];
 function lecturas(){const modes={parado:'detenido',directo:'directo',estrella:'ESTRELLA (Y)',triangulo:'TRIÁNGULO (Δ)',mono:'sólo 2 fases'};
  const run=S.mode!=='parado'&&!S.short;
- const U=S.mode==='estrella'?220:run?380:0;
+ const U=S.mode==='estrella'?220:run?(CK.mono?220:380):0;
  const R=[{l:'CONEXIÓN DEL MOTOR',v:modes[S.mode],on:run},{l:'SENTIDO DE GIRO',v:run||S.w>.05?(S.dir>0?'horario ⟳':'antihorario ⟲'):'—',on:null},{l:'VELOCIDAD',v:Math.round(S.w*1450)+' rpm',on:S.w>.5},{l:'CORRIENTE DE LÍNEA',v:fm(S.I,1)+' A',on:S.I>.1,bad:S.I>1.8*(CK.In||3.6)},{l:'TENSIÓN EN CADA BOBINADO',v:U+' V',on:U>0}];
  if(CK.prot.q)R.push({l:'GUARDAMOTOR Q1',v:S.q.trip==='mag'?'disparo magnético':S.q.trip==='term'?'disparo térmico':S.q.on?'ON · calor '+Math.round(cl(S.q.h/1.25,0,1)*100)+' %':'OFF',on:S.q.on&&!S.q.trip,bad:!!S.q.trip});
  if(CK.prot.th)R.push({l:'RELÉ TÉRMICO F2',v:S.th.trip?'DISPARÓ':'calor '+Math.round(cl(S.th.h/1.25,0,1)*100)+' %',on:!S.th.trip,bad:S.th.trip});
@@ -261,6 +265,8 @@ function pGuia(){let h=`<h2>${CK.titulo}</h2><p>${CK.intro}</p>`;
   if(s.expl&&stepDone[guided])h+=`<div class="card" style="margin-top:8px"><b>💡 Lo que acabás de ver</b>${s.expl}</div>`;
   h+=`<div class="row"><button class="btn" data-g="prev" ${guided===0?'disabled':''}>◀ Anterior</button><button class="btn pri" data-g="next">${guided===CK.pasos.length-1?'Terminar':'Siguiente ▶'}</button></div>`}
  else h+=`<div class="row"><button class="btn pri" data-g="0">▶ Empezar la guía</button></div>`;
+ const TB={'tri-directo':'directo','tri-enclavamiento':'enclav','tri-inversion':'inversion','tri-estrella-triangulo':'sd'}[cid];
+ if(TB)h+=`<div class="card" style="margin-top:12px"><b>🔧 ¿Y en la realidad?</b>Cableá este mismo circuito en un tablero realista, con riel DIN, bornes y pulsadores en la puerta.<div class="row"><button class="btn pri" data-gt="${TB}">Ir al tablero realista</button></div></div>`;
  h+=`<p class="note">Tocá cualquier pieza del esquema para saber qué es. Los pulsadores se accionan manteniendo el dedo o el mouse apretado.</p>`;return h}
 function pProbar(){let h=`<h2>Probá y rompé cosas</h2>`;
  h+=`<h3>Carga del motor</h3><div style="display:flex;flex-wrap:wrap;gap:5px">${[['n','Normal'],['s','Sobrecarga 1,5×'],['b','Rotor trabado'],['cc','Cortocircuito']].map(x=>`<button class="chip" data-carga="${x[0]}" aria-pressed="${S.carga===x[0]}">${x[1]}</button>`).join('')}</div>`;
@@ -275,6 +281,7 @@ function pEj(){const Q=CK.ejercicios;if(qi>=Q.length)return`<h2>Resultado</h2><d
 function bindPanel(){const p=$('#panel');
  p.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;play('click');panel()});
  p.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>guide(b.dataset.g));
+ p.querySelectorAll('[data-gt]').forEach(b=>b.onclick=()=>{let q='tablero.html?c='+b.dataset.gt;['tema','pizarra'].forEach(k=>{if(params.get(k)!==null)q+='&'+k+'='+params.get(k)});location.href=q});
  p.querySelectorAll('[data-pred]').forEach(b=>b.onclick=()=>{predAns[guided]=+b.dataset.pred;play(+b.dataset.pred===CK.pasos[guided].pred.ok?'ok':'no');panel();bar()});
  p.querySelectorAll('[data-carga]').forEach(b=>b.onclick=()=>{S.carga=b.dataset.carga;play('click');panel()});
  p.querySelectorAll('[data-vel]').forEach(b=>b.onclick=()=>{S.vel=+b.dataset.vel;play('click');panel()});
@@ -287,7 +294,7 @@ function bindPanel(){const p=$('#panel');
 function guide(k){play('click');if(k==='prev')k=Math.max(0,guided-1);else if(k==='next'){k=guided+1;if(k>=CK.pasos.length){guided=null;panel();bar();return}}else k=+k;guided=k;const s=CK.pasos[k];if(s.prep){nuevo();s.prep(S)}panel();bar()}
 function bar(){const b=$('#bar');let h='';if(guided!==null){const s=CK.pasos[guided];const done=stepDone[guided];const show=!s.pred||predAns[guided]!==undefined;h+=`<div class="hint ${done?'done':''}" ${show?'':'hidden'}>${done?'✅ ¡Muy bien! Pasá al siguiente paso.':'👉 '+(s.hint||s.t)}</div>`}
  else h+=`<div class="hint">Probá el circuito: accioná los pulsadores del esquema.</div>`;
- h+=`<button class="chip" data-r="reset">↺ Reiniciar</button>`;b.innerHTML=h;b.querySelector('[data-r]').onclick=()=>{nuevo();guided=null;stepDone=[];play('click');panel();bar()}}
+ h+=`<button class="chip" data-r="reset">↺ Reiniciar</button><button class="chip" id="bZoom" aria-pressed="${$('#sv').classList.contains('zoom')}">🔍 Ampliar</button>`;b.innerHTML=h;$('#bZoom').onclick=e=>{const z=$('#sv').classList.toggle('zoom');e.currentTarget.setAttribute('aria-pressed',String(z));play('click')};b.querySelector('[data-r]').onclick=()=>{nuevo();guided=null;stepDone=[];play('click');panel();bar()}}
 function info(){const b=$('#info');if(!sel||!CK.parts[sel]){b.hidden=true;return}const p=CK.parts[sel];b.hidden=false;b.innerHTML=`<button aria-label="Cerrar">✕</button><b>${p.t}</b><br>${p.d}`;b.querySelector('button').onclick=()=>{sel=null;info()}}
 /* ------------------------------------------------------------------ entrada */
 let pressed=null;
@@ -322,6 +329,7 @@ $('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pre
 const phone=()=>matchMedia('(max-width:950px)').matches;
 function setPanel(o){$('#panel').classList.toggle('closed',!o);$('#bPanel').setAttribute('aria-pressed',String(o))}
 $('#bPanel').onclick=()=>setPanel($('#panel').classList.contains('closed'));
+if(params.get('anidado')){document.body.classList.add('anidado');const st=document.createElement('style');st.textContent='.anidado header.top{display:none}.anidado .autor-badge{display:none!important}';document.head.appendChild(st)}
 document.title=CK.titulo;$('#title').textContent=CK.titulo;$('#sub').textContent='Mando de motores · Circuitos';
 apply();setPanel(!phone());if(CK.pasos[0]&&CK.pasos[0].prep)CK.pasos[0].prep(S);panel();bar();info();requestAnimationFrame(loop);
 window.__mando={render:()=>{solve();flows();render()},CK,S:()=>S,solve,flows,paso,press:(n,v)=>{S.btn[n]=v},sel:(n,v)=>{S.sel[n]=v},nuevo:()=>{nuevo()},set:(k,v)=>{S[k]=v}};
