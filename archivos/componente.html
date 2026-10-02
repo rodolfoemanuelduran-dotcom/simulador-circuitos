@@ -1,0 +1,167 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Componentes de mando</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;--badbg:#42202a;--badtx:#ffd1d1;--stg1:#1b2a3d;--stg2:#0b1522;--ink:#e9f1fa;--cav:#0e1a29;--sel:#1d4d63}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#fff;--okbg:#e1f5ea;--oktx:#0b4a2b;--warnbg:#fff1cc;--warntx:#6b4a00;--badbg:#fde4e4;--badtx:#7a1212;--stg1:#f4f8fc;--stg2:#cfdae6;--ink:#14253a;--cav:#e9eff6;--sel:#cfe8f3}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--tx);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;touch-action:manipulation;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{font:inherit;color:inherit}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:var(--hdr);border-bottom:1px solid var(--line)}
+.ttl{min-width:0;flex:1 1 auto}.ttl h1{margin:0;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttl small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+.top .autor-badge{margin-left:6px}
+.work{flex:1 1 auto;min-height:0;display:flex}
+.stage{position:relative;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 35%,var(--stg1),var(--stg2))}
+#st{flex:1 1 auto;min-height:0;width:100%;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.vbar{order:-1;flex:0 0 auto;padding:6px 8px 0;display:flex;gap:5px;flex-wrap:wrap}
+.chip{padding:6px 11px;border:2px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--p) 88%,transparent);cursor:pointer;font-weight:700;font-size:.78rem;backdrop-filter:blur(4px)}
+.chip[aria-pressed=true]{border-color:var(--bl);background:var(--sel)}
+.act{flex:0 0 auto;padding:0 8px 6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.big{padding:10px 16px;border:2px solid var(--yl);border-radius:12px;background:color-mix(in srgb,var(--p) 90%,transparent);cursor:pointer;font-weight:800;font-size:.92rem}
+.big[aria-pressed=true]{background:#7a5a00;color:#fff}
+#info{position:absolute;right:10px;bottom:56px;max-width:min(360px,60%);padding:9px 12px;border-radius:12px;background:color-mix(in srgb,var(--p) 94%,transparent);border:2px solid var(--bl);font-size:.8rem;box-shadow:0 6px 20px #0006}#info[hidden]{display:none}#info b{color:var(--bl)}#info button{float:right;border:0;background:none;cursor:pointer;font-size:1rem;margin:-4px -4px 0 6px}
+.panel{flex:0 0 380px;overflow:auto;padding:0 0 12px;background:var(--p);border-left:1px solid var(--line);font-size:.82rem}.panel.closed{display:none}
+.tabs{position:sticky;top:0;z-index:2;display:flex;gap:2px;padding:6px 8px 0;background:var(--p);border-bottom:1px solid var(--line)}.tabs button{flex:1;padding:7px 4px;border:0;border-bottom:3px solid transparent;background:none;cursor:pointer;font-weight:700;font-size:.74rem;color:var(--mu)}.tabs button[aria-selected=true]{color:var(--tx);border-bottom-color:var(--bl)}
+.pb{padding:10px 14px}
+.panel h2{margin:0 0 6px;font-size:1.02rem;line-height:1.25}.panel h3{margin:12px 0 5px;font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.sw{display:flex;align-items:center;gap:9px;width:100%;padding:7px 10px;margin-bottom:5px;border:2px solid var(--line);border-radius:10px;background:var(--p2);cursor:pointer;font-weight:700;text-align:left}.sw i{flex:0 0 38px;height:20px;border-radius:12px;background:#33465c;position:relative;transition:.15s}.sw i:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#cfd8e3;transition:.15s}.sw[aria-pressed=true]{border-color:var(--gr)}.sw[aria-pressed=true] i{background:#2a8f61}.sw[aria-pressed=true] i:after{left:21px;background:#fff}.sw.bad[aria-pressed=true]{border-color:var(--rd)}.sw.bad[aria-pressed=true] i{background:#c0392b}
+.sw small{display:block;font-weight:500;color:var(--mu);font-size:.7rem}
+input[type=range]{width:100%;accent-color:var(--bl);height:28px}.sv{float:right;font:700 .85rem ui-monospace,Consolas,monospace;color:var(--bl)}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rd{padding:7px 9px;border-radius:9px;background:var(--p2);border:1px solid var(--line)}.rd small{display:block;color:var(--mu);font-size:.64rem;font-weight:700;letter-spacing:.04em}.rd b{font:700 .98rem ui-monospace,Consolas,monospace}.rd.on b{color:var(--gr)}.rd.off b{color:var(--mu)}
+.vd{margin-top:9px;padding:9px 11px;border-radius:10px;border:2px solid var(--line);font-weight:700}.vd.ok{background:var(--okbg);border-color:var(--gr);color:var(--oktx)}.vd.warn{background:var(--warnbg);border-color:var(--yl);color:var(--warntx)}.vd.bad{background:var(--badbg);border-color:var(--rd);color:var(--badtx)}
+.panel p{margin:5px 0}.btn{padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--p2);cursor:pointer;font-weight:700;font-size:.78rem}.btn.pri{background:#1d4d63;border-color:var(--bl);color:#fff}.btn[disabled]{opacity:.4;cursor:default}
+.row{display:flex;gap:6px;margin-top:10px}.row .btn{flex:1}
+.card{padding:9px 11px;margin-bottom:8px;border-radius:10px;background:var(--p2);border-left:4px solid var(--bl)}.card>b:first-child{display:block;margin-bottom:2px}
+.steps{list-style:none;margin:0 0 6px;padding:0}.steps li{display:flex;gap:8px;padding:5px 6px;border-radius:8px;color:var(--mu);cursor:pointer}.steps li i{flex:0 0 22px;height:22px;border-radius:50%;background:var(--p2);border:1px solid var(--line);font-style:normal;text-align:center;font-weight:800;font-size:.72rem;line-height:20px}.steps li.on{background:var(--sel);color:var(--tx)}.steps li.on i{background:var(--bl);color:#04202c;border-color:var(--bl)}.steps li.done i{background:var(--gr);color:#04301c;border-color:var(--gr)}
+.q{margin:8px 0}.q button.o{display:block;width:100%;margin:5px 0;padding:9px 10px;text-align:left;border:2px solid var(--line);border-radius:10px;background:var(--p2);cursor:pointer;font-weight:600}.q button.o.ok{border-color:var(--gr);background:var(--okbg)}.q button.o.no{border-color:var(--rd);background:var(--badbg)}
+.note{color:var(--mu);font-size:.7rem;margin-top:12px}
+/* escena */
+.flowd{fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-dasharray:2 13;animation:fl .5s linear infinite}@keyframes fl{to{stroke-dashoffset:-15}}
+.flux{fill:none;stroke-linecap:round;stroke-dasharray:7 9;animation:fx .8s linear infinite}@keyframes fx{to{stroke-dashoffset:-16}}
+.hl{filter:drop-shadow(0 0 7px #ffd65a) drop-shadow(0 0 3px #ffd65a);animation:hlp .9s ease-in-out infinite alternate}@keyframes hlp{from{opacity:.78}to{opacity:1}}
+.pulse{animation:pu 1s ease-in-out infinite}@keyframes pu{50%{opacity:.35}}
+[data-p],[data-act]{cursor:pointer}
+.lab{fill:var(--ink);font:700 14px system-ui,sans-serif}.lab.c{text-anchor:middle}.lab.r{text-anchor:end}.lab.s{font-size:12px;font-weight:600;opacity:.9}.lab.t{font-size:17px}
+.pizarra .ttl h1{font-size:1.4rem}.pizarra .ttl small{font-size:.9rem}.pizarra header.top{min-height:62px}.pizarra .tools button{width:48px;height:48px;font-size:1.25rem}.pizarra .panel{flex-basis:440px;font-size:1.05rem}.pizarra .chip{font-size:1rem;padding:8px 14px}.pizarra .big{font-size:1.15rem}.pizarra #info{font-size:1.05rem}.pizarra .lab{font-size:17px}.pizarra .lab.s{font-size:14.5px}
+@media (max-width:950px){.panel{position:absolute;z-index:6;right:0;top:0;bottom:0;width:min(390px,72%);box-shadow:-8px 0 24px #000a;flex:none}.panel.closed{display:block;transform:translateX(105%);visibility:hidden}.work{position:relative}}
+@media (max-height:520px){header.top{min-height:34px;padding-top:2px;padding-bottom:2px}.ttl h1{font-size:.8rem}.ttl small{display:none}.tools button{width:30px;height:30px}.top .autor-badge{padding:3px 8px;font-size:.62rem}.chip{padding:4px 8px;font-size:.7rem}.big{padding:6px 10px;font-size:.8rem}}
+@media (max-width:700px) and (orientation:portrait){body:after{content:"Gira el teléfono para ver el componente en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,sans-serif}}
+@media (prefers-reduced-motion:reduce){.flowd,.flux,.hl,.pulse{animation:none}}
+</style></head><body>
+<header class="top">
+ <div class="ttl"><h1 id="title">Componente</h1><small id="sub"></small></div>
+ <div class="tools">
+  <button id="bPanel" title="Mostrar u ocultar el panel" aria-label="Panel" aria-pressed="true">☰</button>
+  <button id="bSound" title="Sonidos" aria-label="Sonidos" aria-pressed="true">🔊</button>
+  <button id="bTheme" class="solo" title="Fondo claro u oscuro" aria-label="Cambiar tema">◐</button>
+  <button id="bProj" class="solo" title="Modo pizarra" aria-label="Modo pizarra" aria-pressed="false"><b>Aa</b></button>
+  <button id="bFull" class="solo" title="Pantalla completa" aria-label="Pantalla completa">⛶</button>
+ </div>
+</header>
+<div class="work">
+ <section class="stage">
+  <svg id="st" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Componente"></svg>
+  <div class="vbar" id="vbar"></div>
+  <div id="info" hidden></div>
+  <div class="act" id="act"></div>
+ </section>
+ <aside id="panel" class="panel"></aside>
+</div>
+<script>window.COMPONENTES={};</script>
+<script src="comp-contactor.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),svg=$('#st'),COMP=window.COMPONENTES;
+const params=new URLSearchParams(location.search),cid=COMP[params.get('c')]?params.get('c'):Object.keys(COMP)[0],CP=COMP[cid];
+const f=(n,d=1)=>{const x=Number(n);return isFinite(x)?x.toFixed(d).replace('.',','):'—'};
+/* ---------- estado ---------- */
+let view=CP.vistaIni,sim=false,capas=new Set(CP.capas.map(c=>c.id).filter(x=>x!=='etiq')),T=0,lupa=false,slow=false,tab='ver',sel=null,guided=null,t=0,lens={x:500,y:280};
+let ctrl={coil:false,f:{}},o=CP.init(),qi=0,score=0,answered=null,done=new Set(),shownUso=null;
+const effCtrl=()=>{if(guided===null)return{coil:ctrl.coil,hold:null,f:ctrl.f};const s=CP.pasos[guided];return{coil:!!s.coil,hold:s.hold===undefined?null:s.hold,f:ctrl.f}};
+const hlSet=()=>{const h=new Set();if(guided!==null)(CP.pasos[guided].hl||[]).forEach(x=>h.add(x));return h};
+/* ---------- audio ---------- */
+let soundOn=true,actx=null,nbuf=null,hum=null;
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
+function tone(fq,d,ty,v,dl,f2){const a=audio();if(!a)return;const oo=a.createOscillator(),g=a.createGain(),s=a.currentTime+(dl||0);oo.type=ty||'sine';oo.frequency.setValueAtTime(fq,s);if(f2)oo.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v||.05,s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+d);oo.connect(g).connect(a.destination);oo.start(s);oo.stop(s+d+.03)}
+function noise(d,v,dl,fq,q){const a=audio();if(!a)return;if(!nbuf){nbuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nbuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nbuf;fl.type='bandpass';fl.frequency.value=fq||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
+const SND={click(){tone(560,.05,'triangle',.04);noise(.03,.03,0,2500,3)},
+ clack(){noise(.09,.22,0,900,1.2);tone(150,.12,'square',.07,0,70);tone(2300,.04,'square',.025)},
+ tac(){noise(.06,.12,0,1800,1.5);tone(260,.06,'square',.04,0,120)},
+ spark(){noise(.16,.1,0,5000,.8)},ok(){tone(660,.12,'sine',.05);tone(880,.2,'sine',.045,.09)},no(){tone(260,.18,'triangle',.06);tone(210,.22,'triangle',.05,.1)},warn(){tone(300,.2,'triangle',.05)}};
+const play=n=>{try{SND[n]&&SND[n]()}catch{}};
+function humOn(on,buzz){const a=soundOn?audio():null;if(!on||!a){if(hum){try{hum.o.stop()}catch{}hum=null}return}if(hum&&hum.buzz!==!!buzz){try{hum.o.stop()}catch{}hum=null}if(hum)return;const oo=a.createOscillator(),g=a.createGain();oo.type=buzz?'sawtooth':'triangle';oo.frequency.value=100;g.gain.value=buzz?.03:.009;oo.connect(g).connect(a.destination);oo.start();hum={o:oo,buzz:!!buzz}}
+/* ---------- panel ---------- */
+const TABS=[['ver','Ver'],['operar','Operar'],['pasos','Paso a paso'],['usos','Usos'],['ej','Ejercicios']];
+function panel(){const p=$('#panel');const sc=p.scrollTop;let h=`<div class="tabs" role="tablist">${TABS.map(x=>`<button role="tab" data-tab="${x[0]}" aria-selected="${tab===x[0]}">${x[1]}</button>`).join('')}</div><div class="pb">`;
+ if(tab==='ver')h+=pVer();else if(tab==='operar')h+=pOperar();else if(tab==='pasos')h+=pPasos();else if(tab==='usos')h+=pUsos();else h+=pEj();
+ h+='</div>';p.innerHTML=h;p.scrollTop=sc;bindPanel()}
+function pVer(){let h=`<h2>${CP.titulo}</h2><p>${CP.intro}</p><h3>Vista</h3><div style="display:flex;flex-wrap:wrap;gap:5px">${CP.vistas.map(v=>`<button class="chip" data-view="${v.id}" aria-pressed="${view===v.id&&!sim}">${v.t}</button>`).join('')}</div>`;
+ h+=`<h3>Capas (tocá para mostrar u ocultar)</h3>${CP.capas.map(c=>`<button class="sw" data-capa="${c.id}" aria-pressed="${capas.has(c.id)}"><i></i><span>${c.t}</span></button>`).join('')}`;
+ h+=`<h3>Transparencia de la carcasa y la tapa</h3><input type="range" id="rT" min="0" max="100" value="${Math.round(T*100)}" aria-label="Transparencia"><div style="display:flex;justify-content:space-between;color:var(--mu);font-size:.7rem"><span>opaca</span><span id="tv">${Math.round(T*100)} %</span><span>invisible</span></div>`;
+ h+=`<h3>Herramientas</h3><button class="sw" data-tg="lupa" aria-pressed="${lupa}"><i></i><span>🔍 Lupa<small>Pasá el dedo o el mouse sobre el dibujo para ampliar</small></span></button><button class="sw" data-tg="slow" aria-pressed="${slow}"><i></i><span>🐌 Cámara lenta<small>Para ver el movimiento de la armadura y el rebote</small></span></button><button class="sw" data-tg="sim" aria-pressed="${sim}"><i></i><span>⏚ Símbolo IEC<small>Cambia el dibujo realista por el símbolo normalizado</small></span></button>`;
+ h+=`<p class="note">Tocá cualquier pieza del dibujo para ver qué es y para qué sirve.</p>`;return h}
+function pOperar(){let h=`<h2>Accionalo</h2><button class="big" style="width:100%" data-tg="coil" aria-pressed="${ctrl.coil}">${ctrl.coil?CP.btnOff:CP.btnOn}</button><h3>Estado</h3><div class="reads" id="rd"></div><div id="vd"></div><h3>Fallas (activalas y observá)</h3>${CP.fallas.map(x=>`<button class="sw bad" data-falla="${x.id}" aria-pressed="${!!ctrl.f[x.id]}"><i></i><span>${x.t}<small>${x.d}</small></span></button>`).join('')}`;return h}
+function pPasos(){let h=`<h2>Paso a paso</h2>`;if(guided===null){h+=`<p>Una explicación guiada del funcionamiento, con el dibujo animado y las piezas resaltadas.</p><button class="btn pri" style="width:100%" data-g="start">▶ Comenzar</button><ol class="steps" style="margin-top:12px">${CP.pasos.map((s,i)=>`<li data-g="${i}"><i>${i+1}</i><span>${s.t}</span></li>`).join('')}</ol>`;return h}
+ const s=CP.pasos[guided];h+=`<ol class="steps">${CP.pasos.map((x,i)=>`<li class="${i===guided?'on':i<guided?'done':''}" data-g="${i}"><i>${i<guided?'✓':i+1}</i><span>${x.t}</span></li>`).join('')}</ol><div class="card"><b>${guided+1}. ${s.t}</b>${s.x}</div><div class="row"><button class="btn" data-g="prev" ${guided===0?'disabled':''}>◀ Anterior</button><button class="btn pri" data-g="next">${guided===CP.pasos.length-1?'Terminar':'Siguiente ▶'}</button></div><div class="row"><button class="btn" data-g="exit">Salir y probar libremente</button></div>`;return h}
+function pUsos(){return`<h2>Dónde se usa</h2>${CP.usos.map((u,i)=>`<div class="card"><b>${u.t}</b>${u.x}${u.sim?`<div class="row"><button class="btn" data-uso="${i}">Ver el esquema con símbolos</button></div>`:''}</div>`).join('')}`}
+function pEj(){const Q=CP.ejercicios;if(qi>=Q.length)return`<h2>Resultado</h2><div class="vd ${score>=Q.length-1?'ok':score>=Q.length/2?'warn':'bad'}">Respondiste bien ${score} de ${Q.length}.</div><p>${score===Q.length?'¡Perfecto! Dominás el componente.':'Repasá las explicaciones en “Paso a paso” y volvé a intentar.'}</p><div class="row"><button class="btn pri" data-q="reset">Reintentar</button></div>`;
+ const q=Q[qi];let h=`<h2>Ejercicio ${qi+1} de ${Q.length}</h2><div class="q"><p><b>${q.q}</b></p>${q.o.map((x,i)=>`<button class="o ${answered===null?'':i===q.ok?'ok':i===answered?'no':''}" data-ans="${i}" ${answered!==null?'disabled':''}>${'ABC'[i]}) ${x}</button>`).join('')}</div>`;
+ if(q.ver)h+=`<div class="row"><button class="btn" data-q="ver">🔎 Probalo en el simulador</button></div>`;
+ if(answered!==null)h+=`<div class="vd ${answered===q.ok?'ok':'bad'}">${answered===q.ok?'¡Correcto! ':'No es esa. '}${q.why}</div><div class="row"><button class="btn pri" data-q="next">${qi===Q.length-1?'Ver resultado':'Siguiente ▶'}</button></div>`;return h}
+function bindPanel(){const p=$('#panel');
+ p.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;play('click');panel()});
+ p.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{setView(b.dataset.view)});
+ p.querySelectorAll('[data-capa]').forEach(b=>b.onclick=()=>{const k=b.dataset.capa;capas.has(k)?capas.delete(k):capas.add(k);play('click');panel()});
+ const rT=$('#rT');if(rT)rT.oninput=()=>{T=rT.value/100;$('#tv').textContent=rT.value+' %'};
+ p.querySelectorAll('[data-tg]').forEach(b=>b.onclick=()=>toggle(b.dataset.tg));
+ p.querySelectorAll('[data-falla]').forEach(b=>b.onclick=()=>{const k=b.dataset.falla;ctrl.f[k]=!ctrl.f[k];play(ctrl.f[k]?'warn':'click');if(ctrl.f[k]&&CP.fallaVista&&CP.fallaVista[k]&&!sim)setView(CP.fallaVista[k],true);panel();bar()});
+ p.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>guide(b.dataset.g));
+ p.querySelectorAll('[data-uso]').forEach(b=>b.onclick=()=>{sim=true;play('click');bar();panel()});
+ p.querySelectorAll('[data-ans]').forEach(b=>b.onclick=()=>{answered=+b.dataset.ans;const q=CP.ejercicios[qi];if(answered===q.ok){score++;play('ok')}else play('no');panel()});
+ p.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const k=b.dataset.q;if(k==='next'){qi++;answered=null}else if(k==='reset'){qi=0;score=0;answered=null}else if(k==='ver'){const v=CP.ejercicios[qi].ver;sim=false;if(v.vista){view=v.vista;etqAuto()}ctrl.coil=!!v.coil;ctrl.f={};(v.f||[]).forEach(x=>ctrl.f[x]=true);guided=null;if(phone())setPanel(false);bar()}play('click');panel()})}
+function guide(k){play('click');if(k==='start')k=0;else if(k==='prev')k=Math.max(0,guided-1);else if(k==='next'){k=guided+1;if(k>=CP.pasos.length){guided=null;ctrl.coil=false;panel();bar();return}}else if(k==='exit'){guided=null;panel();bar();return}else k=+k;guided=k;const s=CP.pasos[k];if(s.vista){view=s.vista;sim=false;etqAuto()}if(s.sim){sim=true}panel();bar()}
+function toggle(k){play('click');if(k==='lupa')lupa=!lupa;else if(k==='slow')slow=!slow;else if(k==='sim')sim=!sim;else if(k==='coil'){if(guided!==null)guided=null;ctrl.coil=!ctrl.coil}panel();bar()}
+function etqAuto(){view==='interior'?capas.add('etiq'):capas.delete('etiq')}
+function setView(v,quiet){view=v;sim=false;etqAuto();if(!quiet)play('click');panel();bar()}
+/* ---------- barras sobre el escenario ---------- */
+function bar(){$('#vbar').innerHTML=CP.vistas.map(v=>`<button class="chip" data-view="${v.id}" aria-pressed="${view===v.id&&!sim}">${v.t}</button>`).join('')+`<button class="chip" data-tg="sim" aria-pressed="${sim}">⏚ Símbolo IEC</button>`;
+ $('#act').innerHTML=`<button class="big" data-tg="coil" aria-pressed="${ctrl.coil&&guided===null}">${ctrl.coil&&guided===null?CP.btnOff:CP.btnOn}</button><button class="chip" data-tg="lupa" aria-pressed="${lupa}">🔍 Lupa</button><button class="chip" data-tg="slow" aria-pressed="${slow}">🐌 Cámara lenta</button>`;
+ document.querySelectorAll('#vbar [data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));document.querySelectorAll('#vbar [data-tg],#act [data-tg]').forEach(b=>b.onclick=()=>toggle(b.dataset.tg))}
+function info(){const b=$('#info');if(!sel||!CP.partes[sel]){b.hidden=true;return}const p=CP.partes[sel];b.hidden=false;b.innerHTML=`<button aria-label="Cerrar">✕</button><b>${p.t}</b><br>${p.d}`;b.querySelector('button').onclick=()=>{sel=null;info()}}
+/* ---------- escena ---------- */
+function toSvg(e){const m=svg.getScreenCTM();if(!m)return lens;const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const r=pt.matrixTransform(m.inverse());return{x:r.x,y:r.y}}
+svg.addEventListener('pointermove',e=>{if(lupa)lens=toSvg(e)});
+svg.addEventListener('pointerdown',e=>{audio();if(lupa){lens=toSvg(e);return}
+ const a=e.target.closest('[data-act]');if(a&&a.dataset.act==='toggle'){toggle('coil');return}
+ const pt=e.target.closest('[data-p]');sel=pt?pt.dataset.p:null;if(sel)play('click');info()});
+function render(){const ui={capas,T,sel,hl:hlSet(),t,view,slow};
+ let s=`<g id="scn">${sim?CP.simbolo(o,effCtrl(),ui):CP.dibujar(view,o,effCtrl(),ui)}</g>`;
+ if(lupa){const R=105,Z=2.4;s+=`<defs><clipPath id="lc"><circle cx="${lens.x}" cy="${lens.y}" r="${R}"/></clipPath></defs><g clip-path="url(#lc)" pointer-events="none"><rect x="-200" y="-200" width="1400" height="960" fill="url(#bgG)"/><g transform="translate(${lens.x} ${lens.y}) scale(${Z}) translate(${-lens.x} ${-lens.y})"><use href="#scn"/></g></g><circle cx="${lens.x}" cy="${lens.y}" r="${R}" fill="none" stroke="#e8eef5" stroke-width="9" pointer-events="none"/><circle cx="${lens.x}" cy="${lens.y}" r="${R+4.5}" fill="none" stroke="#223" stroke-opacity=".55" stroke-width="2" pointer-events="none"/><path d="M${lens.x-R*.7} ${lens.y-R*.25}A${R*.75} ${R*.75} 0 0 1 ${lens.x-R*.25} ${lens.y-R*.7}" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="6" stroke-linecap="round" pointer-events="none"/><path d="M${lens.x+R*.62} ${lens.y+R*.62}L${lens.x+R*1.25} ${lens.y+R*1.25}" stroke="#7b5a3a" stroke-width="16" stroke-linecap="round" pointer-events="none"/>`}
+ svg.innerHTML=`<defs><linearGradient id="bgG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--stg1)"/><stop offset="1" stop-color="var(--stg2)"/></linearGradient></defs>`+CP.defs()+s}
+function lecturas(){if(tab!=='operar')return;const L=CP.lecturas(o,effCtrl());const rd=$('#rd'),vd=$('#vd');if(rd){const h=L.reads.map(r=>`<div class="rd ${r.on===true?'on':r.on===false?'off':''}"><small>${r.l}</small><b>${r.v}</b></div>`).join('');if(rd.dataset.h!==h){rd.innerHTML=h;rd.dataset.h=h}}
+ if(vd){const h=`<div class="vd ${L.verdict.cls}">${L.verdict.t}</div>`;if(vd.dataset.h!==h){vd.innerHTML=h;vd.dataset.h=h}}}
+let last=performance.now(),lastEv=0;
+function loop(ts){const dt=Math.min(.05,(ts-last)/1000);last=ts;t+=dt;
+ if(!document.hidden){const c=effCtrl(),ev=CP.paso(o,dt*(slow?.12:1),c,t);ev.forEach(e=>play(e));humOn(c.coil&&!c.f.abierta&&o.d>0.5,c.f.baja);render();lecturas()}
+ requestAnimationFrame(loop)}
+/* ---------- ajustes ---------- */
+const embedded=window.parent!==window;if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
+const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
+function apply(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra))}
+function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
+window.addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
+$('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply();avisar()};
+$('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply();avisar()};
+const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;
+$('#bFull').onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else(el.requestFullscreen||el.webkitRequestFullscreen).call(el)};
+$('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('click')}else humOn(false)};
+const phone=()=>matchMedia('(max-width:950px)').matches;
+function setPanel(o2){$('#panel').classList.toggle('closed',!o2);$('#bPanel').setAttribute('aria-pressed',String(o2))}
+$('#bPanel').onclick=()=>setPanel($('#panel').classList.contains('closed'));
+/* ---------- inicio ---------- */
+document.title=CP.titulo;$('#title').textContent=CP.titulo;$('#sub').textContent='Mando de motores · Componentes';
+apply();setPanel(!phone());panel();bar();info();requestAnimationFrame(loop);
+document.addEventListener('pointerdown',()=>audio(),{once:true});
+window.__comp={CP,o:()=>o,ctrl:()=>ctrl,set:(k,v)=>{if(k==='view')view=v;else if(k==='sim')sim=v;else if(k==='coil')ctrl.coil=v;else if(k==='T')T=v;else if(k==='lupa')lupa=v;else if(k==='guided')guided=v;else if(k==='tab'){tab=v;panel()}else if(k==='fault')ctrl.f[v[0]]=v[1];bar();panel()},capas,state:()=>({view,sim,T,guided})};
+})();
+</script><script src="autor.js"></script></body></html>

@@ -1,0 +1,245 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>¿De dónde viene la corriente eléctrica?</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--card:#0a1827ee;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;
+ --sky1:#0b1d33;--sky2:#1d4468;--mt1:#14293f;--mt2:#1d3a56;--ground:#12304a;--water:#2f8fd1;--water2:#68b9ee;--ink:#dbe7f4;--metal:#8d99a8;--metal2:#5d6a79;--wire:#ffd65a;--tube:#6c7a89;--house:#e9d9b8;--roof:#a8583a;--ledtx:#8ff0b8;--inactive:#6d7f93}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#fff;--card:#ffffffee;--okbg:#e1f5ea;--oktx:#0b4a2b;--warnbg:#fff1cc;--warntx:#6b4a00;
+ --sky1:#9fd3f7;--sky2:#e6f5ff;--mt1:#9db8a5;--mt2:#7fa38a;--ground:#bcd8a8;--water:#3fa0e0;--water2:#8cd0fa;--ink:#1c2b3e;--metal:#7e8b99;--metal2:#566371;--wire:#c98a00;--tube:#6d7b8a;--house:#f4e6c8;--roof:#b4573a;--ledtx:#0b6d3d;--inactive:#8aa0b6}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--tx);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;touch-action:manipulation;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{font:inherit;color:inherit}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:var(--hdr);border-bottom:1px solid var(--line)}
+.ttl{min-width:0;flex:1 1 auto}.ttl h1{margin:0;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttl small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:999px;background:var(--p2);font-size:.75rem;font-weight:700;white-space:nowrap}
+.bar{width:90px;height:8px;border-radius:5px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--gr);transition:width .5s}
+.tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+.top .autor-badge{margin-left:6px}
+.stage{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--sky2)}
+.mapwrap{position:relative;flex:1 1 auto;min-height:0;background:linear-gradient(var(--sky1),var(--sky2))}
+#map{position:absolute;inset:0;width:100%;height:100%;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.mtn1{fill:var(--mt1)}.mtn2{fill:var(--mt2)}.gnd{fill:var(--ground)}
+.nm{fill:var(--ink);font:700 21px system-ui,sans-serif;text-anchor:middle;paint-order:stroke;stroke:var(--sky2);stroke-width:4px;stroke-linejoin:round}
+:root[data-theme=dark] .nm{stroke:#0b1d33}
+.node{cursor:pointer;transition:opacity .3s}.node.off{opacity:.45;filter:grayscale(.7)}.node.on{opacity:1}
+.nm.off{opacity:.65}
+.route{fill:none;stroke:var(--inactive);stroke-width:7;stroke-dasharray:3 14;stroke-linecap:round;opacity:.75}
+.route.on{stroke-dasharray:none;opacity:1}
+.route.agua.on{stroke:var(--water2);stroke-width:12}.route.eje.on{stroke:var(--metal);stroke-width:12}.route.elec.on{stroke:var(--wire);stroke-width:6}
+.flow{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-dasharray:3 18;animation:fl .6s linear infinite;opacity:.9}.flow.agua{stroke:#e8f6ff;stroke-width:4;animation-duration:.8s}
+@keyframes fl{to{stroke-dashoffset:-21}}
+.hit{fill:none;stroke:transparent;stroke-width:46;pointer-events:stroke;cursor:pointer}
+.next .route{stroke:var(--yl);opacity:1;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{stroke-width:11;opacity:.55}}
+.spin{animation:spin 1.2s linear infinite;transform-box:fill-box;transform-origin:center}@keyframes spin{to{transform:rotate(360deg)}}
+.pulse{animation:glow 1.4s ease-in-out infinite}@keyframes glow{50%{opacity:.55}}
+.wrong .route{stroke:var(--rd)!important;opacity:1}
+.shake{animation:shake .4s}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.wv{animation:wave 2.4s ease-in-out infinite}@keyframes wave{50%{transform:translateX(8px)}}
+/* paneles HTML */
+.chain{position:absolute;left:10px;top:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;max-width:62%;pointer-events:none}
+.chip{padding:4px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:.74rem;font-weight:700;color:var(--mu)}.chip.on{color:var(--tx);border-color:var(--gr);box-shadow:0 0 10px #5ce0a044}.chip.cur{background:var(--gr);color:#06231a;border-color:var(--gr)}
+.gauge{position:absolute;right:10px;top:8px;width:220px;padding:8px 12px;border-radius:12px;background:var(--card);border:1px solid var(--line);pointer-events:none}
+.gauge small{color:var(--mu);font-size:.66rem;font-weight:700;letter-spacing:.06em}.gauge b{display:block;font:700 1.45rem ui-monospace,Consolas,monospace;color:var(--ledtx)}
+.gauge .gb{height:8px;border-radius:5px;background:var(--line);margin-top:4px;overflow:hidden}.gauge .gb i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3fb6ff,#ffd65a,#ff8d4d);transition:width .6s}
+.info{flex:0 0 auto;max-height:34%;overflow:auto;padding:10px 16px;background:var(--card);border-top:2px solid var(--line)}
+.info h2{margin:0 0 3px;font-size:1.05rem}.info p{margin:2px 0;color:var(--tx);font-size:.86rem}.info .dato{color:var(--mu);font-size:.78rem}
+.info.ok{background:var(--okbg);border-color:var(--gr);color:var(--oktx)}.info.ok p,.info.ok h2{color:var(--oktx)}
+.info.warn{background:var(--warnbg);border-color:var(--yl)}.info.warn p,.info.warn h2{color:var(--warntx)}
+.pizarra .ttl h1{font-size:1.5rem}.pizarra .ttl small{font-size:.9rem}.pizarra header.top{min-height:62px}.pizarra .tools button{width:48px;height:48px;font-size:1.25rem}.pizarra .status{font-size:1rem}.pizarra .info h2{font-size:1.5rem}.pizarra .info p{font-size:1.15rem}.pizarra .info .dato{font-size:1rem}.pizarra .chip{font-size:.95rem}.pizarra .gauge b{font-size:1.9rem}.pizarra .gauge{width:270px}.pizarra .nm{font-size:26px}
+@media (max-height:520px){.info{max-height:30%}header.top{min-height:34px;padding-top:2px;padding-bottom:2px}.ttl h1{font-size:.82rem}.ttl small{display:none}.tools button{width:30px;height:30px}.status{padding:3px 8px;font-size:.66rem}.bar{width:60px}.info{padding:6px 10px;bottom:4px}.info h2{font-size:.82rem}.info p{font-size:.68rem;margin:1px 0}.info .dato{font-size:.62rem}.chip{font-size:.6rem;padding:2px 7px}.gauge{width:150px;padding:4px 8px}.gauge b{font-size:.95rem}.gauge small{font-size:.55rem}.chain{top:5px;gap:3px}.top .autor-badge{padding:3px 8px;font-size:.62rem}}
+@media (max-width:700px) and (orientation:portrait){body:after{content:"Gira el teléfono para ver el mapa en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,sans-serif}}
+@media (prefers-reduced-motion:reduce){.flow,.spin,.pulse,.wv,.next .route{animation:none}}
+</style></head><body>
+<header class="top">
+ <div class="ttl"><h1>¿De dónde viene la corriente eléctrica?</h1><small>Del río al tomacorriente: tocá cada tramo en el orden en que viaja la energía.</small></div>
+ <div class="status"><span id="stText">Tramo 0 de 10</span><span class="bar"><i id="bar"></i></span></div>
+ <div class="tools">
+  <button id="bHint" title="Pista: ¿qué tramo sigue?" aria-label="Pista">💡</button>
+  <button id="bReset" title="Empezar de nuevo" aria-label="Reiniciar">↻</button>
+  <button id="bSound" title="Sonidos" aria-label="Sonidos" aria-pressed="true">🔊</button>
+  <button id="bTheme" class="solo" title="Fondo claro u oscuro" aria-label="Cambiar tema">◐</button>
+  <button id="bProj" class="solo" title="Modo pizarra" aria-label="Modo pizarra" aria-pressed="false"><b>Aa</b></button>
+  <button id="bFull" class="solo" title="Pantalla completa" aria-label="Pantalla completa">⛶</button>
+ </div>
+</header>
+<div class="stage">
+ <div class="mapwrap">
+  <svg id="map" viewBox="0 190 1700 388" preserveAspectRatio="xMidYMid meet" role="application" aria-label="Mapa del recorrido de la energía eléctrica"></svg>
+  <div class="chain" id="chain"></div>
+  <div class="gauge"><small>TENSIÓN EN ESTE PUNTO</small><b id="gv">—</b><div class="gb"><i id="gbar"></i></div></div>
+ </div>
+ <div class="info" id="info"></div>
+</div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),svg=$('#map');
+/* ---------- datos de las etapas ---------- */
+const N=[
+ {id:'embalse',name:'Embalse',x:110,y:330,en:'Potencial',kv:null,
+  t:'Embalse: el agua almacenada',
+  p:'Una represa acumula agua a gran altura. Esa altura (el salto) le da al agua energía potencial: cuanto más alto el salto y mayor el caudal, más potencia puede entregar la central.',
+  d:'Cuando se abren las compuertas, el agua empieza a bajar por la toma.'},
+ {id:'conducto',name:'Conducto|forzado',x:258,y:395,en:'Cinética',kv:null,
+  t:'Conducto forzado: el agua gana velocidad',
+  p:'El agua baja por una tubería de gran diámetro. La energía potencial se transforma en energía cinética: el agua llega a la turbina con mucha velocidad y presión.',
+  d:'Entre el embalse y la turbina el agua puede caer decenas o cientos de metros.'},
+ {id:'turbina',name:'Turbina',x:407,y:462,en:'Mecánica',kv:null,
+  t:'Turbina: la energía se vuelve giro',
+  p:'El agua empuja los álabes y hace girar la turbina: energía mecánica de rotación. Según el salto se usan turbinas Pelton, Francis o Kaplan.',
+  d:'Gira a velocidad constante para que la frecuencia de la red sea siempre 50 Hz.'},
+ {id:'generador',name:'Generador',x:556,y:462,en:'Eléctrica',kv:13.2,
+  t:'Generador (alternador): nace la electricidad',
+  p:'La turbina hace girar el rotor del alternador. Por inducción electromagnética se genera tensión alterna trifásica de 50 Hz, por ejemplo de 13,2 kV.',
+  d:'Es un campo magnético giratorio que induce tensión en las bobinas fijas (estator).'},
+ {id:'elevador',name:'Transformador|elevador',x:705,y:442,en:'Eléctrica',kv:132,
+  t:'Transformador elevador: sube la tensión',
+  p:'Eleva la tensión de 13,2 kV a 132 kV (o 500 kV en el sistema interconectado). Con más tensión, para la misma potencia circula menos corriente y se pierde menos energía en forma de calor (P = I²·R).',
+  d:'Para 100 MW: a 13,2 kV circularían unos 4.370 A; a 132 kV, unos 437 A. Las pérdidas serían 100 veces menores.'},
+ {id:'linea',name:'Línea de|alta tensión',x:854,y:385,en:'Eléctrica',kv:132,
+  t:'Línea de alta tensión: viaja cientos de km',
+  p:'Los conductores, colgados de torres con aisladores, llevan la energía desde la central hasta los centros de consumo, a veces a cientos de kilómetros de distancia.',
+  d:'En Argentina el Sistema Argentino de Interconexión usa tensiones como 132 kV y 500 kV.'},
+ {id:'estacion',name:'Estación|transformadora',x:1003,y:442,en:'Eléctrica',kv:13.2,
+  t:'Estación transformadora: baja la tensión',
+  p:'Cerca de la ciudad, un transformador reductor baja la tensión a media tensión (33 kV o 13,2 kV) para poder distribuirla por los barrios con seguridad.',
+  d:'Tiene aisladores, seccionadores e interruptores para proteger y maniobrar la red.'},
+ {id:'media',name:'Red de media|tensión',x:1152,y:398,en:'Eléctrica',kv:13.2,
+  t:'Red de media tensión: recorre los barrios',
+  p:'Líneas sobre postes (o cables subterráneos) llevan 13,2 kV por calles y barrios. Todavía es una tensión peligrosa: no se usa en las casas.',
+  d:'Las líneas de media tensión tienen tres conductores (las tres fases).'},
+ {id:'distribucion',name:'Transformador|de distribución',x:1301,y:432,en:'Eléctrica',kv:.38,
+  t:'Transformador de distribución: baja tensión',
+  p:'El transformador del poste o de la cámara reduce 13,2 kV a baja tensión: 380 V entre fases y 220 V entre fase y neutro, que es la que usan las casas.',
+  d:'Relación de transformación: 13.200 V / 380 V ≈ 35 a 1.'},
+ {id:'medidor',name:'Acometida|y medidor',x:1450,y:470,en:'Eléctrica',kv:.22,
+  t:'Acometida y medidor: la llegada a tu casa',
+  p:'Un cable (acometida) lleva la baja tensión hasta el medidor, que registra la energía consumida en kWh. El medidor lo instala y lo lee la empresa distribuidora.',
+  d:'1 kWh es la energía que consume una carga de 1.000 W funcionando durante una hora.'},
+ {id:'casa',name:'Tablero y|tomacorriente',x:1600,y:385,en:'Eléctrica',kv:.22,
+  t:'Tablero y tomacorriente: ¡llegó a tu casa!',
+  p:'En el tablero, el disyuntor diferencial y las térmicas protegen cada circuito. Desde allí, los conductores de fase, neutro y tierra llegan a los tomacorrientes: 220 V~ listos para usar.',
+  d:'Del río al toma: 13,2 kV → 132 kV → 13,2 kV → 380/220 V → 220 V.'}
+];
+const TR=[ /* tramo i une N[i] con N[i+1] */
+ {tipo:'agua',txt:'El agua baja desde el embalse por la toma y entra al conducto forzado.'},
+ {tipo:'agua',txt:'El agua a presión llega a la turbina y la empuja.'},
+ {tipo:'eje',txt:'La turbina y el generador comparten el mismo eje: el giro pasa del uno al otro.'},
+ {tipo:'elec',txt:'Los cables del generador llevan la electricidad (13,2 kV) al transformador.'},
+ {tipo:'elec',txt:'Con la tensión elevada, la energía sale hacia las torres de alta tensión.'},
+ {tipo:'elec',txt:'La línea de alta tensión llega hasta la estación transformadora de la ciudad.'},
+ {tipo:'elec',txt:'Desde la estación sale la red de media tensión hacia los barrios.'},
+ {tipo:'elec',txt:'La media tensión llega al transformador del poste de tu cuadra.'},
+ {tipo:'elec',txt:'Una línea de baja tensión baja desde el poste hasta tu casa.'},
+ {tipo:'elec',txt:'Desde el medidor, los cables entran a la casa y llegan al tablero y al tomacorriente.'}
+];
+const CH=['Potencial','Cinética','Mecánica','Eléctrica'];
+/* ---------- estado ---------- */
+let k=0,soundOn=true,hintOn=false,finished=false,lastOn=false;
+/* ---------- audio ---------- */
+let actx=null,nb=null;
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
+function tone(f,d,ty='sine',v=.05,dl=0,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+dl;o.type=ty;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.03)}
+function noise(d,v,dl,f,q,type){const a=audio();if(!a)return;if(!nb){nb=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nb.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nb;fl.type=type||'bandpass';fl.frequency.value=f||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
+const SND={
+ agua(){noise(.9,.07,0,700,.6,'lowpass');noise(.7,.04,.1,2500,2)},
+ turbina(){tone(60,.9,'sawtooth',.04,0,220);noise(.7,.02,0,500,.7,'lowpass')},
+ eje(){tone(90,.6,'sawtooth',.03,0,180);tone(180,.4,'triangle',.03,.1)},
+ gen(){tone(50,.9,'sine',.07);tone(100,.9,'sine',.04);tone(150,.8,'sine',.02)},
+ trafo(){tone(100,.8,'sawtooth',.03);tone(200,.7,'sine',.03);noise(.15,.04,0,3000,3)},
+ alta(){noise(.4,.04,0,5000,.7,'highpass');tone(1200,.2,'sine',.015,0,300)},
+ click(){noise(.04,.06,0,2000,3);tone(400,.07,'square',.025)},
+ wrong(){tone(170,.16,'sawtooth',.045);tone(125,.18,'sawtooth',.035,.1)},
+ end(){[523,659,784,1047].forEach((f,i)=>tone(f,.35,'sine',.05,i*.12));noise(.3,.02,.45,6000,1,'highpass')},
+ reset(){tone(700,.25,'sine',.03,0,250)}
+};
+const play=n=>{try{SND[n]&&SND[n]()}catch{}};
+const tramoSnd=i=>i<2?'agua':i===2?'eje':i===3?'trafo':i===4?'alta':'click';
+function buzz(p){try{if(soundOn&&navigator.vibrate)navigator.vibrate(p)}catch{}}
+/* ---------- dibujo ---------- */
+const S=(c,a)=>`<g class="${c}" ${a||''}>`;
+function icon(id,on){
+ const w=on?'var(--water2)':'var(--inactive)';
+ switch(id){
+ case'embalse':return`<path d="M-72 -22L-6 -22L-6 52L-72 52Z" fill="${on?'var(--water)':'var(--inactive)'}" opacity=".95"/><g class="${on?'wv':''}"><path d="M-70 -14q10 -8 20 0t20 0t20 0" stroke="${w}" stroke-width="3" fill="none"/><path d="M-70 4q10 -8 20 0t20 0t20 0" stroke="${w}" stroke-width="3" fill="none"/></g><path d="M-8 -50L22 -50L58 56L-8 56Z" fill="var(--metal)" stroke="var(--metal2)" stroke-width="3"/><path d="M-8 -50h30" stroke="var(--ink)" stroke-width="4"/><rect x="26" y="-6" width="22" height="22" rx="3" fill="var(--metal2)"/>`;
+ case'conducto':return`<path d="M-62 -40L42 36" stroke="var(--tube)" stroke-width="20" stroke-linecap="round"/><path d="M-62 -40L42 36" stroke="${on?'var(--water2)':'var(--metal2)'}" stroke-width="9" stroke-linecap="round" ${on?'class="pulse"':''}/><path d="M-40 -8v40M-4 18v34M26 38v22" stroke="var(--metal2)" stroke-width="7"/><path d="M-58 -46h-10v22" stroke="var(--metal2)" stroke-width="5" fill="none"/>`;
+ case'turbina':return`<rect x="-62" y="-30" width="124" height="80" rx="8" fill="var(--metal)" stroke="var(--metal2)" stroke-width="3"/><path d="M-62 -30L0 -56L62 -30Z" fill="var(--metal2)"/><circle cx="0" cy="12" r="30" fill="#2a3340" stroke="var(--ink)" stroke-width="3"/><g class="${on?'spin':''}"><path d="M0 -14L7 12L0 38L-7 12ZM-26 12L0 5L26 12L0 19Z" fill="${on?'var(--water2)':'var(--metal)'}"/><circle cx="0" cy="12" r="6" fill="var(--ink)"/></g>`;
+ case'generador':return`<path d="M-62 14h26" stroke="var(--metal)" stroke-width="12"/><circle cx="6" cy="14" r="46" fill="#2a3340" stroke="var(--ink)" stroke-width="4"/><circle cx="6" cy="14" r="30" fill="none" stroke="${on?'var(--yl)':'var(--metal)'}" stroke-width="5" ${on?'class="pulse"':''} stroke-dasharray="12 8"/><text x="6" y="26" text-anchor="middle" style="font:700 34px system-ui;fill:var(--ink)">G</text><path d="M-4 -42v-18h20v18" stroke="var(--wire)" stroke-width="5" fill="none"/>`;
+ case'elevador':return`<rect x="-48" y="-22" width="96" height="70" rx="8" fill="var(--metal)" stroke="var(--metal2)" stroke-width="3"/><g stroke="var(--ink)" stroke-width="4" fill="none"><ellipse cx="-20" cy="14" rx="12" ry="22"/><ellipse cx="20" cy="14" rx="12" ry="22"/><path d="M-8 14h16"/></g><g fill="#c9a875" stroke="var(--metal2)" stroke-width="2"><rect x="-38" y="-52" width="12" height="30" rx="3"/><rect x="-6" y="-52" width="12" height="30" rx="3"/><rect x="26" y="-52" width="12" height="30" rx="3"/></g><path d="M-32 -52v-8M0 -52v-8M32 -52v-8" stroke="${on?'var(--wire)':'var(--inactive)'}" stroke-width="5"/><text x="0" y="-70" text-anchor="middle" style="font:700 20px system-ui;fill:var(--ink)">▲ kV</text>`;
+ case'linea':{const tw=x=>`<g transform="translate(${x} 0)"><path d="M-22 56L0 -50L22 56M-14 28H14M-9 6H9M-5 -18H5M-18 44L12 28M18 44L-12 28M-12 28L10 6M12 28L-10 6" stroke="var(--metal2)" stroke-width="4" fill="none"/><path d="M-34 -30H34M-26 -6H26" stroke="var(--metal2)" stroke-width="5"/></g>`;return`${tw(-52)}${tw(52)}<path d="M-86 -30Q-52 -18 -18 -30M18 -30Q52 -18 86 -30M-78 -6Q-52 6 -26 -6M26 -6Q52 6 78 -6" stroke="${on?'var(--wire)':'var(--inactive)'}" stroke-width="3" fill="none" ${on?'class="pulse"':''}/>`}
+ case'estacion':return`<path d="M-72 56V10M72 56V10M-72 10H72M-72 28H72" stroke="var(--metal2)" stroke-width="3" fill="none"/><rect x="-34" y="-8" width="68" height="56" rx="6" fill="var(--metal)" stroke="var(--metal2)" stroke-width="3"/><g fill="#c9a875" stroke="var(--metal2)" stroke-width="2"><rect x="-26" y="-34" width="10" height="28" rx="3"/><rect x="-5" y="-34" width="10" height="28" rx="3"/><rect x="16" y="-34" width="10" height="28" rx="3"/></g><path d="M-21 -34v-12M0 -34v-12M21 -34v-12M-60 -46H60" stroke="${on?'var(--wire)':'var(--inactive)'}" stroke-width="4" fill="none"/><path d="M-60 -46v46M60 -46v46" stroke="var(--metal2)" stroke-width="5"/><text x="0" y="36" text-anchor="middle" style="font:700 18px system-ui;fill:var(--ink)">▼ kV</text>`;
+ case'media':{const p=x=>`<g transform="translate(${x} 0)"><rect x="-5" y="-46" width="10" height="104" fill="#8a6a45"/><path d="M-30 -36H30" stroke="#8a6a45" stroke-width="7"/><g fill="#c9a875" stroke="var(--metal2)"><rect x="-30" y="-48" width="6" height="12"/><rect x="-3" y="-48" width="6" height="12"/><rect x="24" y="-48" width="6" height="12"/></g></g>`;return`${p(-48)}${p(48)}<path d="M-78 -48Q-48 -34 -18 -48M18 -48Q48 -34 78 -48M-48 -48Q0 -30 48 -48M-51 -48Q0 -28 51 -48" stroke="${on?'var(--wire)':'var(--inactive)'}" stroke-width="3" fill="none" ${on?'class="pulse"':''}/>`}
+ case'distribucion':return`<rect x="-5" y="-40" width="10" height="100" fill="#8a6a45"/><path d="M-36 -36H36" stroke="#8a6a45" stroke-width="7"/><rect x="-26" y="-18" width="52" height="42" rx="10" fill="var(--metal)" stroke="var(--metal2)" stroke-width="3"/><g fill="#c9a875"><rect x="-22" y="-32" width="8" height="14"/><rect x="14" y="-32" width="8" height="14"/></g><path d="M-18 -46v12M18 -46v12" stroke="${on?'var(--wire)':'var(--inactive)'}" stroke-width="4"/><path d="M0 24V40M0 40Q20 56 56 50" stroke="${on?'var(--wire)':'var(--inactive)'}" stroke-width="4" fill="none"/><text x="0" y="8" text-anchor="middle" style="font:700 15px system-ui;fill:var(--ink)">13,2k→220</text>`;
+ case'medidor':return`<rect x="-34" y="-44" width="68" height="94" rx="8" fill="#e6e9ee" stroke="#9aa5b3" stroke-width="3"/><circle cx="0" cy="-8" r="24" fill="#fff" stroke="#9aa5b3" stroke-width="3"/><rect x="-16" y="-14" width="32" height="12" rx="2" fill="#1b2330"/><text x="0" y="-5" text-anchor="middle" style="font:700 10px ui-monospace;fill:${on?'#8ff0b8':'#778'}">${on?'0042,7':'-----'}</text><path d="M-14 12h28" stroke="${on?'#e55':'#889'}" stroke-width="4" ${on?'class="pulse"':''}/><text x="0" y="42" text-anchor="middle" style="font:700 13px system-ui;fill:#445">kWh</text>`;
+ case'casa':return`<path d="M-62 -4L0 -52L62 -4Z" fill="var(--roof)" stroke="var(--metal2)" stroke-width="3"/><rect x="-52" y="-4" width="104" height="66" fill="var(--house)" stroke="var(--metal2)" stroke-width="3"/><rect x="-42" y="8" width="30" height="26" rx="3" fill="${on?'#ffe98a':'#8fa6bd'}" stroke="var(--metal2)" stroke-width="2" ${on?'class="pulse"':''}/><rect x="-6" y="14" width="26" height="48" fill="#9a7b56" stroke="var(--metal2)" stroke-width="2"/><rect x="26" y="14" width="18" height="22" rx="3" fill="#e6e9ee" stroke="#9aa5b3" stroke-width="2"/><circle cx="31" cy="25" r="2" fill="#223"/><circle cx="39" cy="25" r="2" fill="#223"/><text x="35" y="48" text-anchor="middle" style="font:700 10px system-ui;fill:${on?'#0b6d3d':'#778'}">220 V</text>`;
+ }
+ return'';
+}
+const PORT=[ /* puertos de entrada [dx,dy] y salida [dx,dy] respecto del centro de cada etapa */
+ {o:[58,24]},
+ {i:[-60,-38],o:[44,40]},
+ {i:[-62,-6],o:[64,14]},
+ {i:[-62,14],o:[6,-62]},
+ {i:[-32,-60],o:[32,-60]},
+ {i:[-86,-30],o:[86,-30]},
+ {i:[-60,-46],o:[60,-46]},
+ {i:[-78,-48],o:[78,-48]},
+ {i:[-36,-36],o:[56,50]},
+ {i:[-34,-8],o:[34,-8]},
+ {i:[-52,20]}
+];
+function routePath(i){const a=N[i],b=N[i+1],po=PORT[i].o,pi=PORT[i+1].i;
+ const ax=a.x+po[0],ay=a.y+po[1],bx=b.x+pi[0],by=b.y+pi[1],mx=(ax+bx)/2;
+ return`M${ax} ${ay} C${mx} ${ay} ${mx} ${by} ${bx} ${by}`}
+function label(n,on,i){const ls=n.name.split('|'),y0=n.name.includes('|')?78:78;return`<text class="nm ${on?'':'off'}" text-anchor="middle">${ls.map((l,j)=>`<tspan x="0" y="${y0+j*24}">${l}</tspan>`).join('')}</text>`}
+function render(){
+ const dark=document.documentElement.dataset.theme!=='light';
+ let s=`<defs><linearGradient id="rv" x1="0" x2="1"><stop offset="0" stop-color="var(--water)"/><stop offset="1" stop-color="var(--water2)"/></linearGradient></defs>`;
+ s+=`<rect x="-200" y="0" width="2100" height="600" fill="transparent"/>`;
+ s+=`<path class="mtn1" d="M0 340L110 210L200 290L310 190L440 320L550 260L720 350L900 290L1080 360L1260 310L1440 360L1700 320V600H0Z"/>`;
+ s+=`<path class="mtn2" d="M0 420L140 330L290 410L440 370L610 430L810 390L1010 440L1220 400L1420 440L1700 410V600H0Z"/>`;
+ s+=`<path class="gnd" d="M0 528H1700V600H0Z"/>`;
+ s+=`<path d="M0 556Q140 536 280 556T560 556T840 556T1120 556T1400 556T1680 556T1960 556V600H0Z" fill="url(#rv)" opacity="${dark?.75:.9}"/>`;
+ s+=`<text x="40" y="588" style="font:700 17px system-ui;fill:#fff;opacity:.9">RÍO</text>`;
+ TR.forEach((t,i)=>{const d=routePath(i),on=i<k,isNext=i===k&&hintOn;
+  s+=`<g data-tr="${i}" class="${isNext?'next':''}"><path class="route ${t.tipo} ${on?'on':''}" d="${d}"/>${on?`<path class="flow ${t.tipo}" d="${d}"/>`:''}<path class="hit" d="${d}"/></g>`});
+ N.forEach((n,i)=>{const on=i<=k;
+  s+=`<g data-n="${i}" class="node ${on?'on':'off'}" transform="translate(${n.x} ${n.y})"><rect x="-80" y="-80" width="160" height="${n.name.includes('|')?190:166}" fill="transparent"/>${icon(n.id,on)}${label(n,on,i)}</g>`});
+ svg.innerHTML=s;
+}
+function chain(){const cur=Math.min(3,k<=0?0:k===1?1:k===2?2:3);$('#chain').innerHTML=CH.map((c,i)=>`<span class="chip ${i<=cur&&k>=0?'on':''} ${i===cur?'cur':''}">${c}</span>`).join('<span style="color:var(--mu)">›</span>')}
+function gauge(){const n=N[Math.min(k,10)];const v=n.kv;let txt='—',pct=0;if(v!==null){txt=v>=1?(v+'').replace('.',',')+' kV':(v===.38?'380 / 220 V':'220 V');const volts=v*1000;pct=Math.max(2,Math.min(100,(Math.log10(volts)-2)/(Math.log10(150000)-2)*100))}
+ $('#gv').textContent=k===0?'—':txt;$('#gbar').style.width=(k===0?0:pct)+'%'}
+function info(msg,cls){const i=$('#info');i.className='info '+(cls||'');i.innerHTML=msg}
+function show(i){const n=N[i];info(`<h2>${n.t}</h2><p>${n.p}</p><p class="dato">💡 ${n.d}</p>`)}
+function progress(){$('#stText').textContent=k>=10?'¡Llegó a tu casa!':'Tramo '+k+' de 10';$('#bar').style.width=(k*10)+'%'}
+function refresh(){render();chain();gauge();progress()}
+function activate(i){ // i = tramo a activar
+ k=i+1;play(tramoSnd(i));buzz(15);hintOn=false;refresh();
+ const n=N[k];info(`<h2>${n.t}</h2><p><b>Tramo ${k}:</b> ${TR[i].txt}</p><p>${n.p}</p><p class="dato">💡 ${n.d}</p>`);
+ if(k===10){finished=true;setTimeout(()=>{play('end');buzz([30,60,30,60,90]);info(`<h2>✔ ¡La energía llegó a tu casa!</h2><p>Recorrido completo: agua del embalse → turbina → generador (13,2 kV) → transformador elevador (132 kV) → línea de alta tensión → estación transformadora (13,2 kV) → media tensión → transformador de distribución (380/220 V) → medidor → tablero → tomacorriente (220 V).</p><p class="dato">Ahora podés ir a “Casas y croquis” para proyectar y cablear la instalación de una casa.</p>`,'ok')},900)}
+}
+function wrongTap(i,target){play('wrong');buzz([40,40,40]);const g=svg.querySelector(`[data-tr="${Math.min(i,9)}"]`);const need=N[k].name.replace('|',' ');
+ info(`<h2>Todavía no</h2><p>Primero tiene que llegar la energía a <b>${need}</b>. Después sigue hacia <b>${N[k+1].name.replace('|',' ')}</b>. Probá con el tramo resaltado en amarillo (tocá 💡 para verlo).</p>`,'warn');
+ if(target){target.classList.add('shake');setTimeout(()=>target.classList.remove('shake'),450)}}
+svg.addEventListener('pointerdown',e=>{audio();const tr=e.target.closest('[data-tr]'),nd=e.target.closest('[data-n]');
+ if(tr){const i=+tr.dataset.tr;if(i===k&&k<10)return activate(i);if(i<k){show(i+1);play('click');return}wrongTap(i,tr);return}
+ if(nd){const i=+nd.dataset.n;if(i===k+1&&k<10)return activate(k);if(i<=k){show(i);play('click');return}wrongTap(i-1,nd)}});
+$('#bHint').onclick=()=>{audio();if(k>=10)return;hintOn=true;play('click');refresh();info(`<h2>Pista</h2><p>La energía sigue desde <b>${N[k].name.replace('|',' ')}</b> hacia <b>${N[k+1].name.replace('|',' ')}</b>. Tocá el tramo que los une (resaltado en amarillo).</p>`,'warn')};
+function reset(first){k=0;hintOn=false;finished=false;if(!first)play('reset');refresh();show(0);const i=$('#info');i.insertAdjacentHTML('beforeend','<p class="dato">▶ Tocá el tramo que sale del embalse para que la energía siga su camino.</p>')}
+$('#bReset').onclick=()=>reset(false);
+$('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('click')}};
+/* ---------- tema, pizarra y mensajes con el menú ---------- */
+const params=new URLSearchParams(location.search),embedded=window.parent!==window;
+if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
+const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
+function apply(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra));render()}
+function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
+window.addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d&&d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
+$('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply();avisar()};
+$('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply();avisar()};
+const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;
+$('#bFull').onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else(el.requestFullscreen||el.webkitRequestFullscreen).call(el)};
+apply();reset(true);
+window.__en={act:i=>activate(i),k:()=>k,N,TR,reset:()=>reset(false),tapTr:i=>{const g=svg.querySelector(`[data-tr="${i}"] .hit`);g.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))},tapNode:i=>{const g=svg.querySelector(`[data-n="${i}"] rect`);g.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))}};
+})();
+</script><script src="autor.js"></script></body></html>

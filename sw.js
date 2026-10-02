@@ -1,15 +1,9 @@
 /* Service worker: deja la aplicación disponible sin conexión.
    Al cambiar archivos, aumentá VERSION para que los celulares se actualicen. */
-const VERSION = 'circuitos-v1';
+const VERSION = 'circuitos-v7';
 const ARCHIVOS = [
   './', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png',
-  './archivos/autor.js', './archivos/redes-datos.js', './archivos/mobile-pwa.css',
-  './archivos/circuito-simple.html', './archivos/circuito-tactil.html',
-  './archivos/circuito-llave-doble.html', './archivos/circuito-llave-triple.html',
-  './archivos/circuito-combinacion.html', './archivos/circuito-ca-llave-toma.html',
-  './archivos/circuito-ca-2p-t.html', './archivos/circuito-ca.js', './archivos/circuito-ca-2p.js',
-  './archivos/circuito-ca-toma-doble.html', './archivos/circuito-ca-toma-doble.css',
-  './archivos/circuito-ca-toma-doble.js', './archivos/circuito-redes.html'
+  './archivos/autor.js', './archivos/redes-datos.js', './archivos/mando-datos.js', './archivos/casas-datos.js', './archivos/circuito-redes.html', './archivos/energia.html', './archivos/casa.html', './archivos/datos.html', './archivos/datos-datos.js', './archivos/datos-escenas.js', './archivos/datos-escenas2.js', './archivos/datos-graficos.js', './archivos/componente.html', './archivos/comp-contactor.js'
 ];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(ARCHIVOS)));

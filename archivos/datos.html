@@ -1,0 +1,146 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Datos curiosos sobre la electricidad</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--card:#0a1827ee;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;--badbg:#42202a;--badtx:#ffd1d1;
+ --sk1:#0a1830;--sk2:#17395c;--sk3:#2f6a96;--gnd:#1d3d2e;--gnd2:#16302a;--ink:#e9f1fa;--cable:#c9d3df;--live:#ff6b6b;--skin:#e8b894;--water:#2f8fd1;--wood:#8a6a45;--conc:#7c8794;--metal:#8d99a8;--house:#e9d9b8;--roof:#a8583a;--road:#2a3340}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#fff;--card:#ffffffee;--okbg:#e1f5ea;--oktx:#0b4a2b;--warnbg:#fff1cc;--warntx:#6b4a00;--badbg:#fde4e4;--badtx:#7a1212;
+ --sk1:#6db8ee;--sk2:#b9e0f8;--sk3:#f3fbff;--gnd:#a9d493;--gnd2:#92c47c;--ink:#14253a;--cable:#4a5a6b;--live:#d23030;--skin:#e0a77c;--water:#3fa0e0;--wood:#8a6a45;--conc:#9aa5b1;--metal:#6d7b8a;--house:#f4e6c8;--roof:#b4573a;--road:#7d8896}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--tx);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;touch-action:manipulation;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+button{font:inherit;color:inherit}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:var(--hdr);border-bottom:1px solid var(--line)}
+.ttl{min-width:0;flex:1 1 auto}.ttl h1{margin:0;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttl small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+.top .autor-badge{margin-left:6px}
+.work{flex:1 1 auto;min-height:0;display:flex}
+.stage{position:relative;flex:1 1 auto;min-width:0;background:linear-gradient(var(--sk1),var(--sk2))}
+#st{position:absolute;inset:0;width:100%;height:100%;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.panel{flex:0 0 370px;overflow:auto;padding:12px 14px;background:var(--p);border-left:1px solid var(--line);font-size:.82rem}.panel.closed{display:none}
+.panel h2{margin:0 0 6px;font-size:1.02rem;line-height:1.25}.panel h3{margin:12px 0 5px;font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.ctl{margin-bottom:9px}.ctl>label{display:block;font-weight:700;margin-bottom:4px}
+.chips{display:flex;gap:5px;flex-wrap:wrap}.chips button{padding:7px 10px;border:2px solid var(--line);border-radius:9px;background:var(--p2);cursor:pointer;font-weight:700;font-size:.78rem;text-align:left}.chips button[aria-pressed=true]{border-color:var(--bl);background:#1d4d63;color:#fff}
+.sw{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--p2);cursor:pointer;font-weight:700;text-align:left}.sw i{flex:0 0 38px;height:20px;border-radius:12px;background:#33465c;position:relative;transition:.15s}.sw i:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#cfd8e3;transition:.15s}.sw[aria-pressed=true]{border-color:var(--gr)}.sw[aria-pressed=true] i{background:#2a8f61}.sw[aria-pressed=true] i:after{left:21px;background:#fff}
+input[type=range]{width:100%;accent-color:var(--bl);height:28px}.sv{float:right;font:700 .85rem ui-monospace,Consolas,monospace;color:var(--bl)}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rd{padding:7px 9px;border-radius:9px;background:var(--p2);border:1px solid var(--line)}.rd small{display:block;color:var(--mu);font-size:.64rem;font-weight:700;letter-spacing:.04em}.rd b{font:700 1.08rem ui-monospace,Consolas,monospace}
+.eff{margin-top:8px}.eff .bar{position:relative;height:16px;border-radius:8px;overflow:hidden;display:flex}.eff .bar span{flex:1}.eff .mk{position:absolute;top:-3px;width:4px;height:22px;background:var(--tx);border:1px solid var(--bg);border-radius:2px;transition:left .35s}
+.eff .sc{display:flex;justify-content:space-between;font-size:.6rem;color:var(--mu);margin-top:2px}
+.vd{margin-top:9px;padding:9px 11px;border-radius:10px;border:2px solid var(--line);font-weight:700}.vd.ok{background:var(--okbg);border-color:var(--gr);color:var(--oktx)}.vd.warn{background:var(--warnbg);border-color:var(--yl);color:var(--warntx)}.vd.bad{background:var(--badbg);border-color:var(--rd);color:var(--badtx)}
+.panel p{margin:5px 0;color:var(--tx)}.clave{margin-top:10px;padding:9px 11px;border-radius:10px;background:var(--p2);border-left:4px solid var(--bl)}.clave b{color:var(--bl)}.dato{color:var(--mu)}.aviso{margin-top:12px;color:var(--mu);font-size:.7rem}
+.nav{display:flex;gap:6px;margin-top:12px}.btn{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--p2);cursor:pointer;font-weight:700;font-size:.78rem}
+/* escena */
+.flowd{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-dasharray:3 15;animation:fl .55s linear infinite}@keyframes fl{to{stroke-dashoffset:-18}}
+.pulse{animation:pu 1.1s ease-in-out infinite}@keyframes pu{50%{opacity:.45}}
+.rain{stroke:#cfe6ff;stroke-width:2;animation:rn .55s linear infinite}@keyframes rn{from{transform:translate(0,-20px);opacity:0}15%{opacity:1}to{transform:translate(-14px,30px);opacity:.2}}
+.moon{display:none}:root[data-theme=dark] .sun{display:none}:root[data-theme=dark] .moon{display:inline}
+.cloud{animation:cl 50s linear infinite alternate}@keyframes cl{from{transform:translateX(-40px)}to{transform:translateX(70px)}}
+.flick{animation:fk .12s steps(2) infinite}@keyframes fk{50%{opacity:.35}}
+.flame{animation:fm .45s ease-in-out infinite alternate;transform-box:view-box}@keyframes fm{from{transform:scale(1,1)}to{transform:scale(.88,1.14)}}
+.smoke{animation:sm 3.6s ease-out infinite}@keyframes sm{from{transform:translateY(0) scale(.6);opacity:.55}to{transform:translateY(-90px) scale(1.7);opacity:0}}
+.wv2{animation:wv 2.6s ease-in-out infinite alternate}@keyframes wv{from{transform:translateX(-12px)}to{transform:translateX(12px)}}
+.sprk{animation:sp .4s steps(2) infinite}@keyframes sp{50%{opacity:.2}}
+.lab{fill:var(--ink);font:700 15px system-ui,sans-serif;text-anchor:middle;paint-order:stroke;stroke:var(--sk1);stroke-width:4px;stroke-linejoin:round}
+.lab2{fill:var(--ink);font:600 13px system-ui,sans-serif;paint-order:stroke;stroke:var(--sk1);stroke-width:3.5px}
+:root[data-theme=light] .lab,:root[data-theme=light] .lab2{stroke:#eef7ff}
+.pizarra .ttl h1{font-size:1.4rem}.pizarra .ttl small{font-size:.9rem}.pizarra header.top{min-height:62px}.pizarra .tools button{width:48px;height:48px;font-size:1.25rem}.pizarra .panel{flex-basis:430px;font-size:1.05rem}.pizarra .panel h2{font-size:1.35rem}.pizarra .chips button{font-size:1rem}.pizarra .lab{font-size:19px}.pizarra .lab2{font-size:16px}.pizarra .rd b{font-size:1.3rem}
+@media (max-width:950px){.panel{position:absolute;z-index:6;right:0;top:0;bottom:0;width:min(380px,66%);box-shadow:-8px 0 24px #000a;flex:none}.panel.closed{display:block;transform:translateX(105%);visibility:hidden}.work{position:relative}}
+@media (max-height:520px){header.top{min-height:34px;padding-top:2px;padding-bottom:2px}.ttl h1{font-size:.8rem}.ttl small{display:none}.tools button{width:30px;height:30px}.top .autor-badge{padding:3px 8px;font-size:.62rem}}
+@media (max-width:700px) and (orientation:portrait){body:after{content:"Gira el teléfono para ver la demostración en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,sans-serif}}
+@media (prefers-reduced-motion:reduce){.flowd,.pulse,.rain,.sprk{animation:none}}
+</style></head><body>
+<header class="top">
+ <div class="ttl"><h1 id="title">Datos curiosos</h1><small id="sub"></small></div>
+ <div class="tools">
+  <button id="bPanel" title="Mostrar u ocultar el panel" aria-label="Panel" aria-pressed="true">☰</button>
+  <button id="bSound" title="Sonidos" aria-label="Sonidos" aria-pressed="true">🔊</button>
+  <button id="bTheme" class="solo" title="Fondo claro u oscuro" aria-label="Cambiar tema">◐</button>
+  <button id="bProj" class="solo" title="Modo pizarra" aria-label="Modo pizarra" aria-pressed="false"><b>Aa</b></button>
+  <button id="bFull" class="solo" title="Pantalla completa" aria-label="Pantalla completa">⛶</button>
+ </div>
+</header>
+<div class="work">
+ <section class="stage"><svg id="st" viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Demostración"></svg></section>
+ <aside id="panel" class="panel"></aside>
+</div>
+<script src="datos-datos.js"></script>
+<script src="datos-graficos.js"></script>
+<script>window.ESCENAS={};</script>
+<script src="datos-escenas.js"></script>
+<script src="datos-escenas2.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),svg=$('#st'),D=window.DATOS,ESC=window.ESCENAS;
+const params=new URLSearchParams(location.search),id=params.get('c')&&ESC[params.get('c')]?params.get('c'):D.order[0],meta=D.items[id],SC=ESC[id];
+let S={},R={},soundOn=true;
+/* ---------- formatos ---------- */
+const f=(n,d=1)=>{const x=Number(n);if(!isFinite(x))return'—';return x.toFixed(d).replace('.',',')};
+function amp(mA){const a=Math.abs(mA);if(a>=1000)return f(a/1000,a>=10000?0:2)+' A';if(a>=10)return f(a,a>=100?0:1)+' mA';if(a>=1)return f(a,2)+' mA';if(a>=.001)return f(a*1000,a>=.01?1:2)+' µA';return f(a*1e6,0)+' nA'}
+function volt(v){const a=Math.abs(v);if(a>=1000)return f(v/1000,a>=10000?1:2)+' kV';if(a>=1)return f(v,a>=100?0:1)+' V';return f(v*1000,1)+' mV'}
+function ohm(r){if(r>=1e6)return f(r/1e6,1)+' MΩ';if(r>=1e3)return f(r/1e3,r>=1e4?0:1)+' kΩ';return f(r,0)+' Ω'}
+function effect(mA){if(mA<.5)return{k:0,t:'No se percibe',c:'#3fbf84'};if(mA<2)return{k:1,t:'Se percibe: cosquilleo leve',c:'#9ad84a'};if(mA<10)return{k:2,t:'Molesto: contracción muscular y dolor',c:'#e6c63a'};if(mA<30)return{k:3,t:'Dolor intenso: no se puede soltar el conductor',c:'#f0963a'};if(mA<100)return{k:4,t:'Peligro: dificultad para respirar, riesgo de fibrilación',c:'#ee5a3a'};return{k:5,t:'Mortal: fibrilación ventricular, paro cardíaco, quemaduras graves',c:'#d02030'}}
+/* ---------- ayudas de dibujo ---------- */
+const H=window.HELPERS(f,amp,volt,ohm,effect);
+window.H=H;
+/* ---------- audio ---------- */
+let actx=null,nbuf=null;
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
+function tone(fq,d,ty='sine',v=.05,dl=0,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+dl;o.type=ty;o.frequency.setValueAtTime(fq,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v,s+.015);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.03)}
+function noise(d,v,dl,fq,q){const a=audio();if(!a)return;if(!nbuf){nbuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nbuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nbuf;fl.type='bandpass';fl.frequency.value=fq||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
+const SND={click(){tone(560,.05,'triangle',.04);noise(.03,.03,0,2500,3)},safe(){tone(660,.12,'sine',.04);tone(880,.18,'sine',.035,.08)},warn(){tone(300,.2,'triangle',.05);tone(280,.2,'triangle',.04,.12)},zap(){noise(.35,.1,0,4000,.7);tone(120,.3,'sawtooth',.06,0,60);tone(900,.12,'square',.03,.02,200)}};
+const play=n=>{try{SND[n]&&SND[n]()}catch{}};
+window.__snd=play;
+/* ---------- panel ---------- */
+const BAR=['#3fbf84','#9ad84a','#e6c63a','#f0963a','#ee5a3a','#d02030'];
+function effBar(mA){const e=effect(mA),pct=Math.max(0,Math.min(100,(Math.log10(Math.max(mA,.1))+1)/4*100));return`<div class="eff"><div class="bar">${BAR.map(c=>`<span style="background:${c}"></span>`).join('')}<i class="mk" style="left:calc(${pct}% - 2px)"></i></div><div class="sc"><span>0,1 mA</span><span>1</span><span>10</span><span>100</span><span>1 A</span></div><div style="margin-top:4px;font-weight:700;color:${e.c}">${e.t}</div></div>`}
+function panelHTML(){let h=`<h2>${meta.title}</h2><h3>Probá</h3>`;
+ SC.controls.forEach(c=>{
+  if(c.t==='toggle')h+=`<div class="ctl"><button class="sw" data-k="${c.k}" data-t="toggle" aria-pressed="${!!S[c.k]}"><i></i>${c.l}</button></div>`;
+  if(c.t==='choice')h+=`<div class="ctl"><label>${c.l}</label><div class="chips">${c.o.map(o=>`<button data-k="${c.k}" data-t="choice" data-v="${o[0]}" aria-pressed="${S[c.k]===o[0]}">${o[1]}</button>`).join('')}</div></div>`;
+  if(c.t==='slider')h+=`<div class="ctl"><label>${c.l}<span class="sv" id="sv_${c.k}">${c.fmt?c.fmt(S[c.k]):f(S[c.k],c.dec||0)+(c.u||'')}</span></label><input type="range" data-k="${c.k}" data-t="slider" min="${c.min}" max="${c.max}" step="${c.st||1}" value="${S[c.k]}"></div>`});
+ h+=`<h3>Mediciones</h3><div class="reads" id="readsBox">${R.reads.map(r=>`<div class="rd"><small>${r.l}</small><b>${r.v}</b></div>`).join('')}</div>`;
+ if(R.mA!==undefined)h+=effBar(R.mA);
+ if(R.verdict)h+=`<div class="vd ${R.verdict.cls}">${R.verdict.t}</div>`;
+ const q=typeof SC.que==='function'?SC.que(S,R):SC.que;
+ h+=`<h3>¿Qué pasa?</h3><p>${q}</p><div class="clave"><b>🔑 Lo que realmente importa:</b> ${typeof SC.clave==='function'?SC.clave(S,R):SC.clave}</div>${SC.dato?`<p class="dato">💡 ${SC.dato}</p>`:''}<p class="aviso">Valores orientativos con fines didácticos. El riesgo real depende de la tensión, el tiempo, el camino de la corriente y la persona. Nunca experimentes con instalaciones reales.</p>`;
+ const i=D.order.indexOf(id);h+=`<div class="nav">${i>0?`<button class="btn" id="prevB">◀ Anterior</button>`:''}${i<D.order.length-1?`<button class="btn" id="nextB">Siguiente ▶</button>`:''}</div>`;
+ return h}
+let lastLevel=-1;
+function update(sound){R=SC.calc(S);const l=R.mA!==undefined?effect(R.mA).k:(R.verdict?(R.verdict.cls==='bad'?5:R.verdict.cls==='warn'?3:0):0);
+ svg.innerHTML=``+window.DEFS+``+SC.draw(S,R,H);
+ const p=$('#panel'),sc=p.scrollTop;p.innerHTML=panelHTML();p.scrollTop=sc;bind();
+ if(sound&&l!==lastLevel){if(l>=4)play('zap');else if(l>=2)play('warn');else play('safe')}lastLevel=l}
+function bind(){const p=$('#panel');
+ p.querySelectorAll('[data-k]').forEach(el=>{const k=el.dataset.k,t=el.dataset.t;
+  if(t==='toggle')el.onclick=()=>{S[k]=!S[k];play('click');update(true)};
+  if(t==='choice')el.onclick=()=>{S[k]=el.dataset.v;play('click');update(true)};
+  if(t==='slider')el.oninput=()=>{S[k]=+el.value;const c=SC.controls.find(x=>x.k===k);const sv=$('#sv_'+k);if(sv)sv.textContent=c.fmt?c.fmt(S[k]):f(S[k],c.dec||0)+(c.u||'');updateLive()}});
+ const pb=$('#prevB'),nb=$('#nextB');const i=D.order.indexOf(id);if(pb)pb.onclick=()=>location.search='?c='+D.order[i-1]+extra();if(nb)nb.onclick=()=>location.search='?c='+D.order[i+1]+extra()}
+function extra(){let s='';if(params.get('tema'))s+='&tema='+params.get('tema');if(params.get('pizarra'))s+='&pizarra='+params.get('pizarra');if(params.get('anidado'))s+='&anidado=1';return s}
+let raf=0;function updateLive(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{R=SC.calc(S);svg.innerHTML=``+window.DEFS+``+SC.draw(S,R,H);
+ const p=$('#panel'),keep=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.k:null,sc=p.scrollTop;p.innerHTML=panelHTML();p.scrollTop=sc;bind();if(keep){const el=p.querySelector(`[data-k="${keep}"][data-t="slider"]`);if(el)el.focus()}
+ const l=R.mA!==undefined?effect(R.mA).k:0;if(l!==lastLevel&&l>=4)play('zap');lastLevel=l})}
+/* ---------- ajustes ---------- */
+const embedded=window.parent!==window;if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
+const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
+function apply(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra))}
+function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
+window.addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
+$('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply();avisar()};
+$('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply();avisar()};
+const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;
+$('#bFull').onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else(el.requestFullscreen||el.webkitRequestFullscreen).call(el)};
+$('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('click')}};
+const phone=()=>matchMedia('(max-width:950px)').matches;
+function setPanel(o){$('#panel').classList.toggle('closed',!o);$('#bPanel').setAttribute('aria-pressed',String(o))}
+$('#bPanel').onclick=()=>setPanel($('#panel').classList.contains('closed'));
+/* ---------- inicio ---------- */
+document.title=meta.title;$('#title').textContent=meta.title;$('#sub').textContent=(D.groups.find(g=>g.id===meta.group)||{title:''}).title+' · '+(D.order.indexOf(id)+1)+' de '+D.order.length;
+SC.controls.forEach(c=>S[c.k]=c.v);S.t=0;apply();setPanel(!phone());update(false);
+if(SC.anim){let last=performance.now();const GS=window.DEFS;
+ const loop=ts=>{const dt=Math.min(.1,(ts-last)/1000);last=ts;if(!document.hidden&&S.pausa!==true)S.t=(S.t||0)+dt;
+  R=SC.calc(S);svg.innerHTML=GS+SC.draw(S,R,H);
+  const rb=$('#readsBox');if(rb)rb.innerHTML=R.reads.map(r=>`<div class="rd"><small>${r.l}</small><b>${r.v}</b></div>`).join('');
+  requestAnimationFrame(loop)};requestAnimationFrame(loop)}
+document.addEventListener('pointerdown',()=>audio(),{once:true});
+window.__dat={id,S:()=>S,R:()=>R,set:(k,v)=>{S[k]=v;update(false)},scene:SC,H};
+})();
+</script><script src="autor.js"></script></body></html>
