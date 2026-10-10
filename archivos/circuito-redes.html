@@ -78,7 +78,44 @@ body.exam .hint{-webkit-line-clamp:4;font-size:.95rem}body.exam.pizarra .hint{fo
  body:after{content:"Gira el teléfono para practicar en posición horizontal";position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 50% 25%,#183b5b,#06101d 72%);color:#f4f9ff;text-align:center;font:700 1.05rem/1.4 system-ui,sans-serif}
 }
 @media (prefers-reduced-motion:reduce){.flow,.spin{animation:none}}
+/* ---------- piel para teléfonos (movil=1): sin cabecera ni panel, barra fina, hoja inferior y bornes grandes ---------- */
+.mvmain{display:contents}.mvbar,.mvsheet,.mvcols,.mvread,.mvmission{display:none}
+body.movil:after{display:none!important}
+body.movil header.top,body.movil .panel,body.movil .win,body.movil #bPanel{display:none!important}
+body.movil .mvbar{display:flex;align-items:center;gap:6px;flex:0 0 auto;min-height:48px;padding:3px 8px;background:var(--hdr);border-bottom:1px solid var(--line);z-index:6}
+.mvbar[hidden]{display:none!important}
+.mvbar button{flex:0 0 auto;min-width:44px;height:42px;padding:0 9px;border-radius:12px;border:1px solid var(--line);background:var(--p2);color:var(--tx);font-size:1.15rem;line-height:1;cursor:pointer}.mvbar button[hidden]{display:none}.mvbar button:active{background:#1d4d63}
+.mvtit{flex:1 1 auto;min-width:0}.mvtit b{display:block;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mvtit small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mvbar .mvent{background:#ffd43b;color:#241a00;border-color:#ffd43b;font-weight:800;font-size:.95rem;animation:examPulse 1.6s ease-in-out infinite}
+body.movil .mvmain{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+body.movil .mvmain .work{flex:1 1 auto;min-height:0}
+body.movil.sheet .mvsheet{display:block;flex:0 0 auto;max-height:54%;overflow:auto;padding:10px 12px 14px;background:var(--p);border-top:1px solid var(--line);-webkit-overflow-scrolling:touch}
+body.movil.sheet .hint{display:none}
+.mvsheet .goal{margin-bottom:8px}.mvsheet h3{margin:8px 0 4px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}.mvsheet .quiz{margin-top:6px}.mvsheet .qopt{padding:13px 14px;font-size:1.02rem;margin:8px 0}.mvsheet .row .btn{padding:11px 16px;font-size:.95rem}
+.mvdiag{margin:6px 0;padding:8px 10px;border-radius:10px;border:1px solid var(--hintline);background:var(--hintbg);color:var(--mu);font-size:.85rem}.mvdiag.error{background:var(--errbg);color:var(--errtx);border-color:#ff6969}.mvdiag.ok{background:var(--okbg);color:var(--oktx);border-color:var(--gr)}.mvdiag strong{color:var(--tx)}
+@media (orientation:landscape){body.movil.sheet .mvmain{flex-direction:row}body.movil.sheet .mvsheet{width:42%;max-height:none;border-top:0;border-left:1px solid var(--line)}}
+/* colores del cable: tira en el borde del tablero (a la izquierda en horizontal, abajo en vertical) */
+body.movil.wire .mvcols{display:flex;position:absolute;z-index:4;left:5px;top:50%;transform:translateY(-50%);flex-direction:column;gap:6px;padding:8px 5px;border-radius:20px;background:var(--hintbg);border:1px solid var(--hintline)}
+body.movil.wire .mvcols .colors{flex-direction:column;gap:9px}body.movil.wire .mvcols .colors button{width:40px;height:40px;border-width:3px}
+body.movil.wire #board{left:62px;width:calc(100% - 62px)}
+@media (orientation:portrait){body.movil.wire .mvcols{left:50%;top:auto;bottom:8px;transform:translateX(-50%);flex-direction:row;padding:5px 10px}body.movil.wire .mvcols .colors{flex-direction:row}body.movil.wire #board{left:0;width:100%;height:calc(100% - 64px)}}
+/* lectura flotante del multímetro y consigna */
+body.movil.wire .mvread{display:block;position:absolute;z-index:4;top:6px;left:50%;transform:translateX(-50%);max-width:92%;padding:6px 14px;border-radius:999px;background:var(--hintbg);border:1px solid var(--bl);color:var(--tx);font:700 .88rem ui-monospace,Consolas,monospace;white-space:nowrap;pointer-events:none}.mvread[hidden]{display:none!important}
+body.movil .mvmission{position:absolute;inset:0;z-index:8;display:none;place-items:center;padding:14px;background:#04101bd9;backdrop-filter:blur(5px)}body.movil .mvmission.on{display:grid}
+.mm-card{width:min(440px,100%);max-height:100%;overflow:auto;padding:18px 18px 16px;border-radius:22px;border:2px solid var(--bl);background:var(--p);color:var(--tx);text-align:center;box-shadow:0 20px 60px #000b}
+.mm-lv{display:inline-block;padding:3px 12px;border-radius:999px;background:#ffd43b22;border:1px solid #ffd43b;color:#ffd43b;font-weight:800;font-size:.78rem}.mm-card h2{margin:8px 0 4px;font-size:1.3rem}.mm-card p{margin:6px 0 12px;color:var(--tx);font-size:1rem;line-height:1.4}
+.mm-card .btn[hidden]{display:none}.mm-card .btn{display:block;width:100%;margin:8px 0 0;padding:14px;font-size:1.05rem;border-radius:14px}.mm-card .sm{font-size:.82rem;padding:9px;color:var(--mu);background:none;border-color:transparent}
+body.movil .hint{bottom:4px;width:min(520px,calc(100% - 140px));font-size:.8rem;padding:5px 10px}
+body.movil .why{top:46px}body.movil .toast{bottom:44px}
+body.movil .tx{font-size:20px!important}body.movil .tv{font-size:17px!important}body.movil .tl{font-size:16px!important}body.movil .wire{stroke-width:9px}body.movil .wshadow{stroke-width:15px}
+.hintring{fill:none;stroke:#ffd43b;stroke-width:5;transform-box:fill-box;transform-origin:center;animation:hring 1s ease-out infinite;pointer-events:none}@keyframes hring{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.9);opacity:0}}
 </style></head><body>
+<div id="mvbar" class="mvbar" hidden>
+ <button id="mvBack" aria-label="Salir">←</button>
+ <div class="mvtit"><b id="mvLvl"></b><small id="mvSub"></small></div>
+ <button id="mvInfo" aria-label="Ver la consigna">ℹ️</button><button id="mvHint" aria-label="Pista">💡</button><button id="mvUndo" aria-label="Quitar último cable">↶</button><button id="mvReset" aria-label="Reiniciar">↻</button><button id="mvSnd" aria-label="Sonido">🔊</button><button id="mvEnt" class="mvent" hidden>Entregar ✔</button>
+</div>
+<div class="mvmain" id="mvmain">
 <header class="top">
  <div class="ttl"><h1 id="title">Simulador</h1><small id="sub"></small></div>
  <div id="status" class="status"><i></i><span id="statusText"></span></div>
@@ -123,17 +160,26 @@ body.exam .hint{-webkit-line-clamp:4;font-size:.95rem}body.exam.pizarra .hint{fo
   <div id="win" class="win" hidden role="status"><div class="win-st" id="winSt"></div><h3 id="winTit"></h3><p id="winTxt"></p><div id="winBadge"></div><div class="row" style="justify-content:center"><button class="btn primary" id="winNext" hidden>Siguiente práctica ▶</button><button class="btn" id="winClose">Seguir probando</button></div></div>
   <div id="why" class="why" hidden role="alert"><div class="why-ico" id="whyIco">⚡</div><div class="why-body"><h3><span id="whyTit"></span><span class="why-tap"> · ¿por qué? tocá</span></h3><p><b class="k1">Qué pasó</b><span id="whyWhat"></span></p><p><b class="k2">Por qué</b><span id="whyWhy"></span></p><p><b class="k3">Qué hacer</b><span id="whyFix"></span></p></div><button class="btn primary" id="whyOk">Entendido ✔</button></div>
   <div id="hint" class="hint"></div>
+  <div class="mvcols" id="mvcols"></div><div class="mvread" id="mvread" hidden></div>
+  <div class="mvmission" id="mvmission"><div class="mm-card"><span class="mm-lv" id="mmLv"></span><h2 id="mmTit"></h2><p id="mmTxt"></p><button class="btn primary" id="mmGo">¡Empezar!</button><button class="btn sm" id="mmSol" hidden>🏳 Rendirme y ver la solución</button></div></div>
  </section>
+</div>
+<div class="mvsheet" id="mvsheet"><div class="mvdiag" id="mvdiag"></div></div>
 </div>
 <script src="redes-datos.js"></script><script src="componentes-cristal.js"></script><script src="progreso.js"></script>
 <script>
 (()=>{
 const D=window.REDES,$=s=>document.querySelector(s),svg=$('#board'),gW=$('#gWires'),gC=$('#gComps'),gT=$('#gTerms'),gP=$('#gPlug'),gFx=$('#gFx'),prev=$('#prev'),prevS=$('#prevS');
 const params=new URLSearchParams(location.search);
-let GENSC=null;try{if(params.get('gen'))GENSC=JSON.parse(params.get('gen'))}catch{}
+/* problema generado: gen=<json> o gen=@clave (la clave apunta a un problema guardado en localStorage: URL corta) */
+let GENSC=null;try{const gp=params.get('gen');if(gp)GENSC=JSON.parse(gp[0]==='@'?localStorage.getItem('sim-gen-'+gp.slice(1)):gp)}catch{}
 const sc=GENSC||D.items[params.get('c')]||D.items[D.order[0]];
 const H=500,VH=548;let W=1000,scale=1;
 const AC=!!sc.ac;
+/* modo teléfono: piel táctil; SHEET = problemas de pregunta o de falla (hoja inferior, se resuelven en vertical) */
+const MOVIL=params.get('movil')==='1',NIVEL=+params.get('nivel')||0,SHEET=MOVIL&&!!(sc.quiz||sc.fault),TR=MOVIL?19:13;let hintPair=null;
+if(MOVIL){document.body.classList.add('movil',SHEET?'sheet':'wire')}
+const parentPost=m=>{try{if(window.parent!==window)window.parent.postMessage(m,'*')}catch{}};
 const DCW=[['red','Rojo','#e5484d'],['blue','Celeste','#4db5ee'],['green','Verde','#3ecf7a'],['yellow','Amarillo','#f2c94c'],['gray','Gris','#c3ccd8']];
 const ACW=[['brown','Marrón · Fase','#b5651d'],['blue','Celeste · Neutro','#4db5ee'],['earth','Verde/amarillo · Tierra','#37c870']];
 const WIRE_COLORS=AC?ACW:DCW,wcol=k=>{const c=(WIRE_COLORS.find(c=>c[0]===k)||WIRE_COLORS[0])[2];return k==='gray'&&document.documentElement.dataset.theme==='light'?'#7b889b':c};
@@ -305,9 +351,9 @@ function hideWhy(){clearTimeout(whyTm);clearTimeout(whyTm2);whyEl.hidden=true;wh
 $('#whyOk').onclick=hideWhy;whyEl.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;e.preventDefault();clearTimeout(whyTm);clearTimeout(whyTm2);if(whyEl.classList.contains("mini")){whyEl.classList.remove("mini");whyTm=setTimeout(()=>{if(!whyEl.hidden)whyEl.classList.add("mini")},22000)}else whyEl.classList.add("mini")});
 
 /* ---------- pregunta de opción múltiple (modo examen / niveles) ---------- */
-let quizSel=null,quizLocked=false;
+let quizSel=null,quizLocked=false,quizWrong=0;
 function buildQuiz(){const q=sc.quiz,box=$('#quiz');if(!q){box.hidden=true;return}box.hidden=false;$('#qq').textContent=q.q;const o=$('#qo');o.innerHTML='';
- q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=t;b.onclick=()=>{if(quizLocked)return;audio();quizSel=i;play(EXAM||i===q.ans?'select':'error');paintQuiz();update()};o.append(b)})}
+ q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=t;b.onclick=()=>{if(quizLocked||b.classList.contains('off'))return;audio();quizSel=i;if(!EXAM&&i!==q.ans)quizWrong++;play(EXAM||i===q.ans?'select':'error');paintQuiz();update()};o.append(b)})}
 function paintQuiz(){if(!sc.quiz)return;document.querySelectorAll('#qo .qopt').forEach((b,i)=>{b.className='qopt'+(quizSel===i?' sel':'')+(!EXAM&&quizSel===i?(i===sc.quiz.ans?' good':' bad'):'')})}
 
 /* ---------- colores de los cables en corriente continua ----------
@@ -420,10 +466,10 @@ function render(){
   const hw=c.t==='dcm'?162:140,lx=c.t==='dcm'?8:0;
   s+=`<g data-c="${c.id}" transform="translate(${x} ${y})"><rect x="-70" y="${hy}" width="${hw}" height="${hh}" fill="transparent"/>${sel?`<rect class="sel-box" x="-70" y="${hy}" width="${hw}" height="${hh}" rx="12"/>`:''}${compBody(c,r)}<text class="tx" x="${lx}" y="${ty}" style="${broken[c.id]&&!sc.fault?'fill:#ff9a9a':''}">${esc(nm)}${broken[c.id]&&!sc.fault?' ✖':''}</text>${vals?`<text class="tv" x="${lx}" y="${ty+18}">${vals}</text>`:''}</g>`});
  gC.innerHTML=s;
- let t='';allT.forEach(id=>{const p=tp(id),d=TM[id],con=links.some(l=>l.a===id||l.b===id),lab=(AC||d.c.t==='bat')?d.label:'',pe=(con||d.c.t==='bat')?potOf(id):null,glow=pe?`<circle r="22" fill="${pe.short?'#ff5a3c':CRISTAL.potColor(pe.f)}" opacity=".5" filter="url(#fB3)" class="widle2" pointer-events="none"/>`:'';
+ let t='';allT.forEach(id=>{const p=tp(id),d=TM[id],con=links.some(l=>l.a===id||l.b===id),lab=(AC||d.c.t==='bat')?d.label:'',pe=(con||d.c.t==='bat')?potOf(id):null,hr=hintPair&&hintPair.includes(id)?`<circle class="hintring" r="${TR+4}"/>`:'',glow=pe?`<circle r="22" fill="${pe.short?'#ff5a3c':CRISTAL.potColor(pe.f)}" opacity=".5" filter="url(#fB3)" class="widle2" pointer-events="none"/>`:'';
   const fill=AC?(d.role==='L'?'#b5651d':d.role==='N'?'#4db5ee':'#37c870'):'';
   const lx=d.dx>0?-27:d.dx<0?27:0,ly=d.dy<0?-21:d.dy>0?27:(d.dx===0?-21:5);
-  t+=`<g class="term${con?' connected':''}${pend===id?' pend':''}" data-t="${id}" transform="translate(${p.x} ${p.y})">${glow}<circle class="term-ring" r="13"/><circle class="term-dot" r="6"${fill&&!con?` style="fill:${fill}"`:''}/>${lab&&d.c.t!=='box'?(d.c.t==='bat'?`<g pointer-events="none"><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ff7a3d':'#35c8ff'};filter:url(#fB3)">${d.label==='+'?'+':'−'}</text><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ffc2a0':'#c8f3ff'}">${d.label==='+'?'+':'−'}</text></g>`:`<text x="${d.dy?0:lx}" y="${d.dy?ly:5}" class="tl">${lab}</text>`):''}</g>`});
+  t+=`<g class="term${con?' connected':''}${pend===id?' pend':''}" data-t="${id}" transform="translate(${p.x} ${p.y})">${glow}${hr}<circle class="term-ring" r="${TR}"/><circle class="term-dot" r="${MOVIL?9:6}"${fill&&!con?` style="fill:${fill}"`:''}/>${lab&&d.c.t!=='box'?(d.c.t==='bat'?`<g pointer-events="none"><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ff7a3d':'#35c8ff'};filter:url(#fB3)">${d.label==='+'?'+':'−'}</text><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ffc2a0':'#c8f3ff'}">${d.label==='+'?'+':'−'}</text></g>`:`<text x="${d.dy?0:lx}" y="${d.dy?ly:5}" class="tl">${lab}</text>`):''}</g>`});
  gT.innerHTML=t;
  renderPlug();
 }
@@ -470,6 +516,7 @@ function updatePanel(){
  $('#unplugBtn').hidden=!motor;$('#unplugBtn').disabled=!plugTo;
  const rs=$('#result');if(lastDiag&&lastDiag.done&&!EXAM){const nx=sc.hidden?null:D.order[D.order.indexOf(sc.id)+1],cont=sc.hidden&&!sc.gen&&window.parent!==window;rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:inherit;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">Siguiente práctica ▶</button>`:''}${cont?`<button class="btn primary" id="nextBtn">Continuar ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{if(cont)parent.postMessage({tipo:'continuar',id:sc.id},'*');else location.search='?c='+nx}}else rs.hidden=true;
  $('#bDel').disabled=selWire===null||!!links[selWire]?.locked;$('#bUndo').disabled=!links.some(l=>!l.locked);
+ if(MOVIL){mvUpdate();$('#mvUndo').disabled=$('#bUndo').disabled}
 }
 function update(){
  const{sim,events}=settle();events.push(...pendEv.splice(0));lastSim=sim;lastBad=colorIssues();const d=diagnose(sim);lastDiag=d;
@@ -478,6 +525,7 @@ function update(){
  const neutral=EXAM&&d.cls!=='error',st=$('#status');
  st.className='status '+(neutral?'':(d.status||''));$('#statusText').textContent=neutral?'Examen en curso':(d.head||'Consigna');
  const h=$('#hint');h.className='hint '+(neutral?'':(d.cls||''));h.innerHTML=neutral?(sc.quiz?'<strong>Pregunta:</strong> '+esc(sc.quiz.q)+' <i>Elegí la respuesta en el panel (☰) y tocá «Entregar ✔».</i>':'<strong>Consigna:</strong> '+esc(sc.goal||'armá el circuito pedido')+' <i>Cuando termines, tocá «Entregar ✔».</i>'):'<strong>'+esc(d.head)+':</strong> '+esc(d.text);
+ if(MOVIL){const dg=$('#mvdiag');dg.className='mvdiag '+(neutral?'':(d.cls||''));dg.innerHTML=h.innerHTML}
  updatePanel();
  events.forEach(e=>{play(e.t==='fuse'?'blow':'burn');const cc=cm[e.id],pos=()=>({x:cc.fx*W,y:cc.fy*H}),p0=pos();
   if(e.t==='lamp'){FX.shatter(p0.x,p0.y-30,30);FX.smoke(p0.x,p0.y-34,10,{r:11});FX.flame(p0.x,p0.y-26,5,{s:.9,sp:26});play('blow')}
@@ -517,10 +565,12 @@ function update(){
 function starsFor(){
  if(sc.fault)return 1+(attempts<=2?1:0)+(attempts===0&&!stat.hint&&stat.shorts===0?1:0);
  return 1+(!stat.sol?1:0)+(!stat.sol&&!stat.hint&&stat.shorts===0&&stat.burns===0?1:0)}
-let celebrated=false;
+let celebrated=false,levelSent=false;
 function onDone(){
  const info={s:0};
  if(EXAM){exam.ok=true;exam.t=Math.round((Date.now()-stat.t0)/1000);exam.shorts=stat.shorts;exam.burns=stat.burns;return}
+ if(MOVIL&&NIVEL>0){if(levelSent)return;levelSent=true;const errs=stat.tShorts+stat.tBurns+quizWrong+(sc.fault?attempts:0),stars=Math.max(1,3-(stat.hint?1:0)-(errs>0?1:0));
+  setTimeout(()=>play('success'),150);parentPost({tipo:'movil-resultado',ok:true,stars,t:Math.round((Date.now()-T00)/1000),hint:!!stat.hint,errs,nivel:NIVEL});return}
  setTimeout(()=>play('success'),150);
  if(!sc.hidden&&!celebrated){celebrated=true;const n=starsFor(),r=PROG.record(sc.id,n,{g:sc.group,cat:sc.group==='ca'?'ca':'cc',t:Math.round((Date.now()-stat.t0)/1000)});info.s=n;updateStars();
   /* si hay un cartel explicativo abierto se espera a que se lea antes de festejar */
@@ -551,7 +601,7 @@ let tapStart=null;
 svg.addEventListener('pointerdown',e=>{
  audio();const pos=toSvg(e),touch=e.pointerType==='touch'||e.pointerType==='pen';
  const pl=e.target.closest('[data-plug]');
- let t=nearestTerm(pos,touch?36:26);const swHit=e.target.closest('[data-sw]');if(t&&swHit){const q=tp(t);if(Math.hypot(q.x-pos.x,q.y-pos.y)>30)t=null}
+ let t=nearestTerm(pos,MOVIL?46:touch?36:26,MOVIL?70:undefined);const swHit=e.target.closest('[data-sw]');if(t&&swHit){const q=tp(t);if(Math.hypot(q.x-pos.x,q.y-pos.y)>30)t=null}
  if(t&&!pl&&!sc.quiz){e.preventDefault();try{svg.setPointerCapture(e.pointerId)}catch{}selWire=null;selComp=null;drag={from:t,id:e.pointerId,moved:false,x0:e.clientX,y0:e.clientY};tapStart=t;play('grab');updatePreview(pos);return}
  if(pl){e.preventDefault();try{svg.setPointerCapture(e.pointerId)}catch{}const was=plugTo;plugTo=null;drag={plug:true,id:e.pointerId,was};if(was){play('unplug');update()}plugPos={fx:pos.x/W,fy:pos.y/H};renderPlug();return}
  const w=e.target.closest('[data-w]');if(w){selWire=+w.dataset.w;selComp=null;pend=null;play('wiresel');render();updatePanel();return}
@@ -559,7 +609,7 @@ svg.addEventListener('pointerdown',e=>{
  if(c){const comp=cm[c.dataset.c];selComp=comp.id;selWire=null;pend=null;if((comp.t==='sw'||comp.t==='sw3')&&e.target.closest('[data-sw]')){swState[comp.id]=!swState[comp.id];stat.swaps++;play(comp.t==='sw3'?'sw3':swState[comp.id]?'on':'off');update();return}
   if(FREE){try{svg.setPointerCapture(e.pointerId)}catch{}drag={mv:true,id:e.pointerId,cid:comp.id,ox:pos.x-comp.fx*W,oy:pos.y-comp.fy*H,x0:e.clientX,y0:e.clientY,moved:false}}
   play('select');render();updatePanel();return}
- pend=null;selComp=null;selWire=null;closeFly();render();updatePanel()});
+ pend=null;selComp=null;selWire=null;closeFly();render();updatePanel();startPan(e)});
 svg.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const pos=toSvg(e);
  if(drag.mv){if(!drag.moved&&Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>7){drag.moved=true;closeFly()}if(drag.moved){const c=cm[drag.cid],ex=extOf(c);c.fx=Math.max((6-ex[0])/W,Math.min((W-6-ex[1])/W,(pos.x-drag.ox)/W));c.fy=Math.max((6-ex[2])/H,Math.min((468-ex[3])/H,(pos.y-drag.oy)/H));render()}return}
  if(drag.plug){plugPos={fx:pos.x/W,fy:pos.y/H};renderPlug();return}
@@ -611,7 +661,7 @@ function shuffleLayout(){
  pick.asg.forEach((p,c)=>{c.tx=p[0];c.ty=p[1]});return true}
 let animT=null;
 function animateLayout(){const moved=sc.comps.filter(c=>c.tx!==undefined);if(!moved.length)return;moved.forEach(c=>{c.sx=c.fx;c.sy=c.fy});const t0=performance.now(),Dm=560;clearTimeout(animT);
- const step=()=>{const k=Math.min(1,(performance.now()-t0)/Dm),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;moved.forEach(c=>{c.fx=c.sx+(c.tx-c.sx)*e;c.fy=c.sy+(c.ty-c.sy)*e});render();if(k<1)animT=setTimeout(step,16);else{animT=null;moved.forEach(c=>{c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty})}};step()}
+ const step=()=>{const k=Math.min(1,(performance.now()-t0)/Dm),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;moved.forEach(c=>{c.fx=c.sx+(c.tx-c.sx)*e;c.fy=c.sy+(c.ty-c.sy)*e});render();if(k<1)animT=setTimeout(step,16);else{animT=null;moved.forEach(c=>{c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty});if(MOVIL)fitContent()}};step()}
 function reset(first){
  FX.clearAll();links=[];swState={};broken={};selComp=null;selWire=null;pend=null;attempts=0;fixed=false;done=false;plugTo=null;plugPos={fx:plugHome[0],fy:plugHome[1]};prevLit={};prevRun=false;
  if(animT){clearTimeout(animT);animT=null;sc.comps.forEach(c=>{if(c.tx!==undefined){c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty}})}
@@ -721,7 +771,29 @@ $('#valsBtn').setAttribute('aria-pressed',String(showVals));
 
 /* ---------- vista adaptable ---------- */
 const wrap=$('#boardwrap');
-function fit(){const r=svg.getBoundingClientRect();if(!r.width||!r.height)return;const a=Math.max(2,Math.min(2.6,r.width/r.height));W=Math.round(H*a);svg.setAttribute('viewBox','0 0 '+W+' '+VH);scale=Math.min(r.width/W,r.height/VH);if(lastSim)render()}
+function fit(){const r=svg.getBoundingClientRect();if(!r.width||!r.height)return;const a=Math.max(2,Math.min(2.6,r.width/r.height));W=Math.round(H*a);svg.setAttribute('viewBox','0 0 '+W+' '+VH);scale=Math.min(r.width/W,r.height/VH);if(MOVIL){fitContent();if(lastSim)render();return}if(lastSim)render()}
+/* ---------- teléfono: ajustar el tablero al contenido, pellizcar para acercar y arrastrar para mover ---------- */
+let view=null,fitView=null;
+function contentBox(){let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;sc.comps.forEach(c=>{const e=extOf(c),x=c.fx*W,y=c.fy*H;x0=Math.min(x0,x+e[0]);x1=Math.max(x1,x+e[1]);y0=Math.min(y0,y+e[2]);y1=Math.max(y1,y+e[3])});if(motor){x1=Math.max(x1,plugHome[0]*W+40)}return{x0:x0-(MOVIL?34:16),y0:y0-14,x1:x1+(MOVIL?34:16),y1:y1+34+(MOVIL&&!SHEET?46:0)}}
+function setView(v){view=v;svg.setAttribute('viewBox',v.x.toFixed(1)+' '+v.y.toFixed(1)+' '+v.w.toFixed(1)+' '+v.h.toFixed(1));const m=svg.getScreenCTM();if(m&&m.a)scale=m.a}
+function fitContent(){const r=svg.getBoundingClientRect();if(!r.width||!r.height)return;const b=contentBox(),bw=b.x1-b.x0,bh=b.y1-b.y0,ar=r.width/r.height;let w=bw,h=bw/ar;if(h<bh){h=bh;w=bh*ar}fitView={x:(b.x0+b.x1)/2-w/2,y:(b.y0+b.y1)/2-h/2,w,h,box:b};setView({x:fitView.x,y:fitView.y,w,h})}
+function clampView(v){const f=fitView;if(!f)return v;v.w=Math.max(f.w/3.2,Math.min(f.w*1.25,v.w));v.h=v.w*f.h/f.w;const b=f.box,mx=v.w*.35,my=v.h*.35;v.x=Math.max(b.x0-mx,Math.min(b.x1+mx-v.w,v.x));v.y=Math.max(b.y0-my,Math.min(b.y1+my-v.h,v.y));return v}
+const ptrs=new Map();let pan=null,pinch=null;
+const svgAt=(cx,cy)=>{const p=svg.createSVGPoint();p.x=cx;p.y=cy;return p.matrixTransform(svg.getScreenCTM().inverse())};
+if(MOVIL){
+ svg.addEventListener('pointerdown',e=>{ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===2){drag=null;updatePreview();pan=null;const[a,b]=[...ptrs.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,v:{...view},cx:(a.x+b.x)/2,cy:(a.y+b.y)/2}}});
+ svg.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pinch&&ptrs.size>=2){const[a,b]=[...ptrs.values()],d=Math.hypot(a.x-b.x,a.y-b.y)||1,k=pinch.d/d,mid=svgAtView(pinch.v,pinch.cx,pinch.cy),cx=(a.x+b.x)/2,cy=(a.y+b.y)/2;
+   const w=pinch.v.w*k,h=pinch.v.h*k,r=svg.getBoundingClientRect(),fx=(cx-r.left)/r.width,fy=(cy-r.top)/r.height;setView(clampView({x:mid.x-fx*w,y:mid.y-fy*h,w,h}));return}
+  if(pan&&pan.id===e.pointerId){const dx=(e.clientX-pan.x0)/scale,dy=(e.clientY-pan.y0)/scale;if(Math.hypot(e.clientX-pan.x0,e.clientY-pan.y0)>6)pan.moved=true;if(pan.moved)setView(clampView({x:pan.v.x-dx,y:pan.v.y-dy,w:pan.v.w,h:pan.v.h}))}});
+ const up=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)pinch=null;if(pan&&pan.id===e.pointerId)pan=null};
+ svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+ svg.addEventListener('dblclick',()=>{if(fitView)setView({x:fitView.x,y:fitView.y,w:fitView.w,h:fitView.h})});
+}
+/* punto del tablero bajo una posición de pantalla para una vista dada (sin tocar la actual) */
+function svgAtView(v,cx,cy){const r=svg.getBoundingClientRect();return{x:v.x+(cx-r.left)/r.width*v.w,y:v.y+(cy-r.top)/r.height*v.h}}
+function startPan(e){if(!MOVIL||pinch||!view)return;try{svg.setPointerCapture(e.pointerId)}catch{}pan={id:e.pointerId,x0:e.clientX,y0:e.clientY,v:{...view},moved:false}}
 new ResizeObserver(fit).observe(wrap);
 
 document.title=sc.title;$('#title').textContent=sc.title;$('#sub').textContent=(D.groups.find(g=>g.id===sc.group)||{title:''}).title+' · '+sc.desc;
@@ -740,6 +812,43 @@ $("#bFull").onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenEl
 applyAjustes();
 $('#vbar').style.background='linear-gradient(90deg,'+[0,.25,.5,.75,1].map(f=>CRISTAL.potColor(f)).join(',')+')';$('#vlo').textContent='− 0 V';$('#vhi').textContent='+ '+SRCV+' V';
 buildColors();buildPalette();buildQuiz();setPanel(!phone()||!!sc.quiz);fit();reset(true);loadTaller();
+/* ---------- teléfono: barra superior, consigna inicial, pistas y lectura del multímetro ---------- */
+let hintStep=0,hintTm=null,started=false;
+const termName=id=>{const d=TM[id],c=d.c;if(c.t==='bat')return d.k==='p'?'el polo + de la batería':'el polo − de la batería';
+ const s=c.t==='led'?(d.k==='a'?'ánodo A':'cátodo K'):(c.t==='dcm'||c.t==='buz')?(d.k==='a'?'pata +':'pata −'):c.t==='sw3'?(d.k==='c'?'común':'posición '+(d.k==='a'?'1':'2')):(d.k==='a'?'borne izquierdo':'borne derecho');
+ return (c.name||c.id)+' ('+s+')'};
+function mvMission(first){const m=$('#mvmission');$('#mmLv').textContent=NIVEL?'Nivel '+NIVEL:EXAM?'Examen':'Misión';$('#mmTit').textContent=sc.title||'';$('#mmTxt').textContent=sc.goal||'';
+ $('#mmGo').textContent=first?'¡Empezar!':'Cerrar';$('#mmSol').hidden=!(NIVEL>0&&!EXAM&&!first);m.classList.add('on')}
+function mvHint(){if(EXAM)return;stat.hint=true;hintStep++;
+ if(sc.quiz){if(hintStep===1){toast('💡 '+(sc.tip||'Tocá cada componente del circuito y mirá su tensión y su corriente.'),6500);return}
+  const bad=[...document.querySelectorAll('#qo .qopt')].filter((b,i)=>i!==sc.quiz.ans&&!b.classList.contains('off'));
+  if(bad.length>1){const b=bad[Math.floor(Math.random()*bad.length)];b.classList.add('off');b.style.opacity='.35';toast('💡 Descarté una opción incorrecta.',3000)}else toast('💡 Quedan pocas opciones: ¡tocá cada componente y medí!',3500);return}
+ if(sc.fault){toast('💡 '+(sc.tip||'La lámpara quemada es la que no deja pasar corriente (0 A).'),7000);return}
+ if(hintStep===1&&sc.tip){toast('💡 '+sc.tip,7000);return}
+ const miss=sc.sol.find(p=>!links.some(l=>(l.a===p[0]&&l.b===p[1])||(l.a===p[1]&&l.b===p[0])));
+ if(!miss){toast('💡 Los cables están completos: revisá los colores y cerrá la llave.',5000);return}
+ hintPair=miss;clearTimeout(hintTm);hintTm=setTimeout(()=>{hintPair=null;render()},8000);render();toast('💡 Unilo así: '+esc(termName(miss[0]))+' con '+esc(termName(miss[1])),8000)}
+function mvUpdate(){const rd=$('#mvread');if(SHEET||!rd)return;let txt='';
+ if(selComp&&cm[selComp]&&lastSim&&lastSim.c[selComp]&&!['rod','box'].includes(cm[selComp].t)){const r=lastSim.c[selComp];txt=selComp+' · '+fV(r.v)+' · '+fI(r.i)}
+ else if(selWire!==null&&links[selWire]&&lastSim){const p=potOf(links[selWire].a);txt='Cable · '+(p?fV(p.v):'sin energía')+' · '+fI(Math.abs(lastSim.flows[selWire]))}
+ rd.textContent=txt;rd.hidden=!txt}
+if(MOVIL){
+ $('#mvbar').hidden=false;
+ $('#mvLvl').textContent=NIVEL?'Nivel '+NIVEL:(sc.title||'Práctica');$('#mvSub').textContent=NIVEL?(sc.title||'').replace(/^Nivel \d+ · /,''):(sc.desc||'');
+ $('#mvBack').onclick=()=>{if(window.parent!==window)parentPost({tipo:'movil-salir'});else history.back()};
+ $('#mvInfo').onclick=()=>{audio();mvMission(false)};$('#mvHint').onclick=()=>{audio();mvHint()};
+ $('#mvUndo').onclick=()=>$('#bUndo').click();$('#mvReset').onclick=()=>$('#bReset').click();
+ $('#mvSnd').onclick=()=>{$('#bSound').click();$('#mvSnd').textContent=soundOn?'🔊':'🔇'};
+ $('#mvEnt').onclick=()=>$('#bExam').click();$('#mvEnt').hidden=!EXAM;$('#mvHint').hidden=EXAM;
+ $('#mvUndo').hidden=$('#mvReset').hidden=SHEET;$('#mvInfo').hidden=SHEET;
+ $('#mmGo').onclick=()=>{$('#mvmission').classList.remove('on');if(!started){started=true;parentPost({tipo:'movil-empezo'})}audio()};
+ $('#mmSol').onclick=()=>{$('#mvmission').classList.remove('on');stat.sol=true;$('#solBtn').click();parentPost({tipo:'movil-fallo',motivo:'solucion'})};
+ if(!SHEET){$('#mvcols').append($('#colors'))}
+ else{const sh=$('#mvsheet'),dg=$('#mvdiag'),rr=document.createElement('div'),h=document.createElement('h3');rr.className='row';rr.append($('#replBtn'));h.textContent='Medición (tocá un componente)';
+  sh.append($('#pGoal'),$('#quiz'),h,$('#meter'),rr,dg);$('#pGoal').innerHTML='<b>Consigna:</b> '+esc(sc.goal||'')}
+ if(sc.goal&&!SHEET&&!FREE)mvMission(true);else if(!started){started=true;setTimeout(()=>parentPost({tipo:'movil-empezo'}),50)}
+ if(NIVEL||EXAM)document.querySelectorAll('#tipBtn,#solBtn').forEach(b=>b.hidden=true);
+}
 window.__sim={faultId:()=>faultId,select:id=>{selComp=id;selWire=null;render();updatePanel()},quizSel:()=>quizSel,colorFor,colorIssues:()=>colorIssues(),addComp,delComp,setVolt,stat,starsFor,reset:f=>reset(!!f),shuffle:()=>{const m=shuffleLayout();sc.comps.forEach(c=>{if(c.tx!==undefined){c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty}});render();return m},setW:w=>{W=w;svg.setAttribute('viewBox','0 0 '+W+' '+VH);render()},getW:()=>W,sc,links:()=>links,swState:()=>swState,setLinks:l=>{links=l;update()},toggle:id=>{swState[id]=!swState[id];update()},plug:id=>{plugTo=id;update()},diag:()=>lastDiag,sim:()=>lastSim,allT,tp,TM,nearestTerm,scaleNow:()=>scale};
 })();
 </script><script src="autor.js"></script></body></html>

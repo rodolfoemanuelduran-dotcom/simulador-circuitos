@@ -2,132 +2,356 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>Circuitos eléctricos</title>
-<meta name="theme-color" content="#071321">
+<meta name="theme-color" content="#06101c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Circuitos">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{color-scheme:dark;--bg:#07111f;--p:#0e1d2f;--p2:#15293f;--tx:#f4f8ff;--mu:#a9bdd2;--bl:#79d9f1;--line:#2b425f;--hdr:#08141f;--c1:#2d7fb8;--c2:#c6842f;--c3:#3a9d6b;--c4:#8c5bd1}
-:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--line:#b3c2d4;--hdr:#fff;--c1:#1f6fa8;--c2:#b36d18;--c3:#23824f;--c4:#7a47c2}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
-body{display:flex;flex-direction:column;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overscroll-behavior:none}
-header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:50px;padding:6px 10px;background:var(--hdr);border-bottom:1px solid var(--line)}
-header h1{flex:1 1 auto;min-width:0;margin:0;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-header button{flex:0 0 auto;min-width:42px;height:42px;padding:0 10px;border:1px solid var(--line);border-radius:12px;background:var(--p2);color:var(--tx);font-size:1.1rem;font-weight:700}
-header button[hidden]{display:none}
-body.play .autor-badge{display:none}
-main{flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
-#home,#cat{padding:14px;max-width:900px;margin:0 auto}
-h2{margin:6px 0 12px;font-size:1.25rem}
-.sub{color:var(--mu);margin:0 0 16px}
-.tiles{display:grid;grid-template-columns:1fr;gap:12px}
-@media (min-width:560px){.tiles{grid-template-columns:1fr 1fr}}
-.tile{display:flex;gap:14px;align-items:center;width:100%;padding:16px;text-align:left;border:0;border-radius:18px;color:#fff;box-shadow:0 6px 18px #0004}
-.tile .ic{flex:0 0 52px;height:52px;border-radius:14px;background:#ffffff26;display:grid;place-items:center;font-size:1.8rem}
-.tile b{display:block;font-size:1.1rem}.tile span{font-size:.82rem;opacity:.92}.tile em{display:block;font-style:normal;font-size:.72rem;font-weight:700;letter-spacing:.06em;opacity:.9;margin-top:3px}
-.t1{background:linear-gradient(135deg,#2d7fb8,#1b4f7a)}.t2{background:linear-gradient(135deg,#d89034,#9a5d14)}.t3{background:linear-gradient(135deg,#8c5bd1,#5a3490)}.t4{background:linear-gradient(135deg,#3a9d6b,#1d6a45)}
-.tip{margin:16px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;color:var(--mu);font-size:.85rem;background:var(--p)}
-.tip button{margin-top:8px;padding:9px 14px;border:0;border-radius:10px;background:var(--bl);color:#04202c;font-weight:800}
-.foot{margin:18px 0 8px;text-align:center;color:var(--mu);font-size:.78rem}.foot a{color:var(--bl)}
-input[type=search]{width:100%;padding:12px 14px;margin:0 0 12px;border:1px solid var(--line);border-radius:12px;background:var(--p);color:var(--tx);font-size:1rem}
-h3{margin:18px 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
-.item{display:block;width:100%;margin:0 0 9px;padding:13px 14px;text-align:left;border:1px solid var(--line);border-left:6px solid var(--bl);border-radius:14px;background:var(--p);color:var(--tx)}
-.item b{display:block;font-size:1rem;margin-bottom:2px}.item span{display:block;color:var(--mu);font-size:.82rem}.item i{display:inline-block;margin-top:5px;padding:1px 8px;border-radius:99px;background:var(--p2);font-style:normal;font-size:.68rem;font-weight:700;color:var(--mu)}
-.item:active{background:var(--p2)}
-#play{flex:1 1 auto;min-height:0;display:none;position:relative}
-#play iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
-body.play #home,body.play #cat,body.play main{display:none}body.play #play{display:block}
-@media (max-height:480px){header.top{min-height:38px;padding:3px 8px}header button{height:32px;min-width:36px;font-size:1rem}header h1{font-size:.95rem}#home,#cat{padding:10px}.tiles{grid-template-columns:1fr 1fr}.tile{padding:10px}.tile .ic{flex-basis:40px;height:40px;font-size:1.4rem}h2{font-size:1.05rem;margin:2px 0 8px}.sub{display:none}}
-.item{position:relative}.item .st{position:absolute;right:12px;top:10px;font-style:normal;font-size:.9rem;letter-spacing:1px;color:#ffd43b;background:none;padding:0}.item .st.off{color:var(--mu);opacity:.5}
-.xtra{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}@media (min-width:560px){.xtra{grid-template-columns:1fr 1fr 1fr}}.xt{display:flex;gap:12px;align-items:center;width:100%;padding:12px 14px;text-align:left;border:2px solid var(--line);border-radius:16px;background:var(--p);color:var(--tx)}.xt .ic{flex:0 0 42px;height:42px;border-radius:12px;background:#ffd43b24;display:grid;place-items:center;font-size:1.4rem}.xt b{display:block;font-size:.98rem}.xt span{display:block;color:var(--mu);font-size:.78rem;line-height:1.25}
-.pbar{margin:14px 0 0;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--p);font-size:.88rem}.pbar b{color:#ffd43b}.pbar .b{flex:1;height:9px;border-radius:5px;background:#0004;overflow:hidden}.pbar .b i{display:block;height:100%;background:linear-gradient(90deg,#35c8ff,#5ce0a0,#ffd43b,#ff8a3d)}
-.empty{color:var(--mu);padding:20px 0;text-align:center}
+:root{color-scheme:dark;--bg:#06101c;--bg2:#0c2036;--card:#0f2338;--card2:#15304b;--line:#24405b;--tx:#f2f7ff;--mu:#9db3c9;--bl:#6fd8f2;--or:#ff9a3d;--gold:#ffd43b;--gr:#5ce0a0;--rd:#ff6b6b;--ink:#06101c;--shadow:#0007}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f9;--bg2:#ffffff;--card:#ffffff;--card2:#e4edf6;--line:#b9c9da;--tx:#0f1b2a;--mu:#4b5d73;--bl:#0a6f9a;--or:#c8641a;--gold:#b88400;--gr:#0f7a45;--rd:#c62828;--ink:#ffffff;--shadow:#1b2f4a30}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;overflow:hidden}
+body{background:radial-gradient(circle at 50% -10%,var(--bg2),var(--bg) 62%);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+#app{height:100%;display:flex;flex-direction:column}
+#main{flex:1 1 auto;min-height:0;position:relative}
+.scr{position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:0 0 24px;display:none}
+.scr.on{display:block}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(var(--bg),var(--bg)e0);backdrop-filter:blur(8px)}
+.top h1{flex:1;margin:0;font-size:1.25rem}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-weight:800;font-size:.9rem;white-space:nowrap}
+.chip.fire{color:var(--or)}.chip.star{color:var(--gold)}
+.ib{width:42px;height:42px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:1.15rem}
+.pad{padding:0 14px}
+/* ---------- barra de pestañas ---------- */
+#tabs{flex:0 0 auto;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px var(--shadow)}
+#tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px;border-radius:12px;color:var(--mu);font-size:.7rem;font-weight:700}
+#tabs button span{font-size:1.4rem;line-height:1.1}
+#tabs button.on{color:var(--tx);background:var(--card2)}
+/* ---------- camino de niveles ---------- */
+.hero{margin:6px 14px 14px;padding:16px;border-radius:22px;background:linear-gradient(135deg,#1d5b86,#12304b 70%);color:#fff;box-shadow:0 10px 26px var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#ffd43b55,#0000 70%)}
+.hero small{display:block;opacity:.85;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:.7rem}
+.hero h2{margin:3px 0 4px;font-size:1.35rem}.hero p{margin:0 0 12px;opacity:.9;font-size:.9rem}
+.cta{display:block;width:100%;padding:14px;border-radius:16px;background:#ffd43b;color:#241a00;font-weight:900;font-size:1.1rem;box-shadow:0 6px 0 #b88a00;transition:transform .08s,box-shadow .08s}
+.cta:active{transform:translateY(4px);box-shadow:0 2px 0 #b88a00}
+.cta.sec{background:var(--card2);color:var(--tx);box-shadow:0 6px 0 var(--line)}
+.bloque{margin:18px 14px 8px;padding:12px 14px;border-radius:16px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.bloque .bi{font-size:1.8rem}.bloque b{display:block}.bloque small{color:var(--mu);font-size:.78rem}.bloque .bm{margin-left:auto;font-size:1.7rem}
+.road{position:relative;padding:6px 0 4px}
+.road:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;margin-left:-2px;background:repeating-linear-gradient(var(--line) 0 8px,#0000 8px 16px)}
+.nrow{position:relative;display:flex;flex-direction:column;align-items:center;margin:14px 0}
+.node{position:relative;width:76px;height:76px;border-radius:50%;background:var(--card2);border:4px solid var(--line);color:var(--tx);font-weight:900;font-size:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;box-shadow:0 7px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.node:active{transform:translateY(5px);box-shadow:0 2px 0 var(--line)}
+.node .nk{font-size:.8rem;margin-top:3px;opacity:.9}
+.node.lock{opacity:.55;filter:grayscale(.8)}
+.node.s1{background:#7a4a2a;border-color:#c98a56;box-shadow:0 7px 0 #4a2a14}.node.s2{background:#5d6a7a;border-color:#c9d4e2;box-shadow:0 7px 0 #38434f}.node.s3{background:#a77c00;border-color:#ffd43b;box-shadow:0 7px 0 #6b4f00;color:#fff}
+.node.now{background:var(--bl);border-color:#fff;color:var(--ink);box-shadow:0 7px 0 #1f7f9a;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.nst{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:.85rem;letter-spacing:1px;color:var(--gold);text-shadow:0 1px 2px #000a;white-space:nowrap}
+.nlab{margin-top:24px;max-width:200px;text-align:center;font-size:.78rem;color:var(--mu);font-weight:700}
+.node.sim{border-radius:22px;width:92px;height:84px;background:linear-gradient(145deg,#6a3fd0,#3a1f8a);border-color:#b9a0ff;box-shadow:0 7px 0 #2a1566;color:#fff;font-size:1.05rem}
+.node.sim.lock{background:var(--card2);border-color:var(--line);box-shadow:0 7px 0 var(--line);color:var(--tx)}
+.node.sim.s3,.node.sim.s2,.node.sim.s1{background:linear-gradient(145deg,#6a3fd0,#3a1f8a);border-color:#ffd43b}
+.fin{margin:22px 14px;text-align:center;color:var(--mu);font-size:.85rem}
+/* ---------- hojas y superposiciones ---------- */
+.layer{position:fixed;inset:0;z-index:50;display:none}.layer.on{display:block}
+.shbg{position:absolute;inset:0;background:#02080fcc;backdrop-filter:blur(3px)}
+.shcard{position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow:auto;padding:18px 18px calc(18px + env(safe-area-inset-bottom));border-radius:26px 26px 0 0;background:var(--card);border-top:2px solid var(--bl);box-shadow:0 -14px 40px var(--shadow);animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.shcard h3{margin:0 0 2px;font-size:1.3rem}.shcard .kind{display:inline-block;margin-bottom:8px;padding:2px 10px;border-radius:999px;background:var(--card2);color:var(--mu);font-weight:800;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase}
+.shcard p{margin:6px 0;color:var(--tx)}.shcard .note{padding:9px 12px;border-radius:12px;background:var(--card2);color:var(--mu);font-size:.86rem;margin:10px 0}
+.shcard .stars{font-size:1.6rem;letter-spacing:3px;color:var(--gold)}
+.full{position:fixed;inset:0;z-index:60;display:none;overflow:auto;background:radial-gradient(circle at 50% -10%,var(--bg2),var(--bg) 62%);padding:calc(18px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))}.full.on{display:block}
+.full h2{margin:0 0 4px;font-size:1.6rem}.full .sub{color:var(--mu);margin:0 0 14px}
+.card{padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--line);margin:0 0 12px}
+.big{text-align:center}.bigstars{font-size:3rem;letter-spacing:6px;line-height:1.1}
+.bigstars span{display:inline-block;color:var(--line);transform:scale(.3);opacity:0;animation:starin .55s cubic-bezier(.2,1.8,.4,1) forwards}.bigstars span.on{color:var(--gold);text-shadow:0 0 18px #ffb400,0 0 5px #fff}
+@keyframes starin{to{transform:scale(1);opacity:1}}
+.gap{display:grid;gap:10px;margin-top:14px}
+.tag{display:inline-block;margin:3px 3px 0 0;padding:4px 10px;border-radius:999px;background:var(--card2);border:1px solid var(--line);font-size:.82rem;font-weight:700}
+.tag.g{border-color:var(--gold);color:var(--gold)}.tag.f{border-color:var(--or);color:var(--or)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:7px 6px;text-align:left;border-bottom:1px solid var(--line)}th{color:var(--mu);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase}
+.okc{color:var(--gr);font-weight:800}.noc{color:var(--rd);font-weight:800}
+/* ---------- jugar ---------- */
+#play{position:fixed;inset:0;z-index:40;display:none;background:var(--bg)}#play.on{display:block}
+#play iframe,#otro iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
+#timer{position:absolute;z-index:45;top:calc(env(safe-area-inset-top) + 7px);left:50%;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:#000a;border:2px solid var(--bl);color:#fff;font:900 1.15rem ui-monospace,Consolas,monospace;pointer-events:none}
+#timer.warn{border-color:var(--rd);color:var(--rd);animation:blink .8s steps(2) infinite}@keyframes blink{50%{background:#ff6b6b44}}
+#seguir{position:absolute;z-index:45;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));padding:12px 20px;border-radius:999px;background:#ffd43b;color:#241a00;font-weight:900;box-shadow:0 8px 24px #000a}
+#rotar{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:30px;text-align:center;background:radial-gradient(circle at 50% 30%,#1b4468,#06101c 70%);color:#fff}#rotar.on{display:flex}
+#rotar .ph{font-size:4.5rem;animation:rot 2.2s ease-in-out infinite}@keyframes rot{0%,35%{transform:rotate(0)}65%,100%{transform:rotate(-90deg)}}
+#rotar h2{margin:0}#rotar p{margin:0;opacity:.85}
+#otro{position:fixed;inset:0;z-index:40;display:none;background:var(--bg);flex-direction:column}#otro.on{display:flex}
+#otro .ob{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:6px 10px calc(6px);padding-top:calc(6px + env(safe-area-inset-top));background:var(--card);border-bottom:1px solid var(--line)}
+#otro .ob b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#otro .ow{flex:1;position:relative}
+/* ---------- progreso y explorar ---------- */
+.avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--bl),#3a7bd5);color:#fff;font-size:1.6rem;font-weight:900}
+.pr-top{display:flex;align-items:center;gap:12px}
+.pr-top input{flex:1;min-width:0;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--tx);font-size:1.05rem;font-weight:700;user-select:text;-webkit-user-select:text}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.stat div{padding:12px;border-radius:14px;background:var(--card2);text-align:center}.stat b{display:block;font-size:1.6rem}.stat small{color:var(--mu);font-size:.72rem;font-weight:700}
+.logro{display:flex;gap:10px;align-items:center;padding:9px 11px;border-radius:12px;background:var(--card2);margin:7px 0}.logro .i{font-size:1.7rem;width:36px;text-align:center}.logro b{display:block;font-size:.92rem}.logro small{color:var(--mu);font-size:.76rem}.logro.off{opacity:.42;filter:grayscale(1)}
+h3.sec{margin:20px 14px 8px;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
+.item{display:block;width:calc(100% - 28px);margin:0 14px 9px;padding:13px 14px;text-align:left;border:1px solid var(--line);border-left:6px solid var(--bl);border-radius:14px;background:var(--card);position:relative}
+.item b{display:block;font-size:1rem;margin-bottom:2px}.item span{display:block;color:var(--mu);font-size:.82rem}
+.tilebtn{display:flex;gap:14px;align-items:center;width:calc(100% - 28px);margin:0 14px 10px;padding:14px;text-align:left;border-radius:18px;color:#fff;box-shadow:0 6px 18px var(--shadow)}
+.tilebtn .ic{flex:0 0 50px;height:50px;border-radius:14px;background:#ffffff26;display:grid;place-items:center;font-size:1.7rem}.tilebtn b{display:block;font-size:1.05rem}.tilebtn span{font-size:.8rem;opacity:.92}
+.t1{background:linear-gradient(135deg,#2d7fb8,#1b4f7a)}.t2{background:linear-gradient(135deg,#d89034,#9a5d14)}.t3{background:linear-gradient(135deg,#8c5bd1,#5a3490)}.t4{background:linear-gradient(135deg,#3a9d6b,#1d6a45)}.t5{background:linear-gradient(135deg,#c24b6a,#82263f)}
+.tip{margin:12px 14px;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;color:var(--mu);font-size:.85rem;background:var(--card)}.tip button{margin-top:8px;padding:9px 14px;border-radius:10px;background:var(--bl);color:var(--ink);font-weight:800}
+.foot{margin:18px 14px 8px;text-align:center;color:var(--mu);font-size:.76rem}.foot a{color:var(--bl)}
+input[type=search]{display:block;width:calc(100% - 28px);margin:0 14px 12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--tx);font-size:1rem;user-select:text;-webkit-user-select:text}
+#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;max-width:90%;padding:10px 16px;border-radius:999px;background:var(--card2);border:1px solid var(--bl);font-weight:700;font-size:.9rem;box-shadow:0 8px 24px #000a;display:none}
+@media (orientation:landscape) and (max-height:520px){#tabs{padding:2px}#tabs button span{font-size:1.1rem}.node{width:64px;height:64px}.hero{margin:6px 14px}.shcard{left:50%;right:auto;width:min(560px,96%);transform:translateX(-50%);animation:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
-<header class="top">
- <button id="back" aria-label="Volver" hidden>←</button>
- <h1 id="ttl">Circuitos</h1>
- <button id="theme" aria-label="Cambiar fondo claro u oscuro">◐</button>
-</header>
-<main id="main">
- <section id="home"></section>
- <section id="cat" hidden></section>
-</main>
-<section id="play"><iframe id="frm" title="Práctica" allow="fullscreen"></iframe></section>
+<div id="app">
+ <main id="main">
+  <section id="s-camino" class="scr on"></section>
+  <section id="s-sim" class="scr"></section>
+  <section id="s-prog" class="scr"></section>
+  <section id="s-mas" class="scr"></section>
+ </main>
+ <nav id="tabs" aria-label="Secciones">
+  <button data-t="camino" class="on"><span>🛤️</span>Camino</button>
+  <button data-t="sim"><span>⏱️</span>Simulacro</button>
+  <button data-t="prog"><span>🏅</span>Mi progreso</button>
+  <button data-t="mas"><span>🔎</span>Más</button>
+ </nav>
+</div>
+<section id="play"><iframe id="frm" title="Problema" allow="fullscreen"></iframe><div id="timer" hidden>3:00</div><button id="seguir" hidden>Seguir ▶</button></section>
+<section id="otro"><div class="ob"><button class="ib" id="otroBack" aria-label="Volver">←</button><b id="otroTit"></b></div><div class="ow"><iframe id="frm2" title="Práctica"></iframe></div></section>
+<div id="sheet" class="layer"><div class="shbg"></div><div class="shcard" id="shcard"></div></div>
+<div id="fs" class="full"></div>
+<div id="rotar"><div class="ph">📱</div><h2>Girá el celular</h2><p>Para armar circuitos necesitás la pantalla acostada: así los cables y los bornes se ven bien grandes.</p><button class="cta sec" id="rotarBack" style="max-width:260px">Volver al camino</button></div>
+<div id="toast" role="status"></div>
 <script src="archivos/redes-datos.js"></script>
 <script src="archivos/casas-datos.js"></script>
 <script src="archivos/datos-datos.js"></script>
 <script src="archivos/mando-datos.js"></script>
-<script src="archivos/progreso.js"></script>
+<script src="archivos/examen-gen.js"></script>
 <script>
 (()=>{
-const $=s=>document.querySelector(s);
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+/* ---------- guardado en el teléfono ---------- */
+const KEY='sim-niveles-v1';
+const lsGet=k=>{try{return localStorage.getItem(k)}catch{return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
+let S;try{S=JSON.parse(lsGet(KEY))||{}}catch{S={}}
+S.niv=S.niv||{};S.sim=S.sim||{};S.racha=S.racha||{ult:'',dias:0,mejor:0};S.logros=S.logros||{};S.nombre=S.nombre||'';S.jugados=S.jugados||0;
+const save=()=>lsSet(KEY,JSON.stringify(S));
+const pad=n=>String(n).padStart(2,'0'),dayStr=o=>{const d=new Date();d.setDate(d.getDate()+(o||0));return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const fechaHora=ts=>{const d=new Date(ts);return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes())};
+/* ---------- niveles y bloques ---------- */
+const BLOQUES=[
+ {t:'Primeros circuitos',d:'Armá circuitos simples, en serie y en paralelo.',from:1,to:4,ico:'🔌'},
+ {t:'Más circuitos y preguntas',d:'Ramas con llave, lámparas quemadas, mixtos y corriente.',from:5,to:8,ico:'🧩'},
+ {t:'LED, fallas y resistores',d:'Elegí el resistor del LED, buscá fallas y calculá resistencias.',from:9,to:12,ico:'🔍'}];
+const KIND={1:'wire',2:'wire',3:'wire',4:'quiz',5:'wire',6:'quiz',7:'wire',8:'quiz',9:'led',10:'fault',11:'quiz',12:'wire'};
+const KICO={wire:'🔌',quiz:'❓',led:'🔴',fault:'🔍'},KTXT={wire:'Armá el circuito',quiz:'Pregunta',led:'Armá el circuito',fault:'Buscá la falla'};
+const DESC={1:'Conectá batería, llave y lámpara. Cable rojo al +, celeste al −.',2:'Dos lámparas una detrás de la otra: un solo camino para la corriente.',3:'Dos lámparas en paralelo: cada una con su propio camino.',4:'Medí y respondé: ¿cuánta tensión recibe cada lámpara en serie?',5:'Dos ramas independientes, cada una con su llave.',6:'Mirá qué pasa cuando se quema una lámpara.',7:'Serie y paralelo mezclados en un mismo circuito.',8:'Calculá la corriente de un circuito en serie.',9:'Elegí el resistor correcto para que el LED no se queme.',10:'Medí y encontrá la lámpara quemada.',11:'Resistencia equivalente de un circuito mixto.',12:'Dos ramas de resistores en paralelo.'};
+const tipoDe=n=>GEN.tipoDe(n),needLand=k=>k==='wire'||k==='led';
+const est=n=>(S.niv[n]||{}).s||0,desbl=n=>n===1||est(n-1)>=1;
+const nivActual=()=>{let n=1;while(est(n)>=1)n++;return n};
+const blkDone=b=>{for(let n=b.from;n<=b.to;n++)if(est(n)<1)return false;return true};
+const blkStars=b=>{let s=0;for(let n=b.from;n<=b.to;n++)s+=est(n);return s};
+const medalla=(s,max)=>{const r=max?s/max:0;return r>=.9?'🥇':r>=.6?'🥈':r>=.3?'🥉':''};
+const totalEst=()=>Object.values(S.niv).reduce((a,x)=>a+(x.s||0),0);
+const rachaAct=()=>{const r=S.racha;return r.ult&&(r.ult===dayStr(0)||r.ult===dayStr(-1))?r.dias:0};
+function tickRacha(){const r=S.racha,h=dayStr(0);if(r.ult===h)return false;r.dias=r.ult===dayStr(-1)?(r.dias||0)+1:1;r.ult=h;r.mejor=Math.max(r.mejor||0,r.dias);return true}
+const starsTxt=(n,m)=>{m=m||3;let h='';for(let i=0;i<m;i++)h+=i<n?'★':'☆';return h};
+/* ---------- logros ---------- */
+const LOGROS=[
+ {id:'p1',ico:'🌟',n:'Primer paso',d:'Superá el nivel 1.',ok:()=>est(1)>=1},
+ {id:'b1',ico:'🔌',n:'Bloque 1 completo',d:'Superá los niveles 1 a 4.',ok:()=>blkDone(BLOQUES[0])},
+ {id:'b2',ico:'🧩',n:'Bloque 2 completo',d:'Superá los niveles 5 a 8.',ok:()=>blkDone(BLOQUES[1])},
+ {id:'b3',ico:'🔍',n:'Bloque 3 completo',d:'Superá los niveles 9 a 12.',ok:()=>blkDone(BLOQUES[2])},
+ {id:'t3',ico:'✨',n:'Sin ayuda',d:'Conseguí 3 estrellas en 5 niveles.',ok:()=>Object.values(S.niv).filter(x=>x.s>=3).length>=5},
+ {id:'r3',ico:'🔥',n:'Racha de 3 días',d:'Practicá 3 días seguidos.',ok:()=>(S.racha.mejor||0)>=3},
+ {id:'r7',ico:'🚀',n:'Racha de 7 días',d:'Practicá 7 días seguidos.',ok:()=>(S.racha.mejor||0)>=7},
+ {id:'s1',ico:'📝',n:'Simulacro aprobado',d:'Sacá 6 o más en un simulacro.',ok:()=>Object.values(S.sim).some(x=>x.nota>=6)},
+ {id:'s9',ico:'🏆',n:'Casi perfecto',d:'Sacá 9 o más en un simulacro.',ok:()=>Object.values(S.sim).some(x=>x.nota>=9)}];
+function chequearLogros(){const nuevos=[];LOGROS.forEach(l=>{if(!S.logros[l.id]&&l.ok()){S.logros[l.id]=Date.now();nuevos.push(l)}});return nuevos}
+/* ---------- ajustes ---------- */
+let tema=lsGet('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+function aplicarTema(){document.documentElement.dataset.theme=tema;const m=document.querySelector('meta[name=theme-color]');if(m)m.content=tema==='light'?'#eef3f9':'#06101c';[$('#frm'),$('#frm2')].forEach(f=>{try{f.contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}})}
+function toggleTema(){tema=tema==='light'?'dark':'light';lsSet('sim-tema',tema);aplicarTema()}
+let toastTm=null;function toast(t,ms){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toastTm);toastTm=setTimeout(()=>e.style.display='none',ms||2600)}
+/* ---------- pestañas ---------- */
+let tab='camino';
+function irTab(t){tab=t;$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('.scr').forEach(s=>s.classList.toggle('on',s.id==='s-'+t));({camino:pintarCamino,sim:pintarSim,prog:pintarProg,mas:pintarMas})[t]();if(t==='camino'&&nivActual()>1)setTimeout(()=>{const n=$('.node.now');if(n)n.scrollIntoView({block:'center',behavior:'auto'})},30)}
+$$('#tabs button').forEach(b=>b.onclick=()=>irTab(b.dataset.t));
+const topbar=(t)=>`<div class="top"><h1>${t}</h1><span class="chip fire" title="Días seguidos">🔥 ${rachaAct()}</span><span class="chip star" title="Estrellas">⭐ ${totalEst()}</span><button class="ib" data-act="tema" aria-label="Cambiar fondo claro u oscuro">◐</button></div>`;
+function bindTop(root){root.querySelectorAll('[data-act=tema]').forEach(b=>b.onclick=toggleTema)}
+/* ---------- CAMINO ---------- */
+function pintarCamino(){const el=$('#s-camino'),act=nivActual();let h=topbar('Camino de niveles');
+ const kind=KIND[act]||'wire';
+ h+=`<div class="hero"><small>${act>1?'Seguí donde quedaste':'Empezá acá'}</small><h2>Nivel ${act} · ${esc(tipoDe(act))}</h2><p>${esc(DESC[act]||'Desafío con una variante nueva cada vez.')}</p><button class="cta" data-n="${act}">${act>1?'Continuar ▶':'¡Empezar! ▶'}</button></div>`;
+ BLOQUES.forEach((b,bi)=>{const max=(b.to-b.from+1)*3,s=blkStars(b),done=blkDone(b);
+  h+=`<div class="bloque"><div class="bi">${b.ico}</div><div><b>Bloque ${bi+1} · ${esc(b.t)}</b><small>${esc(b.d)}</small></div><div class="bm">${done?medalla(s,max)||'✔':''}</div></div><div class="road">`;
+  for(let n=b.from;n<=b.to;n++)h+=nodoHTML(n,n-b.from);
+  const simOk=blkDone(b),sr=S.sim[bi+1];
+  h+=`<div class="nrow" style="transform:translateX(0)"><button class="node sim ${simOk?(sr?'s'+(sr.nota>=9?3:sr.nota>=7.5?2:1):''):'lock'}" data-sim="${bi+1}"><span>${simOk?'🏁':'🔒'}</span><span class="nk">Simulacro ${bi+1}</span>${sr?`<span class="nst">${sr.nota.toString().replace('.',',')} / 10</span>`:''}</button><div class="nlab">${simOk?'Imitá el examen: 3 problemas con tiempo':'Completá los 4 niveles del bloque'}</div></div></div>`});
+ const tope=Math.max(13,nivActual()+2);
+ h+=`<div class="bloque"><div class="bi">♾️</div><div><b>Desafíos sin fin</b><small>Más difíciles, siempre con variantes nuevas.</small></div></div><div class="road">`;
+ for(let n=13;n<=tope;n++)h+=nodoHTML(n,n-13);
+ h+=`</div><p class="fin">¡Cada nivel nuevo es una variante distinta! 🎲</p>`;
+ el.innerHTML=h;bindTop(el);
+ el.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>abrirNivel(+b.dataset.n));
+ el.querySelectorAll('[data-sim]').forEach(b=>b.onclick=()=>abrirSim(+b.dataset.sim))}
+function nodoHTML(n,i){const s=est(n),un=desbl(n),now=un&&s<1,off=Math.round(Math.sin(i*1.25)*74);
+ const cls=!un?'lock':now?'now':'s'+s,k=KIND[n]||'wire',ico=n>12?'♾️':KICO[k];
+ return `<div class="nrow" style="transform:translateX(${off}px)"><button class="node ${cls}" data-n="${n}" aria-label="Nivel ${n}">${n}<span class="nk">${un?ico:'🔒'}</span>${s?`<span class="nst">${starsTxt(s)}</span>`:''}</button><div class="nlab">${esc(tipoDe(n))}</div></div>`}
+/* hoja con la información del nivel */
+function capa(id,on){$('#'+id).classList.toggle('on',on)}
+function abrirNivel(n){const un=desbl(n),k=KIND[n]||null,s=est(n);
+ let h=`<span class="kind">${n>12?'Desafío':'Nivel '+n}${k?' · '+KTXT[k]:''}</span><h3>${esc(tipoDe(n))}</h3>`;
+ if(!un)h+=`<p>🔒 Todavía está bloqueado. Superá primero el <b>nivel ${n-1}</b>.</p><div class="gap"><button class="cta sec" id="shX">Entendido</button></div>`;
+ else{h+=`<p>${esc(DESC[n]||'Desafío con elementos más grandes y una variante nueva cada vez.')}</p>`;
+  if(s)h+=`<p>Tu mejor resultado: <span class="stars">${starsTxt(s)}</span></p>`;
+  h+=`<div class="note">${k&&!needLand(k)?'📱 Este nivel se juega con el celular en <b>vertical</b> o como prefieras.':'📱 Este nivel se juega con el celular <b>acostado</b> (horizontal). Rojo al polo +, celeste al polo −.'}<br>⭐ 3 estrellas: sin pistas y sin errores.</div><div class="gap"><button class="cta" id="shGo">${s?'Jugar de nuevo ▶':'¡Jugar! ▶'}</button><button class="cta sec" id="shX">Cerrar</button></div>`}
+ $('#shcard').innerHTML=h;capa('sheet',true);const x=$('#shX');if(x)x.onclick=()=>capa('sheet',false);const g=$('#shGo');if(g)g.onclick=()=>{capa('sheet',false);jugarNivel(n)}}
+$('.shbg').onclick=()=>capa('sheet',false);
+/* ---------- JUGAR UN NIVEL ---------- */
+let cur=null,timerId=null;
+function mostrarPlay(on){capa('play',on);if(!on){$('#frm').src='about:blank';$('#timer').hidden=true;$('#seguir').hidden=true;capa('rotar',false);clearInterval(timerId)}}
+function cargarProblema(spec,o){o=o||{};lsSet('sim-gen-cur',JSON.stringify(spec));const q=new URLSearchParams({gen:'@cur',movil:'1',tema,pizarra:'0',t:String(Date.now())});if(o.nivel)q.set('nivel',o.nivel);if(o.examen)q.set('examen','1');
+ cur.need=needLand(spec.kind);cur.spec=spec;$('#seguir').hidden=true;$('#timer').hidden=true;
+ $('#frm').src='archivos/circuito-redes.html?'+q.toString();mostrarPlay(true);history.pushState({l:'play'},'');revisarOrientacion();intentarBloqueo(cur.need)}
+function intentarBloqueo(land){try{if(screen.orientation&&screen.orientation.lock&&document.fullscreenElement)screen.orientation.lock(land?'landscape':'any').catch(()=>{})}catch{}}
+function revisarOrientacion(){const play=$('#play').classList.contains('on');const vertical=matchMedia('(orientation: portrait)').matches;capa('rotar',!!(play&&cur&&cur.need&&vertical&&!cur.exitSolo))}
+addEventListener('resize',revisarOrientacion);addEventListener('orientationchange',()=>setTimeout(revisarOrientacion,150));
+$('#rotarBack').onclick=()=>salirPlay(true);
+function jugarNivel(n){S.jugados++;cur={mode:'nivel',n,done:false};cargarProblema(GEN.make(n),{nivel:n})}
+function salirPlay(directo){if(cur&&cur.mode==='sim'&&!directo&&cur.enCurso){preguntar('¿Abandonar el simulacro?','Se pierde este intento.','Sí, abandonar','Seguir',()=>{cerrarJuego()});history.pushState({l:'play'},'');return}cerrarJuego()}
+function cerrarJuego(){clearInterval(timerId);mostrarPlay(false);capa('fs',false);const m=cur?cur.mode:'';cur=null;if(m==='explora'){irTab('mas')}else irTab(tab)}
+addEventListener('popstate',()=>{if($('#play').classList.contains('on')){salirPlay(false)}else if($('#otro').classList.contains('on')){cerrarOtro()}else if($('#fs').classList.contains('on')){capa('fs',false)}else if($('#sheet').classList.contains('on')){capa('sheet',false)}});
+addEventListener('message',e=>{const d=e.data;if(!d||typeof d!=='object')return;
+ if(e.source===$('#frm').contentWindow){switch(d.tipo){
+  case'movil-salir':salirPlay(false);break;
+  case'movil-resultado':resultadoNivel(d);break;
+  case'movil-fallo':falloNivel();break;
+  case'movil-empezo':if(cur&&cur.mode==='sim')iniciarTimer();break;
+  case'examen-entrega':entregaSim(d);break;
+  case'hecho':if(cur&&cur.mode==='explora'){S.jugados++;if(tickRacha())toast('🔥 ¡Racha de '+S.racha.dias+' día'+(S.racha.dias>1?'s':'')+'!');chequearLogros();save();if(d.estrellas)toast('¡Práctica completada! '+starsTxt(d.estrellas),3200)}break;
+  case'ajustes-desde-practica':if(d.tema&&d.tema!==tema){tema=d.tema;lsSet('sim-tema',tema);aplicarTema()}break}}
+ else if(e.source===$('#frm2').contentWindow&&d.tipo==='ajustes-desde-practica'&&d.tema&&d.tema!==tema){tema=d.tema;lsSet('sim-tema',tema);aplicarTema()}});
+function resultadoNivel(d){if(!cur||cur.mode!=='nivel'||cur.done)return;cur.done=true;const n=cur.n,prev=S.niv[n]||{s:0,n:0},nuevo=!prev.s;
+ S.niv[n]={s:Math.max(prev.s||0,d.stars),n:(prev.n||0)+1,t:Math.min(prev.t||1e9,d.t||0),at:Date.now()};
+ const racha=tickRacha(),logros=chequearLogros();save();
+ const sig=n+1,bloque=BLOQUES.find(b=>b.to===n),
+  razones=[];if(d.stars<3){if(d.hint)razones.push('usaste una pista');if(d.errs)razones.push(d.errs>1?'hubo '+d.errs+' errores':'hubo un error')}
+ let h=`<div class="big"><div class="meta" style="color:var(--mu);font-weight:800">${n>12?'Desafío':'Nivel '+n} superado</div><h2 style="margin:4px 0">${d.stars>=3?'¡Perfecto!':d.stars===2?'¡Muy bien!':'¡Lo lograste!'}</h2><div class="bigstars">${[1,2,3].map(i=>`<span class="${i<=d.stars?'on':''}" style="animation-delay:${.15+i*.22}s">★</span>`).join('')}</div>
+  <p style="color:var(--mu)">${d.stars>=3?'Sin pistas y sin errores.':'Para ★★★ jugalo de nuevo sin pistas y sin errores'+(razones.length?' (esta vez '+razones.join(' y ')+')':'')+'.'}</p></div><div class="card">`;
+ if(racha)h+=`<span class="tag f">🔥 ¡Racha de ${S.racha.dias} día${S.racha.dias>1?'s':''}!</span>`;
+ if(nuevo)h+=`<span class="tag g">🔓 Nivel ${sig} desbloqueado</span>`;
+ if(bloque&&blkDone(bloque))h+=`<span class="tag g">🏁 ¡Bloque completo! Se abrió el Simulacro ${BLOQUES.indexOf(bloque)+1}</span>`;
+ logros.forEach(l=>h+=`<span class="tag g">${l.ico} Logro: ${esc(l.n)}</span>`);
+ h+=`</div><div class="gap"><button class="cta" id="rNext">Siguiente nivel ▶</button>${d.stars<3?'<button class="cta sec" id="rAgain">Jugar de nuevo para mejorar</button>':''}<button class="cta sec" id="rBack">Volver al camino</button></div>`;
+ abrirFull(h);$('#rNext').onclick=()=>{capa('fs',false);jugarNivel(sig)};const ag=$('#rAgain');if(ag)ag.onclick=()=>{capa('fs',false);jugarNivel(n)};$('#rBack').onclick=()=>{capa('fs',false);cerrarJuego()}}
+function falloNivel(){if(!cur||cur.mode!=='nivel')return;cur.done=true;$('#seguir').hidden=false;$('#seguir').onclick=()=>{$('#seguir').hidden=true;const n=cur.n;
+  abrirFull(`<div class="big"><div style="font-size:3.4rem">👀</div><h2>Mirá la solución con calma</h2><p style="color:var(--mu)">Cuando entiendas cómo se resuelve, probá otra variante: ¡el circuito va a ser distinto!</p></div><div class="gap"><button class="cta" id="fAgain">Probar otra variante ▶</button><button class="cta sec" id="fBack">Volver al camino</button></div>`);
+  $('#fAgain').onclick=()=>{capa('fs',false);jugarNivel(n)};$('#fBack').onclick=()=>{capa('fs',false);cerrarJuego()}}}
+function abrirFull(html){const f=$('#fs');f.innerHTML=html;f.scrollTop=0;capa('fs',true)}
+/* ---------- confirmaciones ---------- */
+function preguntar(t,p,si,no,onSi){abrirFull(`<div class="big" style="margin-top:20vh"><h2>${esc(t)}</h2><p style="color:var(--mu)">${esc(p)}</p></div><div class="gap"><button class="cta" id="qSi">${esc(si)}</button><button class="cta sec" id="qNo">${esc(no)}</button></div>`);$('#qSi').onclick=()=>{capa('fs',false);onSi()};$('#qNo').onclick=()=>capa('fs',false)}
+/* ---------- SIMULACRO ---------- */
+const LIM=180;
+function pintarSim(){const el=$('#s-sim');let h=topbar('Simulacro de examen');
+ h+=`<div class="hero"><small>Practicá como en el examen</small><h2>3 problemas, con tiempo y sin ayudas</h2><p>Cada problema tiene ${LIM/60} minutos. No hay pistas y recién al final ves cómo te fue. Nota sobre 10: aprobás con 6.</p></div>`;
+ BLOQUES.forEach((b,i)=>{const ok=blkDone(b),r=S.sim[i+1];h+=`<div class="card"><b>${b.ico} Simulacro ${i+1}</b> <span style="color:var(--mu)">· niveles ${b.from} a ${b.to}</span><p style="margin:4px 0 8px;color:var(--mu);font-size:.88rem">${ok?(r?`Tu mejor nota: <b style="color:var(--gold)">${r.nota.toString().replace('.',',')}</b> / 10 · ${fechaHora(r.at)}`:'¡Listo para rendirlo!'):'🔒 Completá los 4 niveles del bloque '+(i+1)+' en el camino.'}</p><button class="cta ${ok?'':'sec'}" data-sim="${i+1}">${ok?(r?'Rendir de nuevo ▶':'Empezar ▶'):'Ver requisitos'}</button></div>`});
+ el.innerHTML=h;bindTop(el);el.querySelectorAll('[data-sim]').forEach(b=>b.onclick=()=>abrirSim(+b.dataset.sim))}
+function abrirSim(k){const b=BLOQUES[k-1],ok=blkDone(b),r=S.sim[k];
+ let h=`<span class="kind">Simulacro ${k}</span><h3>${b.ico} ${esc(b.t)}</h3>`;
+ if(!ok)h+=`<p>🔒 Para rendirlo, superá primero los <b>niveles ${b.from} a ${b.to}</b> del camino.</p><div class="gap"><button class="cta sec" id="shX">Entendido</button></div>`;
+ else h+=`<p>3 problemas de los niveles ${b.from} a ${b.to}, uno distinto cada vez. ⏱️ ${LIM/60} minutos por problema, sin pistas.</p>${r?`<p>Tu mejor nota: <b style="color:var(--gold)">${r.nota.toString().replace('.',',')}</b> / 10</p>`:''}<div class="note">📱 Algunos problemas se resuelven con el celular acostado y otros en vertical: la app te avisa.</div><div class="gap"><button class="cta" id="shGo">¡Rendir! ▶</button><button class="cta sec" id="shX">Cerrar</button></div>`;
+ $('#shcard').innerHTML=h;capa('sheet',true);const x=$('#shX');if(x)x.onclick=()=>capa('sheet',false);const g=$('#shGo');if(g)g.onclick=()=>{capa('sheet',false);iniciarSim(k)}}
+function iniciarSim(k){const b=BLOQUES[k-1],lv=shuf([...Array(b.to-b.from+1).keys()].map(i=>b.from+i)).slice(0,3);S.jugados++;cur={mode:'sim',k,levels:lv,specs:lv.map(l=>GEN.make(l)),i:0,res:[],enCurso:false};intermedioSim()}
+function intermedioSim(){const sp=cur.specs[cur.i],l=cur.levels[cur.i],land=needLand(sp.kind);cur.enCurso=false;
+ abrirFull(`<div class="big" style="margin-top:12vh"><div class="meta" style="color:var(--mu);font-weight:800">Simulacro ${cur.k} · Problema ${cur.i+1} de 3</div><h2 style="margin:6px 0">Nivel ${l}</h2><p style="font-size:1.2rem;font-weight:800">${esc(tipoDe(l))}</p><p style="color:var(--mu)">⏱️ ${LIM/60} minutos · sin pistas</p><p class="card" style="margin-top:12px">${land?'📱 Este problema se resuelve con el celular <b>acostado</b>.':'📱 Este problema se resuelve en <b>vertical</b>.'}</p></div><div class="gap"><button class="cta" id="iGo">¡Comenzar! ▶</button><button class="cta sec" id="iX">Salir del simulacro</button></div>`);
+ $('#iGo').onclick=()=>{capa('fs',false);cur.enCurso=true;cargarProblema(sp,{examen:true})};$('#iX').onclick=()=>{capa('fs',false);cur=null;irTab('sim')}}
+function iniciarTimer(){clearInterval(timerId);const T=$('#timer');T.hidden=false;const fin=Date.now()+LIM*1000;cur.fin=fin;
+ const tick=()=>{const r=Math.max(0,Math.ceil((fin-Date.now())/1000));T.textContent=Math.floor(r/60)+':'+pad(r%60);T.classList.toggle('warn',r<=30);if(r<=0){clearInterval(timerId);try{$('#frm').contentWindow.postMessage({tipo:'examen-forzar'},'*')}catch{}setTimeout(()=>{if(cur&&cur.mode==='sim'&&cur.res.length===cur.i)entregaSim({ok:false,agotado:true,t:LIM})},2200)}};tick();timerId=setInterval(tick,250)}
+function entregaSim(d){if(!cur||cur.mode!=='sim'||cur.res.length!==cur.i)return;clearInterval(timerId);$('#timer').hidden=true;
+ cur.res.push({level:cur.levels[cur.i],tipo:tipoDe(cur.levels[cur.i]),ok:!!d.ok,t:d.t||0,inc:(d.shorts||0)+(d.burns||0),agotado:!!d.agotado});cur.i++;mostrarPlay(false);
+ if(cur.i<3)intermedioSim();else finSim()}
+const notaP=r=>r.ok?Math.max(6,10-r.inc):0;
+function finSim(){const r=cur.res,nota=Math.round(r.reduce((s,x)=>s+notaP(x),0)/3*10)/10,k=cur.k,prev=S.sim[k];
+ if(!prev||nota>=prev.nota)S.sim[k]={nota,at:Date.now(),n:(prev?prev.n:0)+1};else prev.n=(prev.n||0)+1;
+ const racha=tickRacha(),logros=chequearLogros();save();const med=nota>=9?'🥇':nota>=7.5?'🥈':nota>=6?'🥉':'';
+ let h=`<div class="big"><div class="meta" style="color:var(--mu);font-weight:800">Simulacro ${k} terminado</div><div style="font-size:4.2rem;font-weight:900;color:var(--gold);line-height:1.1;margin-top:6px">${String(nota).replace('.',',')}<small style="font-size:1.2rem;color:var(--mu)"> / 10</small></div><h2 style="margin:2px 0">${nota>=6?(med+' ¡Aprobaste!'):'Todavía no alcanza: ¡a practicar!'}</h2></div>
+ <div class="card"><table><tr><th>#</th><th>Problema</th><th>Resultado</th><th>Nota</th></tr>${r.map((x,i)=>`<tr><td>${i+1}</td><td>Nivel ${x.level}<br><small style="color:var(--mu)">${esc(x.tipo)}</small></td><td class="${x.ok?'okc':'noc'}">${x.ok?'✔ Bien':x.agotado?'⏰ Tiempo':'✖ Mal'}</td><td><b>${notaP(x)}</b></td></tr>`).join('')}</table></div><div class="card">`;
+ if(racha)h+=`<span class="tag f">🔥 ¡Racha de ${S.racha.dias} día${S.racha.dias>1?'s':''}!</span>`;
+ logros.forEach(l=>h+=`<span class="tag g">${l.ico} Logro: ${esc(l.n)}</span>`);
+ h+=`<span class="tag">${fechaHora(Date.now())}</span></div><div class="gap"><button class="cta" id="sAgain">Rendir otro simulacro ▶</button><button class="cta sec" id="sBack">Volver</button></div>`;
+ cur=null;abrirFull(h);$('#sAgain').onclick=()=>{capa('fs',false);iniciarSim(k)};$('#sBack').onclick=()=>{capa('fs',false);irTab('sim')}}
+/* ---------- MI PROGRESO ---------- */
+function pintarProg(){const el=$('#s-prog');const act=nivActual(),max=Math.max(0,act-1),ini=(S.nombre||'?').trim().charAt(0).toUpperCase()||'?';
+ const sims=Object.keys(S.sim).sort().map(k=>`<tr><td>Simulacro ${k}</td><td><b>${String(S.sim[k].nota).replace('.',',')}</b> / 10</td><td>${fechaHora(S.sim[k].at)}</td></tr>`).join('');
+ const total=totalEst(),maxStars=Math.max(act-1,0)*3;
+ let h=topbar('Mi progreso')+`<div class="pad"><div class="card"><div class="pr-top"><div class="avatar" id="avt">${esc(ini)}</div><input id="nom" type="text" maxlength="40" placeholder="Escribí tu nombre" value="${esc(S.nombre)}" autocomplete="off" aria-label="Tu nombre"></div>
+ <div class="stat"><div><b>${max}</b><small>NIVELES SUPERADOS</small></div><div><b>⭐ ${total}</b><small>ESTRELLAS${maxStars?' DE '+maxStars:''}</small></div><div><b>🔥 ${rachaAct()}</b><small>DÍAS SEGUIDOS</small></div><div><b>${S.racha.mejor||0}</b><small>MEJOR RACHA</small></div></div>
+ ${BLOQUES.map((b,i)=>`<span class="tag ${blkDone(b)?'g':''}">${b.ico} Bloque ${i+1} ${blkDone(b)?(medalla(blkStars(b),(b.to-b.from+1)*3)||'✔'):`${[...Array(b.to-b.from+1).keys()].filter(j=>est(b.from+j)>=1).length}/${b.to-b.from+1}`}</span>`).join('')}
+ ${sims?`<table style="margin-top:12px"><tr><th>Simulacro</th><th>Nota</th><th>Fecha</th></tr>${sims}</table>`:'<p style="color:var(--mu);font-size:.88rem;margin:12px 0 0">Todavía no rendiste ningún simulacro.</p>'}
+ <p style="color:var(--mu);font-size:.8rem;margin:12px 0 0">Resumen al ${fechaHora(Date.now())}</p></div>
+ <button class="cta" id="pShare">📤 Compartir o copiar mi progreso</button></div>
+ <h3 class="sec">Logros (${Object.keys(S.logros).length}/${LOGROS.length})</h3><div class="pad">${LOGROS.map(l=>`<div class="logro ${S.logros[l.id]?'':'off'}"><div class="i">${l.ico}</div><div><b>${esc(l.n)}</b><small>${esc(l.d)}</small></div></div>`).join('')}</div>
+ <div class="pad" style="margin-top:16px"><button class="cta sec" id="pReset">Borrar mi progreso</button></div>`;
+ el.innerHTML=h;bindTop(el);
+ const nom=$('#nom');nom.oninput=()=>{S.nombre=nom.value;$('#avt').textContent=(nom.value.trim().charAt(0)||'?').toUpperCase();save()};
+ $('#pShare').onclick=()=>{const t=resumenTexto();if(navigator.share){navigator.share({title:'Mi progreso en Circuitos',text:t}).catch(()=>{})}else{try{navigator.clipboard.writeText(t).then(()=>toast('Resumen copiado: pegalo en un mensaje.'),()=>toast('No se pudo copiar.'))}catch{toast('No se pudo copiar.')}}};
+ $('#pReset').onclick=()=>preguntar('¿Borrar todo tu progreso?','Se pierden las estrellas, la racha, las notas y los logros de este teléfono.','Sí, borrar','Cancelar',()=>{S={niv:{},sim:{},racha:{ult:'',dias:0,mejor:0},logros:{},nombre:'',jugados:0};save();irTab('prog');toast('Progreso borrado.')})}
+function resumenTexto(){const act=nivActual();const l=[`MI PROGRESO · Circuitos eléctricos`,`${S.nombre||'Alumno/a sin nombre'} · ${fechaHora(Date.now())}`,`Niveles superados: ${Math.max(0,act-1)} · Estrellas: ${totalEst()} · Racha: ${rachaAct()} día(s) (mejor ${S.racha.mejor||0})`];
+ Object.keys(S.sim).sort().forEach(k=>l.push(`Simulacro ${k}: ${String(S.sim[k].nota).replace('.',',')}/10 (${fechaHora(S.sim[k].at)})`));return l.join('\n')}
+/* ---------- MÁS: explorar el resto de las prácticas ---------- */
 const R=window.REDES||{groups:[],order:[],items:{}},C=window.CASAS||{groups:[],order:[],items:{}},DT=window.DATOS||{groups:[],order:[],items:{}},M=window.MANDO||{groups:[],order:[],items:{}};
 const gt=(src,id)=>{const g=(src.groups||[]).find(x=>x.id===id);return g?g.title:''};
-/* ---------- catálogo ---------- */
 const ITEMS=[];
-R.groups.forEach(g=>R.order.forEach(id=>{const s=R.items[id];if(s.hidden||s.group!==g.id)return;const cat=s.group==='ca'?'ca':'cc';ITEMS.push({id,cat,gr:gt(R,s.group)||s.group,t:s.title,d:s.desc,f:'circuito-redes.html?c='+id,star:s.group!=='taller',g:s.group})}));
-ITEMS.push({id:'examen',cat:'extra',gr:'',t:'Modo examen',d:'Evaluación sin ayudas con nota final',f:'examen.html'});
+R.groups.forEach(g=>R.order.forEach(id=>{const s=R.items[id];if(s.hidden||s.group!==g.id||s.noauto&&false)return;ITEMS.push({id,cat:s.group==='ca'?'ca':'cc',gr:gt(R,s.group)||s.group,t:s.title,d:s.desc,f:'circuito-redes.html?c='+id,mv:true})}));
 C.order.forEach(id=>{const s=C.items[id];ITEMS.push({id,cat:'ca',gr:gt(C,s.group)||'Casas',t:s.title,d:s.desc,f:s.file})});
 DT.order.forEach(id=>{const s=DT.items[id];ITEMS.push({id,cat:'datos',gr:gt(DT,s.group)||'',t:s.title,d:s.desc,f:'datos.html?c='+id})});
 M.order.forEach(id=>{const s=M.items[id];if(s.soon)return;ITEMS.push({id,cat:'mando',gr:gt(M,s.group)||'',t:s.title,d:s.desc,f:s.file||('mando.html?c='+id),adv:s.group==='tableros'})});
-const CATS=[
- {id:'cc',t:'Corriente continua',d:'Baterías, lámparas, serie y paralelo',ic:'🔋',cl:'t1'},
- {id:'ca',t:'Corriente alterna',d:'Del río a tu casa, llaves y tomacorrientes',ic:'🏠',cl:'t2'},
- {id:'mando',t:'Mando de motores',d:'Contactores, relés y arranques',ic:'⚙️',cl:'t3'},
- {id:'datos',t:'Datos curiosos',d:'Por qué el pájaro no se electrocuta y más',ic:'💡',cl:'t4'}];
-const count=c=>ITEMS.filter(i=>i.cat===c).length;
-const sItems=cid=>ITEMS.filter(i=>i.cat===cid&&i.star);
-const catRes=()=>[{title:'Corriente continua',r:PROG.resumen(sItems('cc'))},{title:'Corriente alterna',r:PROG.resumen(sItems('ca'))}];
-/* ---------- ajustes ---------- */
-const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
-let tema=stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
-function apply(){document.documentElement.dataset.theme=tema;const m=document.querySelector('meta[name=theme-color]');if(m)m.content=tema==='light'?'#ffffff':'#071321';try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}}
-$('#theme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply()};
-/* ---------- vistas ---------- */
-let view={v:'home'};
-function home(){const rs=catRes(),tot=rs.reduce((x,c)=>{x.s+=c.r.stars;x.m+=c.r.max;return x},{s:0,m:0}),best=rs.map(c=>c.r.medal).filter(Boolean)[0];
- let h=`<h2>¿Qué querés practicar?</h2><p class="sub">Elegí un tema. Para las prácticas usá el celular en posición horizontal.</p><div class="tiles">`+CATS.map(c=>`<button class="tile ${c.cl}" data-c="${c.id}"><span class="ic">${c.ic}</span><span><b>${c.t}</b><span>${c.d}</span><em>${count(c.id)} PRÁCTICAS</em></span></button>`).join('')+`</div>`;
- h+=`<div class="xtra"><button class="xt" data-x="taller"><span class="ic">🛠</span><span><b>Taller libre</b><span>Armá tus propios circuitos</span></span></button><button class="xt" data-x="examen"><span class="ic">📝</span><span><b>Modo examen</b><span>Circuitos sin ayudas y nota final</span></span></button><button class="xt" data-x="medallas"><span class="ic">🏅</span><span><b>Mis medallas</b><span>Estrellas y logros</span></span></button></div>
- <div class="pbar"><span>⭐ <b>${tot.s}</b> de ${tot.m}</span><div class="b"><i style="width:${Math.round(tot.m?tot.s/tot.m*100:0)}%"></i></div><span>${best?best.ico+' '+best.name:'¡Sumá tu primera medalla!'}</span></div>`;
+const CATS=[{id:'cc',t:'Corriente continua',d:'Baterías, lámparas, motor, serie y paralelo',ic:'🔋',cl:'t1'},{id:'ca',t:'Corriente alterna',d:'Del río a tu casa, llaves y tomacorrientes',ic:'🏠',cl:'t2'},{id:'mando',t:'Mando de motores',d:'Contactores, relés y arranques (mejor en pantalla grande)',ic:'⚙️',cl:'t3'},{id:'datos',t:'Datos curiosos',d:'Por qué el pájaro no se electrocuta y más',ic:'💡',cl:'t4'}];
+let masVista='home';
+function pintarMas(){const el=$('#s-mas');if(masVista!=='home')return pintarLista(masVista);
+ let h=topbar('Más cosas para explorar')+`<p class="pad" style="color:var(--mu);margin:0 14px 12px">Todas las prácticas del simulador, para cuando quieras investigar por tu cuenta.</p>`;
+ CATS.forEach(c=>h+=`<button class="tilebtn ${c.cl}" data-c="${c.id}"><span class="ic">${c.ic}</span><span><b>${c.t}</b><span>${c.d}</span></span></button>`);
+ h+=`<button class="tilebtn t3" data-ayuda="1"><span class="ic">❓</span><span><b>Cómo se juega</b><span>Un repaso rápido de la app</span></span></button>`;
+ h+=`<button class="tilebtn t5" data-taller="1"><span class="ic">🛠️</span><span><b>Taller libre</b><span>Armá tus propios circuitos (con el celular acostado)</span></span></button>`;
  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
- if(!standalone)h+=`<div class="tip" id="tip">📲 <b>Usalo sin conexión:</b> ${ios?'tocá el botón Compartir y elegí “Agregar a pantalla de inicio”.':'abrí el menú del navegador y elegí “Instalar aplicación” o “Agregar a pantalla de inicio”.'}<div id="inst"></div></div>`;
- h+=`<p class="foot">Simulador de circuitos eléctricos · Escuela Técnica Crucero ARA General Belgrano y Escuela Técnica N.º 1 de Bella Vista<br><a href="index.html?pc=1">Ver versión completa (para PC y tablet)</a></p>`;
- $('#home').innerHTML=h;$('#home').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>go({v:'cat',c:b.dataset.c}));
- $('#home').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{const x=b.dataset.x;if(x==='medallas')PROG.openMedals(catRes());else go({v:'play',c:x==='taller'?'cc':'extra',i:x})});
- if(deferred)showInstall()}
-function cat(cid){const c=CATS.find(x=>x.id===cid),its=ITEMS.filter(i=>i.cat===cid);
- let h=`<h2>${c.t}</h2>`;if(its.length>8)h+=`<input type="search" id="q" placeholder="Buscar una práctica…" autocomplete="off">`;h+=`<div id="lst"></div>`;
- $('#cat').innerHTML=h;const draw=q=>{q=(q||'').toLowerCase().trim();let html='',last='',n=0;its.forEach(i=>{if(q&&!(i.t+' '+i.d+' '+i.gr).toLowerCase().includes(q))return;n++;if(i.gr!==last){html+=`<h3>${i.gr}</h3>`;last=i.gr}html+=`<button class="item" data-i="${i.id}"><b>${i.t}</b><span>${i.d||''}</span>${i.adv?'<i>Mejor en pantalla grande</i>':''}${i.star?`<i class="st${PROG.stars(i.id)?'':' off'}">${PROG.starsHTML(PROG.stars(i.id))}</i>`:''}</button>`});$('#lst').innerHTML=html||'<p class="empty">No hay prácticas con ese texto.</p>';$('#lst').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>go({v:'play',c:cid,i:b.dataset.i}))};
- draw();const q=$('#q');if(q)q.oninput=()=>draw(q.value)}
-function nav(u){try{$('#frm').contentWindow.location.replace(u)}catch{$('#frm').src=u}}
-function play(it){const sep=it.f.includes('?')?'&':'?';nav('archivos/'+it.f+sep+'tema='+tema+'&pizarra=0');$('#ttl').textContent=it.t;}
-function show(st){document.body.classList.toggle('play',st.v==='play');$('#back').hidden=st.v==='home';
- $('#home').hidden=st.v!=='home';$('#cat').hidden=st.v!=='cat';
- if(st.v==='home'){$('#ttl').textContent='Circuitos';nav('about:blank');home()}
- else if(st.v==='cat'){$('#ttl').textContent=CATS.find(x=>x.id===st.c).t;nav('about:blank');cat(st.c);$('#main').scrollTop=0}
- else{const it=ITEMS.find(x=>x.id===st.i&&x.cat===st.c);play(it)}
- view=st}
-function go(st){history.pushState(st,'');show(st)}
-$('#back').onclick=()=>history.back();
-document.addEventListener('progreso-cambio',()=>{if(view.v==='home')home();else if(view.v==='cat')cat(view.c)});
-addEventListener('popstate',e=>show(e.state||{v:'home'}));
-$('#frm').addEventListener('load',()=>{if(view.v==='play'){try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}}});
+ if(!standalone)h+=`<div class="tip" id="tip">📲 <b>Usala sin conexión:</b> ${ios?'tocá el botón Compartir y elegí “Agregar a pantalla de inicio”.':'abrí el menú del navegador y elegí “Instalar aplicación” o “Agregar a pantalla de inicio”.'}<div id="inst"></div></div>`;
+ h+=`<p class="foot">Simulador de circuitos eléctricos · Escuela Técnica Crucero ARA General Belgrano y Escuela Técnica N.º 1 de Bella Vista<br>Autor: Rodolfo Emanuel Durán<br><a href="index.html?pc=1">Ver versión completa (para PC y tablet)</a></p>`;
+ el.innerHTML=h;bindTop(el);el.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{masVista=b.dataset.c;pintarMas();el.scrollTop=0});
+ el.querySelectorAll('[data-taller]').forEach(b=>b.onclick=()=>abrirExplora(ITEMS.find(i=>i.id==='taller')));el.querySelectorAll('[data-ayuda]').forEach(b=>b.onclick=bienvenida);if(deferred)mostrarInstalar()}
+function pintarLista(cid){const el=$('#s-mas'),c=CATS.find(x=>x.id===cid),its=ITEMS.filter(i=>i.cat===cid&&i.id!=='taller');
+ let h=`<div class="top"><button class="ib" id="lBack" aria-label="Volver">←</button><h1>${c.t}</h1></div>`;if(its.length>8)h+=`<input type="search" id="q" placeholder="Buscar una práctica…" autocomplete="off">`;h+=`<div id="lst"></div>`;el.innerHTML=h;
+ const draw=q=>{q=(q||'').toLowerCase().trim();let html='',last='',n=0;its.forEach(i=>{if(q&&!(i.t+' '+i.d+' '+i.gr).toLowerCase().includes(q))return;n++;if(i.gr!==last){html+=`<h3 class="sec">${esc(i.gr)}</h3>`;last=i.gr}html+=`<button class="item" data-i="${esc(i.id)}"><b>${esc(i.t)}</b><span>${esc(i.d||'')}</span>${i.adv?'<span style="color:var(--or)">Mejor en pantalla grande</span>':''}</button>`});$('#lst').innerHTML=html||'<p class="foot">No hay prácticas con ese texto.</p>';$('#lst').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>abrirExplora(its.find(x=>x.id===b.dataset.i)))};
+ draw();const q=$('#q');if(q)q.oninput=()=>draw(q.value);$('#lBack').onclick=()=>{masVista='home';pintarMas()}}
+function abrirExplora(it){if(!it)return;S.jugados++;
+ if(it.mv){cur={mode:'explora',need:false};const q=new URLSearchParams({movil:'1',tema,pizarra:'0',t:String(Date.now())});const sep=it.f.includes('?')?'&':'?';$('#frm').src='archivos/'+it.f+sep+q.toString();mostrarPlay(true);history.pushState({l:'play'},'')}
+ else{$('#otroTit').textContent=it.t;const sep=it.f.includes('?')?'&':'?';$('#frm2').src='archivos/'+it.f+sep+'tema='+tema+'&pizarra=0';capa('otro',true);history.pushState({l:'otro'},'')}}
+function cerrarOtro(){capa('otro',false);$('#frm2').src='about:blank'}
+$('#otroBack').onclick=()=>history.back();
+$('#frm2').addEventListener('load',()=>{try{$('#frm2').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}});
+$('#frm').addEventListener('load',()=>{try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}});
 /* instalación (Android/Chrome) */
-let deferred=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;showInstall()});
-function showInstall(){const box=$('#inst');if(!box||!deferred)return;box.innerHTML='<button id="doInst">Instalar la aplicación</button>';$('#doInst').onclick=async()=>{deferred.prompt();try{await deferred.userChoice}catch{}deferred=null;box.innerHTML=''}}
-/* mensajes de las prácticas (ajustes desde adentro) */
-addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='ajustes-desde-practica'&&d.tema){tema=d.tema;stg.set('sim-tema',tema);document.documentElement.dataset.theme=tema}});
+let deferred=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;mostrarInstalar()});
+function mostrarInstalar(){const box=$('#inst');if(!box||!deferred)return;box.innerHTML='<button id="doInst">Instalar la aplicación</button>';$('#doInst').onclick=async()=>{deferred.prompt();try{await deferred.userChoice}catch{}deferred=null;box.innerHTML=''}}
 /* service worker */
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')){addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
-apply();history.replaceState({v:'home'},'');show({v:'home'});
-window.__cel={show,go,ITEMS,CATS};
+/* bienvenida (la primera vez, y desde Más > Cómo se juega) */
+function bienvenida(){abrirFull(`<div class="big" style="margin-top:6vh"><div style="font-size:3.4rem">⚡</div><h2>¡Bienvenido/a!</h2><p style="color:var(--mu)">Practicá circuitos eléctricos y llegá entrenado/a al examen.</p></div>
+ <div class="card"><p>🛤️ <b>Camino:</b> superá niveles cada vez más difíciles. Si no usás pistas ni te equivocás, ¡3 estrellas!</p><p>🔌 <b>Armar circuitos:</b> con el celular <b>acostado</b>, tocá un borne y después otro. Cable <b style="color:#e5484d">rojo</b> al polo +, <b style="color:#4db5ee">celeste</b> al polo −. Pellizcá para acercar.</p><p>⏱️ <b>Simulacro:</b> 3 problemas con tiempo y sin ayudas, como en el examen.</p><p>🔥 Practicá todos los días para sumar racha.</p></div><div class="gap"><button class="cta" id="bvOk">¡Vamos! ▶</button></div>`);
+ $('#bvOk').onclick=()=>{S.visto=1;save();capa('fs',false)}}
+/* inicio */
+aplicarTema();history.replaceState({l:'home'},'');irTab('camino');if(!S.visto)bienvenida();
+window.__cel={irTab,jugarNivel,iniciarSim,abrirNivel,S:()=>S,GEN,cur:()=>cur,save,dayStr,tickRacha};
 })();
 </script>
-<script src="archivos/autor.js"></script>
 </body></html>

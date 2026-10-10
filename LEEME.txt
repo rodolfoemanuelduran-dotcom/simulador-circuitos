@@ -132,14 +132,20 @@ llave para abrirla o cerrarla. Toque cualquier componente para medir su
 tension y corriente con el multimetro. Arrastre la ficha del motor hasta un
 tomacorriente para enchufarlo.
 
-CELULAR (celular.html)
-Version simple para telefonos: al escanear el QR (o abrir la direccion publicada) el celular se
-redirige solo a celular.html. Tiene 4 botones grandes (Corriente continua, Corriente alterna,
-Mando de motores, Datos curiosos), listas con buscador, boton Atras de Android/iPhone, fondo
-claro/oscuro y un aviso para instalarla. Cada practica se usa con el celular en posicion
-horizontal. En Mando, los esquemas y tableros tienen un boton "Ampliar" para recorrerlos con el dedo
-(en los tableros conviene tocar un borne y despues el otro). "Ver version completa" abre el menu
-de PC (index.html?pc=1). Se publica en internet (GitHub Pages) y funciona sin conexion una vez abierto.
+APP DE CELULARES (celular.html) - para practicar para el examen
+Al escanear el QR (o abrir la direccion publicada) el celular se redirige solo a celular.html. Es una app con 4 pestanas:
+- CAMINO: camino de niveles (12 niveles en 3 bloques y desafios sin fin). Cada nivel es un problema distinto cada vez
+  (armar circuitos, preguntas, LED con resistor, buscar la falla), da hasta 3 estrellas (3 = sin pista y sin errores) y
+  desbloquea el siguiente. Se arma con el celular ACOSTADO (la app avisa que hay que girarlo); las preguntas y las fallas
+  se resuelven en vertical. Cables: tocar un borne y despues el otro (bornes grandes); pellizcar para acercar y arrastrar
+  para mover el tablero; doble toque para volver a verlo todo. Rojo al polo +, celeste al polo -.
+- SIMULACRO: tres simulacros (uno por bloque) de 3 problemas con tiempo (3 min cada uno), sin pistas, nota sobre 10.
+- MI PROGRESO: nombre, niveles superados, estrellas, racha de dias, notas de simulacros y logros; boton para compartir o
+  copiar el resumen y mostrarselo al docente. Todo se guarda en el telefono (no hay servidores).
+- MAS: todas las demas practicas (corriente alterna, mando de motores, datos curiosos, taller libre).
+Funciona sin conexion una vez abierta e instalada (menu del navegador: "Instalar aplicacion" / "Agregar a pantalla de
+inicio"). Usa el mismo generador de problemas del modo examen de la PC (archivos/examen-gen.js) y la "piel movil" de
+archivos/circuito-redes.html (parametro movil=1). "Ver version completa" abre el menu de PC (index.html?pc=1).
 Codigo QR: QR-simulador-publico.png / QR-simulador-para-imprimir.png (misma direccion de siempre).
 
 PARA AGREGAR O MODIFICAR CIRCUITOS

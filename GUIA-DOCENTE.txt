@@ -90,6 +90,14 @@ TALLER LIBRE: EXPERIMENTOS CONTROLADOS
   rapido con mas tension y al reves si se invierte la polaridad), zumbador (polarizado: solo suena con el + en su pata +) y
   calefactor. Practicas en el grupo "Otros artefactos".
 
+APP DE CELULARES PARA PRACTICAR (los alumnos escanean el QR)
+- Camino de niveles: cada nivel es un problema distinto (armar circuitos, preguntas, LED con resistor, buscar la falla) y la
+  dificultad sube de a poco; lo mismo que se evalua en el modo examen de la pizarra. 3 estrellas = sin pistas y sin errores.
+- Simulacro: 3 problemas con tiempo y sin ayudas, nota sobre 10. Hay uno por cada bloque de 4 niveles.
+- "Mi progreso": el alumno escribe su nombre y puede mostrarte el nivel alcanzado, las estrellas, la racha de dias y las notas
+  de los simulacros (o compartirlo por mensaje). Todo queda guardado en su telefono; no hay servidores ni registros.
+- Se arma con el celular acostado (la app avisa) y las preguntas se responden en vertical. Rojo al polo +, celeste al -.
+
 IDEAS PARA EVALUAR
 - Pedir que cableen sin usar la guia y verificar. Contar el numero de intentos.
 - Activar una falla en "Probar" (falta de fase, enclavamiento anulado, rotor trabado) y pedir el diagnostico.
