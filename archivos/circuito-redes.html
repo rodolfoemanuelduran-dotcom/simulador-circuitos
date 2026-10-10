@@ -21,15 +21,43 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
 .btn{padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--p2);cursor:pointer;font-size:.76rem}.btn:disabled{opacity:.35;cursor:default}.btn.primary{background:#eaf8ff;color:#06101c;border-color:#fff;font-weight:700}
 .colors{display:flex;gap:7px;flex-wrap:wrap}.colors button{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}.colors button[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px #fff3}.colors .earthc{background:repeating-linear-gradient(45deg,#37c870 0 5px,#f2d13c 5px 10px)}
 .meter{padding:8px;border-radius:10px;background:var(--meterbg);border:1px solid var(--line);font-variant-numeric:tabular-nums}.meter b{color:var(--tx)}.meter .big{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px}.meter .big div{padding:5px 7px;border-radius:7px;background:var(--meterin);color:var(--tvc);font:700 1rem ui-monospace,Consolas,monospace}.meter .big small{display:block;color:var(--mu);font:600 .62rem system-ui}
+.vbar{height:12px;border-radius:7px;border:1px solid var(--line)}.vlab{display:flex;justify-content:space-between;font-size:.7rem;font-weight:700;color:var(--mu);margin-top:2px}.vtxt{font-size:.74rem;line-height:1.35}
 .bands{display:inline-flex;gap:2px;vertical-align:middle;margin-right:5px}.bands i{display:block;width:7px;height:14px;border-radius:1px}
 table{width:100%;border-collapse:collapse;font-size:.72rem;font-variant-numeric:tabular-nums}th,td{padding:3px 4px;text-align:right;border-bottom:1px solid #1e3248}th:first-child,td:first-child{text-align:left}th{color:var(--mu);font-weight:600}tr.sel td{background:#173651}
 .result{margin-top:10px;padding:9px;border-radius:10px;background:var(--okbg);border:1px solid var(--gr);color:var(--oktx)}
-.boardwrap{position:relative;flex:1 1 auto;min-width:0;background:var(--boardbg)}
+.boardwrap.shake #board{animation:shake .5s}@keyframes shake{0%,100%{transform:translate(0,0)}15%{transform:translate(-7px,4px)}30%{transform:translate(6px,-5px)}45%{transform:translate(-5px,-3px)}60%{transform:translate(5px,4px)}80%{transform:translate(-2px,2px)}}@media (prefers-reduced-motion:reduce){.boardwrap.shake #board{animation:none}}
+.boardwrap.alarm:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 140px #ff2a0088;animation:alarm .45s ease-in-out infinite alternate}@keyframes alarm{from{opacity:.35}to{opacity:1}}.boardwrap{position:relative;flex:1 1 auto;min-width:0;background:var(--boardbg)}
 #board{position:absolute;inset:0;width:100%;height:100%;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.tools button.examBtn{width:auto;height:34px;padding:0 16px;border-radius:9px;border:2px solid #ffd43b;background:#ffd43b;color:#241a00;font-size:.95rem;font-weight:800;cursor:pointer;white-space:nowrap;animation:examPulse 1.6s ease-in-out infinite}.tools button.examBtn[hidden]{display:none}.pizarra .tools button.examBtn{height:48px;font-size:1.15rem;width:auto}.tools button.examBtn:disabled{animation:none;opacity:.45}@keyframes examPulse{0%,100%{box-shadow:0 0 0 0 #ffd43b66}50%{box-shadow:0 0 0 7px #ffd43b00}}
+.modal{position:absolute;inset:0;z-index:9;display:grid;place-items:center;padding:14px;background:#04101bcc}.modal[hidden]{display:none}.modal-card{width:min(420px,100%);padding:18px 20px;border-radius:20px;border:2px solid #ffd43b;background:var(--p);color:var(--tx);text-align:center;box-shadow:0 20px 60px #000b}.modal-card h3{margin:0 0 6px;font-size:1.2rem}.modal-card p{margin:4px 0 12px;color:var(--mu);font-size:.86rem}
+.pal{position:absolute;z-index:4;left:6px;top:8px;bottom:62px;width:62px;display:flex;flex-direction:column;gap:6px;overflow:auto;padding:5px;border-radius:16px;background:var(--hintbg);border:1px solid var(--hintline);scrollbar-width:none}.pal[hidden],.fly[hidden],.toast[hidden]{display:none}
+.pal button{flex:0 0 auto;width:100%;min-height:50px;padding:4px 0;border-radius:12px;border:1px solid var(--line);background:var(--p2);color:var(--tx);cursor:pointer;font-size:1.35rem;line-height:1.1}.pal button:hover,.pal button:focus-visible{border-color:var(--bl)}.pal button small{display:block;margin-top:2px;font:700 .58rem system-ui;color:var(--mu)}
+.pal #palDel{margin-top:auto}
+.fly{position:absolute;z-index:5;left:76px;top:10px;display:grid;grid-template-columns:repeat(3,auto);gap:6px;padding:8px;border-radius:14px;background:var(--p);border:1px solid var(--bl);box-shadow:0 12px 30px #000a}.fly b{grid-column:1/-1;font-size:.72rem;color:var(--mu)}.fly button{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--p2);color:var(--tx);font-weight:700;cursor:pointer;white-space:nowrap}.fly button:hover{border-color:var(--bl);background:#1d4d63}
+body.free #board{left:72px;width:calc(100% - 72px)}
+.toast{position:absolute;z-index:7;left:50%;bottom:62px;transform:translateX(-50%);max-width:min(560px,92%);padding:9px 16px;border-radius:18px;pointer-events:none;text-align:center;line-height:1.35;background:var(--p);border:1px solid var(--bl);color:var(--tx);font-size:.84rem;font-weight:650;box-shadow:0 10px 30px #000a;animation:winpop .35s}
+@media(max-height:520px){.pal{width:50px;gap:4px;padding:3px;bottom:40px}.pal button{min-height:40px;font-size:1.05rem}.pal button small{display:none}body.free #board{left:58px;width:calc(100% - 58px)}.fly{left:60px}}
+.win{position:absolute;z-index:6;right:12px;top:10px;width:min(330px,92%);padding:10px 14px 10px;text-align:center;border-radius:24px;border:2px solid #ffd43b;background:linear-gradient(160deg,#1c3a52,#0d1d2e);color:#f4f9ff;box-shadow:0 20px 60px #000c,0 0 60px #ffd43b44;animation:winpop .5s cubic-bezier(.2,1.5,.4,1)}.win[hidden]{display:none}
+:root[data-theme=light] .win{background:linear-gradient(160deg,#ffffff,#fff4cf);color:#14243a}
+@keyframes winpop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.win-st{font-size:2.5rem;line-height:1;display:flex;justify-content:center;gap:8px}.win-st span{color:#5b6b7e;display:inline-block;transform:scale(.4);opacity:0;animation:starin .55s cubic-bezier(.2,1.8,.4,1) forwards}.win-st span.on{color:#ffd43b;text-shadow:0 0 22px #ffb400,0 0 6px #fff}
+@keyframes starin{to{transform:scale(1);opacity:1}}
+.win h3{margin:3px 0 1px;font-size:1.2rem}.win p{margin:4px 0 8px;color:inherit;opacity:.85;font-size:.86rem}.win-b{margin:4px 0;padding:5px 10px;border-radius:999px;background:#ffd43b22;border:1px solid #ffd43b88;font-size:.84rem}
+.win{width:auto;max-width:min(330px,92%);padding:5px 16px 5px 12px;border-radius:999px;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:2px 10px;text-align:left;cursor:pointer;opacity:.97}.win-st{font-size:1.5rem;gap:1px}.win h3{margin:0;font-size:1rem}.win p,.win .row{display:none}.win-b{font-size:.74rem;padding:1px 8px;margin:0;flex:1 1 100%}.pizarra .win h3{font-size:1.3rem}.pizarra .win-st{font-size:2rem}
+.why{position:absolute;z-index:5;left:50%;top:10px;transform:translateX(-50%);width:min(620px,94%);display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:center;padding:12px 16px;border-radius:18px;border:2px solid #ff7b5c;background:var(--errbg);color:var(--errtx);box-shadow:0 14px 40px #000a,0 0 0 4px #ff7b5c33;animation:whypop .35s cubic-bezier(.2,1.4,.4,1)}.why[hidden]{display:none}
+@keyframes whypop{from{opacity:0;transform:translateX(-50%) translateY(-24px) scale(.92)}to{opacity:1;transform:translateX(-50%)}}
+.why-ico{font-size:2.6rem;line-height:1;filter:drop-shadow(0 0 10px #ff7b5c)}.why h3{margin:0 0 4px;font-size:1.12rem;color:var(--tx)}.why p{margin:2px 0;font-size:.82rem;line-height:1.34;color:var(--errtx)}
+.why p b{display:inline-block;min-width:70px;margin-right:6px;padding:0 6px;border-radius:6px;font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:#06101c}.why .k1{background:#ffb4a2}.why .k2{background:#ffd98a}.why .k3{background:#8de8b0}
+.why .btn{align-self:start}.why-tap{display:none;font-weight:500;font-size:.72rem;opacity:.85}.why.mini{top:8px;border-width:1px;box-shadow:0 6px 18px #0008;opacity:.94}.why.mini{grid-template-columns:auto 1fr;width:auto;max-width:94%;padding:5px 14px 5px 10px;cursor:pointer;gap:8px}.why.mini .why-body p,.why.mini .btn{display:none}.why.mini h3{margin:0;font-size:.92rem}.why.mini .why-ico{font-size:1.5rem}.why.mini .why-tap{display:inline}
+@media(max-height:520px){.why{top:4px;padding:6px 10px;gap:2px 8px}.why-ico{font-size:1.6rem}.why h3{font-size:.9rem}.why p{font-size:.68rem;margin:1px 0}.why p b{min-width:0;font-size:.58rem}}
+.pizarra .why p{font-size:1.02rem}.pizarra .why h3{font-size:1.4rem}
+body.exam .hint{-webkit-line-clamp:4;font-size:.95rem}body.exam.pizarra .hint{font-size:1.15rem}
+.quiz{margin-top:10px}.quiz p{color:var(--tx);font-weight:650}.qopt{display:block;width:100%;margin:6px 0;padding:10px 12px;text-align:left;border-radius:12px;border:2px solid var(--line);background:var(--p2);color:var(--tx);cursor:pointer;font-weight:650;line-height:1.3}.qopt:hover{border-color:var(--bl)}.qopt.sel{border-color:#ffd43b;background:#ffd43b22}.qopt.good{border-color:var(--gr);background:#5ce0a022}.qopt.bad{border-color:var(--rd);background:#ff6b6b22}.pizarra .qopt{font-size:1.05rem;padding:13px 14px}
 .hint{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);width:min(780px,94%);padding:6px 11px;border-radius:10px;border:1px solid var(--hintline);background:var(--hintbg);color:var(--mu);font-size:.78rem;text-align:center;pointer-events:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .hint.error{background:var(--errbg);color:var(--errtx);border-color:#ff6969}.hint.ok{background:var(--okbg);color:var(--oktx);border-color:var(--gr)}.hint strong{color:var(--tx)}
 .tx{fill:var(--svgtx);font:600 14px system-ui,sans-serif;text-anchor:middle}.tv{fill:var(--tvc);font:600 13px ui-monospace,Consolas,monospace;text-anchor:middle}.tl{fill:var(--mu);font:700 12px system-ui,sans-serif;text-anchor:middle;pointer-events:none}
 .sel-box{fill:none;stroke:var(--bl);stroke-width:2;stroke-dasharray:6 5}
+.wbad{fill:none;stroke:#ffd43b;stroke-width:4.5;stroke-dasharray:4 10;stroke-linecap:round;pointer-events:none;animation:wbad .8s linear infinite}@keyframes wbad{to{stroke-dashoffset:-14}}.wbadt{fill:#3b2a00;font:800 12px system-ui,sans-serif;text-anchor:middle}
 .wshadow{fill:none;stroke:var(--wsh);stroke-width:13;stroke-linecap:round}.wire{fill:none;stroke-width:7;stroke-linecap:round}.wire.sel{stroke-width:9}.wstripe{fill:none;stroke:#f2d13c;stroke-width:3.4;stroke-linecap:butt;stroke-dasharray:9 9}
 .flow{fill:none;stroke:#fff7b0;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:4 17;animation:flow .55s linear infinite}@keyframes flow{to{stroke-dashoffset:-21}}
 .term-ring{fill:var(--tfill);stroke:var(--tstroke);stroke-width:3.5}.ld{stroke:var(--lead)}.ct{fill:var(--contact)}.term-dot{fill:#d89559}.connected .term-dot{fill:var(--gr)}.term:hover .term-ring{stroke:var(--bl)}.term.drop .term-ring{stroke:var(--bl);stroke-width:6}.term.pend .term-ring{stroke:var(--yl);stroke-width:6}
@@ -58,7 +86,7 @@ table{width:100%;border-collapse:collapse;font-size:.72rem;font-variant-numeric:
   <button id="bPanel" title="Consigna y mediciones" aria-label="Consigna y mediciones" aria-pressed="true">☰</button>
   <button id="bUndo" title="Quitar último cable" aria-label="Quitar último cable">↶</button>
   <button id="bDel" title="Quitar cable seleccionado" aria-label="Quitar cable seleccionado" disabled>🗑</button>
-  <button id="bReset" title="Reiniciar" aria-label="Reiniciar">↻</button>
+  <button id="bReset" title="Reiniciar" aria-label="Reiniciar">↻</button><button id="bExam" class="examBtn" hidden title="Entregar el circuito">Entregar ✔</button>
   <button id="bSound" title="Sonidos" aria-label="Sonidos" aria-pressed="true">🔊</button>
   <button id="bTheme" class="solo" title="Fondo claro u oscuro" aria-label="Cambiar tema">◐</button>
   <button id="bProj" class="solo" title="Modo pizarra (proyector)" aria-label="Modo pizarra" aria-pressed="false"><b>Aa</b></button>
@@ -68,13 +96,15 @@ table{width:100%;border-collapse:collapse;font-size:.72rem;font-variant-numeric:
 <div class="work">
  <aside id="panel" class="panel">
   <h2 id="pTitle"></h2><p id="pDesc"></p>
-  <div class="goal" id="pGoal"></div>
+  <div class="goal" id="pGoal"></div><div id="quiz" class="quiz" hidden><h3>Pregunta</h3><p id="qq"></p><div id="qo"></div></div><p id="pStars" style="margin:6px 0 0;font-size:.78rem"></p>
   <div class="row"><button class="btn" id="tipBtn">💡 Pista</button><button class="btn" id="solBtn">👁 Ver solución</button><button class="btn" id="unplugBtn" hidden>🔌 Desenchufar</button></div>
   <p id="pTip" hidden></p>
   <h3>Color del cable</h3><div class="colors" id="colors"></div>
+  <h3>Cables con energía</h3><div class="vbar" id="vbar"></div><div class="vlab"><span id="vlo">−</span><span id="vhi">+</span></div>
+  <p class="vtxt">Un cable <b>se ilumina</b> en cuanto queda unido a un polo de la batería: su color indica la tensión que tiene. Los <b>electrones</b> solo se mueven cuando el circuito está <b>cerrado</b>.</p>
   <h3>Multímetro</h3>
   <div class="meter" id="meter"></div>
-  <div class="row"><button class="btn" id="replBtn" hidden>🔧 Reemplazar</button><button class="btn" id="tblBtn">📋 Tabla</button><button class="btn" id="valsBtn" aria-pressed="true">Valores en el esquema</button></div>
+  <div class="row"><button class="btn" id="replBtn" hidden>🔧 Reemplazar</button><button class="btn" id="burnBtn" hidden>💥 Quemar lámpara</button><button class="btn" id="tblBtn">📋 Tabla</button><button class="btn" id="valsBtn" aria-pressed="true">Valores en el esquema</button></div>
   <div id="table" hidden></div>
   <div class="result" id="result" hidden></div>
  </aside>
@@ -86,23 +116,29 @@ table{width:100%;border-collapse:collapse;font-size:.72rem;font-variant-numeric:
    <linearGradient id="boxg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46566c"/><stop offset="1" stop-color="#27354a"/></linearGradient>
    <pattern id="gridp" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" style="stroke:var(--grid)" stroke-opacity=".35"/></pattern></defs>
    <rect id="gridrect" x="-2000" y="-2000" width="5000" height="5000" fill="url(#gridp)"/>
-   <g id="gWires"></g><g id="gComps"></g><g id="gTerms"></g><g id="gPlug"></g><g id="gOver"><path id="prevS" class="wshadow" d=""/><path id="prev" class="wire" d="" stroke-dasharray="12 9"/></g>
+   <g id="gWires"></g><g id="gComps"></g><g id="gTerms"></g><g id="gPlug"></g><g id="gFx" pointer-events="none"></g><g id="gOver"><path id="prevS" class="wshadow" d=""/><path id="prev" class="wire" d="" stroke-dasharray="12 9"/></g>
   </svg>
+  <div id="exConf" class="modal" hidden role="dialog" aria-modal="true"><div class="modal-card"><h3>¿Entregar este circuito?</h3><p>Después de entregar no podés volver a esta pregunta. El simulador no te dice si está bien: lo ve tu docente al final.</p><div class="row" style="justify-content:center"><button class="btn primary" id="cfYes">Sí, entregar</button><button class="btn" id="cfNo">Seguir trabajando</button></div></div></div>
+  <div id="pal" class="pal" hidden aria-label="Paleta de componentes"></div><div id="fly" class="fly" hidden></div><div id="toast" class="toast" hidden role="status"></div>
+  <div id="win" class="win" hidden role="status"><div class="win-st" id="winSt"></div><h3 id="winTit"></h3><p id="winTxt"></p><div id="winBadge"></div><div class="row" style="justify-content:center"><button class="btn primary" id="winNext" hidden>Siguiente práctica ▶</button><button class="btn" id="winClose">Seguir probando</button></div></div>
+  <div id="why" class="why" hidden role="alert"><div class="why-ico" id="whyIco">⚡</div><div class="why-body"><h3><span id="whyTit"></span><span class="why-tap"> · ¿por qué? tocá</span></h3><p><b class="k1">Qué pasó</b><span id="whyWhat"></span></p><p><b class="k2">Por qué</b><span id="whyWhy"></span></p><p><b class="k3">Qué hacer</b><span id="whyFix"></span></p></div><button class="btn primary" id="whyOk">Entendido ✔</button></div>
   <div id="hint" class="hint"></div>
  </section>
 </div>
-<script src="redes-datos.js"></script>
+<script src="redes-datos.js"></script><script src="componentes-cristal.js"></script><script src="progreso.js"></script>
 <script>
 (()=>{
-const D=window.REDES,$=s=>document.querySelector(s),svg=$('#board'),gW=$('#gWires'),gC=$('#gComps'),gT=$('#gTerms'),gP=$('#gPlug'),prev=$('#prev'),prevS=$('#prevS');
+const D=window.REDES,$=s=>document.querySelector(s),svg=$('#board'),gW=$('#gWires'),gC=$('#gComps'),gT=$('#gTerms'),gP=$('#gPlug'),gFx=$('#gFx'),prev=$('#prev'),prevS=$('#prevS');
 const params=new URLSearchParams(location.search);
-const sc=D.items[params.get('c')]||D.items[D.order[0]];
+let GENSC=null;try{if(params.get('gen'))GENSC=JSON.parse(params.get('gen'))}catch{}
+const sc=GENSC||D.items[params.get('c')]||D.items[D.order[0]];
 const H=500,VH=548;let W=1000,scale=1;
 const AC=!!sc.ac;
 const DCW=[['red','Rojo','#e5484d'],['blue','Celeste','#4db5ee'],['green','Verde','#3ecf7a'],['yellow','Amarillo','#f2c94c'],['gray','Gris','#c3ccd8']];
 const ACW=[['brown','Marrón · Fase','#b5651d'],['blue','Celeste · Neutro','#4db5ee'],['earth','Verde/amarillo · Tierra','#37c870']];
 const WIRE_COLORS=AC?ACW:DCW,wcol=k=>{const c=(WIRE_COLORS.find(c=>c[0]===k)||WIRE_COLORS[0])[2];return k==='gray'&&document.documentElement.dataset.theme==='light'?'#7b889b':c};
-const cm={};sc.comps.forEach(c=>cm[c.id]=c);
+const cm={};sc.comps.forEach(c=>cm[c.id]=c);CRISTAL.install();svg.querySelector('defs').insertAdjacentHTML('beforeend',CRISTAL.DEFS);const FX=CRISTAL.FX;FX.init(gFx);FX.onSpark=()=>{const n=performance.now();if(n-(FX.ls||0)>140){FX.ls=n;play('zap')}};
+if(sc.kind==='led'&&!sc.check)sc.check=function(c){const d=c.sim.c.D;if(c.broken.D)return{cls:'error',head:'LED quemado',text:'La corriente superó los 30 mA y el LED se destruyó. Reiniciá y elegí un resistor mayor.'};if(!c.allClosed)return null;const i=d.i;if(d.level>0&&i>=.005&&i<=.025)return{cls:'ok',head:'Desafío completado',text:'El LED conduce '+c.fmtI(i)+': dentro del rango seguro.',done:true};if(d.level>0&&i<.005)return{cls:'',head:'LED muy tenue',text:'Circula solo '+c.fmtI(i)+'. Probá con un resistor menor.'};return null};
 const SRC=sc.comps.find(c=>c.t==='bat'||c.t==='src');
 const sws=sc.comps.filter(c=>c.t==='sw'||c.t==='sw3');
 const tomas=sc.comps.filter(c=>c.t==='toma'),motor=sc.comps.find(c=>c.t==='motor');
@@ -120,11 +156,14 @@ function tdefs(c){
   case'rod':return[BRK('p',0,-52,0,-1,'PE','PE')];
   case'box':return c.rows.flatMap((row,ri)=>row.t.map((k,i)=>{const top=ri===0,bot=ri===c.rows.length-1;return BRK(k,(i-(row.t.length-1)/2)*62,(ri-(c.rows.length-1)/2)*58,top||bot||i*2+1===row.t.length?0:(i*2+1<row.t.length?-1:1),top?-1:bot?1:0,row.role,row.label)}));
   case'motor':return[];
+  case'dcm':return[BRK('a',-62,-30,-1,0,'L','+'),BRK('b',-62,30,-1,0,'N','−')];
   default:return[BRK('a',-62,0,-1,0,c.t==='lamp'||c.t==='sw'?'L':'L','L'),BRK('b',62,0,1,0,c.t==='lamp'?'N':'L','N')];
  }
 }
 const TM={};sc.comps.forEach(c=>{c.defs=tdefs(c);c.defs.forEach(d=>{d.id=c.id+'.'+d.k;d.c=c;TM[d.id]=d})});
 const allT=Object.keys(TM);
+/* vuelve a armar bornes e índices cuando el taller libre agrega o quita componentes */
+function rebuild(){Object.keys(cm).forEach(k=>delete cm[k]);sc.comps.forEach(c=>cm[c.id]=c);Object.keys(TM).forEach(k=>delete TM[k]);sc.comps.forEach(c=>{c.defs=tdefs(c);c.defs.forEach(d=>{d.id=c.id+'.'+d.k;d.c=c;TM[d.id]=d})});allT.length=0;allT.push(...Object.keys(TM));sws.length=0;sc.comps.filter(c=>c.t==='sw'||c.t==='sw3').forEach(c=>sws.push(c))}
 function tp(id){const d=TM[id],c=d.c;return{x:c.fx*W+d.x,y:c.fy*H+d.y,dx:d.dx,dy:d.dy}}
 const SLOTS=[[.3,.22],[.5,.22],[.7,.22],[.9,.22],[.9,.76],[.7,.76],[.5,.76],[.3,.76]];
 (function place(){let k=0;sc.comps.forEach(c=>{const s=(sc.pos&&sc.pos[c.id]);if(s){c.fx=s[0];c.fy=s[1]}else if(c.t==='bat'||c.t==='src'){c.fx=.1;c.fy=.5}else{const q=SLOTS[k++];c.fx=q[0];c.fy=q[1]}});plugHome=motor?(sc.plug||[motor.fx-.06,motor.fy+.22]):[0,0];plugPos={fx:plugHome[0],fy:plugHome[1]}})();
@@ -142,9 +181,9 @@ const buzz=ms=>{try{if(soundOn&&navigator.vibrate)navigator.vibrate(ms)}catch{}}
 
 /* ---------- audio ---------- */
 let actx=null,noiseBuf=null,lastSnap=0;
-function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
-function tone(f,d,ty='sine',v=.05,dl=0,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+dl;o.type=ty;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v,s+.012);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.03)}
-function noise(d,v=.05,dl=0,f=2000,q=1,type='bandpass'){const a=audio();if(!a)return;if(!noiseBuf){noiseBuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const ch=noiseBuf.getChannelData(0);for(let i=0;i<ch.length;i++)ch[i]=Math.random()*2-1}const s=a.currentTime+dl,src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=noiseBuf;fl.type=type;fl.frequency.value=f;fl.Q.value=q;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A();const mg=actx.createGain();mg.gain.value=2.6;const cp=actx.createDynamicsCompressor();cp.threshold.value=-16;cp.ratio.value=6;cp.attack.value=.003;mg.connect(cp);cp.connect(actx.destination);actx.master=mg}if(actx.state==='suspended')actx.resume();return actx}
+function tone(f,d,ty='sine',v=.05,dl=0,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+dl;o.type=ty;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v,s+.012);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.master||a.destination);o.start(s);o.stop(s+d+.03)}
+function noise(d,v=.05,dl=0,f=2000,q=1,type='bandpass'){const a=audio();if(!a)return;if(!noiseBuf){noiseBuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const ch=noiseBuf.getChannelData(0);for(let i=0;i<ch.length;i++)ch[i]=Math.random()*2-1}const s=a.currentTime+dl,src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=noiseBuf;fl.type=type;fl.frequency.value=f;fl.Q.value=q;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.master||a.destination);src.start(s);src.stop(s+d+.02)}
 const SND={
  select(){tone(660,.05,'triangle',.035)},
  grab(){tone(380,.09,'sine',.05,0,620);buzz(8)},
@@ -164,20 +203,27 @@ const SND={
  motorOn(){tone(70,.7,'sawtooth',.03,0,190);noise(.5,.012,0,400,.8,'lowpass')},
  motorOff(){tone(190,.5,'sawtooth',.02,0,60)},
  error(){tone(170,.16,'sawtooth',.05);tone(125,.18,'sawtooth',.04,.1);buzz([40,40,40])},
- short(){tone(92,.38,'sawtooth',.07);tone(62,.42,'square',.05,.06);noise(.3,.05,0,300,.5,'lowpass');buzz([80,40,80])},
- blow(){noise(.25,.12,0,3500,.7);tone(900,.2,'sawtooth',.04,0,100);buzz(60)},
- burn(){noise(.7,.06,0,6000,.6,'highpass');tone(1400,.5,'sawtooth',.025,0,200);buzz(60)},
+ short(){tone(92,.7,'sawtooth',.14);tone(62,.8,'square',.1,.06);noise(.6,.22,0,300,.5,'lowpass');noise(.45,.24,.05,4800,.6,'highpass');tone(46,.7,'sine',.2,.02,30);buzz([80,40,80,40,120])},
+ zap(){noise(.1,.2,0,5200,.7,'highpass');tone(2100,.05,'square',.05,0,400)},
+ fire(){noise(.4,.12,0,900,.6,'lowpass')},
+ blow(){noise(.5,.34,0,3000,.6);noise(.65,.22,0,260,.5,'lowpass');tone(900,.25,'sawtooth',.09,0,80);tone(70,.55,'sine',.2,0,30);buzz(90)},
+ burn(){noise(.9,.18,0,6000,.6,'highpass');noise(.6,.24,.02,500,.7,'lowpass');tone(1400,.6,'sawtooth',.06,0,160);tone(55,.5,'sine',.16,0,28);buzz(90)},
  repair(){tone(420,.05,'square',.03);tone(560,.05,'square',.03,.09);tone(780,.14,'sine',.05,.18);buzz([15,40,15])},
  success(){[523,659,784,1047].forEach((f,i)=>tone(f,.28,'sine',.05,i*.1));noise(.2,.02,.35,6000,1,'highpass');buzz([20,50,20,50,60])},
  panel(){noise(.12,.03,0,1500,.8,'lowpass');tone(400,.1,'sine',.02,0,700)},
  reset(){tone(700,.28,'sine',.035,0,250);noise(.15,.03,0,900,1)}
 };
 const play=(n,a)=>{try{SND[n]&&SND[n](a)}catch{}};
+/* sonidos continuos de los artefactos: zumbido del motor (sube con la velocidad) y pitido del zumbador */
+const loopSnd={buz:null,hum:null};
+function setBuzz(on){try{const a=on?audio():null;if(!a)on=false;if(on&&!loopSnd.buz){const o=a.createOscillator(),g=a.createGain();o.type='square';o.frequency.value=2600;g.gain.value=.03;o.connect(g).connect(a.master||a.destination);o.start();loopSnd.buz={o,g}}else if(!on&&loopSnd.buz){try{loopSnd.buz.o.stop()}catch{}loopSnd.buz=null}}catch{}}
+function setHum(level){try{const a=level>.07?audio():null;if(!a)level=0;if(level>.07){if(!loopSnd.hum){const o=a.createOscillator(),o2=a.createOscillator(),g=a.createGain();o.type='sawtooth';o2.type='triangle';g.gain.value=0;o.connect(g);o2.connect(g);g.connect(a.master||a.destination);o.start();o2.start();loopSnd.hum={o,o2,g}}const h=loopSnd.hum,t=a.currentTime;h.o.frequency.setTargetAtTime(60+200*Math.min(1.2,level),t,.15);h.o2.frequency.setTargetAtTime(120+400*Math.min(1.2,level),t,.15);h.g.gain.setTargetAtTime(.025+.05*Math.min(1,level),t,.1)}
+ else if(loopSnd.hum){const h=loopSnd.hum;loopSnd.hum=null;try{h.g.gain.setTargetAtTime(0,actx.currentTime,.1)}catch{}setTimeout(()=>{try{h.o.stop();h.o2.stop()}catch{}},500)}}catch{}}
 
 /* ---------- red y motor eléctrico ---------- */
 function solveLinear(A,b){const n=b.length;for(let i=0;i<n;i++){let p=i;for(let r=i+1;r<n;r++)if(Math.abs(A[r][i])>Math.abs(A[p][i]))p=r;[A[i],A[p]]=[A[p],A[i]];[b[i],b[p]]=[b[p],b[i]];const d=A[i][i]||1e-12;for(let r=i+1;r<n;r++){const f=A[r][i]/d;if(!f)continue;for(let c=i;c<n;c++)A[r][c]-=f*A[i][c];b[r]-=f*b[i]}}const x=new Array(n).fill(0);for(let i=n-1;i>=0;i--){let s=b[i];for(let c=i+1;c<n;c++)s-=A[i][c]*x[c];x[i]=s/(A[i][i]||1e-12)}return x}
 const VF=2,RS=10;
-const SRCP=SRC.t==='src'?SRC.id+'.L':SRC.id+'.p',SRCN=SRC.t==='src'?SRC.id+'.N':SRC.id+'.n',SRCPE=SRC.t==='src'?SRC.id+'.PE':null,SRCV=SRC.v;
+const SRCP=SRC.t==='src'?SRC.id+'.L':SRC.id+'.p',SRCN=SRC.t==='src'?SRC.id+'.N':SRC.id+'.n',SRCPE=SRC.t==='src'?SRC.id+'.PE':null;let SRCV=SRC.v;
 function swConductions(o){const out=[];sws.forEach(c=>{const s=(o.sw&&o.sw[c.id]!==undefined)?o.sw[c.id]:(o.allClosed&&c.t==='sw'?true:!!swState[c.id]);if(c.t==='sw'){if(s)out.push({id:c.id,a:c.id+'.a',b:c.id+'.b'})}else out.push({id:c.id,a:c.id+'.c',b:c.id+(s?'.b':'.a')})});return out}
 function tieEdges(){const out=[];sc.comps.filter(c=>c.t==='box').forEach(c=>c.rows.forEach(r=>{for(let i=1;i<r.t.length;i++)out.push({tie:true,a:c.id+'.'+r.t[0],b:c.id+'.'+r.t[i]})}));return out}
 const TIES=tieEdges();
@@ -188,10 +234,10 @@ function nets(lk,o={}){const par={};allT.forEach(t=>par[t]=t);const find=t=>par[
 function simulate(lk,o={}){
  const N0=nets(lk,o),find=N0.find,P=N0.roots.L,N=N0.roots.N,out={short:P===N,c:{},flows:lk.map(()=>0),ibat:0,nets:N0};
  sc.comps.forEach(c=>out.c[c.id]={v:0,i:0,p:0,level:0});out.c[SRC.id].v=SRCV;
- if(out.short)return out;
+ if(out.short){out.pot=t=>({live:find(t)===P,v:SRCV,short:true});return out}
  const dead=c=>!o.ignoreBroken&&!!broken[c.id];
  const nl=[...new Set(allT.map(find))].filter(n=>n!==P&&n!==N),idx=new Map(nl.map((n,i)=>[n,i])),n=nl.length;
- const els=[];sc.comps.forEach(c=>{if(c.t==='lamp'||c.t==='res')els.push({c,a:c.id+'.a',b:c.id+'.b',g:1/c.r,open:dead(c)});else if(c.t==='fuse')els.push({c,a:c.id+'.a',b:c.id+'.b',g:20,open:dead(c)});else if(c.t==='led')els.push({c,a:c.id+'.a',b:c.id+'.k',led:true,on:false,open:dead(c)});else if(c.t==='motor'){const pt=o.plugTo!==undefined?o.plugTo:plugTo;if(pt)els.push({c,a:pt+'.L',b:pt+'.N',g:1/c.r,open:false})}});
+ const els=[];sc.comps.forEach(c=>{if(c.t==='lamp'||c.t==='res'||c.t==='dcm'||c.t==='buz'||c.t==='cal')els.push({c,a:c.id+'.a',b:c.id+'.b',g:1/c.r,open:dead(c)});else if(c.t==='fuse')els.push({c,a:c.id+'.a',b:c.id+'.b',g:20,open:dead(c)});else if(c.t==='led')els.push({c,a:c.id+'.a',b:c.id+'.k',led:true,on:false,open:dead(c)});else if(c.t==='motor'){const pt=o.plugTo!==undefined?o.plugTo:plugTo;if(pt)els.push({c,a:pt+'.L',b:pt+'.N',g:1/c.r,open:false})}});
  let V=[];const nv=net=>net===P?SRCV:net===N?0:V[idx.get(net)];
  for(let it=0;it<14;it++){
   const A=Array.from({length:n},()=>new Array(n).fill(0)),bb=new Array(n).fill(0);for(let k=0;k<n;k++)A[k][k]+=1e-9;
@@ -204,9 +250,18 @@ function simulate(lk,o={}){
  const inj={};allT.forEach(t=>inj[t]=0);
  els.forEach(e=>{const c=e.c,va=nv(find(e.a)),vb=nv(find(e.b)),v=va-vb;let i=0;if(!e.open){i=e.led?(e.on?Math.max(0,(v-VF)/RS):0):v*e.g}inj[e.a]+=i;inj[e.b]-=i;
   let level=0;if(c.t==='lamp')level=Math.min(1,(v*i)/(c.vr*c.vr/c.r));else if(c.t==='led')level=Math.min(1,i/.015);else if(c.t==='motor')level=Math.min(1,(v*i)/(c.vr*c.vr/c.r));
-  out.c[c.id]={v,i,p:v*i,level}});
+  else if(c.t==='dcm')level=Math.min(1.25,Math.abs(v)/c.vr);
+  else if(c.t==='buz')level=(v>=c.vr*.6&&v<=c.vr*1.6)?1:0;
+  else if(c.t==='cal')level=Math.min(1.25,(v*i)/(c.vr*c.vr/c.r));
+  out.c[c.id]={v,i,p:v*i,level,dir:v>=0?1:-1}});
  let ibat=0;els.forEach(e=>{const na=find(e.a),nb=find(e.b),i=out.c[e.c.id].i;if(na===P&&nb!==P)ibat+=i;if(nb===P&&na!==P)ibat-=i});
  out.ibat=ibat;out.c[SRC.id]={v:SRCV,i:ibat,p:SRCV*ibat,level:0};inj[SRCP]-=ibat;inj[SRCN]+=ibat;
+ /* potencial de cada red: "energizada" = unida al + o al − de la fuente por cables, llaves cerradas o componentes que conducen (aunque no circule corriente) */
+ {const live=new Set([P,N]),adj=new Map(),lk2=(a,b)=>{if(!adj.has(a))adj.set(a,[]);if(!adj.has(b))adj.set(b,[]);adj.get(a).push(b);adj.get(b).push(a)};
+  els.forEach(e=>{if(e.open||(e.led&&!e.on))return;lk2(find(e.a),find(e.b))});
+  const q=[P,N];while(q.length){const n=q.pop();(adj.get(n)||[]).forEach(m=>{if(!live.has(m)){live.add(m);q.push(m)}})}
+  out.pot=t=>{const n=find(t),lv=live.has(n);return{live:lv,v:lv?nv(n):0}}}
+ sc.comps.filter(c=>c.t==='led').forEach(c=>{const va=nv(find(c.id+'.a')),vb=nv(find(c.id+'.k'));out.c[c.id].rev=!dead(c)&&va<vb-.4});
  sc.comps.filter(c=>c.t==='toma').forEach(c=>{out.c[c.id].v=nv(find(c.id+'.L'))-nv(find(c.id+'.N'));out.c[c.id].i=Math.abs(motor&&(o.plugTo!==undefined?o.plugTo:plugTo)===c.id?out.c[motor.id].i:0)});
  const adj={};allT.forEach(t=>adj[t]=[]);const edges=[];lk.forEach((l,i)=>edges.push({a:l.a,b:l.b,link:i}));TIES.forEach(e=>edges.push({a:e.a,b:e.b,tie:true}));N0.conds.forEach(e=>edges.push({a:e.a,b:e.b,sw:e.id}));
  edges.forEach((e,k)=>{adj[e.a].push([e.b,k]);adj[e.b].push([e.a,k])});
@@ -217,18 +272,82 @@ function simulate(lk,o={}){
  sws.forEach(c=>{const e=edges.findIndex(x=>x.sw===c.id);let va,vb;if(c.t==='sw'){va=nv(find(c.id+'.a'));vb=nv(find(c.id+'.b'))}else{va=nv(find(c.id+'.c'));vb=0}out.c[c.id]={v:c.t==='sw'?va-vb:0,i:e>=0?Math.abs(fe[e]):0,p:0,level:0}});
  return out;
 }
-function settle(){let sim,events=[];for(let k=0;k<6;k++){sim=simulate(links);let ch=false;sc.comps.forEach(c=>{if(broken[c.id])return;if(c.t==='fuse'&&Math.abs(sim.c[c.id].i)>c.amp){broken[c.id]=true;ch=true;events.push({id:c.id,t:'fuse'})}if(c.t==='led'&&sim.c[c.id].i>.03){broken[c.id]=true;ch=true;events.push({id:c.id,t:'led'})}});if(!ch)break}return{sim,events}}
+const LIM={lamp:1.25,dcm:1.4,cal:1.4,buz:1.6};   /* hasta cuántas veces su tensión nominal aguanta cada artefacto */
+function settle(){let sim,events=[];for(let k=0;k<6;k++){sim=simulate(links);let ch=false;sc.comps.forEach(c=>{if(broken[c.id])return;if(c.t==='fuse'&&Math.abs(sim.c[c.id].i)>c.amp){broken[c.id]=true;ch=true;events.push({id:c.id,t:'fuse',i:Math.abs(sim.c[c.id].i)})}if(c.t==='led'&&sim.c[c.id].i>.03){broken[c.id]=true;ch=true;events.push({id:c.id,t:'led',i:sim.c[c.id].i})}
+ if(c.vr&&LIM[c.t]&&Math.abs(sim.c[c.id].v)>c.vr*(c.tol||LIM[c.t])&&!sc.fault){broken[c.id]=true;ch=true;events.push({id:c.id,t:c.t,v:Math.abs(sim.c[c.id].v),vr:c.vr})}});if(!ch)break}return{sim,events}}
 const sig=s=>sc.comps.filter(c=>!['bat','src','motor'].includes(c.t)).map(c=>{const r=s.c[c.id];return c.t+'|'+(c.r||c.amp||0)+'|'+r.v.toFixed(2)+'|'+r.i.toFixed(3)}).sort().join(';');
 const refLinks=sc.sol.map(p=>({a:p[0],b:p[1]}));
-const refSig=sc.check||sc.fault?null:sig(simulate(refLinks,{allClosed:true,ignoreBroken:true}));
+const refSig=sc.check||sc.fault||sc.free?null:sig(simulate(refLinks,{allClosed:true,ignoreBroken:true}));
 function wrongColor(){return links.some(l=>{const r=[TM[l.a].role,TM[l.b].role];if(l.color==='brown')return r.some(x=>x==='N'||x==='PE');if(l.color==='blue')return r.some(x=>x==='L'||x==='PE');if(l.color==='earth')return r.some(x=>x!=='PE');return false})}
 function ctx(sim){return{sim,links,broken,swState,plugTo,allClosed:sws.every(c=>swState[c.id]),fmtI:fI,nets:o=>nets(links,o||{}),simWith:o=>simulate(links,o),wrongColor,fR,fV}}
 
+/* ---------- cartel "¿Por qué pasó?" y estadísticas de la práctica ---------- */
+const EXAM=params.get('examen')==='1',FREE=!!sc.free;
+const stat={shorts:0,burns:0,tShorts:0,tBurns:0,hint:false,sol:false,swaps:0,t0:Date.now()};const T00=Date.now();
+const whyEl=$('#why');let whyKind=null;const pendEv=[];
+const WHY={
+ short:()=>({ico:'⚡',tit:'¡Cortocircuito!',what:AC?'Un cable unió directamente la fase con el neutro.':'Un cable unió directamente el polo + con el polo − de la batería.',why:'La corriente elige siempre el camino más fácil. Sin lámpara ni resistor que la frene, se vuelve enorme (I = V ÷ R, con R casi cero): los cables se calientan, saltan chispas y la batería o el fusible sufren.',fix:'Quitá el último cable (botón ↶) y hacé pasar la corriente por una lámpara o un resistor.'}),
+ fuse:o=>({ico:'🔥',tit:'Se fundió el fusible',what:'Por el circuito pasaron '+fI(o.i)+' y este fusible aguanta como máximo '+o.amp+' A.',why:'El hilo del fusible es el punto débil a propósito: se derrite y corta el circuito antes de que se calienten los cables o empiece un incendio. ¡Hizo su trabajo!',fix:'Reemplazalo con 🔧 y buscá qué provocó el exceso de corriente: ¿falta una lámpara o un resistor que la limite?'}),
+ led:o=>({ico:'💥',tit:'Se quemó el LED',what:'Pasaron '+fI(o.i)+' y un LED aguanta unos 30 mA como máximo.',why:'Un LED casi no frena la corriente: solo «gasta» unos 2 V y deja pasar todo lo que le manden. Por eso necesita un resistor en serie que la limite.',fix:'Reemplazalo con 🔧 y poné un resistor en serie. Cálculo: R = ('+SRCV+' V − 2 V) ÷ 0,015 A ≈ '+fR((SRCV-2)/.015)+'.'}),
+ lamp:o=>{
+  const cons=o.left===0?'Era la única lámpara: sin filamento no hay camino para la corriente y el circuito queda abierto.'
+   :o.lit===o.left?'Esto pasa porque están en PARALELO: cada lámpara tiene su propio camino hacia la batería, así que al abrirse una rama las demás siguen recibiendo la tensión completa y siguen encendidas.'
+   :o.lit===0?'Esto pasa porque están en SERIE: hay un solo camino y el filamento roto lo corta, ¡se apagan TODAS las lámparas! Es la gran desventaja del circuito en serie.'
+   :'Es un circuito MIXTO: se apagaron las lámparas que dependían del mismo camino y siguen encendidas las de las otras ramas.';
+  return{ico:'💥',tit:'¡Explotó la lámpara '+o.id+'!',what:o.manual?'Quemaste la lámpara '+o.id+': el filamento se cortó y el vidrio estalló.':'La lámpara '+o.id+' recibió '+fV(o.v)+' y está hecha para '+o.vr+' V: el filamento se fundió y el foco explotó.',why:cons,fix:o.manual?'Reemplazala con 🔧 y probá lo mismo en el otro tipo de circuito (serie ↔ paralelo) para comparar.':'Reemplazala con 🔧 y usá lámparas de la tensión correcta: una de '+o.vr+' V no se puede conectar a más de '+o.vr+' V.'}},
+ part:o=>{const nom={dcm:'el motor',buz:'el zumbador',cal:'el calefactor'}[o.type]||'el artefacto',Nom=nom[0].toUpperCase()+nom.slice(1);
+  const cons=o.left===0?'Era el único artefacto: sin él no hay camino para la corriente y el circuito queda abierto.':o.lit===o.left?'Esto pasa porque están en PARALELO: cada artefacto tiene su propio camino hacia la batería, así que los demás siguen funcionando.':o.lit===0?'Esto pasa porque están en SERIE: hay un solo camino y se cortó, ¡se apagan TODOS los artefactos!':'Es un circuito MIXTO: dejaron de funcionar los que dependían del mismo camino y siguen los de las otras ramas.';
+  return{ico:'💥',tit:'¡Se quemó '+nom+' '+o.id+'!',what:o.manual?'Quemaste '+nom+' '+o.id+': el bobinado se recalentó y se cortó.':Nom+' '+o.id+' recibió '+fV(o.v)+' y está hecho para '+o.vr+' V: se recalentó y se quemó (humo y olor a quemado).',why:cons,fix:'Reemplazalo con 🔧 y conectalo a una tensión que no supere los '+o.vr+' V nominales.'}},
+ rev:()=>({ico:'🔄',tit:'El LED está al revés',what:'El LED no enciende porque tiene las patas conectadas invertidas.',why:'Un LED es un diodo: deja pasar la corriente en un solo sentido, del ánodo (+, pata larga) al cátodo (−, pata corta con el lado plano). Al revés se comporta como una llave abierta.',fix:'Conectá el + de la batería al ánodo (A) y el − al cátodo (K): guiate por los signos + y − que brillan junto al LED.'})
+};
+let whyTm=null,whyTm2=null;function showWhy(k,o){if(EXAM)return;clearTimeout(whyTm);clearTimeout(whyTm2);whyEl.classList.add("mini");if(k==="fuse"||k==="led"||k==="lamp")whyTm2=setTimeout(()=>{if(whyEl.classList.contains("mini"))hideWhy()},32000);const w=WHY[k](o||{});whyKind=k;$('#whyIco').textContent=w.ico;$('#whyTit').textContent=w.tit;$('#whyWhat').textContent=w.what;$('#whyWhy').textContent=w.why;$('#whyFix').textContent=w.fix;whyEl.hidden=false;whyEl.style.animation='none';void whyEl.offsetWidth;whyEl.style.animation=''}
+function hideWhy(){clearTimeout(whyTm);clearTimeout(whyTm2);whyEl.hidden=true;whyKind=null}
+$('#whyOk').onclick=hideWhy;whyEl.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;e.preventDefault();clearTimeout(whyTm);clearTimeout(whyTm2);if(whyEl.classList.contains("mini")){whyEl.classList.remove("mini");whyTm=setTimeout(()=>{if(!whyEl.hidden)whyEl.classList.add("mini")},22000)}else whyEl.classList.add("mini")});
+
+/* ---------- pregunta de opción múltiple (modo examen / niveles) ---------- */
+let quizSel=null,quizLocked=false;
+function buildQuiz(){const q=sc.quiz,box=$('#quiz');if(!q){box.hidden=true;return}box.hidden=false;$('#qq').textContent=q.q;const o=$('#qo');o.innerHTML='';
+ q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=t;b.onclick=()=>{if(quizLocked)return;audio();quizSel=i;play(EXAM||i===q.ans?'select':'error');paintQuiz();update()};o.append(b)})}
+function paintQuiz(){if(!sc.quiz)return;document.querySelectorAll('#qo .qopt').forEach((b,i)=>{b.className='qopt'+(quizSel===i?' sel':'')+(!EXAM&&quizSel===i?(i===sc.quiz.ans?' good':' bad'):'')})}
+
+/* ---------- colores de los cables en corriente continua ----------
+   La polaridad manda: el cable unido al polo + (y todo lo que sigue por llaves y fusibles hasta la primera carga) va ROJO;
+   el que vuelve al polo − va CELESTE. Los cables entre cargas (lámpara-lámpara) pueden ser de cualquier color. */
+function colorNets(lk){const par={};allT.forEach(t=>par[t]=t);const find=t=>par[t]===t?t:(par[t]=find(par[t]));const join=(a,b)=>{a=find(a);b=find(b);if(a!==b)par[b]=a};
+ lk.forEach(l=>join(l.a,l.b));TIES.forEach(e=>join(e.a,e.b));sc.comps.forEach(c=>{if(c.t==='sw'||(c.t==='fuse'&&!broken[c.id]))join(c.id+'.a',c.id+'.b')});
+ return{P:find(SRCP),N:find(SRCN),find}}
+function colorIssues(){if(AC||sc.quiz||sc.fault)return[];const cn=colorNets(links);if(cn.P===cn.N)return[];const bad=[];
+ links.forEach((l,i)=>{if(l.locked)return;const n=cn.find(l.a),want=n===cn.P?'red':n===cn.N?'blue':null;if(want&&l.color!==want)bad.push({i,want})});return bad}
+const COLOR_MSG='Los colores importan: el cable del polo + (y lo que sigue por llaves y fusibles) va ROJO y el que vuelve al polo − va CELESTE. Los cables marcados con ⚠ tienen el color equivocado.';
+let lastBad=[];
+/* color correcto de un cable de la solución (para «Ver solución» y las pruebas) */
+let REFPOT=null;
+function colorFor(a,b){if(AC)return'brown';const cn=colorNets(refLinks),n=cn.find(a);if(n===cn.P)return'red';if(n===cn.N)return'blue';
+ if(!REFPOT)REFPOT=simulate(refLinks,{allClosed:true,ignoreBroken:true});const p=REFPOT.pot(a);return p&&p.live&&p.v>=SRCV/2?'red':'blue'}
+
 /* ---------- diagnóstico ---------- */
 function diagnose(sim){
+ const d=diagnose0(sim);
+ if(d.done&&!AC&&!sc.fault&&!sc.quiz){const bad=colorIssues();if(bad.length)return{cls:'',head:'Casi: revisá los colores',text:COLOR_MSG,status:'ready'}}
+ return d}
+function diagnose0(sim){
  const allClosed=sws.every(c=>swState[c.id]),brokenList=sc.comps.filter(c=>broken[c.id]);
  const lit=sc.comps.filter(c=>c.t==='lamp'&&sim.c[c.id].level>.01).length;
  const rt=sim.ibat>1e-6?SRCV/sim.ibat:null,tot=rt&&!AC?' Resistencia equivalente Rt = '+fR(rt)+' · corriente total '+fI(sim.ibat)+'.':'';
+ if(sc.quiz){
+  if(quizSel===null)return{cls:'',head:'Pregunta',text:sc.quiz.q,status:''};
+  if(EXAM)return{cls:'',head:'Respuesta elegida',text:'Tocá «Entregar ✔» para confirmar.',status:'ready'};
+  if(quizSel===sc.quiz.ans)return{cls:'ok',head:'¡Correcto!',text:sc.explain,done:true,status:'on'};
+  return{cls:'error',head:'Todavía no',text:'Probá otra opción: medí con el multímetro tocando los componentes.',status:'error'}}
+ if(sc.free){
+  if(sim.short)return{cls:'error',head:'CORTOCIRCUITO',text:'Un cable une directamente el + con el − sin nada en el medio. Quitá el último cable (↶).',status:'error'};
+  if(brokenList.length){const b=brokenList[0];return{cls:'error',head:b.t==='fuse'?'Fusible fundido':b.t==='lamp'?'Lámpara quemada':'Componente quemado',text:b.t==='lamp'?'El filamento de '+b.id+' se cortó. Mirá qué les pasó a las otras lámparas y reemplazala con 🔧.':'Se superó el máximo de '+(b.t==='fuse'?b.amp+' A':'30 mA')+'. Reemplazalo con 🔧 y corregí la causa.',status:'error'}}
+  const others=sc.comps.length-1;
+  if(!links.length)return{cls:'',head:others?'Conectá los componentes':'Agregá componentes',text:others?'Tocá un borne y después otro (o arrastrá) para unirlos con un cable. La corriente sale del + y tiene que volver al −.':'Tocá un componente de la paleta (a la izquierda) para ponerlo en la mesa.',status:''};
+  if(sim.ibat>1e-6){const n=sc.comps.filter(c=>['lamp','led','dcm','buz','cal'].includes(c.t)&&sim.c[c.id].level>.01&&!broken[c.id]).length,cb=colorIssues().length;
+   return{cls:cb?'':'ok',head:cb?'Funciona, pero revisá los colores':'Circuito en funcionamiento',text:(n?n+(n>1?' componentes encendidos.':' componente encendido.'):'Circula corriente.')+tot+(cb?' ⚠ El cable del + va ROJO y el que vuelve al − va CELESTE: corregí los cables marcados.':''),status:cb?'ready':'on'}}
+  if(sws.length&&!allClosed)return{cls:'',head:'Llave abierta',text:'Cerrá '+(sws.length>1?'las llaves':'la llave')+' para que circule la corriente. Igual los cables unidos al + y al − ya están energizados (se iluminan).',status:'ready'};
+  return{cls:'',head:'Circuito abierto',text:'No hay un camino cerrado desde el + hasta el −. Revisá que cada borne esté conectado y que la corriente pueda volver a la batería.',status:'ready'}}
  if(sc.fault){
   if(sim.short)return{cls:'error',head:'CORTOCIRCUITO',text:'Quitá el último cable.',status:'error'};
   if(fixed&&allClosed&&sim.ibat>1e-4)return{cls:'ok',head:'Falla reparada',text:'Reemplazaste '+faultId+' y el circuito funciona.'+tot+' Intentos fallidos: '+attempts+'.',done:true,status:'on'};
@@ -237,7 +356,7 @@ function diagnose(sim){
  }
  if(AC){if(!links.length)return{cls:'',head:'Consigna',text:sc.goal,status:''};const r=sc.check(ctx(sim));return Object.assign({cls:'',status:r.done?'on':r.cls==='error'?'error':'ready'},r)}
  if(sim.short)return{cls:'error',head:'CORTOCIRCUITO',text:'Un cable o una llave une directamente + con − sin resistencia. En la realidad el conductor se calentaría y el fusible o la batería sufrirían. Quitá el último cable.',status:'error'};
- if(brokenList.length){const r=sc.check&&sc.check(ctx(sim));if(r)return Object.assign({status:'error'},r);return{cls:'error',head:brokenList[0].t==='fuse'?'Fusible fundido':'Componente quemado',text:'Se superó el valor máximo de '+brokenList[0].name+'. Reemplazalo y corregí la causa de la sobrecarga.',status:'error'}}
+ if(brokenList.length){const r=sc.check&&sc.check(ctx(sim));if(r)return Object.assign({status:'error'},r);if(brokenList[0].t==='lamp')return{cls:'error',head:'Lámpara quemada',text:'El filamento de '+brokenList[0].id+' se cortó. Mirá qué les pasó a las otras lámparas y reemplazala con 🔧.',status:'error'};return{cls:'error',head:brokenList[0].t==='fuse'?'Fusible fundido':'Componente quemado',text:'Se superó el valor máximo de '+brokenList[0].name+'. Reemplazalo y corregí la causa de la sobrecarga.',status:'error'}}
  if(sc.check){const r=links.length&&sc.check(ctx(sim));if(r)return Object.assign({status:r.done?'on':r.cls==='error'?'error':'ready'},r)}
  else{
   const u=simulate(links,{allClosed:true,ignoreBroken:true});
@@ -252,18 +371,22 @@ function diagnose(sim){
 /* ---------- dibujo ---------- */
 const esc=s=>String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
 function wirePath(a,b,rev){const A=tp(a),B=tp(b),d=Math.hypot(A.x-B.x,A.y-B.y),k=Math.max(40,Math.min(170,d*.4));let p=[A,{x:A.x+A.dx*k,y:A.y+A.dy*k},{x:B.x+B.dx*k,y:B.y+B.dy*k},B];if(rev)p.reverse();return'M'+p[0].x.toFixed(1)+' '+p[0].y.toFixed(1)+' C'+p[1].x.toFixed(1)+' '+p[1].y.toFixed(1)+' '+p[2].x.toFixed(1)+' '+p[2].y.toFixed(1)+' '+p[3].x.toFixed(1)+' '+p[3].y.toFixed(1)}
+function wireMid(a,b){const A=tp(a),B=tp(b),d=Math.hypot(A.x-B.x,A.y-B.y),k=Math.max(40,Math.min(170,d*.4)),c1={x:A.x+A.dx*k,y:A.y+A.dy*k},c2={x:B.x+B.dx*k,y:B.y+B.dy*k};return{x:(A.x+3*c1.x+3*c2.x+B.x)/8,y:(A.y+3*c1.y+3*c2.y+B.y)/8}}
 const lead=(a,b)=>`<line x1="${a}" y1="0" x2="${b}" y2="0" class="ld" stroke-width="5" stroke-linecap="round"/>`;
 function tomaPos(c){return{x:c.fx*W+8,y:c.fy*H}}
 function compBody(c,r){
  const bk=!!broken[c.id];
- if(c.t==='bat')return`<g transform="rotate(-90)">${lead(-62,-50)}${lead(50,62)}<rect x="-50" y="-26" width="100" height="52" rx="9" fill="url(#batg)" stroke="#c7d0db55" stroke-width="2"/><rect x="-50" y="-26" width="32" height="52" rx="9" fill="#4db5ee33"/><rect x="18" y="-26" width="32" height="52" rx="9" fill="#ff6b6b33"/></g><text class="tx" y="6" style="font-size:19px;fill:#fff">${c.v} V</text><text x="0" y="-33" fill="#ff8d8d" style="font:800 20px system-ui;text-anchor:middle">+</text><text x="0" y="45" fill="#79d9f1" style="font:800 20px system-ui;text-anchor:middle">−</text>`;
+ if(c.t==='bat')return CRISTAL.bat(c,r);
  if(c.t==='src')return`${lead(40,62)}<g transform="translate(0 0)"><rect x="-56" y="-84" width="104" height="168" rx="12" fill="url(#boxg)" stroke="#c7d0db55" stroke-width="2"/><text class="tx" x="-4" y="-22" style="font-size:20px;fill:#fff">220 V~</text><text class="tx" x="-4" y="2" style="font-size:12px;fill:#c5d3e3">50 Hz</text><text class="tx" x="-4" y="28" style="font-size:12px;fill:#c5d3e3">RED · TABLERO</text></g>`;
- if(c.t==='sw'){const on=!!swState[c.id];return`${lead(-62,-32)}${lead(32,62)}<circle cx="-32" cy="0" r="6" class="ct"/><circle cx="32" cy="0" r="6" class="ct"/><line x1="-32" y1="0" x2="${on?30:22}" y2="${on?0:-30}" stroke="${on?'#5ce0a0':'#b7c0cd'}" stroke-width="7" stroke-linecap="round"/><rect data-sw="1" x="-48" y="-44" width="96" height="64" fill="transparent" style="cursor:pointer"/><text class="tx" y="-48" style="font-size:12px;fill:var(--mu)">${on?'CERRADA':'ABIERTA'}</text>`}
- if(c.t==='sw3'){const on=!!swState[c.id];return`<g transform="scale(${c.flip?-1:1} 1)">${lead(-62,-34)}<line x1="32" y1="-28" x2="62" y2="-28" class="ld" stroke-width="5" stroke-linecap="round"/><line x1="32" y1="28" x2="62" y2="28" class="ld" stroke-width="5" stroke-linecap="round"/><circle cx="-32" cy="0" r="6" class="ct"/><circle cx="32" cy="-28" r="6" class="ct"/><circle cx="32" cy="28" r="6" class="ct"/><line x1="-32" y1="0" x2="28" y2="${on?26:-26}" stroke="#5ce0a0" stroke-width="7" stroke-linecap="round"/></g><rect data-sw="1" x="-48" y="-48" width="96" height="96" fill="transparent" style="cursor:pointer"/><text class="tx" y="-56" style="font-size:12px;fill:var(--mu)">CONMUTADOR · POS. ${on?2:1}</text>`}
- if(c.t==='lamp'){const lv=r?Math.sqrt(r.level):0,lit=r&&r.level>.01&&!bk;return`${lead(-62,-14)}${lead(14,62)}${lit?`<circle cx="0" cy="-18" r="${28+40*lv}" fill="url(#glow)" opacity="${.35+.65*lv}"/>`:''}<rect x="-15" y="2" width="30" height="20" rx="3" fill="#6b7788"/><path d="M-15 8h30M-15 14h30" stroke="#3b4656" stroke-width="3"/><circle cx="0" cy="-16" r="26" fill="${lit?'#ffe98a':'#26364b'}" fill-opacity="${lit?(.55+.45*lv):1}" stroke="${lit?'#fff0a1':'#aab6c5'}" stroke-width="3.5"/><path d="M-9 4 L-9 -8 Q0 -22 9 -8 L9 4" fill="none" stroke="${lit?'#fff':'#7e8da1'}" stroke-width="2.5"/>`}
- if(c.t==='res'){const[b1,b2,m]=bands(c.r);const bb=(x,col)=>`<rect x="${x}" y="-13" width="7" height="26" fill="${col}"/>`;return`${lead(-62,-36)}${lead(36,62)}<rect x="-36" y="-13" width="72" height="26" rx="9" fill="#d8c9a3" stroke="#00000044"/>${bb(-22,DIG[b1])}${bb(-9,DIG[b2])}${bb(4,DIG[Math.max(0,m)])}${bb(22,'#d4af37')}`}
- if(c.t==='fuse')return`${lead(-62,-34)}${lead(34,62)}<rect x="-34" y="-13" width="68" height="26" rx="6" fill="#cfe9f544" stroke="#cfe9f5" stroke-width="2.5"/><rect x="-40" y="-13" width="9" height="26" rx="2" fill="#b9a36a"/><rect x="31" y="-13" width="9" height="26" rx="2" fill="#b9a36a"/>${bk?`<path d="M-31 0 L-9 0 M9 0 L31 0" stroke="#999" stroke-width="2.5"/><circle cx="0" cy="0" r="9" fill="#2a1d18" opacity=".7"/>`:`<path d="M-31 0 L31 0" stroke="${r&&Math.abs(r.i)>c.amp*.8?'#ff8a4d':'#8d9bab'}" stroke-width="2.5"/>`}`;
- if(c.t==='led'){const lv=r?r.level:0,on=lv>.02&&!bk;return`${lead(-62,-16)}${lead(20,62)}${on?`<circle cx="0" cy="0" r="${34+26*lv}" fill="url(#glowR)" opacity="${.45+.55*lv}"/>`:''}<path d="M-16 -22 L-16 22 L18 0 Z" fill="${on?'#ff6b6b':bk?'#2b2020':'#5a3a3a'}" stroke="#e8c0c0" stroke-width="3" stroke-linejoin="round"/><line x1="19" y1="-22" x2="19" y2="22" stroke="#e8c0c0" stroke-width="4"/><path d="M6 -26 l10 -10 m-6 0 h6 v6 M-4 -26 l10 -10 m-6 0 h6 v6" stroke="${on?'#ffd0d0':'#8d7777'}" stroke-width="2" fill="none"/>`}
+ if(c.t==='sw'){const on=!!swState[c.id];return CRISTAL.sw(c,on,r)+`<rect data-sw="1" x="-52" y="-54" width="104" height="80" fill="transparent" style="cursor:pointer"/><text class="tx" y="-56" style="font-size:12px;fill:var(--mu)">${on?'CERRADA':'ABIERTA'}</text>`}
+ if(c.t==='sw3'){const on=!!swState[c.id];return `<g transform="scale(${c.flip?-1:1} 1)">${CRISTAL.sw3(c,on,r)}</g><rect data-sw="1" x="-52" y="-52" width="104" height="104" fill="transparent" style="cursor:pointer"/><text class="tx" y="-54" style="font-size:12px;fill:var(--mu)">CONMUTADOR · POS. ${on?2:1}</text>`}
+ if(c.t==='lamp')return CRISTAL.lamp(c,r,bk);
+ if(c.t==='dcm')return CRISTAL.dcm(c,r,bk);
+ if(c.t==='buz')return CRISTAL.buz(c,r,bk);
+ if(c.t==='cal')return CRISTAL.cal(c,r,bk);
+ if(c.t==='res'){const[b1,b2,m]=bands(c.r);return CRISTAL.res(c,r,[DIG[b1],DIG[b2],DIG[Math.max(0,m)]])}
+ if(c.t==='fuse')return CRISTAL.fuse(c,r,bk);
+ if(c.t==='led')return CRISTAL.led(c,r,bk);
  if(c.t==='toma'){const pl=plugTo===c.id;return`<line x1="-62" y1="-54" x2="-46" y2="-54" class="ld" stroke-width="5"/><line x1="-62" y1="0" x2="-46" y2="0" class="ld" stroke-width="5"/><line x1="-62" y1="54" x2="-46" y2="54" class="ld" stroke-width="5"/><rect x="-46" y="-76" width="108" height="152" rx="14" fill="#e6e9ee" stroke="#9aa5b3" stroke-width="3"/><circle cx="8" cy="0" r="40" fill="#d3d8df" stroke="#aab3bf" stroke-width="2"/><g fill="${pl?'#6c7a8a':'#1b2330'}"><rect x="-12" y="-20" width="8" height="28" rx="2" transform="rotate(-18 -8 -6)"/><rect x="20" y="-20" width="8" height="28" rx="2" transform="rotate(18 24 -6)"/><circle cx="8" cy="22" r="5.5" fill="${pl?'#37c870':'#1b2330'}"/></g>`}
  if(c.t==='rod')return`<line x1="0" y1="-52" x2="0" y2="-30" class="ld" stroke-width="5" stroke-linecap="round"/><rect x="-6" y="-30" width="12" height="78" rx="3" fill="#b5651d"/><path d="M-6 48 L0 62 L6 48 Z" fill="#8a4a14"/><rect x="-26" y="-14" width="52" height="10" rx="3" fill="#37c870"/><path d="M-40 -2 h80" stroke="#5a6a7a" stroke-width="2" stroke-dasharray="5 4"/><path d="M-34 8 l-8 10 M-20 8 l-8 10 M-6 8 l-8 10 M8 8 l-8 10 M22 8 l-8 10 M36 8 l-8 10" stroke="#5a6a7a" stroke-width="2"/>`;
  if(c.t==='box'){const w=c.w||280,h=(c.rows.length)*58+54;return`<rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" rx="26" fill="url(#boxg)" stroke="#c7d0db66" stroke-width="3"/>${c.rows.map((row,ri)=>`<text class="tl" x="${-w/2+22}" y="${(ri-(c.rows.length-1)/2)*58+4}">${row.label}</text><line x1="${-(row.t.length-1)*31-18}" y1="${(ri-(c.rows.length-1)/2)*58}" x2="${(row.t.length-1)*31+18}" y2="${(ri-(c.rows.length-1)/2)*58}" stroke="${row.role==='L'?'#b5651d':row.role==='N'?'#4db5ee':'#37c870'}" stroke-width="12" opacity=".35" stroke-linecap="round"/>`).join('')}`}
@@ -273,25 +396,34 @@ function compBody(c,r){
 function labelOf(c,r){
  if(c.t==='bat')return c.name;if(c.t==='src')return'Alimentación';if(c.t==='toma')return c.name||'Tomacorriente';if(c.t==='rod')return'Jabalina';if(c.t==='box')return c.name||'Caja';if(c.t==='motor')return'';
  if(sc.fault&&(c.t==='lamp'||c.t==='res'))return c.id+(c.t==='res'?' · '+fR(c.r):'');
+
+ if(c.t==='lamp'&&c.w)return c.id+' · '+c.vr+' V · '+c.w+' W';
+ if(c.t==='dcm'||c.t==='buz'||c.t==='cal')return c.name+' · '+c.vr+' V';
  if(c.t==='lamp'||c.t==='res')return c.id+' · '+fR(c.r);if(c.t==='fuse')return'Fusible '+c.amp+' A';if(c.t==='led')return'LED';return c.name;
 }
+/* tensión de un borne para iluminar: solo si está unido a un polo y tiene cable (o es de la fuente) */
+const potOf=id=>{if(!lastSim||!lastSim.pot)return null;const p=lastSim.pot(id);return p.live?{live:true,f:SRCV?Math.max(0,Math.min(1,p.v/SRCV)):0,short:!!p.short,v:p.v}:null};
+const hasLink=id=>links.some(l=>l.a===id||l.b===id);
+function enOf(c){const o={};c.defs.forEach(d=>{const id=c.id+'.'+d.k;if(c.t==='bat'||hasLink(id)){const p=potOf(id);if(p)o[d.k]=p}});return o}
 function render(){
  let w='';
- links.forEach((l,i)=>{const fl=lastSim?lastSim.flows[i]:0,d=wirePath(l.a,l.b,false),sel=selWire===i;w+=`<path class="wshadow" d="${d}"/><path class="wire${sel?' sel':''}" d="${d}" stroke="${wcol(l.color)}"/>`;if(l.color==='earth')w+=`<path class="wstripe" d="${d}"/>`;if(Math.abs(fl)>1e-4)w+=`<path class="flow" d="${wirePath(l.a,l.b,fl<0)}"/>`;w+=`<path data-w="${i}" d="${d}" fill="none" stroke="transparent" stroke-width="34" pointer-events="stroke"/>`});
+ links.forEach((l,i)=>{const fl=lastSim?lastSim.flows[i]:0,d=wirePath(l.a,l.b,false),sel=selWire===i;w+=CRISTAL.wire(d,wirePath(l.a,l.b,fl>=0),wcol(l.color),Math.abs(fl),sel,l.color==='earth'?`<path class="wstripe" d="${d}"/>`:'',potOf(l.a));w+=`<path data-w="${i}" d="${d}" fill="none" stroke="transparent" stroke-width="34" pointer-events="stroke"/>`;
+  const bad=!EXAM&&lastBad.find(b=>b.i===i);if(bad){const m=wireMid(l.a,l.b);w+=`<path class="wbad" d="${d}"/><g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})" pointer-events="none"><rect x="-44" y="-13" width="88" height="26" rx="13" fill="#ffd43b" stroke="#7a5b00" stroke-width="1.5"/><text class="wbadt" y="5">⚠ va ${bad.want==='red'?'ROJO':'CELESTE'}</text></g>`}});
  if(motor){const m=motor,mx=m.fx*W,my=m.fy*H,pp=plugXY(),d=`M${mx-30} ${my+34} C${mx-30} ${my+110} ${pp.x} ${pp.y+90} ${pp.x} ${pp.y}`;w+=`<path class="wshadow" d="${d}"/><path d="${d}" fill="none" stroke="#2c323b" stroke-width="7" stroke-linecap="round"/>`}
  gW.innerHTML=w;
  let s='';
- sc.comps.forEach(c=>{const r=lastSim?lastSim.c[c.id]:null,x=c.fx*W,y=c.fy*H,sel=selComp===c.id;
+ sc.comps.forEach(c=>{const r0=lastSim?lastSim.c[c.id]:null,r=r0?Object.assign({},r0,{en:enOf(c)}):null,x=c.fx*W,y=c.fy*H,sel=selComp===c.id;
   const nm=labelOf(c,r),showNum=showVals&&r&&!['bat','src','sw3','toma','rod','box','motor'].includes(c.t)||showVals&&r&&c.t==='bat';
   let vals='';if(showNum)vals=c.t==='bat'?fI(r.i)+' entregados':fV(r.v)+' · '+fI(r.i);
-  const ty=c.t==='lamp'?46:c.t==='bat'?98:c.t==='src'?102:c.t==='toma'?94:c.t==='rod'?78:c.t==='box'?(c.rows.length*58+54)/2+22:c.t==='motor'?58:c.t==='sw3'?50:42;
-  const hh=c.t==='box'?(c.rows.length*58+54)+50:c.t==='bat'?210:c.t==='src'?190:c.t==='toma'?180:c.t==='rod'?150:110,hy=c.t==='box'?-hh/2:c.t==='bat'?-84:c.t==='src'?-92:c.t==='toma'?-80:c.t==='rod'?-60:-48;
-  s+=`<g data-c="${c.id}" transform="translate(${x} ${y})"><rect x="-70" y="${hy}" width="140" height="${hh}" fill="transparent"/>${sel?`<rect class="sel-box" x="-70" y="${hy}" width="140" height="${hh}" rx="12"/>`:''}${compBody(c,r)}<text class="tx" y="${ty}" style="${broken[c.id]&&!sc.fault?'fill:#ff9a9a':''}">${esc(nm)}${broken[c.id]&&!sc.fault?' ✖':''}</text>${vals?`<text class="tv" y="${ty+18}">${vals}</text>`:''}</g>`});
+  const ty=c.t==='lamp'?50:c.t==='led'?50:c.t==='dcm'?60:c.t==='buz'?52:c.t==='cal'?40:c.t==='bat'?98:c.t==='src'?102:c.t==='toma'?94:c.t==='rod'?78:c.t==='box'?(c.rows.length*58+54)/2+22:c.t==='motor'?58:c.t==='sw3'?54:42;
+  const hh=c.t==='box'?(c.rows.length*58+54)+50:c.t==='bat'?210:c.t==='src'?190:c.t==='toma'?180:c.t==='rod'?150:c.t==='dcm'?132:c.t==='buz'?116:c.t==='lamp'||c.t==='led'?122:c.t==='sw3'?132:c.t==='sw'?112:110,hy=c.t==='box'?-hh/2:c.t==='bat'?-84:c.t==='src'?-92:c.t==='toma'?-80:c.t==='rod'?-60:c.t==='dcm'?-64:c.t==='buz'?-58:c.t==='lamp'||c.t==='led'?-68:c.t==='sw3'?-66:c.t==='sw'?-66:-48;
+  const hw=c.t==='dcm'?162:140,lx=c.t==='dcm'?8:0;
+  s+=`<g data-c="${c.id}" transform="translate(${x} ${y})"><rect x="-70" y="${hy}" width="${hw}" height="${hh}" fill="transparent"/>${sel?`<rect class="sel-box" x="-70" y="${hy}" width="${hw}" height="${hh}" rx="12"/>`:''}${compBody(c,r)}<text class="tx" x="${lx}" y="${ty}" style="${broken[c.id]&&!sc.fault?'fill:#ff9a9a':''}">${esc(nm)}${broken[c.id]&&!sc.fault?' ✖':''}</text>${vals?`<text class="tv" x="${lx}" y="${ty+18}">${vals}</text>`:''}</g>`});
  gC.innerHTML=s;
- let t='';allT.forEach(id=>{const p=tp(id),d=TM[id],con=links.some(l=>l.a===id||l.b===id),lab=(AC||d.c.t==='bat')?d.label:'';
+ let t='';allT.forEach(id=>{const p=tp(id),d=TM[id],con=links.some(l=>l.a===id||l.b===id),lab=(AC||d.c.t==='bat')?d.label:'',pe=(con||d.c.t==='bat')?potOf(id):null,glow=pe?`<circle r="22" fill="${pe.short?'#ff5a3c':CRISTAL.potColor(pe.f)}" opacity=".5" filter="url(#fB3)" class="widle2" pointer-events="none"/>`:'';
   const fill=AC?(d.role==='L'?'#b5651d':d.role==='N'?'#4db5ee':'#37c870'):'';
   const lx=d.dx>0?-27:d.dx<0?27:0,ly=d.dy<0?-21:d.dy>0?27:(d.dx===0?-21:5);
-  t+=`<g class="term${con?' connected':''}${pend===id?' pend':''}" data-t="${id}" transform="translate(${p.x} ${p.y})"><circle class="term-ring" r="13"/><circle class="term-dot" r="6"${fill&&!con?` style="fill:${fill}"`:''}/>${lab&&d.c.t!=='box'?`<text x="${d.dy?0:lx}" y="${d.dy?ly:5}" class="tl" ${d.c.t==='bat'?`style="font-size:15px;fill:${d.label==='+'?'#ff8d8d':'#79d9f1'}"`:''}>${lab}</text>`:''}</g>`});
+  t+=`<g class="term${con?' connected':''}${pend===id?' pend':''}" data-t="${id}" transform="translate(${p.x} ${p.y})">${glow}<circle class="term-ring" r="13"/><circle class="term-dot" r="6"${fill&&!con?` style="fill:${fill}"`:''}/>${lab&&d.c.t!=='box'?(d.c.t==='bat'?`<g pointer-events="none"><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ff7a3d':'#35c8ff'};filter:url(#fB3)">${d.label==='+'?'+':'−'}</text><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ffc2a0':'#c8f3ff'}">${d.label==='+'?'+':'−'}</text></g>`:`<text x="${d.dy?0:lx}" y="${d.dy?ly:5}" class="tl">${lab}</text>`):''}</g>`});
  gT.innerHTML=t;
  renderPlug();
 }
@@ -304,11 +436,23 @@ function updatePreview(pos){if(!drag){prev.setAttribute('d','');prevS.setAttribu
  drag.best=best;prev.setAttribute('d',d);prevS.setAttribute('d',d);prev.setAttribute('stroke',wcol(color))}
 
 /* ---------- panel ---------- */
+function wireInfoHTML(){
+ const i=selWire,l=links[i],p=potOf(l.a),I=lastSim?Math.abs(lastSim.flows[i]):0;
+ let st,col;
+ if(lastSim&&lastSim.short&&p){st='<b style="color:#ff9a9a">¡Cortocircuito!</b> Este cable une directamente el + con el − y por él pasa una corriente enorme.';col='#ff5a3c'}
+ else if(!p){st='Este cable <b>no tiene energía</b>: no está unido a ningún polo de la batería (ni a través de llaves cerradas o componentes).';col='#7d8896'}
+ else if(I>1e-4){st='Tiene tensión <b>y</b> circula corriente: los electrones se mueven por su interior porque el circuito está cerrado.';col=CRISTAL.potColor(p.f)}
+ else{st='Está <b>energizado</b> (tiene tensión) pero <b>no circula corriente</b>: el circuito está abierto. Los electrones esperan que se cierre el camino.';col=CRISTAL.potColor(p.f)}
+ return`<b>Cable ${esc(l.a)} → ${esc(l.b)}</b><div class="big"><div><small>TENSIÓN (respecto al −)</small>${p?fV(p.v):'—'}</div><div><small>CORRIENTE</small>${fI(I)}</div></div><div style="margin-top:6px;padding-left:8px;border-left:4px solid ${col}">${st}</div>`}
 function meterHTML(){
- if(!selComp)return'<span style="color:var(--mu)">Tocá un componente del esquema para medir su tensión y corriente.</span>';
+ if(selWire!==null&&links[selWire]&&!selComp)return wireInfoHTML();
+ if(!selComp)return'<span style="color:var(--mu)">Tocá un componente del esquema para medir su tensión y corriente. Tocá un cable para ver si está energizado.</span>';
  const c=cm[selComp],r=lastSim?lastSim.c[c.id]:{v:0,i:0,p:0};let extra='';
  if(c.t==='res'){const[b1,b2,m]=bands(c.r);extra=`<div style="margin-top:5px"><span class="bands">${[DIG[b1],DIG[b2],DIG[Math.max(0,m)],'#d4af37'].map(x=>`<i style="background:${x}"></i>`).join('')}</span>${DIGN[b1]}-${DIGN[b2]}-${DIGN[Math.max(0,m)]}-dorado = <b>${fR(c.r)}</b> ±5 %</div>`}
- else if(c.t==='lamp'&&!sc.fault)extra=`<div style="margin-top:5px">Resistencia del filamento: <b>${fR(c.r)}</b> · nominal ${c.vr} V / ${fI(c.vr/c.r)}</div>`;
+ else if(c.t==='lamp'&&!sc.fault){const pn=c.vr*c.vr/c.r;extra=`<div style="margin-top:5px">Resistencia del filamento: <b>${fR(c.r)}</b> · nominal ${c.vr} V / ${fI(c.vr/c.r)} (${dc(+pn.toFixed(1))} W)</div><div style="margin-top:3px;color:var(--mu)">Brilla al ${Math.round(Math.min(1,(r.v*r.i)/pn)*100)} % de su potencia nominal.</div>`+(c.tol?`<div style="margin-top:3px">Aguanta hasta <b>${dc((c.vr*c.tol).toFixed(1))} V</b> (${Math.round(c.tol*100)} % de su tensión nominal): con más tensión el filamento se funde.</div>`:'')}
+ else if(c.t==='dcm'){const sp=Math.min(1.25,Math.abs(r.v)/c.vr),rpm=r.i>1e-4&&!broken[c.id]?Math.round(6000*sp/10)*10:0;extra=`<div style="margin-top:5px">Velocidad: <b>${rpm} rpm</b> (${Math.round(sp*100)} % de la nominal)${rpm?(r.dir<0?' · gira <b>al revés</b> (polaridad invertida)':' · gira en el sentido normal'):' · detenido'}</div><div style="margin-top:3px;color:var(--mu)">Nominal ${c.vr} V · resistencia del bobinado ${fR(c.r)}.${c.tol?' Aguanta hasta '+dc((c.vr*c.tol).toFixed(1))+' V.':''}</div>`}
+ else if(c.t==='buz')extra=`<div style="margin-top:5px">${r.level>.5?'🔊 <b>Está sonando.</b>':r.v<0&&Math.abs(r.v)>c.vr*.6?'🔇 No suena: tiene la <b>polaridad invertida</b> (el + va a la pata +).':'🔇 No suena (necesita al menos '+dc((c.vr*.6).toFixed(1))+' V con el + en la pata +).'}</div><div style="margin-top:3px;color:var(--mu)">Nominal ${c.vr} V · es un componente <b>polarizado</b>.</div>`;
+ else if(c.t==='cal'){const pn=c.vr*c.vr/c.r;extra=`<div style="margin-top:5px">Calienta al <b>${Math.round(Math.min(1.25,(r.v*r.i)/pn)*100)} %</b> de su potencia nominal (${dc(+pn.toFixed(1))} W a ${c.vr} V).</div><div style="margin-top:3px;color:var(--mu)">Toda la energía eléctrica que recibe se convierte en calor: P = V × I.</div>`}
  else if(c.t==='fuse')extra=`<div style="margin-top:5px">Corriente máxima: <b>${c.amp} A</b>${broken[c.id]?' · <b style="color:#ff9a9a">FUNDIDO</b>':''}</div>`;
  else if(c.t==='led')extra=`<div style="margin-top:5px">Cae ≈ ${VF} V · máx. 30 mA${broken[c.id]?' · <b style="color:#ff9a9a">QUEMADO</b>':''}</div>`;
  else if(c.t==='toma')extra=`<div style="margin-top:5px;color:var(--mu)">Tensión entre L y N del tomacorriente.</div>`;
@@ -320,26 +464,84 @@ function tableHTML(){let h='<table><tr><th>Elemento</th><th>V</th><th>I</th><th>
 function updatePanel(){
  $('#meter').innerHTML=meterHTML();
  const t=$('#table');t.hidden=!tableOn;if(tableOn&&lastSim)t.innerHTML=tableHTML();
- const c=selComp?cm[selComp]:null,canRepl=c&&['lamp','res','fuse','led'].includes(c.t)&&(sc.fault||broken[c.id]);
+ const c=selComp?cm[selComp]:null,canRepl=c&&['lamp','res','fuse','led','dcm','buz','cal'].includes(c.t)&&(sc.fault||broken[c.id]);
+ const bb=$('#burnBtn');bb.hidden=EXAM||sc.fault||sc.quiz||AC||!(c&&LIM[c.t]&&!broken[c.id]);if(!bb.hidden)bb.textContent='💥 Quemar '+c.id;
  const rb=$('#replBtn');rb.hidden=!(sc.fault||sc.comps.some(x=>broken[x.id]));rb.disabled=!canRepl;rb.textContent=c&&canRepl?'🔧 Reemplazar '+c.id:'🔧 Reemplazar (elegí uno)';
  $('#unplugBtn').hidden=!motor;$('#unplugBtn').disabled=!plugTo;
- const rs=$('#result');if(lastDiag&&lastDiag.done){const nx=sc.hidden?null:D.order[D.order.indexOf(sc.id)+1],cont=sc.hidden&&window.parent!==window;rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:inherit;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">Siguiente práctica ▶</button>`:''}${cont?`<button class="btn primary" id="nextBtn">Continuar ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{if(cont)parent.postMessage({tipo:'continuar',id:sc.id},'*');else location.search='?c='+nx}}else rs.hidden=true;
+ const rs=$('#result');if(lastDiag&&lastDiag.done&&!EXAM){const nx=sc.hidden?null:D.order[D.order.indexOf(sc.id)+1],cont=sc.hidden&&!sc.gen&&window.parent!==window;rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:inherit;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">Siguiente práctica ▶</button>`:''}${cont?`<button class="btn primary" id="nextBtn">Continuar ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{if(cont)parent.postMessage({tipo:'continuar',id:sc.id},'*');else location.search='?c='+nx}}else rs.hidden=true;
  $('#bDel').disabled=selWire===null||!!links[selWire]?.locked;$('#bUndo').disabled=!links.some(l=>!l.locked);
 }
 function update(){
- const{sim,events}=settle();lastSim=sim;const d=diagnose(sim);lastDiag=d;
+ const{sim,events}=settle();events.push(...pendEv.splice(0));lastSim=sim;lastBad=colorIssues();const d=diagnose(sim);lastDiag=d;
  render();
- const st=$('#status');st.className='status '+(d.status||'');$('#statusText').textContent=d.head||'Consigna';
- const h=$('#hint');h.className='hint '+(d.cls||'');h.innerHTML='<strong>'+esc(d.head)+':</strong> '+esc(d.text);
+ /* en el examen el simulador no dice si está bien: solo muestra fallas físicas (cortocircuito, quemados) */
+ const neutral=EXAM&&d.cls!=='error',st=$('#status');
+ st.className='status '+(neutral?'':(d.status||''));$('#statusText').textContent=neutral?'Examen en curso':(d.head||'Consigna');
+ const h=$('#hint');h.className='hint '+(neutral?'':(d.cls||''));h.innerHTML=neutral?(sc.quiz?'<strong>Pregunta:</strong> '+esc(sc.quiz.q)+' <i>Elegí la respuesta en el panel (☰) y tocá «Entregar ✔».</i>':'<strong>Consigna:</strong> '+esc(sc.goal||'armá el circuito pedido')+' <i>Cuando termines, tocá «Entregar ✔».</i>'):'<strong>'+esc(d.head)+':</strong> '+esc(d.text);
  updatePanel();
- events.forEach(e=>play(e.t==='fuse'?'blow':'burn'));
- if(!events.length&&sim.short&&!update.wasShort)play('short');update.wasShort=sim.short;
+ events.forEach(e=>{play(e.t==='fuse'?'blow':'burn');const cc=cm[e.id],pos=()=>({x:cc.fx*W,y:cc.fy*H}),p0=pos();
+  if(e.t==='lamp'){FX.shatter(p0.x,p0.y-30,30);FX.smoke(p0.x,p0.y-34,10,{r:11});FX.flame(p0.x,p0.y-26,5,{s:.9,sp:26});play('blow')}
+  else{FX.flash(p0.x,p0.y,e.t==='fuse'?100:120);FX.spark(p0.x,p0.y-8,e.t==='fuse'?30:20,{v:260});FX.smoke(p0.x,p0.y-18,7,{r:9});if(e.t!=='fuse')FX.flame(p0.x,p0.y-20,e.t==='led'?4:5,{s:.8})}
+  FX.emit('br_'+e.id,(dt,em)=>{if(em.acc>.16){em.acc=0;const q=pos();FX.smoke(q.x,q.y-26,1,{r:6});if(e.t!=='fuse'&&em.left>3&&Math.random()<.6)FX.flame(q.x,q.y-12,1,{s:.55});if(Math.random()<.18)FX.spark(q.x,q.y-12,3,{v:90,up:true})}},e.t!=='fuse'?8:5);shakeBoard()});
+ sc.comps.forEach(c=>{if(!broken[c.id])FX.stop('br_'+c.id)});
+ if(!events.length&&sim.short&&!update.wasShort)play('short');
+ if(sim.short&&!update.wasShort){const a=tp(SRCP),b=tp(SRCN);shakeBoard();FX.flash(a.x,a.y,130);FX.emit('short',(dt,em)=>{const pa=tp(SRCP),pb=tp(SRCN);if(em.acc>.05){em.acc=0;FX.spark(pa.x,pa.y,8,{v:320,up:true});FX.spark(pb.x,pb.y,6,{v:280,up:true});if(Math.random()<.9)FX.flame(pa.x,pa.y-8,2,{s:2,sp:30});if(Math.random()<.6)FX.flame(pb.x,pb.y-8,1,{s:1.5,sp:26});if(Math.random()<.7)FX.smoke(pa.x,pa.y-18,1,{r:14,sp:36});if(Math.random()<.05)FX.flash(pa.x,pa.y,90)}})}
+ /* cartel educativo + estadísticas */
+ if(events.length){toastEl.hidden=true;update.sm=''}
+ {const left=sc.comps.filter(x=>(x.t==='lamp'||x.t==='dcm'||x.t==='buz'||x.t==='cal')&&!broken[x.id]&&hasLink(x.id+'.a')&&hasLink(x.id+'.b')),lit=left.filter(x=>sim.c[x.id].level>.01).length;
+  events.forEach(e=>{if(!e.manual){stat.burns++;stat.tBurns++}const c=cm[e.id];showWhy(e.t==='fuse'?'fuse':e.t==='lamp'?'lamp':e.t==='led'?'led':'part',{i:e.i,amp:c.amp,id:e.id,type:e.t,v:e.v,vr:e.vr,manual:e.manual,left:left.length,lit})})}
+ if(sim.short&&!update.wasShort){stat.shorts++;stat.tShorts++;showWhy('short')}else if(!sim.short&&whyKind==='short')hideWhy();
+ {const rv=sc.comps.filter(c=>c.t==='led'&&sim.c[c.id].rev&&hasLink(c.id+'.a')&&hasLink(c.id+'.k')).map(c=>c.id).join(',');if(rv&&rv!==update.wasRev)showWhy('rev');else if(!rv&&whyKind==='rev')hideWhy();update.wasRev=rv}
+ /* avisos didácticos: serie = misma corriente y tensión repartida; paralelo = tensión completa en cada una */
+ if(!EXAM&&!AC){const ls=sc.comps.filter(c=>c.t==='lamp'&&!broken[c.id]&&sim.c[c.id].i>.005),ib=sim.ibat,ac=c=>Math.abs(sim.c[c.id].v);
+  const ser=ls.length>=2&&ls.every(c=>Math.abs(sim.c[c.id].i-ib)<ib*.03),rr=ls.map(c=>c.r),dif=ls.length>=2&&Math.max(...rr)/Math.min(...rr)>1.25,
+   par=ls.length>=2&&!ser&&ls.every(c=>ac(c)>c.vr*.97)&&Math.abs(ls.reduce((a,c)=>a+sim.c[c.id].i,0)-ib)<ib*.03;
+  let key='',msg='';
+  if(ser&&dif){key='A';msg='💡 <b>Misma corriente, distinto brillo:</b> en serie pasa la misma corriente por todas, pero la tensión se reparte según la resistencia y brilla más la lámpara de mayor resistencia (P = I² × R). Una lámpara de más watts tiene menos resistencia: ¡en serie brilla menos!'}
+  else if(ser&&ls.every(c=>ac(c)<c.vr*.9)){key='B';msg='💡 <b>En serie las lámparas se reparten la tensión:</b> cada una recibe solo '+fV(ac(ls[0]))+' de los '+ls[0].vr+' V que necesita, por eso brillan menos que en paralelo, donde cada una recibe los '+SRCV+' V completos.'}
+  else if(par){key='C';msg='💡 <b>En paralelo cada lámpara recibe la tensión completa</b> ('+fV(ac(ls[0]))+') y brilla al máximo. ¡Y si una se quema, las otras siguen encendidas! Probalo: tocá una lámpara y usá 💥 Quemar.'}
+  if(key&&key!==update.sm)toast(msg,10000);update.sm=key}
+ if(!sim.short)FX.stop('short');wrap.classList.toggle('alarm',!!sim.short);update.wasShort=sim.short;
+ /* arco eléctrico al cerrar una llave con corriente alta */
+ sws.forEach(c=>{const on=!!swState[c.id];if(update.sw&&update.sw[c.id]===false&&on&&(sim.ibat>.6||sim.short)){const q={x:c.fx*W,y:c.fy*H};FX.spark(q.x+30,q.y,14,{v:200,up:true});FX.flash(q.x+30,q.y,50);play('zap')}update.sw=update.sw||{};update.sw[c.id]=on});
  // lámparas y motor
  let lampChange=null;sc.comps.forEach(c=>{if(c.t==='lamp'||c.t==='led'){const on=sim.c[c.id].level>.01&&!broken[c.id];if(prevLit[c.id]!==undefined&&prevLit[c.id]!==on)lampChange=on;prevLit[c.id]=on}});
  if(lampChange===true)play('lampOn');else if(lampChange===false)play('lampOff');
+ setHum(Math.max(0,...sc.comps.filter(c=>c.t==='dcm'&&!broken[c.id]).map(c=>sim.c[c.id].i>1e-4?sim.c[c.id].level:0)));
+ setBuzz(sc.comps.some(c=>c.t==='buz'&&!broken[c.id]&&sim.c[c.id].level>.5));
  if(motor){const run=sim.c[motor.id].level>.01;if(run&&!prevRun)play('motorOn');if(!run&&prevRun)play('motorOff');prevRun=run}
- if(d.done&&!done){setTimeout(()=>play('success'),150);done=true;try{if(window.parent!==window)parent.postMessage({tipo:'hecho',id:sc.id},'*')}catch{}}if(!d.done)done=false;
+ if(d.done&&!done){done=true;onDone()}if(!d.done)done=false;
+ if(FREE){saveTaller();if(!update.tf&&links.length>=3&&sc.comps.some(c=>['lamp','led','dcm','buz','cal'].includes(c.t)&&sim.c[c.id].level>.01&&!broken[c.id])){update.tf=true;badgeToast(PROG.flag('taller'))}}
 }
+/* ---------- estrellas y festejo ---------- */
+function starsFor(){
+ if(sc.fault)return 1+(attempts<=2?1:0)+(attempts===0&&!stat.hint&&stat.shorts===0?1:0);
+ return 1+(!stat.sol?1:0)+(!stat.sol&&!stat.hint&&stat.shorts===0&&stat.burns===0?1:0)}
+let celebrated=false;
+function onDone(){
+ const info={s:0};
+ if(EXAM){exam.ok=true;exam.t=Math.round((Date.now()-stat.t0)/1000);exam.shorts=stat.shorts;exam.burns=stat.burns;return}
+ setTimeout(()=>play('success'),150);
+ if(!sc.hidden&&!celebrated){celebrated=true;const n=starsFor(),r=PROG.record(sc.id,n,{g:sc.group,cat:sc.group==='ca'?'ca':'cc',t:Math.round((Date.now()-stat.t0)/1000)});info.s=n;updateStars();
+  /* si hay un cartel explicativo abierto se espera a que se lea antes de festejar */
+  let waited=0;const go=()=>{if(!whyEl.hidden&&!whyEl.classList.contains('mini')&&waited<24000){waited+=600;setTimeout(go,600)}else showWin(n,r)};go()}
+ try{if(window.parent!==window)parent.postMessage({tipo:'hecho',id:sc.id,estrellas:info.s},'*')}catch{}}
+const winEl=$('#win');
+function shakeBoard(){wrap.classList.remove('shake');void wrap.offsetWidth;wrap.classList.add('shake');setTimeout(()=>wrap.classList.remove('shake'),520)}
+function showWin(n,r){
+ const tit=n>=3?'¡Perfecto!':n===2?'¡Muy bien!':'¡Lo lograste!';
+ const why=[];if(n<3){if(stat.sol)why.push('viste la solución');else if(stat.hint)why.push('usaste la pista');if(stat.shorts)why.push('hubo un cortocircuito');if(stat.burns)why.push('se quemó un componente');if(sc.fault&&attempts)why.push('reemplazaste '+attempts+' pieza'+(attempts>1?'s':'')+' sana'+(attempts>1?'s':''))}
+ $('#winSt').innerHTML=[1,2,3].map(i=>`<span class="${i<=n?'on':''}" style="animation-delay:${.15+i*.22}s">★</span>`).join('');
+ $('#winTit').textContent=tit;
+ $('#winTxt').textContent=n>=3?'Tres estrellas: lo resolviste sin ayuda y sin accidentes.':'Para conseguir ★★★ resolvela sin ver la solución ni la pista y sin cortocircuitos'+(why.length?' (esta vez '+why.join(' y ')+').':'.');
+ const nm=(r.logros||[]).map(id=>PROG.BADGES.find(b=>b.id===id)).filter(Boolean);
+ $('#winBadge').innerHTML=nm.map(b=>`<div class="win-b">${b.ico} Nuevo logro: <b>${esc(b.name)}</b></div>`).join('');
+ const nx=sc.hidden?null:D.order[D.order.indexOf(sc.id)+1];const nb=$('#winNext');nb.hidden=!nx;nb.onclick=()=>{location.search='?c='+nx};
+ winEl.hidden=false;winEl.style.animation='none';void winEl.offsetWidth;winEl.style.animation='';winEl.title=$('#winTxt').textContent;clearTimeout(showWin.tm);showWin.tm=setTimeout(()=>{winEl.hidden=true},5000);
+ for(let k=0;k<5;k++)setTimeout(()=>FX.spark(W*(.2+Math.random()*.6),H*(.15+Math.random()*.5),22,{v:230}),k*170)}
+$('#winClose').onclick=()=>{winEl.hidden=true};winEl.addEventListener('pointerdown',()=>{winEl.hidden=true});
+function updateStars(){const el=$('#pStars');if(!el||sc.hidden||EXAM)return;const s=PROG.stars(sc.id);el.innerHTML=s?`Tu récord: <b style="color:#ffd43b;letter-spacing:2px">${PROG.starsHTML(s)}</b>`:'Todavía sin estrellas: ¡completá la consigna!'}
+const exam={ok:false,t:0,shorts:0,burns:0};
 
 /* ---------- interacción ---------- */
 function toSvg(e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
@@ -350,16 +552,20 @@ svg.addEventListener('pointerdown',e=>{
  audio();const pos=toSvg(e),touch=e.pointerType==='touch'||e.pointerType==='pen';
  const pl=e.target.closest('[data-plug]');
  let t=nearestTerm(pos,touch?36:26);const swHit=e.target.closest('[data-sw]');if(t&&swHit){const q=tp(t);if(Math.hypot(q.x-pos.x,q.y-pos.y)>30)t=null}
- if(t&&!pl){e.preventDefault();try{svg.setPointerCapture(e.pointerId)}catch{}selWire=null;selComp=null;drag={from:t,id:e.pointerId,moved:false,x0:e.clientX,y0:e.clientY};tapStart=t;play('grab');updatePreview(pos);return}
+ if(t&&!pl&&!sc.quiz){e.preventDefault();try{svg.setPointerCapture(e.pointerId)}catch{}selWire=null;selComp=null;drag={from:t,id:e.pointerId,moved:false,x0:e.clientX,y0:e.clientY};tapStart=t;play('grab');updatePreview(pos);return}
  if(pl){e.preventDefault();try{svg.setPointerCapture(e.pointerId)}catch{}const was=plugTo;plugTo=null;drag={plug:true,id:e.pointerId,was};if(was){play('unplug');update()}plugPos={fx:pos.x/W,fy:pos.y/H};renderPlug();return}
  const w=e.target.closest('[data-w]');if(w){selWire=+w.dataset.w;selComp=null;pend=null;play('wiresel');render();updatePanel();return}
  const c=e.target.closest('[data-c]');
- if(c){const comp=cm[c.dataset.c];selComp=comp.id;selWire=null;pend=null;if((comp.t==='sw'||comp.t==='sw3')&&e.target.closest('[data-sw]')){swState[comp.id]=!swState[comp.id];play(comp.t==='sw3'?'sw3':swState[comp.id]?'on':'off');update();return}play('select');render();updatePanel();return}
- pend=null;selComp=null;selWire=null;render();updatePanel()});
+ if(c){const comp=cm[c.dataset.c];selComp=comp.id;selWire=null;pend=null;if((comp.t==='sw'||comp.t==='sw3')&&e.target.closest('[data-sw]')){swState[comp.id]=!swState[comp.id];stat.swaps++;play(comp.t==='sw3'?'sw3':swState[comp.id]?'on':'off');update();return}
+  if(FREE){try{svg.setPointerCapture(e.pointerId)}catch{}drag={mv:true,id:e.pointerId,cid:comp.id,ox:pos.x-comp.fx*W,oy:pos.y-comp.fy*H,x0:e.clientX,y0:e.clientY,moved:false}}
+  play('select');render();updatePanel();return}
+ pend=null;selComp=null;selWire=null;closeFly();render();updatePanel()});
 svg.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const pos=toSvg(e);
+ if(drag.mv){if(!drag.moved&&Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>7){drag.moved=true;closeFly()}if(drag.moved){const c=cm[drag.cid],ex=extOf(c);c.fx=Math.max((6-ex[0])/W,Math.min((W-6-ex[1])/W,(pos.x-drag.ox)/W));c.fy=Math.max((6-ex[2])/H,Math.min((468-ex[3])/H,(pos.y-drag.oy)/H));render()}return}
  if(drag.plug){plugPos={fx:pos.x/W,fy:pos.y/H};renderPlug();return}
  if(Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>8)drag.moved=true;updatePreview(pos)});
 function endDrag(e){if(!drag||drag.id!==e.pointerId)return;const pos=toSvg(e),d=drag;drag=null;updatePreview();
+ if(d.mv){if(d.moved){play('snap');update()}return}
  if(d.plug){let best=null,bd=95;tomas.forEach(c=>{const p=tomaPos(c),dd=Math.hypot(p.x-pos.x,p.y-pos.y);if(dd<bd){bd=dd;best=c.id}});if(best){plugTo=best;play('plug')}else{if(d.was)play('unplug')}update();return}
  const from=d.from;
  if(!d.moved){ // toque simple: modo "tocar y tocar"
@@ -369,10 +575,111 @@ function endDrag(e){if(!drag||drag.id!==e.pointerId)return;const pos=toSvg(e),d=
 svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',e=>{if(drag&&drag.id===e.pointerId){drag=null;updatePreview();update()}});
 
 function buildColors(){const el=$('#colors');el.innerHTML='';WIRE_COLORS.forEach(([k,n,c],i)=>{const b=document.createElement('button');if(k==='earth')b.className='earthc';else b.style.background=c;b.title=n;b.setAttribute('aria-label','Cable '+n);b.setAttribute('aria-pressed',String(k===color));b.onclick=()=>{color=k;play('color',i);el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true')};el.append(b)})}
+/* ---------- aviso breve ---------- */
+const toastEl=$('#toast');let toastTm=null;
+function toast(html,ms){toastEl.innerHTML=html;toastEl.hidden=false;toastEl.style.animation='none';void toastEl.offsetWidth;toastEl.style.animation='';clearTimeout(toastTm);toastTm=setTimeout(()=>{toastEl.hidden=true},ms||3200)}
+const badgeToast=ids=>{const b=(ids||[]).map(id=>PROG.BADGES.find(x=>x.id===id)).filter(Boolean)[0];if(b)toast(b.ico+' Nuevo logro: <b>'+esc(b.name)+'</b>',4200)};
+
+/* ---------- mesa mezclada al reiniciar ---------- */
+const MOVABLE=['bat','sw','sw3','lamp','led','res','fuse','toma','rod','dcm','buz','cal'];
+const EXT={dcm:[-66,84,-54,56],buz:[-64,64,-50,48],cal:[-64,64,-34,48],lamp:[-64,64,-64,72],bat:[-34,34,-76,124],sw:[-64,64,-60,60],sw3:[-64,64,-64,76],led:[-64,64,-64,70],res:[-64,64,-22,60],fuse:[-64,64,-22,60],src:[-60,64,-86,116],toma:[-64,64,-78,104],rod:[-44,44,-56,82],motor:[-56,56,-50,38]};
+const extOf=c=>c.t==='box'?[-(c.w||280)/2-4,(c.w||280)/2+4,-(c.rows.length*58+54)/2-4,(c.rows.length*58+54)/2+26]:(EXT[c.t]||[-64,64,-64,72]);
+const BX=1000,BY=H;   /* se valida con el ancho mínimo de la mesa (1000): al ensancharse solo aumentan las separaciones */
+const itemAt=(c,fx,fy)=>{const e=extOf(c),x=fx*BX,y=fy*BY;return{id:c.id,x0:x+e[0],x1:x+e[1],y0:y+e[2],y1:y+e[3],T:c.defs.map(d=>[x+d.x,y+d.y])}};
+function fitsAt(it,placed){if(it.x0<6||it.x1>BX-6||it.y0<6||it.y1>468)return false;
+ for(const o of placed){if(it.x0-8<o.x1&&o.x0-8<it.x1&&it.y0-8<o.y1&&o.y0-8<it.y1)return false;for(const a of it.T)for(const b of o.T)if(Math.hypot(a[0]-b[0],a[1]-b[1])<60)return false}
+ for(let i=0;i<it.T.length;i++)for(let j=i+1;j<it.T.length;j++)if(Math.hypot(it.T[i][0]-it.T[j][0],it.T[i][1]-it.T[j][1])<40)return false;
+ return true}
+const rndSort=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const CELLS=[];[.1,.3,.5,.7,.9].forEach(fx=>[.2,.5,.78].forEach(fy=>CELLS.push([fx,fy])));
+function shuffleLayout(){
+ const mov=sc.comps.filter(c=>MOVABLE.includes(c.t));if(mov.length<2)return false;
+ const fixedIt=sc.comps.filter(c=>!MOVABLE.includes(c.t)).map(c=>itemAt(c,c.fx,c.fy));
+ if(motor&&plugHome)fixedIt.push({x0:plugHome[0]*BX-34,x1:plugHome[0]*BX+34,y0:plugHome[1]*BY-64,y1:plugHome[1]*BY+30,T:[]});
+ const area=c=>{const e=extOf(c);return(e[1]-e[0])*(e[3]-e[2])};
+ const cands=[];
+ for(let k=0;k<70&&cands.length<14;k++){
+  const order=rndSort(mov.slice()).sort((a,b)=>area(b)-area(a)>3000?1:area(a)-area(b)>3000?-1:0),placed=fixedIt.slice(),asg=new Map();let ok=true;
+  for(const c of order){let put=null;for(const[fx,fy]of rndSort(CELLS.slice())){const it=itemAt(c,fx,fy);if(fitsAt(it,placed)){put=[fx,fy,it];break}}if(!put){ok=false;break}asg.set(c,put);placed.push(put[2])}
+  if(!ok)continue;
+  /* costo: largo de los cables de la solución (prefiere mesas donde lo que se conecta queda cerca) */
+  const pos=t=>{const d=TM[t],a=asg.get(d.c);return a?[a[0]*BX+d.x,a[1]*BY+d.y]:[d.c.fx*BX+d.x,d.c.fy*BY+d.y]};
+  let cost=0;sc.sol.forEach(([a,b])=>{const A=pos(a),B=pos(b);cost+=Math.hypot(A[0]-B[0],A[1]-B[1])});
+  cands.push({asg,cost})}
+ if(!cands.length)return false;
+ cands.sort((a,b)=>a.cost-b.cost);const pick=cands[Math.floor(Math.random()*Math.max(1,Math.ceil(cands.length*.4)))];
+ pick.asg.forEach((p,c)=>{c.tx=p[0];c.ty=p[1]});return true}
+let animT=null;
+function animateLayout(){const moved=sc.comps.filter(c=>c.tx!==undefined);if(!moved.length)return;moved.forEach(c=>{c.sx=c.fx;c.sy=c.fy});const t0=performance.now(),Dm=560;clearTimeout(animT);
+ const step=()=>{const k=Math.min(1,(performance.now()-t0)/Dm),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;moved.forEach(c=>{c.fx=c.sx+(c.tx-c.sx)*e;c.fy=c.sy+(c.ty-c.sy)*e});render();if(k<1)animT=setTimeout(step,16);else{animT=null;moved.forEach(c=>{c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty})}};step()}
 function reset(first){
- links=[];swState={};broken={};selComp=null;selWire=null;pend=null;attempts=0;fixed=false;done=false;plugTo=null;plugPos={fx:plugHome[0],fy:plugHome[1]};prevLit={};prevRun=false;
+ FX.clearAll();links=[];swState={};broken={};selComp=null;selWire=null;pend=null;attempts=0;fixed=false;done=false;plugTo=null;plugPos={fx:plugHome[0],fy:plugHome[1]};prevLit={};prevRun=false;
+ if(animT){clearTimeout(animT);animT=null;sc.comps.forEach(c=>{if(c.tx!==undefined){c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty}})}
+ stat.shorts=0;stat.burns=0;stat.swaps=0;stat.t0=Date.now();hideWhy();winEl.hidden=true;celebrated=false;update.wasRev='';updateStars();
+ if(FREE){sc.comps=sc.comps.filter(c=>c===SRC);SRC.fx=.12;SRC.fy=.5;rebuild();closeFly()}
+ const moved=!first&&!FREE&&shuffleLayout();
  if(sc.fault){links=sc.sol.map(p=>({a:p[0],b:p[1],color:p[1]==='B.n'||p[0]==='B.n'?'blue':'red',locked:true}));faultId=sc.fault[Math.floor(Math.random()*sc.fault.length)];broken[faultId]=true}
- if(!first)play('reset');update()}
+ /* problemas generados: circuito ya armado, llaves cerradas y componentes quemados de antemano */
+ if(sc.prewired)links=sc.sol.map(p=>({a:p[0],b:p[1],color:colorFor(p[0],p[1]),locked:true}));
+ if(sc.preClosed)sws.forEach(c=>{swState[c.id]=true});
+ if(sc.preBroken)sc.preBroken.forEach(id=>{broken[id]=true});
+ quizSel=null;quizLocked=false;paintQuiz();
+ if(!first)play('reset');update();if(moved)animateLayout()}
+/* ---------- taller libre: paleta, agregar, mover y quitar componentes ---------- */
+const PAL=[
+ {k:'lamp',ico:'💡',lab:'Lámpara',tit:'Lámpara: tensión y potencia nominales',opts:[['12 V · 5 W',[12,5]],['12 V · 10 W',[12,10]],['12 V · 21 W',[12,21]],['6 V · 3 W',[6,3]],['6 V · 6 W',[6,6]],['24 V · 25 W',[24,25]]]},
+ {k:'dcm',ico:'🌀',lab:'Motor',tit:'Motor de CC: tensión nominal',opts:[['3 V',3],['6 V',6],['9 V',9],['12 V',12]]},
+ {k:'buz',ico:'🔔',lab:'Zumbador',tit:'Zumbador (polarizado)',opts:[['5 V',5],['12 V',12]]},
+ {k:'cal',ico:'♨️',lab:'Calefactor',tit:'Calefactor: tensión y potencia',opts:[['6 V · 6 W',[6,6]],['12 V · 24 W',[12,24]]]},
+ {k:'led',ico:'🔴',lab:'LED'},
+ {k:'res',ico:'▭',lab:'Resistor',tit:'Valor del resistor',opts:[['10 Ω',10],['47 Ω',47],['100 Ω',100],['220 Ω',220],['330 Ω',330],['470 Ω',470],['1 kΩ',1000],['4,7 kΩ',4700],['10 kΩ',10000]]},
+ {k:'fuse',ico:'🛡',lab:'Fusible',tit:'Corriente máxima del fusible',opts:[['0,5 A',.5],['1 A',1],['2,5 A',2.5],['5 A',5],['10 A',10]]},
+ {k:'sw',ico:'⏻',lab:'Llave'},
+ {k:'sw3',ico:'⇅',lab:'Conmut.'}];
+const VOLTS=[3,6,9,12,24],palEl=$('#pal'),flyEl=$('#fly');
+function closeFly(){flyEl.hidden=true}
+function clampFly(){const H0=wrap.clientHeight,h=flyEl.offsetHeight,t0=parseFloat(flyEl.style.top)||6;if(t0+h>H0-8)flyEl.style.top=Math.max(6,H0-h-8)+'px'}
+function openFly(p,btn){flyEl.innerHTML='<b>'+p.tit+'</b>';p.opts.forEach(([t,v])=>{const o=document.createElement('button');o.textContent=t;o.onclick=()=>{closeFly();addComp(p.k,v)};flyEl.append(o)});flyEl.style.top=Math.max(6,btn.offsetTop-palEl.scrollTop+palEl.offsetTop)+'px';flyEl.hidden=false;clampFly()}
+function updatePalV(){const b=$('#palV');if(b)b.innerHTML='🔋<small>'+dc(SRCV)+' V</small>'}
+function setVolt(v,quiet){v=Math.max(1,Math.min(30,+v||12));SRC.v=v;SRC.name='Batería '+dc(v)+' V';SRCV=v;$('#vhi').textContent='+ '+dc(v)+' V';updatePalV();if(!quiet)play('color',3);update()}
+/* fuente variable: se sube la tensión de a poco y se ve cuál lámpara se funde primero */
+function openVolt(btn){flyEl.dataset.k='volt';
+ flyEl.innerHTML='<b>Tensión de la batería: <span id="vv" style="color:var(--yl)">'+dc(SRCV)+' V</span></b><input type="range" id="vr" min="1" max="30" step="0.5" value="'+SRCV+'" style="grid-column:1/-1;width:100%;height:30px;accent-color:#ffd43b" aria-label="Tensión de la batería"><span style="grid-column:1/-1;font-size:.72rem;color:var(--mu)">Arrastrá el control o elegí un valor. Subí de a poco: ¿cuál lámpara se funde primero?</span>';
+ [3,6,9,12,15,18,24].forEach(v=>{const o=document.createElement('button');o.textContent=v+' V';o.onclick=()=>{setVolt(v);$('#vr').value=v;$('#vv').textContent=dc(v)+' V'};flyEl.append(o)});
+ const r=$('#vr');r.oninput=()=>{setVolt(r.value,true);$('#vv').textContent=dc(SRCV)+' V'};
+ flyEl.style.top=Math.max(6,btn.offsetTop-palEl.scrollTop+palEl.offsetTop-40)+'px';flyEl.hidden=false;clampFly()}
+function buildPalette(){if(!FREE)return;document.body.classList.add('free');palEl.hidden=false;palEl.innerHTML='';
+ PAL.forEach(p=>{const b=document.createElement('button');b.innerHTML=p.ico+'<small>'+p.lab+'</small>';b.title='Agregar: '+p.lab;b.setAttribute('aria-label','Agregar '+p.lab);b.onclick=()=>{audio();if(p.opts){if(!flyEl.hidden&&flyEl.dataset.k===p.k){closeFly();return}flyEl.dataset.k=p.k;openFly(p,b)}else{closeFly();addComp(p.k)}};palEl.append(b)});
+ const v=document.createElement('button');v.id='palV';v.title='Cambiar la tensión de la batería';v.setAttribute('aria-label','Cambiar la tensión de la batería');v.onclick=()=>{audio();if(!flyEl.hidden&&flyEl.dataset.k==='volt'){closeFly();return}openVolt(v)};palEl.append(v);
+ const d=document.createElement('button');d.id='palDel';d.innerHTML='🗑<small>Quitar</small>';d.title='Quitar el componente seleccionado';d.setAttribute('aria-label','Quitar el componente seleccionado');d.onclick=delSelected;palEl.append(d);updatePalV()}
+function addComp(k,val){
+ const pre={lamp:'L',led:'D',res:'R',fuse:'F',sw:'S',sw3:'C',dcm:'M',buz:'Z',cal:'H'}[k];let n=1;while(cm[pre+n])n++;const id=pre+n;let c;
+ if(k==='lamp'){const vr=val[0],w=val[1];c={id,t:'lamp',r:+(vr*vr/w).toFixed(2),vr,w,tol:+(1.05+Math.random()*.25).toFixed(2),name:'Lámpara '+id}}
+ else if(k==='dcm')c={id,t:'dcm',r:+(4*val).toFixed(1),vr:val,tol:+(1.2+Math.random()*.3).toFixed(2),name:'Motor '+id};
+ else if(k==='buz')c={id,t:'buz',r:Math.round(val/.03),vr:val,name:'Zumbador '+id};
+ else if(k==='cal')c={id,t:'cal',r:+(val[0]*val[0]/val[1]).toFixed(2),vr:val[0],w:val[1],tol:+(1.2+Math.random()*.3).toFixed(2),name:'Calefactor '+id};
+ else if(k==='led')c={id,t:'led',name:'LED'};
+ else if(k==='res')c={id,t:'res',r:val,name:'Resistor '+id};
+ else if(k==='fuse')c={id,t:'fuse',amp:val,name:'Fusible '+val+' A'};
+ else if(k==='sw')c={id,t:'sw',name:'Llave '+id};
+ else c={id,t:'sw3',flip:false,name:'Conmutador '+id};
+ c.defs=tdefs(c);
+ const placed=sc.comps.map(x=>itemAt(x,x.fx,x.fy));let put=null;
+ const rowRank=fy=>fy<.3?0:fy>.7?1:2;
+ [...CELLS].sort((a,b)=>(a[0]<.2?1:0)-(b[0]<.2?1:0)||a[0]-b[0]||rowRank(a[1])-rowRank(b[1])).some(([fx,fy])=>fitsAt(itemAt(c,fx,fy),placed)&&(put=[fx,fy]));
+ for(let k2=0;!put&&k2<300;k2++){const fx=.12+Math.random()*.78,fy=.15+Math.random()*.6;if(fitsAt(itemAt(c,fx,fy),placed))put=[fx,fy]}
+ if(!put)put=[.5,.5];c.fx=put[0];c.fy=put[1];sc.comps.push(c);rebuild();selComp=id;selWire=null;play('connect');
+ FX.spark(c.fx*W,c.fy*H,12,{v:150});update();toast('Agregaste <b>'+esc(c.name)+'</b>. Arrastralo para ubicarlo y unilo con cables.',2600)}
+function delComp(id){const c=cm[id];if(!c||c===SRC)return;sc.comps=sc.comps.filter(x=>x!==c);const pre=id+'.';links=links.filter(l=>!(l.a.startsWith(pre)||l.b.startsWith(pre)));delete swState[id];delete broken[id];rebuild();selComp=null;selWire=null;play('remove');update()}
+function delSelected(){if(selComp&&selComp!==SRC.id)delComp(selComp);else toast('Tocá primero un componente (no la batería) y después 🗑 para quitarlo.',2800)}
+window.addEventListener('keydown',e=>{if(FREE&&(e.key==='Delete'||e.key==='Backspace')&&selComp&&selComp!==SRC.id&&!/INPUT|SELECT|TEXTAREA/.test((e.target||{}).tagName||'')){e.preventDefault();delComp(selComp)}});
+/* el taller se guarda solo en este dispositivo */
+const TKEY='sim-taller-v1';
+let tReady=false;function saveTaller(){if(!FREE||!tReady)return;try{localStorage.setItem(TKEY,JSON.stringify({v:SRCV,comps:sc.comps.map(c=>({id:c.id,t:c.t,fx:+c.fx.toFixed(4),fy:+c.fy.toFixed(4),r:c.r,vr:c.vr,w:c.w,tol:c.tol,amp:c.amp,flip:c.flip,name:c.name})),links:links.map(l=>({a:l.a,b:l.b,color:l.color})),sw:swState}))}catch{}}
+function loadTaller(){if(!FREE)return;try{const o=JSON.parse(localStorage.getItem(TKEY));if(!o||!o.comps){tReady=true;return}SRC.v=o.v||12;SRC.name='Batería '+dc(SRC.v)+' V';SRCV=SRC.v;
+ const b=o.comps.find(c=>c.t==='bat');if(b){SRC.fx=b.fx;SRC.fy=b.fy}
+ sc.comps=[SRC].concat(o.comps.filter(c=>c.t!=='bat'&&['lamp','led','res','fuse','sw','sw3','dcm','buz','cal'].includes(c.t)).map(c=>{const x={id:c.id,t:c.t,fx:c.fx,fy:c.fy,name:c.name};if(c.r!==undefined)x.r=c.r;if(c.vr!==undefined)x.vr=c.vr;if(c.w!==undefined)x.w=c.w;if(c.tol!==undefined)x.tol=c.tol;if(c.amp!==undefined)x.amp=c.amp;if(c.flip)x.flip=true;return x}));
+ rebuild();links=(o.links||[]).filter(l=>TM[l.a]&&TM[l.b]).map(l=>({a:l.a,b:l.b,color:l.color||'red'}));swState={};Object.keys(o.sw||{}).forEach(k=>{if(cm[k])swState[k]=!!o.sw[k]});$('#vhi').textContent='+ '+dc(SRCV)+' V';updatePalV();tReady=true;update()}catch{tReady=true}}
 function replaceSel(){if(!selComp)return;const c=cm[selComp];
  if(sc.fault){if(c.id===faultId&&broken[c.id]){delete broken[c.id];fixed=true;play('repair')}else{attempts++;play('error');$('#hint').className='hint error';$('#hint').innerHTML='<strong>'+c.id+' estaba en buen estado.</strong> Medí otra vez: el dañado tiene tensión pero no deja pasar corriente.';lastSim=simulate(links);updatePanel();setTimeout(update,2600);return}}
  else if(broken[c.id]){delete broken[c.id];play('repair')}
@@ -381,22 +688,40 @@ function replaceSel(){if(!selComp)return;const c=cm[selComp];
 $('#bUndo').onclick=()=>{for(let i=links.length-1;i>=0;i--)if(!links[i].locked){links.splice(i,1);selWire=null;play('remove');update();return}};
 $('#bDel').onclick=()=>{if(selWire!==null&&links[selWire]&&!links[selWire].locked){links.splice(selWire,1);selWire=null;play('remove');update()}};
 $('#bReset').onclick=()=>reset(false);
-$('#bSound').onclick=e=>{soundOn=!soundOn;e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('select')}};
+$('#bSound').onclick=e=>{soundOn=!soundOn;if(!soundOn){setBuzz(false);setHum(0)}else update();e.currentTarget.setAttribute('aria-pressed',String(soundOn));e.currentTarget.textContent=soundOn?'🔊':'🔇';if(soundOn){audio();play('select')}};
 const panel=$('#panel');const phone=()=>matchMedia('(max-width:950px)').matches;
 function setPanel(open){panel.classList.toggle('closed',!open);$('#bPanel').setAttribute('aria-pressed',String(open))}
 $('#bPanel').onclick=()=>{audio();play('panel');setPanel(panel.classList.contains('closed'))};
-$('#tipBtn').onclick=()=>{const p=$('#pTip');p.hidden=!p.hidden;p.textContent='💡 '+sc.tip};
-$('#solBtn').onclick=()=>{links=sc.sol.map(p=>({a:p[0],b:p[1],color:AC?(TM[p[0]].role==='PE'||TM[p[1]].role==='PE'?'earth':TM[p[0]].role==='N'||TM[p[1]].role==='N'?'blue':'brown'):(p[0]==='B.n'||p[1]==='B.n'?'blue':'red')}));swState={};sws.forEach(c=>{if(c.t==='sw')swState[c.id]=true});broken={};selWire=null;pend=null;play('connect');update()};
+$('#tipBtn').onclick=()=>{stat.hint=true;const p=$('#pTip');p.hidden=!p.hidden;p.textContent='💡 '+sc.tip};
+$('#solBtn').onclick=()=>{stat.sol=true;links=sc.sol.map(p=>({a:p[0],b:p[1],color:AC?(TM[p[0]].role==='PE'||TM[p[1]].role==='PE'?'earth':TM[p[0]].role==='N'||TM[p[1]].role==='N'?'blue':'brown'):colorFor(p[0],p[1])}));swState={};sws.forEach(c=>{if(c.t==='sw')swState[c.id]=true});broken={};selWire=null;pend=null;play('connect');update()};
 $('#replBtn').onclick=replaceSel;
+function burnSel(){const c=selComp&&cm[selComp];if(!c||!LIM[c.t]||broken[c.id]||EXAM)return;broken[c.id]=true;pendEv.push({id:c.id,t:c.t,manual:true,v:lastSim?Math.abs(lastSim.c[c.id].v):0,vr:c.vr});update()}
+$('#burnBtn').onclick=burnSel;
 $('#unplugBtn').onclick=()=>{if(plugTo){plugTo=null;plugPos={fx:plugHome[0],fy:plugHome[1]};play('unplug');update()}};
 $('#tblBtn').onclick=()=>{tableOn=!tableOn;play('select');updatePanel()};
 $('#valsBtn').onclick=e=>{showVals=!showVals;e.currentTarget.setAttribute('aria-pressed',String(showVals));play('select');render()};
 if(sc.fault){$('#solBtn').hidden=true;$('#tblBtn').hidden=true}
+if(FREE)$('#solBtn').hidden=true;
+/* modo examen: sin pistas ni solución ni veredicto; el alumno toca «Entregar» y el resultado va al examen */
+if(EXAM){['#tipBtn','#solBtn','#pStars','#pTip'].forEach(s=>$(s).hidden=true);$('#bExam').hidden=false;document.body.classList.add('exam')}
+function examOk(){if(sc.quiz)return quizSel===sc.quiz.ans;if(lastDiag&&lastDiag.done)return true;if(!sws.length)return false;
+ const sv=Object.assign({},swState),bk=Object.assign({},broken);sws.forEach(c=>{swState[c.id]=true});let ok=false;
+ try{const r=settle();ok=!!diagnose(r.sim).done}catch{}
+ swState=sv;broken=bk;return ok}
+$('#bExam').onclick=()=>{audio();$('#exConf').hidden=false};
+$('#cfNo').onclick=()=>{$('#exConf').hidden=true};
+let entregado=false;
+function entregar(tiempoAgotado){if(entregado)return;entregado=true;quizLocked=true;$('#exConf').hidden=true;const ok=examOk(),msg={tipo:'examen-entrega',id:sc.id,ok,t:Math.round((Date.now()-T00)/1000),shorts:stat.tShorts,burns:stat.tBurns,agotado:!!tiempoAgotado};
+ try{if(window.parent!==window)parent.postMessage(msg,'*');else toast('Entregado (modo prueba): '+(ok?'correcto':'incorrecto'),4000)}catch{}
+ $('#bExam').disabled=true;update()}
+$('#cfYes').onclick=()=>entregar(false);
+window.addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='examen-forzar'&&EXAM)entregar(true)});
+if(params.get('solucion')==='1')setTimeout(()=>{$('#solBtn').click();if(sc.quiz){quizSel=sc.quiz.ans;paintQuiz();update()}},60);
 $('#valsBtn').setAttribute('aria-pressed',String(showVals));
 
 /* ---------- vista adaptable ---------- */
 const wrap=$('#boardwrap');
-function fit(){const r=wrap.getBoundingClientRect();if(!r.width||!r.height)return;const a=Math.max(2,Math.min(2.6,r.width/r.height));W=Math.round(H*a);svg.setAttribute('viewBox','0 0 '+W+' '+VH);scale=Math.min(r.width/W,r.height/VH);if(lastSim)render()}
+function fit(){const r=svg.getBoundingClientRect();if(!r.width||!r.height)return;const a=Math.max(2,Math.min(2.6,r.width/r.height));W=Math.round(H*a);svg.setAttribute('viewBox','0 0 '+W+' '+VH);scale=Math.min(r.width/W,r.height/VH);if(lastSim)render()}
 new ResizeObserver(fit).observe(wrap);
 
 document.title=sc.title;$('#title').textContent=sc.title;$('#sub').textContent=(D.groups.find(g=>g.id===sc.group)||{title:''}).title+' · '+sc.desc;
@@ -413,7 +738,8 @@ $("#bProj").onclick=()=>{pizarra=!pizarra;stg.set("sim-pizarra",pizarra?"1":"0")
 const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$("#bFull").hidden=!canFull||embedded;
 $("#bFull").onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else(el.requestFullscreen||el.webkitRequestFullscreen).call(el)};
 applyAjustes();
-buildColors();setPanel(!phone());fit();reset(true);
-window.__sim={setW:w=>{W=w;svg.setAttribute('viewBox','0 0 '+W+' '+VH);render()},getW:()=>W,sc,links:()=>links,swState:()=>swState,setLinks:l=>{links=l;update()},toggle:id=>{swState[id]=!swState[id];update()},plug:id=>{plugTo=id;update()},diag:()=>lastDiag,sim:()=>lastSim,allT,tp,TM,nearestTerm,scaleNow:()=>scale};
+$('#vbar').style.background='linear-gradient(90deg,'+[0,.25,.5,.75,1].map(f=>CRISTAL.potColor(f)).join(',')+')';$('#vlo').textContent='− 0 V';$('#vhi').textContent='+ '+SRCV+' V';
+buildColors();buildPalette();buildQuiz();setPanel(!phone()||!!sc.quiz);fit();reset(true);loadTaller();
+window.__sim={faultId:()=>faultId,select:id=>{selComp=id;selWire=null;render();updatePanel()},quizSel:()=>quizSel,colorFor,colorIssues:()=>colorIssues(),addComp,delComp,setVolt,stat,starsFor,reset:f=>reset(!!f),shuffle:()=>{const m=shuffleLayout();sc.comps.forEach(c=>{if(c.tx!==undefined){c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty}});render();return m},setW:w=>{W=w;svg.setAttribute('viewBox','0 0 '+W+' '+VH);render()},getW:()=>W,sc,links:()=>links,swState:()=>swState,setLinks:l=>{links=l;update()},toggle:id=>{swState[id]=!swState[id];update()},plug:id=>{plugTo=id;update()},diag:()=>lastDiag,sim:()=>lastSim,allT,tp,TM,nearestTerm,scaleNow:()=>scale};
 })();
 </script><script src="autor.js"></script></body></html>

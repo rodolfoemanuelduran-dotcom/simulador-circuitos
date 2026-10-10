@@ -65,13 +65,13 @@ input[type=range]{width:100%;accent-color:var(--bl);height:28px}.sv{float:right;
 <script>
 (()=>{
 const $=s=>document.querySelector(s),svg=$('#st'),CS=window.CIRCUITOS;
-const params=new URLSearchParams(location.search),cid=CS[params.get('c')]?params.get('c'):Object.keys(CS)[0],CK=CS[cid];
+const params=new URLSearchParams(location.search),cid=CS[params.get('c')]?params.get('c'):Object.keys(CS)[0],CK0=CS[cid];let CK=CK0;const CAB=params.get('modo')==='cablear';
 const fm=(n,k)=>Number(n).toFixed(k).replace('.',',');
 const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
 const COL={F:'#c8703d',N:'#58b8e8',R:'#b5733e',S:'#9aa5b1',T:'#ee5a4d'};
 /* ------------------------------------------------------------------ estado */
 const IT={};CK.items.forEach(i=>{IT[i.id||('_'+Math.random())]=i});
-let tab='guia',sel=null,t=0,guided=CK.pasos.length?0:null,stepDone=[],predAns={},qi=0,score=0,answered=null;
+let tab=CAB?'cab':'guia',sel=null,t=0,guided=(CAB||!CK.pasos.length)?null:0,stepDone=[],predAns={},qi=0,score=0,answered=null;
 let S;
 function nuevo(){S={btn:{},sel:{},arm:{},coil:{},lamp:{},kt:{tm:0,out:false},q:{on:true,trip:'',h:0},th:{trip:false,h:0},fus:{blown:false},
  w:0,I:0,Iph:[0,0,0],mode:'parado',dir:1,short:false,carga:'n',vel:2,T:CK.T||6,fault:{},ev:[],msg:''};
@@ -80,9 +80,9 @@ function nuevo(){S={btn:{},sel:{},arm:{},coil:{},lamp:{},kt:{tm:0,out:false},q:{
 nuevo();
 /* ------------------------------------------------------------------ sonido */
 let soundOn=true,actx=null,nbuf=null;
-function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A()}if(actx.state==='suspended')actx.resume();return actx}
-function tone(fq,d,ty,v,dl,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+(dl||0);o.type=ty||'sine';o.frequency.setValueAtTime(fq,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v||.05,s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.destination);o.start(s);o.stop(s+d+.03)}
-function noise(d,v,dl,fq,q){const a=audio();if(!a)return;if(!nbuf){nbuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nbuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nbuf;fl.type='bandpass';fl.frequency.value=fq||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
+function audio(){if(!soundOn)return null;if(!actx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;actx=new A();const mg=actx.createGain();mg.gain.value=2.4;const cp=actx.createDynamicsCompressor();cp.threshold.value=-16;cp.ratio.value=6;cp.attack.value=.003;mg.connect(cp);cp.connect(actx.destination);actx.master=mg}if(actx.state==='suspended')actx.resume();return actx}
+function tone(fq,d,ty,v,dl,f2){const a=audio();if(!a)return;const o=a.createOscillator(),g=a.createGain(),s=a.currentTime+(dl||0);o.type=ty||'sine';o.frequency.setValueAtTime(fq,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v||.05,s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(a.master||a.destination);o.start(s);o.stop(s+d+.03)}
+function noise(d,v,dl,fq,q){const a=audio();if(!a)return;if(!nbuf){nbuf=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nbuf.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nbuf;fl.type='bandpass';fl.frequency.value=fq||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.master||a.destination);src.start(s);src.stop(s+d+.02)}
 const SND={click(){tone(560,.05,'triangle',.04);noise(.03,.03,0,2500,3)},clack(){noise(.09,.2,0,900,1.2);tone(150,.12,'square',.06,0,70);tone(2300,.04,'square',.02)},tac(){noise(.06,.1,0,1800,1.5);tone(260,.06,'square',.035,0,120)},zap(){noise(.35,.12,0,4000,.7);tone(120,.3,'sawtooth',.06,0,60)},ok(){tone(660,.12,'sine',.05);tone(880,.2,'sine',.045,.09)},no(){tone(260,.18,'triangle',.06);tone(210,.22,'triangle',.05,.1)},warn(){tone(300,.2,'triangle',.05)}};
 const play=n=>{try{SND[n]&&SND[n]()}catch{}};
 /* ------------------------------------------------------------------ geometría */
@@ -95,6 +95,81 @@ function terms(i){const x=i.x,y=i.y,h=dims(i);
  if(i.t==='m6')return[[i.n[0],x-40,y],[i.n[1],x,y],[i.n[2],x+40,y],[i.n[3],x-40,y+110],[i.n[4],x,y+110],[i.n[5],x+40,y+110]];
  if(i.t==='bus')return[];
  return[[i.n1,x,y],[i.n2,x,y+h]]}
+/* ------------------------------------------------------------------ modo cablear */
+let cw=[],wid=1,pend=null,drag=null,selW=null,hintW=null,checked=null,focusW=null;
+const TT=new Set(['cont','coil','lamp','heater','fuse','m1','m3','m6','src']);
+const TP={};const BUS=CK0.items.filter(i=>i.t==='bus');
+CK0.items.forEach(i=>{if(!TT.has(i.t))return;terms(i).forEach((a,k)=>{TP[i.id+'#'+k]={x:a[1],y:a[2],item:i,k,name:a[0]}})});
+const isBus=id=>String(id).startsWith('bus:');
+const busKey=id=>isBus(id)?id.split('@')[0]:id;
+function tpos(id){if(isBus(id)){const q=id.slice(4).split('@'),b=BUS.find(x=>x.n===q[0]);return{x:q[1]?+q[1]:b.x1+20,y:b.y}}return TP[id]}
+const KN={m1:['L','N'],m3:['U','V','W'],m6:['U1','V1','W1','W2','U2','V2'],coil:['A1','A2']};
+function tlabel(id){if(isBus(id))return 'barra '+id.slice(4).split('@')[0];const T0=TP[id],i=T0.item,nmz=(CK0.parts[i.id]&&CK0.parts[i.id].n)||i.lab||i.id;
+ let num=(KN[i.t]&&KN[i.t][T0.k])||(i.term&&i.term[T0.k])||(i.t==='src'?'':(T0.k?'2':'1'));return nmz+(num?' · '+num:'')}
+function rnameOf(id){return isBus(id)?id.slice(4).split('@')[0]:TP[id].name}
+const REFN={};Object.keys(TP).forEach(id=>{const n=TP[id].name;(REFN[n]=REFN[n]||[]).push(id)});
+const REFW=[];(function(){Object.keys(REFN).forEach(n=>{const L=REFN[n].slice(),hasBus=BUS.some(b=>b.n===n);
+ if(hasBus){L.forEach(id=>REFW.push([id,'bus:'+n+'@'+Math.round(TP[id].x),n]))}
+ else{L.sort((a,b)=>(TP[a].x-TP[b].x)||(TP[a].y-TP[b].y));for(let k=0;k+1<L.length;k++)REFW.push([L[k],L[k+1],n])}})})();
+function userUF(){const uf=UF();cw.forEach(w=>uf.u(busKey(w.a),busKey(w.b)));return uf}
+function applyWiring(){const uf=userUF(),nmr={};const all=Object.keys(TP).concat(BUS.map(b=>'bus:'+b.n));
+ all.forEach(k=>{const r=uf.f(k);if(isBus(k))nmr[r]=k.slice(4);else if(TP[k].item.t==='src')nmr[r]=TP[k].item.n});
+ const lab=k=>{const r=uf.f(k);return nmr[r]||('u'+r)};
+ CK=Object.assign({},CK0,{items:CK0.items.map(i=>{const c=Object.assign({},i);
+  if(i.t==='m1'||i.t==='m3'||i.t==='m6')c.n=i.n.map((_,k)=>lab(i.id+'#'+k));
+  else if(TT.has(i.t)&&i.t!=='src'){c.n1=lab(i.id+'#0');c.n2=lab(i.id+'#1')}
+  return c})})}
+function verificar(){const uf=userUF(),missing=[],extra=[];
+ REFW.forEach((w,i)=>{if(uf.f(busKey(w[0]))!==uf.f(busKey(w[1])))missing.push(i)});
+ const used=new Set();cw.forEach(w=>{used.add(busKey(w.a));used.add(busKey(w.b))});const ids=[...used];
+ for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++){if(uf.f(ids[i])===uf.f(ids[j])&&rnameOf(ids[i])!==rnameOf(ids[j]))extra.push([ids[i],ids[j]])}
+ return{missing,extra,ok:!missing.length&&!extra.length&&cw.length>0}}
+function addWire(a,b){if(busKey(a)===busKey(b))return false;if(cw.some(w=>(w.a===a&&w.b===b)||(w.a===b&&w.b===a)))return false;
+ const ix=REFW.findIndex(w=>(busKey(w[0])===busKey(a)&&busKey(w[1])===busKey(b))||(busKey(w[0])===busKey(b)&&busKey(w[1])===busKey(a)));cw.push({id:wid++,a,b,ref:ix});checked=null;hintW=null;focusW=null;play('wire');return true}
+function nearestT(p,cap){let best=null,bd=cap||26;Object.keys(TP).forEach(id=>{const d=Math.hypot(TP[id].x-p.x,TP[id].y-p.y);if(d<bd){bd=d;best=id}});
+ if(!best){BUS.forEach(b=>{if(p.x>=b.x1-6&&p.x<=b.x2+6&&Math.abs(p.y-b.y)<=14){best='bus:'+b.n+'@'+Math.round(Math.max(b.x1,Math.min(b.x2,p.x)))}})}return best}
+function toSvg(e){const m=svg.getScreenCTM();if(!m)return{x:0,y:0};const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const r=pt.matrixTransform(m.inverse());return{x:r.x,y:r.y}}
+function cabDown(e){const p=toSvg(e);const n=nearestT(p,24);
+ if(n){if(pend&&busKey(pend)!==busKey(n)){addWire(pend,n);pend=null;selW=null;panel();bar();return true}drag={from:n,x:p.x,y:p.y,moved:false};selW=null;try{svg.setPointerCapture(e.pointerId)}catch{};return true}
+ const w=e.target.closest('[data-w]');if(w){selW=+w.dataset.w;pend=null;play('click');bar();return true}
+ pend=null;selW=null;return false}
+svg.addEventListener('pointermove',e=>{if(drag){const p=toSvg(e);drag.x=p.x;drag.y=p.y;if(Math.hypot(p.x-tpos(drag.from).x,p.y-tpos(drag.from).y)>12)drag.moved=true}});
+const cabUp=e=>{if(drag){const p=toSvg(e),n=nearestT(p,30);if(n&&busKey(n)!==busKey(drag.from)){addWire(drag.from,n);pend=null;panel();bar()}else if(!drag.moved||(n&&busKey(n)===busKey(drag.from))){pend=pend===drag.from?null:drag.from;play('tap');bar()}drag=null}};
+svg.addEventListener('pointerup',cabUp);svg.addEventListener('pointercancel',cabUp);
+addEventListener('keydown',e=>{if(CAB&&(e.key==='Delete'||e.key==='Backspace')&&selW!==null)quitarW()});
+function quitarW(){if(selW===null)return;cw=cw.filter(w=>w.id!==selW);selW=null;checked=null;play('rm');panel();bar()}
+function wirePath(a,b){const A=tpos(a),B=tpos(b),dy=B.y-A.y,dx=B.x-A.x;if(Math.abs(dx)<2)return`M${A.x} ${A.y}L${B.x} ${B.y}`;const m=Math.max(24,Math.min(120,Math.abs(dy)*.5+Math.abs(dx)*.12))*(dy>=0?1:-1);return`M${A.x} ${A.y}C${A.x} ${A.y+m} ${B.x} ${B.y-m} ${B.x} ${B.y}`}
+function wireLabel(k){if(isBus(k))return k.slice(4);const it=CK.items.find(i=>i.id===TP[k].item.id),kk=TP[k].k;return it.t==='m1'||it.t==='m3'||it.t==='m6'?it.n[kk]:it.t==='src'?it.n:(kk?it.n2:it.n1)}
+function wiresCab(){let s='';
+ BUS.forEach(b=>{const c=nodeColor(b.n);s+=`<path d="M${b.x1} ${b.y}H${b.x2}" stroke="${c||'var(--dead)'}" stroke-width="5" stroke-linecap="round" opacity="${c?1:.55}"/>`;if(S.flowNodes&&S.flowNodes.has(b.n))s+=`<path class="flowd" d="M${b.x1} ${b.y}H${b.x2}"/>`});
+ cw.forEach(w=>{const d=wirePath(w.a,w.b),lbl=wireLabel(busKey(w.a)),col=nodeColor(lbl),flow=S.flowNodes&&S.flowNodes.has(lbl),sel=w.id===selW;
+  s+=`<g data-w="${w.id}"><path d="${d}" fill="none" stroke="transparent" stroke-width="20"/>${sel?`<path d="${d}" fill="none" stroke="#ffd65a" stroke-width="12" stroke-linecap="round" opacity=".9"/>`:''}<path d="${d}" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="7.5" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${col||'var(--dead)'}" stroke-width="5" stroke-linecap="round"/>${flow?`<path class="flowd" d="${d}" pointer-events="none"/>`:''}</g>`});
+ return s}
+function termRings(){const used={};cw.forEach(w=>{used[busKey(w.a)]=1;used[busKey(w.b)]=1});const hh=hintW||(focusW!==null?REFW[focusW]:null);let s='';
+ Object.keys(TP).forEach(id=>{const q=TP[id],pe=pend===id,hn=hh&&(busKey(hh[0])===id||busKey(hh[1])===id);
+  s+=`<g pointer-events="none">${hn?`<circle cx="${q.x}" cy="${q.y}" r="16" fill="none" stroke="#ffd65a" stroke-width="3.4" class="pulse"/>`:''}${pe?`<circle cx="${q.x}" cy="${q.y}" r="13" fill="#ffd65a" opacity=".5"/>`:''}<circle cx="${q.x}" cy="${q.y}" r="6.2" fill="${used[id]?'var(--ink)':'var(--bg)'}" stroke="var(--bl)" stroke-width="2.4"/></g>`});
+ if(hh)[hh[0],hh[1]].forEach(k=>{if(isBus(k)){const q=tpos(k);s+=`<circle cx="${q.x}" cy="${q.y}" r="14" fill="none" stroke="#ffd65a" stroke-width="3.4" class="pulse" pointer-events="none"/>`}});
+ if(pend&&isBus(pend)){const q=tpos(pend);s+=`<circle cx="${q.x}" cy="${q.y}" r="10" fill="#ffd65a" opacity=".6" pointer-events="none"/>`}
+ if(drag){const A=tpos(drag.from);s+=`<path d="M${A.x} ${A.y}L${drag.x} ${drag.y}" stroke="#ffd65a" stroke-width="4.4" stroke-linecap="round" stroke-dasharray="2 8" pointer-events="none"/><circle cx="${drag.x}" cy="${drag.y}" r="6" fill="#ffd65a" pointer-events="none"/>`}
+ return s}
+const WCOL=n=>({F:'marrón (fase de mando)',N:'celeste (neutro)',R:'fase R',S:'fase S',T:'fase T'}[n]||'mando / potencia');
+function doneW(){const uf=userUF();return REFW.map(w=>uf.f(busKey(w[0]))===uf.f(busKey(w[1])))}
+const TABMAP={'mono-directo':'monodirecto','mono-marcha-parada':'monomp','tri-directo':'directo','tri-enclavamiento':'enclav','tri-impulsos':'impulsos','tri-temporizado':'temporizado','tri-inversion':'inversion','tri-estrella-triangulo':'sd'};
+function pCab(){const d=doneW(),n=d.filter(Boolean).length;let h=`<h2>Cableá: ${CK.titulo}</h2>`+(TABMAP[cid]?`<div class="card"><b>🔧 ¿Preferís ver los aparatos reales?</b>Cableá este mismo circuito en un tablero realista: contactores, fusibles, térmico y pulsadores dibujados como en la vida real.<div class="row"><button class="btn pri" data-gt="${TABMAP[cid]}">Cablear en el tablero realista</button></div></div>`:'')+`<p>Los aparatos ya están ubicados. Tocá un borne y después otro (o arrastrá) para tender un cable. Tocá la <b>barra F</b> o <b>N</b> en cualquier punto para conectar a ella. Cuando termines, verificá y probá los pulsadores.</p>`;
+ h+=`<div class="row"><button class="btn pri" data-a="verificar">✔ Verificar</button><button class="btn" data-a="ayuda">💡 Ayuda</button></div>`;
+ if(checked){if(checked.ok)h+=`<div class="vd ok">✅ ¡Cableado correcto! Todos los bornes están unidos como en el esquema. Ahora probá el circuito: accioná los pulsadores y mirá “En vivo”.</div>`;
+  else{h+=`<div class="vd bad">El cableado tiene diferencias:</div>`;if(checked.missing.length)h+=`<h3>Faltan (${checked.missing.length})</h3>`+checked.missing.slice(0,6).map(i=>`<p>• Unir <b>${tlabel(REFW[i][0])}</b> con <b>${tlabel(REFW[i][1])}</b></p>`).join('')+(checked.missing.length>6?`<p>… y ${checked.missing.length-6} más.</p>`:'');
+   if(checked.extra.length)h+=`<h3>Sobran (${checked.extra.length})</h3>`+checked.extra.slice(0,5).map(p=>`<p>• <b>${tlabel(p[0])}</b> y <b>${tlabel(p[1])}</b> no deben estar unidos</p>`).join('')}}
+ h+=`<h3>Cables a tender (${n} de ${REFW.length})</h3><ol class="steps">${REFW.map((w,i)=>`<li data-wl="${i}" class="${d[i]?'done':''} ${focusW===i?'on':''}"><i>${d[i]?'✓':i+1}</i><span>${tlabel(w[0])} → ${tlabel(w[1])}${focusW===i?`<br><small>${WCOL(w[2])}</small>`:''}</span></li>`).join('')}</ol>`;
+ h+=`<div class="row"><button class="btn" data-a="auto">🪄 Mostrar resuelto</button><button class="btn" data-a="limpiar">🗑 Sacar todos</button></div>`;
+ h+=`<div class="row"><button class="btn" data-a="guia">📖 Ver la guía de este circuito</button></div>`;return h}
+function cabAction(a){play('click');
+ if(a==='verificar'){checked=verificar();play(checked.ok?'ok':'no')}
+ else if(a==='ayuda'){const d=doneW(),i=d.findIndex(x=>!x);if(i<0){hintW=null;focusW=null}else{focusW=i;hintW=REFW[i]}}
+ else if(a==='auto'){cw=[];wid=1;REFW.forEach((w,i)=>cw.push({id:wid++,a:w[0],b:w[1],ref:i}));checked=null;play('wire')}
+ else if(a==='limpiar'){cw=[];selW=null;pend=null;checked=null;hintW=null;focusW=null}
+ else if(a==='guia'){let q='mando.html?c='+cid;['tema','pizarra'].forEach(k=>{if(params.get(k)!==null)q+='&'+k+'='+params.get(k)});location.href=q;return}
+ panel();bar()}
 /* ------------------------------------------------------------------ solver */
 function closedItem(i){
  if(i.t==='fuse')return!S.fus.blown;
@@ -112,7 +187,7 @@ function closedItem(i){
  else if(k==='th')act=S.th.trip;
  return i.form==='NC'?!act:act}
 function UF(){const p={};const f=a=>{if(p[a]===undefined)p[a]=a;while(p[a]!==a){p[a]=p[p[a]];a=p[a]}return a};return{f,u:(a,b)=>{p[f(a)]=f(b)}}}
-function solve(){const uf=UF();CK.items.forEach(i=>{terms(i).forEach(x=>uf.f(x[0]))});
+function solve(){if(CAB)applyWiring();const uf=UF();CK.items.forEach(i=>{terms(i).forEach(x=>uf.f(x[0]))});
  const edges=[];CK.items.forEach(i=>{if(closedItem(i)){uf.u(i.n1,i.n2);edges.push(i)}});
  S.uf=uf;S.edges=edges;
  const rF=uf.f('F'),rN=uf.f('N');S.shortCtl=rF===rN;
@@ -193,7 +268,7 @@ function wires(){const nodes={};CK.items.forEach(i=>{terms(i).forEach(([n,x,y])=
 const hl=(id,hs)=>hs.has(id)?' class="hl"':'';
 function sw(i,hs){const x=i.x,y=i.y,h=dims(i),cl_=closedItem(i),op=i.op;
  const y1=y+14,y2=y+h-14,ym=(y1+y2)/2,flow=S.flowItems.has(i.id);
- let b=`<path d="M${x} ${y}V${y1}M${x} ${y2}V${y+h}" stroke="var(--dead)" stroke-width="3.6" opacity="0"/>`;
+ let b=`<path d="M${x} ${y}V${y1}M${x} ${y2}V${y+h}" stroke="var(--ink)" stroke-width="3.4" opacity="${CAB?1:0}"/>`;
  const act=op?(i.form==='NC'?!cl_:cl_):((i.form==='NC')?!cl_:cl_);
  const ang=cl_?0:24;
  if(i.form==='NC'){b+=`<path d="M${x} ${y2}L${x-(cl_?0:ang)} ${y1+4}" stroke="${flow?'#ffd65a':'var(--ink)'}" stroke-width="4.6" stroke-linecap="round"/><path d="M${x-9} ${y1+9}H${x+9}" stroke="var(--ink)" stroke-width="3"/>`}
@@ -227,7 +302,7 @@ function drawItem(i,hs){const x=i.x,y=i.y,h=dims(i);let s='';
 function links(){let s='';(CK.links||[]).forEach(l=>{const [k,n]=l.ctl.split(':');const en=k==='coil'?S.arm[n]>.5:k==='kt'?S.kt.out:k==='q'?(S.q.on&&!S.q.trip):false;s+=`<path d="${l.pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join('')}" fill="none" stroke="${en?'#ffb347':'var(--ink)'}" stroke-width="${en?3:2.4}" stroke-dasharray="8 6" opacity="${en?1:.55}"/>`;if(l.lab)s+=`<text x="${l.pts[0][0]}" y="${l.pts[0][1]-8}" class="lab s">${l.lab}</text>`});return s}
 function render(){const hs=hlSet();
  let s=`<defs><filter id="fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>`;
- s+=wires()+links();CK.items.forEach(i=>{s+=drawItem(i,hs)});
+ s+=(CAB?wiresCab():wires())+links();CK.items.forEach(i=>{s+=drawItem(i,hs)});if(CAB)s+=termRings();
  (CK.labels||[]).forEach(l=>{s+=`<text x="${l.x}" y="${l.y}" class="lab ${l.c||''}" pointer-events="none">${l.t}</text>`});
  if(S.short)s+=`<g pointer-events="none" class="pulse"><rect x="270" y="20" width="460" height="34" rx="8" fill="#c0392b"/><text x="500" y="43" class="lab c" style="fill:#fff">⚡ CORTOCIRCUITO entre fases</text></g>`;
  svg.innerHTML=s}
@@ -241,7 +316,7 @@ function narr(){let h='';
  (CK.comentario?CK.comentario(S,{nm}):[]).forEach(c=>{h+=`<div class="card"><b>${c[0]}</b>${c[1]}</div>`});
  return h}
 /* ------------------------------------------------------------------ paneles */
-const TABS=[['guia','Guía'],['vivo','En vivo'],['probar','Probar'],['comp','Piezas'],['ej','Ejercicios']];
+const TABS=CAB?[['cab','Cables'],['vivo','En vivo'],['probar','Probar'],['comp','Piezas'],['ej','Ejercicios']]:[['guia','Guía'],['vivo','En vivo'],['probar','Probar'],['comp','Piezas'],['ej','Ejercicios']];
 function lecturas(){const modes={parado:'detenido',directo:'directo',estrella:'ESTRELLA (Y)',triangulo:'TRIÁNGULO (Δ)',mono:'sólo 2 fases'};
  const run=S.mode!=='parado'&&!S.short;
  const U=S.mode==='estrella'?220:run?(CK.mono?220:380):0;
@@ -253,7 +328,7 @@ function lecturas(){const modes={parado:'detenido',directo:'directo',estrella:'E
  return R}
 function readsHTML(){return lecturas().map(r=>`<div class="rd ${r.bad?'bad':r.on?'on':''}"><small>${r.l}</small><b>${r.v}</b></div>`).join('')}
 function panel(){const p=$('#panel'),sc=p.scrollTop;let h=`<div class="tabs" role="tablist">${TABS.map(x=>`<button role="tab" data-tab="${x[0]}" aria-selected="${tab===x[0]}">${x[1]}</button>`).join('')}</div><div class="pb">`;
- if(tab==='guia')h+=pGuia();else if(tab==='vivo')h+=`<h2>Lo que pasa ahora</h2><div id="vivo"></div><h3>Mediciones</h3><div class="reads" id="rd"></div>`;
+ if(tab==='cab')h+=pCab();else if(tab==='guia')h+=pGuia();else if(tab==='vivo')h+=`<h2>Lo que pasa ahora</h2><div id="vivo"></div><h3>Mediciones</h3><div class="reads" id="rd"></div>`;
  else if(tab==='probar')h+=pProbar();else if(tab==='comp')h+=pComp();else h+=pEj();
  p.innerHTML=h+'</div>';p.scrollTop=sc;bindPanel()}
 function pGuia(){let h=`<h2>${CK.titulo}</h2><p>${CK.intro}</p>`;
@@ -265,8 +340,9 @@ function pGuia(){let h=`<h2>${CK.titulo}</h2><p>${CK.intro}</p>`;
   if(s.expl&&stepDone[guided])h+=`<div class="card" style="margin-top:8px"><b>💡 Lo que acabás de ver</b>${s.expl}</div>`;
   h+=`<div class="row"><button class="btn" data-g="prev" ${guided===0?'disabled':''}>◀ Anterior</button><button class="btn pri" data-g="next">${guided===CK.pasos.length-1?'Terminar':'Siguiente ▶'}</button></div>`}
  else h+=`<div class="row"><button class="btn pri" data-g="0">▶ Empezar la guía</button></div>`;
- const TB={'tri-directo':'directo','tri-enclavamiento':'enclav','tri-inversion':'inversion','tri-estrella-triangulo':'sd'}[cid];
+ const TB=TABMAP[cid];
  if(TB)h+=`<div class="card" style="margin-top:12px"><b>🔧 ¿Y en la realidad?</b>Cableá este mismo circuito en un tablero realista, con riel DIN, bornes y pulsadores en la puerta.<div class="row"><button class="btn pri" data-gt="${TB}">Ir al tablero realista</button></div></div>`;
+ h+=`<div class="card" style="margin-top:12px"><b>✏️ ¡Ahora cableá vos!</b>Los aparatos de este circuito están sueltos: tendé los cables entre sus bornes, verificá y probalo.<div class="row"><button class="btn pri" data-cab="1">Cablear este circuito</button></div></div>`;
  h+=`<p class="note">Tocá cualquier pieza del esquema para saber qué es. Los pulsadores se accionan manteniendo el dedo o el mouse apretado.</p>`;return h}
 function pProbar(){let h=`<h2>Probá y rompé cosas</h2>`;
  h+=`<h3>Carga del motor</h3><div style="display:flex;flex-wrap:wrap;gap:5px">${[['n','Normal'],['s','Sobrecarga 1,5×'],['b','Rotor trabado'],['cc','Cortocircuito']].map(x=>`<button class="chip" data-carga="${x[0]}" aria-pressed="${S.carga===x[0]}">${x[1]}</button>`).join('')}</div>`;
@@ -281,6 +357,9 @@ function pEj(){const Q=CK.ejercicios;if(qi>=Q.length)return`<h2>Resultado</h2><d
 function bindPanel(){const p=$('#panel');
  p.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;play('click');panel()});
  p.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>guide(b.dataset.g));
+ p.querySelectorAll('[data-wl]').forEach(b=>b.onclick=()=>{const i=+b.dataset.wl;focusW=focusW===i?null:i;hintW=focusW===null?null:REFW[i];play('click');panel()});
+ p.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>cabAction(b.dataset.a));
+ p.querySelectorAll('[data-cab]').forEach(b=>b.onclick=()=>{let q='mando.html?c='+cid+'&modo=cablear';['tema','pizarra'].forEach(k=>{if(params.get(k)!==null)q+='&'+k+'='+params.get(k)});location.href=q});
  p.querySelectorAll('[data-gt]').forEach(b=>b.onclick=()=>{let q='tablero.html?c='+b.dataset.gt;['tema','pizarra'].forEach(k=>{if(params.get(k)!==null)q+='&'+k+'='+params.get(k)});location.href=q});
  p.querySelectorAll('[data-pred]').forEach(b=>b.onclick=()=>{predAns[guided]=+b.dataset.pred;play(+b.dataset.pred===CK.pasos[guided].pred.ok?'ok':'no');panel();bar()});
  p.querySelectorAll('[data-carga]').forEach(b=>b.onclick=()=>{S.carga=b.dataset.carga;play('click');panel()});
@@ -293,12 +372,14 @@ function bindPanel(){const p=$('#panel');
  p.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const k=b.dataset.q;if(k==='next'){qi++;answered=null}else if(k==='reset'){qi=0;score=0;answered=null}play('click');panel()})}
 function guide(k){play('click');if(k==='prev')k=Math.max(0,guided-1);else if(k==='next'){k=guided+1;if(k>=CK.pasos.length){guided=null;panel();bar();return}}else k=+k;guided=k;const s=CK.pasos[k];if(s.prep){nuevo();s.prep(S)}panel();bar()}
 function bar(){const b=$('#bar');let h='';if(guided!==null){const s=CK.pasos[guided];const done=stepDone[guided];const show=!s.pred||predAns[guided]!==undefined;h+=`<div class="hint ${done?'done':''}" ${show?'':'hidden'}>${done?'✅ ¡Muy bien! Pasá al siguiente paso.':'👉 '+(s.hint||s.t)}</div>`}
+ else if(CAB)h+=`<div class="hint">${pend?'Elegiste <b>'+tlabel(pend)+'</b>. Tocá el otro borne para unirlos.':selW!==null?'Cable seleccionado: tocá “Quitar” para sacarlo.':cw.length?cw.length+' cable'+(cw.length>1?'s':'')+'. Verificá cuando termines.':'Tocá un borne y después otro (o arrastrá) para tender un cable.'}</div><button class="chip" id="bDelW" ${selW===null?'disabled':''}>🗑 Quitar</button><button class="chip" id="bVer">✔ Verificar</button>`;
  else h+=`<div class="hint">Probá el circuito: accioná los pulsadores del esquema.</div>`;
- h+=`<button class="chip" data-r="reset">↺ Reiniciar</button><button class="chip" id="bZoom" aria-pressed="${$('#sv').classList.contains('zoom')}">🔍 Ampliar</button>`;b.innerHTML=h;$('#bZoom').onclick=e=>{const z=$('#sv').classList.toggle('zoom');e.currentTarget.setAttribute('aria-pressed',String(z));play('click')};b.querySelector('[data-r]').onclick=()=>{nuevo();guided=null;stepDone=[];play('click');panel();bar()}}
+ h+=`<button class="chip" data-r="reset">↺ Reiniciar</button><button class="chip" id="bZoom" aria-pressed="${$('#sv').classList.contains('zoom')}">🔍 Ampliar</button>`;b.innerHTML=h;$('#bZoom').onclick=e=>{const z=$('#sv').classList.toggle('zoom');e.currentTarget.setAttribute('aria-pressed',String(z));play('click')};b.querySelector('[data-r]').onclick=()=>{nuevo();guided=null;stepDone=[];play('click');panel();bar()};
+ if(CAB){const d=$('#bDelW'),v=$('#bVer');if(d)d.onclick=quitarW;if(v)v.onclick=()=>{tab='cab';cabAction('verificar')}}}
 function info(){const b=$('#info');if(!sel||!CK.parts[sel]){b.hidden=true;return}const p=CK.parts[sel];b.hidden=false;b.innerHTML=`<button aria-label="Cerrar">✕</button><b>${p.t}</b><br>${p.d}`;b.querySelector('button').onclick=()=>{sel=null;info()}}
 /* ------------------------------------------------------------------ entrada */
 let pressed=null;
-svg.addEventListener('pointerdown',e=>{audio();const a=e.target.closest('[data-act]');if(a){const k=a.dataset.act,n=a.dataset.n;
+svg.addEventListener('pointerdown',e=>{audio();if(CAB&&cabDown(e))return;const a=e.target.closest('[data-act]');if(a){const k=a.dataset.act,n=a.dataset.n;
   if(k==='btn'){S.btn[n]=true;pressed=n;play('click');try{svg.setPointerCapture(e.pointerId)}catch{}}
   else if(k==='sel'){S.sel[n]=!S.sel[n];play('clack')}
   else if(k==='qh'){if(S.q.trip){S.q.trip='';S.q.on=false;play('tac')}else{S.q.on=!S.q.on;play('clack')}}}
@@ -332,6 +413,6 @@ $('#bPanel').onclick=()=>setPanel($('#panel').classList.contains('closed'));
 if(params.get('anidado')){document.body.classList.add('anidado');const st=document.createElement('style');st.textContent='.anidado header.top{display:none}.anidado .autor-badge{display:none!important}';document.head.appendChild(st)}
 document.title=CK.titulo;$('#title').textContent=CK.titulo;$('#sub').textContent='Mando de motores · Circuitos';
 apply();setPanel(!phone());if(CK.pasos[0]&&CK.pasos[0].prep)CK.pasos[0].prep(S);panel();bar();info();requestAnimationFrame(loop);
-window.__mando={render:()=>{solve();flows();render()},CK,S:()=>S,solve,flows,paso,press:(n,v)=>{S.btn[n]=v},sel:(n,v)=>{S.sel[n]=v},nuevo:()=>{nuevo()},set:(k,v)=>{S[k]=v}};
+window.__mando={cab:{addWire,verificar,wires:()=>cw,auto:()=>cabAction('auto'),clear:()=>cabAction('limpiar'),REFW,TP,nearestT},render:()=>{solve();flows();render()},CK,S:()=>S,solve,flows,paso,press:(n,v)=>{S.btn[n]=v},sel:(n,v)=>{S.sel[n]=v},nuevo:()=>{nuevo()},set:(k,v)=>{S[k]=v}};
 })();
 </script><script src="autor.js"></script></body></html>

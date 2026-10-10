@@ -1,0 +1,101 @@
+GUIA DOCENTE - SIMULADOR DE CIRCUITOS ELECTRICOS
+==================================================
+Escuela Tecnica Crucero ARA General Belgrano - Escuela Tecnica N.o 1 de Bella Vista
+Autor: Rodolfo Emanuel Duran
+
+COMO USARLO EN CLASE (PIZARRA / PROYECTOR)
+- Abrir con "Abrir simulador.bat" (no necesita internet).
+- Boton "Aa" = modo pizarra (letras y trazos grandes). Boton "o" = fondo claro u oscuro. "[ ]" = pantalla completa.
+- Los alumnos pasan al frente y accionan los pulsadores o tienden los cables tocando con el dedo / mouse.
+- En el celular: usar en posicion horizontal.
+
+SECUENCIA SUGERIDA
+1. CORRIENTE CONTINUA (24 practicas): circuito simple -> serie -> paralelo -> mixtos -> LED/fusible -> busca la falla.
+2. CORRIENTE ALTERNA (8): de donde viene la corriente -> fase, neutro y tierra -> llaves y combinacion -> casas
+   (dormitorio, cocina, living, escalera) con protecciones.
+3. DATOS CURIOSOS (20): para abrir o cerrar una clase; cada demostracion se resuelve en 5 minutos.
+4. MANDO DE MOTORES
+   a) Conoce los componentes (5): contactor -> rele termico -> guardamotor -> pulsadores -> temporizador.
+      Usar "Interior" + "Paso a paso", y la lupa y la transparencia para explicar cada mecanismo.
+   b) Circuitos (8): monofasico directo -> monofasico marcha-parada -> trifasico directo -> marcha-parada con
+      enclavamiento -> impulsos -> temporizado -> inversion de giro -> estrella-triangulo.
+      Cada uno tiene "Guia": una pregunta de prediccion antes de cada paso. Pedir a la clase que conteste en voz alta.
+   c) Cablea el circuito (8): el mismo esquema de la guia, pero con los aparatos sueltos; los alumnos tienden
+      los cables entre bornes y despues lo prueban (igual que en corriente continua). Conviene hacerlo despues de
+      la guia de cada circuito.
+   d) Cablea el tablero (4): arranque directo -> marcha-parada -> inversion -> estrella-triangulo.
+      Verificar con el boton "Verificar" y recien despues "Energizar". Probar fallas en la pestana "Probar".
+
+OBJETIVOS DE APRENDIZAJE (resumen)
+- Distinguir circuito de potencia y de mando; leer simbolos IEC 60617 y bornes normalizados (1-2, 13-14, 21-22, 95-96, A1-A2).
+- Explicar la retencion, el enclavamiento y la secuencia temporizada.
+- Reconocer proteccion contra sobrecarga (termica) y contra cortocircuito (magnetica / fusibles).
+- Cablear un tablero con orden y colores (R marron, S negro, T rojo, N celeste, mando naranja en este simulador).
+- Reconocer errores comunes: bobina de 220 V a 380 V, fases cruzadas, falta de enclavamiento.
+
+CABLES QUE SE ILUMINAN (CORRIENTE CONTINUA Y ALTERNA)
+- Un cable se ilumina en cuanto queda unido a un polo de la bateria, aunque el circuito este abierto. El color indica la
+  tension: celeste = polo -, verde y amarillo = valores intermedios, naranja = polo +. La barra "Cables con energia" del
+  panel lo explica. Los electrones se mueven por dentro del cable SOLO cuando el circuito esta cerrado.
+  Pregunta para la clase: "con la llave abierta el cable ya tiene tension pero no circula corriente: por que?"
+- Tocando un cable se ve su tension y su corriente.
+- Boton de reiniciar: ademas de borrar los cables, MEZCLA la ubicacion de los componentes en la mesa, asi un mismo circuito
+  se arma de muchas formas distintas (y los alumnos no copian de memoria).
+- Serie con lamparas de distinta potencia (practica "Serie - Lamparas de distinta potencia"): por todas pasa la misma
+  corriente pero no brillan igual. Brilla mas la de mayor resistencia (P = I2 x R); una lampara de mas watts tiene menos
+  resistencia, asi que en serie es la que menos brilla.
+
+ESTRELLAS, MEDALLAS Y LOGROS
+- Cada practica de corriente continua y alterna da hasta 3 estrellas: 1 por completarla, 2 si no se vio la solucion, 3 si
+  ademas no se uso la pista ni hubo cortocircuitos o componentes quemados. El progreso se guarda en cada dispositivo
+  (boton "Medallas" del menu). Hay medallas de bronce, plata y oro por tema y 11 logros.
+- Cuando algo falla (cortocircuito, fusible fundido, LED quemado o al reves) aparece el cartel "Por que paso?" con tres
+  lineas: que paso, por que y que hacer.
+
+TALLER LIBRE
+- Mesa vacia con paleta de componentes (lamparas de distinta potencia, LED, resistores, fusibles, llaves, conmutadores) y
+  bateria de 3 a 24 V. Se agrega con un toque, se arrastra para ubicarlo y se cablea como siempre. Se guarda solo.
+  Ideas: armar serie, paralelo y mixto con lamparas distintas; calcular el resistor de un LED; probar un fusible.
+
+MODO EXAMEN EN VIVO (para evaluar frente a toda la clase; se usa SOLO CON EL MOUSE)
+- Pensado para proyectar en la pizarra y pasar el mouse inalambrico de alumno en alumno, mientras el docente anota las notas
+  en su lista impresa. No hay nombres ni teclado: todo se maneja con el mouse.
+- Desde el menu principal: "Modo examen". Se elige el nivel inicial (1 a 10), el tiempo por problema (sin limite, 2, 3 o 5
+  min) y si se muestra el resultado a la clase despues de cada problema. Luego "Comenzar".
+- Aparece un problema generado al azar (nunca dos iguales): armar un circuito con cables (rojo al + y celeste al -), responder
+  una pregunta de opcion multiple sobre un circuito ya armado (se puede medir con el multimetro), elegir el resistor de un LED
+  o encontrar la lampara quemada. El alumno toca "Entregar" (o se entrega solo al acabarse el tiempo). No hay pistas ni
+  "Ver solucion" y el simulador no avisa si esta bien hasta que se entrega.
+- Al entregar aparece en grande "Correcto" o "Todavia no" con la NOTA DEL PROBLEMA (de 0 a 10) para anotar en la lista, el tiempo y
+  los incidentes. El docente puede tocar "Ver la solucion" para comentarla, subir o bajar el nivel del proximo problema, y
+  "Siguiente problema": se pide pasar el mouse al proximo alumno y recien empieza el tiempo cuando toca "Comenzar".
+- La dificultad sube sola: si se resuelve bien, el problema siguiente es del nivel siguiente (12 niveles: circuito simple, serie,
+  paralelo, tension en serie, ramas con llave, que pasa si se quema una, mixtos, corriente, LED con resistor, buscar la falla,
+  resistencia equivalente, mixto de resistores; despues se repiten con variantes mas grandes). Si falla, se repite el nivel con
+  otra variante.
+- "Terminar examen" muestra la planilla de todos los problemas (nivel, resultado, nota, tiempo); se puede imprimir o guardar en
+  PDF, copiar para Excel o descargar en CSV.
+
+COLORES DE LOS CABLES EN CORRIENTE CONTINUA
+- La polaridad manda el color: el cable unido al polo + (y lo que sigue por llaves y fusibles) va ROJO; el que vuelve al polo -
+  va CELESTE. Si se arma el circuito con otros colores el simulador marca con una etiqueta amarilla los cables equivocados
+  ("va ROJO" / "va CELESTE") y no da el circuito por resuelto hasta corregirlos. Los cables entre cargas pueden ser de cualquier color.
+
+TALLER LIBRE: EXPERIMENTOS CONTROLADOS
+- Cada lampara del taller tiene un aguante distinto (si se toca, el multimetro dice hasta cuantos voltios aguanta) y la bateria
+  es una fuente variable (deslizador de 1 a 30 V). Experimentos: poner varias lamparas iguales en paralelo y subir la tension de
+  a poco: se funde primero la mas debil y las otras siguen encendidas; poner dos lamparas de 12 V en serie con 24 V: la tension
+  se reparte y no se queman, pero una sola con 24 V explota. El boton "Quemar" funde la lampara elegida a mano.
+- Hay mas artefactos ademas de lamparas: motor de corriente continua (carcasa de cristal con imanes, rotor y colector; gira mas
+  rapido con mas tension y al reves si se invierte la polaridad), zumbador (polarizado: solo suena con el + en su pata +) y
+  calefactor. Practicas en el grupo "Otros artefactos".
+
+IDEAS PARA EVALUAR
+- Pedir que cableen sin usar la guia y verificar. Contar el numero de intentos.
+- Activar una falla en "Probar" (falta de fase, enclavamiento anulado, rotor trabado) y pedir el diagnostico.
+- Usar los ejercicios de multiple choice al final de cada practica como cierre.
+
+AVISOS
+- Los valores (corrientes, tiempos, curvas de disparo) son didacticos y simplificados; el simulador acelera el
+  calentamiento del termico para poder verlo en clase.
+- No reemplaza la formacion, las mediciones ni los procedimientos de un profesional electricista (AEA 90364 / IEC 60947).

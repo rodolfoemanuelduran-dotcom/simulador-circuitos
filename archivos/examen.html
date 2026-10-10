@@ -1,0 +1,145 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Modo examen</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd43b;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f}
+:root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#ffffff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#ffffff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--tx);font:19px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;user-select:none}
+button{font:inherit;color:inherit}
+header.top{flex:0 0 auto;display:flex;align-items:center;gap:14px;min-height:54px;padding:5px 108px 5px 14px;background:var(--hdr);border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:1.1rem;white-space:nowrap}header small{display:block;color:var(--mu);font-size:.72rem}
+.tag{font-weight:800;padding:4px 14px;border-radius:999px;background:var(--p2);border:1px solid var(--line);white-space:nowrap}.tag.lv{border-color:var(--yl);color:var(--yl)}
+.sp{flex:1}
+.timer{font:900 1.8rem ui-monospace,Consolas,monospace;padding:2px 16px;border-radius:12px;background:var(--p2);border:2px solid var(--line);min-width:118px;text-align:center}.timer.warn{border-color:var(--rd);color:var(--rd);animation:blink .8s steps(2) infinite}@keyframes blink{50%{background:#ff6b6b33}}
+.btn{padding:10px 18px;border:2px solid var(--line);border-radius:12px;background:var(--p2);cursor:pointer;font-weight:700}.btn:hover{border-color:var(--bl)}.btn.primary{background:var(--yl);color:#241a00;border-color:var(--yl);font-weight:900}.btn.big{padding:16px 34px;font-size:1.3rem;border-radius:16px}.btn.sm{padding:6px 12px;font-size:.85rem}
+main{flex:1 1 auto;min-height:0;position:relative}
+.scr{position:absolute;inset:0;overflow:auto;padding:clamp(14px,3vw,34px)}.scr[hidden]{display:none}
+.card{max-width:900px;margin:0 auto;padding:26px;border-radius:24px;border:1px solid var(--line);background:var(--p);box-shadow:0 14px 40px #0006}.card.center{text-align:center}
+h2{margin:0 0 6px;font-size:2rem}.sub{color:var(--mu);margin:0 0 16px}
+.lab{display:block;margin:16px 0 6px;font-size:.8rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.opts{display:flex;flex-wrap:wrap;gap:10px}.opts label{margin:0;cursor:pointer}.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts span{display:block;min-width:74px;padding:12px 18px;text-align:center;border-radius:14px;border:3px solid var(--line);background:var(--p2);font-weight:800}.opts span small{display:block;font-size:.62rem;font-weight:600;color:var(--mu);max-width:130px;margin:2px auto 0;line-height:1.15}
+.opts input:checked+span{border-color:var(--yl);background:#ffd43b22}.opts label:hover span{border-color:var(--bl)}
+.rules{margin:16px 0;padding:12px 16px;border-radius:12px;border-left:5px solid var(--yl);background:var(--p2);font-size:.9rem;color:var(--mu)}.rules b{color:var(--tx)}
+#runwrap{position:absolute;inset:0}#runwrap iframe{width:100%;height:100%;border:0;background:var(--bg)}
+#cont{position:absolute;right:16px;bottom:16px;z-index:5;box-shadow:0 10px 30px #000a}
+.turno .nm{font-size:clamp(2rem,6vw,3.6rem);font-weight:900;margin:10px 0;color:var(--yl);line-height:1.1}
+.verd{position:absolute;inset:0;z-index:6;display:grid;place-items:center;padding:18px;background:#04101bdd;backdrop-filter:blur(6px);overflow:auto}.verd[hidden]{display:none}
+.verd .card{max-width:680px;animation:pop .45s cubic-bezier(.2,1.5,.4,1)}@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.verd .ico{font-size:5rem;line-height:1}.verd.ok .ttl{color:var(--gr)}.verd.no .ttl{color:var(--rd)}.verd .ttl{font-size:2.3rem;font-weight:900;margin:2px 0}
+.nota{display:inline-flex;align-items:baseline;gap:8px;margin:6px 0 4px;padding:6px 26px;border-radius:18px;border:3px solid var(--yl);background:#ffd43b18}.nota b{font-size:3.6rem;line-height:1;color:var(--yl)}.nota span{color:var(--mu);font-weight:700}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.row.c{justify-content:center}
+.meta{color:var(--mu);font-size:.9rem}
+.ans{margin:8px auto 0;padding:8px 14px;border-radius:12px;background:var(--p2);font-size:.95rem;max-width:520px}.ans b{color:var(--gr)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mu);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase}
+.ok{color:var(--gr);font-weight:800}.no{color:var(--rd);font-weight:800}
+.modal{position:absolute;inset:0;z-index:9;display:grid;place-items:center;background:#04101bdd;padding:16px}.modal[hidden]{display:none}.modal .card{max-width:520px}
+@media print{header.top,.row,.noprint,#cont,.modal{display:none!important}body{overflow:visible;background:#fff;color:#000;height:auto;font-size:13px}main,.scr{position:static;overflow:visible}.card{box-shadow:none;border:1px solid #888;background:#fff;max-width:none}:root{--tx:#000;--mu:#333;--line:#999;--yl:#000;--p2:#fff}.nota{border-color:#000;background:#fff}.nota b{color:#000}.ok{color:#064}.no{color:#a00}}
+@media (max-height:560px){header.top{min-height:38px;padding-top:2px;padding-bottom:2px}.scr{padding:10px}.card{padding:14px}h2{font-size:1.4rem}.timer{font-size:1.3rem}.verd .ico{font-size:3rem}.verd .ttl{font-size:1.6rem}.nota b{font-size:2.4rem}}
+</style></head><body>
+<header class="top"><div><h1>📝 Modo examen</h1><small id="sub">Simulador de circuitos</small></div><span class="tag" id="tProb" hidden></span><span class="tag lv" id="tLv" hidden></span><div class="sp"></div><div class="timer" id="timer" hidden>--:--</div><button class="btn sm" id="bEnd" hidden>Terminar examen</button></header>
+<main>
+ <section class="scr" id="setup"><div class="card">
+  <h2>Modo examen en vivo</h2><p class="sub">Proyectalo en la pizarra y pasale el mouse a cada alumno. Aparecen circuitos y preguntas que se resuelven <b>solo con el mouse</b>, y cada vez que se resuelve uno la dificultad sube.</p>
+  <span class="lab">Nivel inicial</span><div class="opts" id="oNivel"></div>
+  <span class="lab">Tiempo por problema</span><div class="opts"><label><input type="radio" name="lim" value="0"><span>Sin límite</span></label><label><input type="radio" name="lim" value="120"><span>2 min</span></label><label><input type="radio" name="lim" value="180" checked><span>3 min</span></label><label><input type="radio" name="lim" value="300"><span>5 min</span></label></div>
+  <span class="lab">Después de cada problema</span><div class="opts"><label><input type="radio" name="show" value="1" checked><span>Mostrar el resultado a la clase</span></label><label><input type="radio" name="show" value="0"><span>No mostrar (lo veo yo en la planilla final)</span></label></div>
+  <div class="rules"><b>Cómo funciona:</b> el alumno arma el circuito con cables (rojo al +, celeste al −) o responde una pregunta, y toca <b>«Entregar ✔»</b>. No hay pistas ni «Ver solución». Si acierta, el próximo problema es de un nivel más difícil; si falla, se repite el nivel con otra variante. Vos anotás la nota en tu lista (aparece en grande) y podés subir o bajar el nivel antes de seguir.</div>
+  <div class="row c"><button class="btn primary big" id="bStart">Comenzar ▶</button></div>
+ </div></section>
+ <section class="scr turno" id="turno" hidden><div class="card center" id="turnoCard"></div></section>
+ <section class="scr" id="run" hidden style="padding:0"><div id="runwrap"><iframe id="frm" title="Problema del examen" allow="fullscreen"></iframe></div><button class="btn primary big" id="cont" hidden>Continuar ▶</button><div class="verd" id="verd" hidden></div></section>
+ <section class="scr" id="res" hidden><div class="card" id="resCard"></div></section>
+ <div class="modal" id="modal" hidden><div class="card center" id="modalCard"></div></div>
+</main>
+<script src="redes-datos.js"></script><script src="examen-gen.js"></script><script src="progreso.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),GEN=window.GEN;
+const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+const params=new URLSearchParams(location.search);
+let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+const embedded=window.parent!==window;
+function apply(){document.documentElement.dataset.theme=tema;try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:true},'*')}catch{}}
+window.addEventListener('message',e=>{const d=e.data;if(!d)return;
+ if(e.source===$('#frm').contentWindow){
+  if(d.tipo==='examen-entrega'){entregada(d);return}
+  if(d.tipo==='ajustes-desde-practica'){tema=d.tema;stg.set('sim-tema',tema);apply();try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra:true},'*')}catch{}}
+  return}
+ if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}
+ if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;apply()}});
+$('#frm').addEventListener('load',()=>{try{$('#frm').contentWindow.postMessage({tipo:'reserva',px:12},'*');$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:true},'*')}catch{}});
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const fmtT=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+const val=name=>(document.querySelector('input[name='+name+']:checked')||{}).value;
+const show=id=>{['setup','turno','run','res'].forEach(s=>$('#'+s).hidden=s!==id)};
+const blank=()=>{$('#frm').onload=null;$('#frm').src='about:blank'};
+
+/* ---------- niveles de partida ---------- */
+$('#oNivel').innerHTML=[1,2,3,4,5,6,7,9,10].map((n,i)=>`<label><input type="radio" name="niv" value="${n}"${i===0?' checked':''}><span>${n}<small>${esc(GEN.NAMES[n])}</small></span></label>`).join('');
+
+/* ---------- estado ---------- */
+let ex=null,timerId=null,deadline=0,t0=0,waitTm=null;
+$('#bStart').onclick=()=>{const nv=+val('niv')||1;ex={cfg:{lim:+val('lim'),show:val('show')==='1'},level:nv,next:nv,hist:[],cur:null,t0:Date.now()};preparar()};
+function head(){const on=!!ex&&!$('#run').hidden||!!ex&&!$('#turno').hidden;$('#tProb').hidden=!on;$('#tLv').hidden=!on;$('#bEnd').hidden=!ex||!$('#res').hidden;
+ if(ex&&ex.cur){$('#tProb').textContent='Problema '+(ex.hist.length+1);$('#tLv').textContent='Nivel '+ex.cur.level;$('#sub').textContent=ex.cur.title}else{$('#sub').textContent='Simulador de circuitos'}}
+
+/* ---------- turno: se genera el problema y se espera al alumno ---------- */
+function preparar(){clearTimer();ex.level=ex.next;ex.cur=GEN.make(ex.level);show('turno');blank();$('#timer').hidden=true;$('#cont').hidden=true;$('#verd').hidden=true;head();
+ const tipo=GEN.tipoDe(ex.level),k=ex.cur.kind==='quiz'?'una pregunta':ex.cur.kind==='fault'?'una falla para encontrar':'un circuito para armar';
+ $('#turnoCard').innerHTML=`<div class="meta">Problema ${ex.hist.length+1} · Nivel ${ex.level}</div><h2 style="margin-top:6px">Pasale el mouse al próximo alumno</h2><div class="nm">${esc(tipo)}</div><p class="meta">Te toca ${k}${ex.cfg.lim?' · tiempo: '+fmtT(ex.cfg.lim):' · sin límite de tiempo'} · sin ayudas</p><div class="row c"><button class="btn primary big" id="bGo">¡Comenzar! ▶</button></div>`;
+ $('#bGo').onclick=cargar}
+function cargar(){show('run');$('#verd').hidden=true;$('#cont').hidden=true;head();
+ $('#frm').onload=()=>{apply();iniciarTimer()};
+ $('#frm').src='circuito-redes.html?gen='+encodeURIComponent(JSON.stringify(ex.cur))+'&examen=1&tema='+tema+'&pizarra=1&anidado=1&t='+Date.now()}
+
+/* ---------- temporizador ---------- */
+function clearTimer(){clearInterval(timerId);timerId=null;clearTimeout(waitTm)}
+function iniciarTimer(){clearTimer();const T=$('#timer');T.hidden=false;t0=Date.now();deadline=ex.cfg.lim?t0+ex.cfg.lim*1000:0;tick();timerId=setInterval(tick,250)}
+function tick(){const T=$('#timer');if(deadline){const r=Math.max(0,Math.ceil((deadline-Date.now())/1000));T.textContent=fmtT(r);T.classList.toggle('warn',r<=30);if(r<=0){clearInterval(timerId);timerId=null;forzar()}}else{T.textContent=fmtT(Math.round((Date.now()-t0)/1000));T.classList.remove('warn')}}
+function forzar(){try{$('#frm').contentWindow.postMessage({tipo:'examen-forzar'},'*')}catch{}
+ waitTm=setTimeout(()=>entregada({ok:false,t:Math.round((Date.now()-t0)/1000),shorts:0,burns:0,agotado:true}),1800)}
+
+/* ---------- entrega y resultado del problema ---------- */
+const nota=r=>r.ok?Math.max(6,10-(r.shorts+r.burns)):0;
+function entregada(d){if(!ex||!ex.cur)return;clearTimer();if(ex.hist.length&&ex.hist[ex.hist.length-1].spec===ex.cur)return;
+ const r={n:ex.hist.length+1,level:ex.cur.level,tipo:GEN.tipoDe(ex.cur.level),titulo:ex.cur.title,kind:ex.cur.kind,spec:ex.cur,ok:!!d.ok,t:d.t||Math.round((Date.now()-t0)/1000),shorts:d.shorts||0,burns:d.burns||0,agotado:!!d.agotado};
+ ex.hist.push(r);ex.next=r.ok?r.level+1:r.level;$('#timer').classList.remove('warn');
+ if(ex.cfg.show)verdicto(r);else{ex.level=ex.next;preparar()}}
+function verdicto(r){const v=$('#verd');v.className='verd '+(r.ok?'ok':'no');
+ const inc=r.shorts+r.burns?(r.shorts?r.shorts+' cortocircuito'+(r.shorts>1?'s':''):'')+(r.shorts&&r.burns?' y ':'')+(r.burns?r.burns+' componente'+(r.burns>1?'s':'')+' quemado'+(r.burns>1?'s':''):''):'sin incidentes';
+ const corr=!r.ok&&r.kind==='quiz'?`<div class="ans">Respuesta correcta: <b>${esc(r.spec.quiz.opts[r.spec.quiz.ans])}</b></div>`:'';
+ v.innerHTML=`<div class="card center"><div class="ico">${r.ok?'✅':r.agotado?'⏰':'❌'}</div><div class="ttl">${r.ok?'¡Correcto!':r.agotado?'Se acabó el tiempo':'Todavía no'}</div><div class="meta">Problema ${r.n} · Nivel ${r.level} · ${esc(r.tipo)}</div>
+ <div class="nota"><b>${nota(r)}</b><span>/ 10</span></div><div class="meta">Tiempo ${fmtT(r.t)} · ${inc}</div>${corr}
+ <div class="row c"><button class="btn" id="bSol">👁 Ver la solución</button><button class="btn" id="bDn">⬇ Bajar nivel</button><button class="btn" id="bUp">⬆ Subir nivel</button></div>
+ <div class="meta" style="margin-top:8px">El próximo problema será de <b id="nxL">nivel ${ex.next}</b></div>
+ <div class="row c"><button class="btn primary big" id="bNext">Siguiente problema ▶</button></div></div>`;
+ v.hidden=false;
+ $('#bUp').onclick=()=>{ex.next=ex.next+1;$('#nxL').textContent='nivel '+ex.next};$('#bDn').onclick=()=>{ex.next=Math.max(1,ex.next-1);$('#nxL').textContent='nivel '+ex.next};
+ $('#bNext').onclick=()=>{v.hidden=true;preparar()};
+ $('#bSol').onclick=()=>{v.hidden=true;$('#cont').hidden=false;$('#timer').hidden=true;$('#frm').onload=apply;$('#frm').src='circuito-redes.html?gen='+encodeURIComponent(JSON.stringify(r.spec))+'&solucion=1&tema='+tema+'&pizarra=1&anidado=1&t='+Date.now()};
+ $('#cont').onclick=()=>{$('#cont').hidden=true;verdicto(r)}}
+
+/* ---------- terminar y planilla ---------- */
+const ask=(msg,yes,no,onYes)=>{$('#modalCard').innerHTML=`<h2 style="font-size:1.5rem">${esc(msg)}</h2><div class="row c"><button class="btn primary big" id="mY">${esc(yes)}</button><button class="btn big" id="mN">${esc(no)}</button></div>`;$('#modal').hidden=false;$('#mY').onclick=()=>{$('#modal').hidden=true;onYes()};$('#mN').onclick=()=>{$('#modal').hidden=true}};
+$('#bEnd').onclick=()=>ask('¿Terminar el examen y ver la planilla?','Sí, terminar','Seguir',fin);
+const nf=n=>String(n).replace('.',',');
+function fin(){clearTimer();blank();const fecha=new Date().toLocaleString('es-AR',{dateStyle:'long',timeStyle:'short'});ex.fecha=fecha;ex.cur=null;
+ ex.hist.forEach(r=>PROG.addExam({ts:Date.now(),name:'Problema '+r.n+' (nivel '+r.level+')',curso:'',nota:nota(r),ok:r.ok?1:0,n:1}));
+ if(ex.hist.length)ex.badge=(PROG.flag('examen')||[]).length;pintar()}
+function pintar(){show('res');$('#timer').hidden=true;$('#tProb').hidden=true;$('#tLv').hidden=true;$('#bEnd').hidden=true;$('#sub').textContent='Resultados';
+ const H=ex.hist,ok=H.filter(r=>r.ok).length,tot=H.reduce((s,r)=>s+nota(r),0),maxL=H.reduce((m,r)=>Math.max(m,r.ok?r.level:0),0);
+ $('#resCard').innerHTML=`<h2>Planilla del examen</h2><p class="meta">${esc(ex.fecha)} · tiempo por problema: ${ex.cfg.lim?fmtT(ex.cfg.lim):'sin límite'}</p>
+ ${H.length?`<div class="row" style="margin-top:6px"><div class="nota"><b>${ok}</b><span>de ${H.length} problemas correctos</span></div><div class="nota"><b>${maxL}</b><span>nivel más alto resuelto</span></div></div>
+ <table><tr><th>#</th><th>Nivel</th><th>Problema</th><th>Resultado</th><th>Nota</th><th>Tiempo</th><th>Incidentes</th></tr>${H.map(r=>`<tr><td>${r.n}</td><td>${r.level}</td><td>${esc(r.tipo)}</td><td class="${r.ok?'ok':'no'}">${r.ok?'✔ Correcto':r.agotado?'⏰ Tiempo':'✖ Incorrecto'}</td><td><b>${nota(r)}</b></td><td>${fmtT(r.t)}</td><td>${r.shorts+r.burns||'—'}</td></tr>`).join('')}</table>`:'<p class="meta">No se resolvió ningún problema.</p>'}
+ <div class="row noprint"><button class="btn primary" id="bPrint">🖨 Imprimir / guardar PDF</button><button class="btn" id="bCopy">📋 Copiar planilla</button><button class="btn" id="bCsv">⬇ Descargar CSV</button><button class="btn" id="bNew">Nuevo examen</button></div><p id="cpMsg" class="meta noprint">${ex.badge?'🏅 ¡Nuevo logro: Examinado!':''}</p>`;
+ $('#bPrint').onclick=()=>window.print();$('#bNew').onclick=reiniciar;
+ const filas=()=>[['Problema','Nivel','Tipo','Resultado','Nota','Tiempo (s)','Incidentes']].concat(ex.hist.map(r=>[r.n,r.level,r.tipo,r.ok?'Correcto':'Incorrecto',nota(r),r.t,r.shorts+r.burns]));
+ $('#bCopy').onclick=()=>{const t=filas().map(r=>r.join('\t')).join('\n'),done=()=>{$('#cpMsg').textContent='Planilla copiada: pegala en Excel, Word o un mensaje.'};try{navigator.clipboard.writeText(t).then(done,()=>fb(t,done))}catch{fb(t,done)}};
+ $('#bCsv').onclick=()=>{const t='﻿'+filas().map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(';')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv;charset=utf-8'}));a.download='examen-circuitos.csv';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);$('#cpMsg').textContent='Archivo CSV descargado.'}}
+function fb(t,done){const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch{}a.remove()}
+function reiniciar(){clearTimer();ex=null;blank();show('setup');$('#timer').hidden=true;$('#tProb').hidden=true;$('#tLv').hidden=true;$('#bEnd').hidden=true;$('#sub').textContent='Simulador de circuitos'}
+apply();
+window.__examen={state:()=>ex,fin:()=>fin(),nota};
+})();
+</script>
+<script src="autor.js"></script></body></html>

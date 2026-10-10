@@ -22,6 +22,44 @@ CONTENIDO (27 practicas, todas en archivos/circuito-redes.html)
 - Proteccion: LED con resistor limitador y fusible de 2,5 A.
 - Busca la falla: componente quemado en serie, paralelo y mixto.
 
+COMPONENTES CON CARCASA DE CRISTAL (archivos/componentes-cristal.js)
+En la mesa de cableado de corriente continua y alterna, la lampara, la bateria (con sus celdas),
+la llave y el conmutador (hoja de cuchilla con perilla), el LED (con yunque, chip y patas: la
+mas larga es el anodo +), el resistor y el fusible se dibujan realistas, con carcasa de cristal
+para ver los contactos internos y la polaridad (+ naranja, - celeste). Los cables energizados se
+iluminan y muestran los electrones circulando por dentro (mas rapido cuanta mas corriente).
+Efectos dramaticos: chispas, humo y llamas en cortocircuitos, fusibles fundidos, LED quemados y al
+cerrar una llave con mucha corriente; el borde de la mesa pulsa en rojo durante un cortocircuito.
+Sonidos y musica mas fuertes (con limitador para que no distorsionen).
+
+CABLES ENERGIZADOS, MESA MEZCLADA, ESTRELLAS, TALLER LIBRE Y EXAMEN (version 1.1)
+- Cables con energia: un cable se ilumina apenas queda unido a un polo de la bateria (color segun la tension: celeste = -,
+  naranja = +); los electrones circulan por dentro solo cuando el circuito se cierra. Tambien se iluminan los bornes y las
+  patas de los componentes. Al tocar un cable se ve su tension y su corriente (panel, 'Multimetro').
+- Reiniciar (flecha circular) ademas de borrar los cables MEZCLA la ubicacion de los componentes (sin superponerse).
+- Serie con lamparas de distinta potencia: practica nueva y aviso didactico 'Misma corriente, distinto brillo'.
+- Cartel 'Por que paso?' ante cortocircuito, fusible fundido, LED quemado o LED al reves.
+- Estrellas (1 a 3 por practica), medallas de bronce, plata y oro por tema y 11 logros: boton 'Medallas' (archivos/progreso.js).
+- Taller libre: mesa vacia con paleta de componentes (archivos/circuito-redes.html?c=taller). Se guarda solo.
+- Modo examen en vivo (solo con el mouse, para proyectar): archivos/examen.html + archivos/examen-gen.js. Genera problemas de
+  dificultad creciente (armar circuitos, preguntas, LED con resistor, buscar la falla); nota de cada problema en grande para
+  anotar en la lista; planilla final (imprimir, copiar para Excel o CSV). El generador GEN.make(nivel) se reutilizara en la
+  futura app de celulares (niveles cada vez mas dificiles para practicar). Ver GUIA-DOCENTE.txt.
+- Colores de los cables en CC: rojo al + y celeste al - (se marcan con una etiqueta los cables mal coloreados).
+- Motor de corriente continua (CRISTAL.dcm), zumbador y calefactor: grupo 'Otros artefactos' y paleta del Taller libre.
+- Taller libre: lamparas con distinto aguante y bateria variable (1 a 30 V) para experimentos controlados.
+- Foco que explota: practicas 'Serie · ¿Qué pasa si se quema una?' y 'Paralelo · ¿Qué pasa si se quema una?' (boton
+  'Quemar lámpara' del panel) y explosion automatica si una lámpara recibe mas del 125 % de su tension (vidrios, humo, fuego).
+- El cartel '¿Por qué pasó?' es una pastilla discreta arriba: se toca para leer la explicacion; los efectos (humo,
+  fuego, chispas, sacudon) son los protagonistas.
+- Aplicacion de PC: abre maximizada, recuerda tamaño y posicion de la ventana y tiene fondo animado en el menu.
+Las pruebas automaticas (pruebas.js) incluyen LAYSH(n) para verificar la mezcla de la mesa.
+
+INSTALADOR PARA WINDOWS (carpeta INSTALADOR-WINDOWS)
+Instalar-Simulador-de-Circuitos-1.1.0.exe instala la aplicacion con acceso directo en el escritorio y
+en el menu Inicio, y funciona sin internet. Para volver a generarlo despues de cambiar archivos:
+ejecutar aplicacion-windows\construir-instalador.ps1 (necesita Node.js e internet la primera vez).
+
 PARA ABRIR EN ESTA PC
 Haga doble clic en 'Abrir simulador.bat' (no necesita internet ni servidor).
 
@@ -54,14 +92,26 @@ rpm, conexion, tension por bobinado), fallas (falta de fase, enclavamiento anula
 sobrecarga/cortocircuito/rotor trabado, piezas explicadas y ejercicios.
 Para agregar uno: definir un objeto en mando-circuitos.js (items, parts, pasos, ejercicios).
 
+MANDO DE MOTORES - CABLEAR EL ESQUEMA (mando.html?c=<circuito>&modo=cablear)
+Misma metodologia que en corriente continua: los aparatos (contactos, bobinas, lamparas, motor,
+fusibles, guardamotor) estan sueltos sobre la mesa y se unen con cables tocando un borne y despues
+otro (o arrastrando). Las barras F y N se conectan tocandolas en cualquier punto. Hay lista de
+cables con ayuda, verificacion contra el esquema (faltan / sobran) y, una vez cableado, el circuito
+funciona de verdad: se accionan los pulsadores y se ve el camino de la corriente en vivo, el motor,
+las protecciones y las fallas. Estan los 8 circuitos (monofasicos y trifasicos). Cada circuito
+tiene un boton para pasar de la guia al modo cablear y viceversa.
+
 MANDO DE MOTORES - TABLEROS PARA CABLEAR (archivos/tablero.html + tablero-datos*.js + tablero-dibujo.js)
 Tableros realistas (placa con riel DIN, bornera, fusibles, guardamotor, contactores, termico,
-temporizador, motor y puerta con pulsadores): arranque directo, marcha-parada con retencion,
-inversion de giro y estrella-triangulo. Se tienden cables tocando un borne y despues otro
+temporizador, motor y puerta con pulsadores), uno por cada circuito de mando (8): arranque directo
+monofasico y trifasico, marcha-parada monofasico y trifasico, impulsos, temporizado, inversion de giro
+y estrella-triangulo. Desde cada circuito en modo cablear hay un boton "Cablear en el tablero realista". Se tienden cables tocando un borne y despues otro
 (o arrastrando). Hay guia cable por cable con la explicacion de cada uno, ayuda, eleccion de
 color del cable, verificacion contra el esquema (faltan / sobran / colores), boton "Ver esquema",
 energizado con pulsadores operables, fallas (cortocircuito, bobina a 380 V, sobrecarga, rotor trabado)
-y ejercicios. Para agregar un tablero: definir bornes, cables y logica en tablero-datos.js y su
+y ejercicios. Los cables se trazan solos de forma ortogonal (con esquinas redondeadas, esquivando los aparatos y sin
+superponerse) y hay un filtro "Ver: Todos / Potencia / Mando" para despejar la vista en los tableros densos.
+Para agregar un tablero: definir bornes, cables y logica en tablero-datos.js y su
 dibujo en tablero-dibujo.js.
 Ver tambien GUIA-DOCENTE.txt.
 

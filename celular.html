@@ -42,6 +42,9 @@ h3{margin:18px 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:upperc
 #play iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
 body.play #home,body.play #cat,body.play main{display:none}body.play #play{display:block}
 @media (max-height:480px){header.top{min-height:38px;padding:3px 8px}header button{height:32px;min-width:36px;font-size:1rem}header h1{font-size:.95rem}#home,#cat{padding:10px}.tiles{grid-template-columns:1fr 1fr}.tile{padding:10px}.tile .ic{flex-basis:40px;height:40px;font-size:1.4rem}h2{font-size:1.05rem;margin:2px 0 8px}.sub{display:none}}
+.item{position:relative}.item .st{position:absolute;right:12px;top:10px;font-style:normal;font-size:.9rem;letter-spacing:1px;color:#ffd43b;background:none;padding:0}.item .st.off{color:var(--mu);opacity:.5}
+.xtra{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}@media (min-width:560px){.xtra{grid-template-columns:1fr 1fr 1fr}}.xt{display:flex;gap:12px;align-items:center;width:100%;padding:12px 14px;text-align:left;border:2px solid var(--line);border-radius:16px;background:var(--p);color:var(--tx)}.xt .ic{flex:0 0 42px;height:42px;border-radius:12px;background:#ffd43b24;display:grid;place-items:center;font-size:1.4rem}.xt b{display:block;font-size:.98rem}.xt span{display:block;color:var(--mu);font-size:.78rem;line-height:1.25}
+.pbar{margin:14px 0 0;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--p);font-size:.88rem}.pbar b{color:#ffd43b}.pbar .b{flex:1;height:9px;border-radius:5px;background:#0004;overflow:hidden}.pbar .b i{display:block;height:100%;background:linear-gradient(90deg,#35c8ff,#5ce0a0,#ffd43b,#ff8a3d)}
 .empty{color:var(--mu);padding:20px 0;text-align:center}
 </style>
 </head>
@@ -60,6 +63,7 @@ body.play #home,body.play #cat,body.play main{display:none}body.play #play{displ
 <script src="archivos/casas-datos.js"></script>
 <script src="archivos/datos-datos.js"></script>
 <script src="archivos/mando-datos.js"></script>
+<script src="archivos/progreso.js"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
@@ -67,7 +71,8 @@ const R=window.REDES||{groups:[],order:[],items:{}},C=window.CASAS||{groups:[],o
 const gt=(src,id)=>{const g=(src.groups||[]).find(x=>x.id===id);return g?g.title:''};
 /* ---------- catálogo ---------- */
 const ITEMS=[];
-R.order.forEach(id=>{const s=R.items[id];if(s.hidden)return;const cat=s.group==='ca'?'ca':'cc';ITEMS.push({id,cat,gr:gt(R,s.group)||s.group,t:s.title,d:s.desc,f:'circuito-redes.html?c='+id})});
+R.groups.forEach(g=>R.order.forEach(id=>{const s=R.items[id];if(s.hidden||s.group!==g.id)return;const cat=s.group==='ca'?'ca':'cc';ITEMS.push({id,cat,gr:gt(R,s.group)||s.group,t:s.title,d:s.desc,f:'circuito-redes.html?c='+id,star:s.group!=='taller',g:s.group})}));
+ITEMS.push({id:'examen',cat:'extra',gr:'',t:'Modo examen',d:'Evaluación sin ayudas con nota final',f:'examen.html'});
 C.order.forEach(id=>{const s=C.items[id];ITEMS.push({id,cat:'ca',gr:gt(C,s.group)||'Casas',t:s.title,d:s.desc,f:s.file})});
 DT.order.forEach(id=>{const s=DT.items[id];ITEMS.push({id,cat:'datos',gr:gt(DT,s.group)||'',t:s.title,d:s.desc,f:'datos.html?c='+id})});
 M.order.forEach(id=>{const s=M.items[id];if(s.soon)return;ITEMS.push({id,cat:'mando',gr:gt(M,s.group)||'',t:s.title,d:s.desc,f:s.file||('mando.html?c='+id),adv:s.group==='tableros'})});
@@ -77,6 +82,8 @@ const CATS=[
  {id:'mando',t:'Mando de motores',d:'Contactores, relés y arranques',ic:'⚙️',cl:'t3'},
  {id:'datos',t:'Datos curiosos',d:'Por qué el pájaro no se electrocuta y más',ic:'💡',cl:'t4'}];
 const count=c=>ITEMS.filter(i=>i.cat===c).length;
+const sItems=cid=>ITEMS.filter(i=>i.cat===cid&&i.star);
+const catRes=()=>[{title:'Corriente continua',r:PROG.resumen(sItems('cc'))},{title:'Corriente alterna',r:PROG.resumen(sItems('ca'))}];
 /* ---------- ajustes ---------- */
 const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
 let tema=stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
@@ -84,14 +91,19 @@ function apply(){document.documentElement.dataset.theme=tema;const m=document.qu
 $('#theme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply()};
 /* ---------- vistas ---------- */
 let view={v:'home'};
-function home(){let h=`<h2>¿Qué querés practicar?</h2><p class="sub">Elegí un tema. Para las prácticas usá el celular en posición horizontal.</p><div class="tiles">`+CATS.map(c=>`<button class="tile ${c.cl}" data-c="${c.id}"><span class="ic">${c.ic}</span><span><b>${c.t}</b><span>${c.d}</span><em>${count(c.id)} PRÁCTICAS</em></span></button>`).join('')+`</div>`;
+function home(){const rs=catRes(),tot=rs.reduce((x,c)=>{x.s+=c.r.stars;x.m+=c.r.max;return x},{s:0,m:0}),best=rs.map(c=>c.r.medal).filter(Boolean)[0];
+ let h=`<h2>¿Qué querés practicar?</h2><p class="sub">Elegí un tema. Para las prácticas usá el celular en posición horizontal.</p><div class="tiles">`+CATS.map(c=>`<button class="tile ${c.cl}" data-c="${c.id}"><span class="ic">${c.ic}</span><span><b>${c.t}</b><span>${c.d}</span><em>${count(c.id)} PRÁCTICAS</em></span></button>`).join('')+`</div>`;
+ h+=`<div class="xtra"><button class="xt" data-x="taller"><span class="ic">🛠</span><span><b>Taller libre</b><span>Armá tus propios circuitos</span></span></button><button class="xt" data-x="examen"><span class="ic">📝</span><span><b>Modo examen</b><span>Circuitos sin ayudas y nota final</span></span></button><button class="xt" data-x="medallas"><span class="ic">🏅</span><span><b>Mis medallas</b><span>Estrellas y logros</span></span></button></div>
+ <div class="pbar"><span>⭐ <b>${tot.s}</b> de ${tot.m}</span><div class="b"><i style="width:${Math.round(tot.m?tot.s/tot.m*100:0)}%"></i></div><span>${best?best.ico+' '+best.name:'¡Sumá tu primera medalla!'}</span></div>`;
  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
  if(!standalone)h+=`<div class="tip" id="tip">📲 <b>Usalo sin conexión:</b> ${ios?'tocá el botón Compartir y elegí “Agregar a pantalla de inicio”.':'abrí el menú del navegador y elegí “Instalar aplicación” o “Agregar a pantalla de inicio”.'}<div id="inst"></div></div>`;
  h+=`<p class="foot">Simulador de circuitos eléctricos · Escuela Técnica Crucero ARA General Belgrano y Escuela Técnica N.º 1 de Bella Vista<br><a href="index.html?pc=1">Ver versión completa (para PC y tablet)</a></p>`;
- $('#home').innerHTML=h;$('#home').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>go({v:'cat',c:b.dataset.c}));if(deferred)showInstall()}
+ $('#home').innerHTML=h;$('#home').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>go({v:'cat',c:b.dataset.c}));
+ $('#home').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{const x=b.dataset.x;if(x==='medallas')PROG.openMedals(catRes());else go({v:'play',c:x==='taller'?'cc':'extra',i:x})});
+ if(deferred)showInstall()}
 function cat(cid){const c=CATS.find(x=>x.id===cid),its=ITEMS.filter(i=>i.cat===cid);
  let h=`<h2>${c.t}</h2>`;if(its.length>8)h+=`<input type="search" id="q" placeholder="Buscar una práctica…" autocomplete="off">`;h+=`<div id="lst"></div>`;
- $('#cat').innerHTML=h;const draw=q=>{q=(q||'').toLowerCase().trim();let html='',last='',n=0;its.forEach(i=>{if(q&&!(i.t+' '+i.d+' '+i.gr).toLowerCase().includes(q))return;n++;if(i.gr!==last){html+=`<h3>${i.gr}</h3>`;last=i.gr}html+=`<button class="item" data-i="${i.id}"><b>${i.t}</b><span>${i.d||''}</span>${i.adv?'<i>Mejor en pantalla grande</i>':''}</button>`});$('#lst').innerHTML=html||'<p class="empty">No hay prácticas con ese texto.</p>';$('#lst').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>go({v:'play',c:cid,i:b.dataset.i}))};
+ $('#cat').innerHTML=h;const draw=q=>{q=(q||'').toLowerCase().trim();let html='',last='',n=0;its.forEach(i=>{if(q&&!(i.t+' '+i.d+' '+i.gr).toLowerCase().includes(q))return;n++;if(i.gr!==last){html+=`<h3>${i.gr}</h3>`;last=i.gr}html+=`<button class="item" data-i="${i.id}"><b>${i.t}</b><span>${i.d||''}</span>${i.adv?'<i>Mejor en pantalla grande</i>':''}${i.star?`<i class="st${PROG.stars(i.id)?'':' off'}">${PROG.starsHTML(PROG.stars(i.id))}</i>`:''}</button>`});$('#lst').innerHTML=html||'<p class="empty">No hay prácticas con ese texto.</p>';$('#lst').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>go({v:'play',c:cid,i:b.dataset.i}))};
  draw();const q=$('#q');if(q)q.oninput=()=>draw(q.value)}
 function nav(u){try{$('#frm').contentWindow.location.replace(u)}catch{$('#frm').src=u}}
 function play(it){const sep=it.f.includes('?')?'&':'?';nav('archivos/'+it.f+sep+'tema='+tema+'&pizarra=0');$('#ttl').textContent=it.t;}
@@ -103,6 +115,7 @@ function show(st){document.body.classList.toggle('play',st.v==='play');$('#back'
  view=st}
 function go(st){history.pushState(st,'');show(st)}
 $('#back').onclick=()=>history.back();
+document.addEventListener('progreso-cambio',()=>{if(view.v==='home')home();else if(view.v==='cat')cat(view.c)});
 addEventListener('popstate',e=>show(e.state||{v:'home'}));
 $('#frm').addEventListener('load',()=>{if(view.v==='play'){try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}}});
 /* instalación (Android/Chrome) */

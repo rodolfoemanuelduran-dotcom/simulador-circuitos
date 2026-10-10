@@ -7,7 +7,8 @@ const groups=[
  {id:'componentes',title:'Conocé los componentes',desc:'Cómo está hecho cada componente y cómo funciona, accionándolo en pantalla.'},
  {id:'monofasico',title:'Motor monofásico',desc:'Maniobras con motores de 220 V.'},
  {id:'trifasico',title:'Motor trifásico',desc:'Circuito de potencia y circuito de mando, con corrientes y protecciones.'},
- {id:'tableros',title:'Cableá el tablero',desc:'Tableros realistas con riel DIN, fusibles, contactores y pulsadores: tendé los cables y probalos.'}
+ {id:'tableros',title:'Cableá el tablero realista',desc:'Tableros realistas con riel DIN, fusibles, contactores y pulsadores: tendé los cables y probalos.'},
+ {id:'cablear',title:'Cableá el circuito (esquema)',desc:'Los aparatos están sueltos en la mesa: unilos con cables entre sus bornes, verificá y probá el funcionamiento.'}
 ];
 const list=[
  {id:'m-contactor',group:'componentes',title:'El contactor',desc:'Bobina, contactos principales (1-2, 3-4, 5-6) y auxiliares NA / NC. Qué pasa al energizar A1-A2.',file:'componente.html?c=contactor'},
@@ -24,6 +25,18 @@ const list=[
  {id:'tri-inversion',group:'trifasico',title:'Inversión de giro',desc:'Dos contactores con enclavamiento mutuo: intercambio de fases y bloqueo eléctrico.'},
  {id:'tri-estrella-triangulo',group:'trifasico',title:'Arranque estrella-triángulo',desc:'Tres contactores y un temporizador para reducir la corriente de arranque.'},
  {id:'tri-temporizado',group:'trifasico',title:'Arranque temporizado',desc:'Retardo a la conexión con relé de tiempo y señalización.'},
+ {id:'cab-mono-directo',group:'cablear',title:'Cablear: Arranque directo monofásico',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=mono-directo&modo=cablear'},
+ {id:'cab-mono-marcha-parada',group:'cablear',title:'Cablear: Marcha-parada monofásica',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=mono-marcha-parada&modo=cablear'},
+ {id:'cab-tri-directo',group:'cablear',title:'Cablear: Arranque directo trifásico',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=tri-directo&modo=cablear'},
+ {id:'cab-tri-enclavamiento',group:'cablear',title:'Cablear: Marcha-parada con retención',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=tri-enclavamiento&modo=cablear'},
+ {id:'cab-tri-impulsos',group:'cablear',title:'Cablear: Marcha por impulsos',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=tri-impulsos&modo=cablear'},
+ {id:'cab-tri-temporizado',group:'cablear',title:'Cablear: Arranque temporizado',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=tri-temporizado&modo=cablear'},
+ {id:'cab-tri-inversion',group:'cablear',title:'Cablear: Inversión de giro',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=tri-inversion&modo=cablear'},
+ {id:'cab-tri-estrella-triangulo',group:'cablear',title:'Cablear: Arranque estrella-triángulo',desc:'Tendé los cables entre los bornes del esquema y probalo.',file:'mando.html?c=tri-estrella-triangulo&modo=cablear'},
+ {id:'tab-mono-directo',group:'tableros',title:'Tablero: arranque directo monofásico',desc:'Termomagnética, contactor y selectora con motor de 220 V. Para empezar.',file:'tablero.html?c=monodirecto'},
+ {id:'tab-mono-mp',group:'tableros',title:'Tablero: marcha-parada monofásico',desc:'Fusible, contactor, térmico y pulsadores con motor de 220 V.',file:'tablero.html?c=monomp'},
+ {id:'tab-impulsos',group:'tableros',title:'Tablero: marcha por impulsos',desc:'Pulsadores y selectora que habilita o anula la retención.',file:'tablero.html?c=impulsos'},
+ {id:'tab-temporizado',group:'tableros',title:'Tablero: arranque temporizado',desc:'Relé auxiliar y temporizador que retardan el arranque.',file:'tablero.html?c=temporizado'},
  {id:'tab-directo',group:'tableros',title:'Tablero: arranque directo',desc:'Guardamotor, contactor y selectora. El tablero más simple para empezar a cablear.',file:'tablero.html?c=directo'},
  {id:'tab-enclav',group:'tableros',title:'Tablero: marcha-parada con retención',desc:'Fusibles, contactor, térmico, pulsadores y retención. El más típico de clase.',file:'tablero.html?c=enclav'},
  {id:'tab-inversion',group:'tableros',title:'Tablero: inversión de giro',desc:'Dos contactores con enclavamiento y fases cruzadas.',file:'tablero.html?c=inversion'},

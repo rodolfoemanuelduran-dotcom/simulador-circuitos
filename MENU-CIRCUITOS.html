@@ -27,7 +27,7 @@ button{font:inherit;color:inherit}
 .topbar .ib{width:42px;padding:6px 0;font-size:1.05rem}
 .topbar button[aria-pressed=true]{border-color:var(--green);box-shadow:0 0 12px #58dea444}
 .stage{position:relative;flex:1;min-height:0}
-.view{position:absolute;inset:0;overflow:auto;padding:clamp(18px,4vw,42px)}
+#bgfx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}.view{z-index:1;position:absolute;inset:0;overflow:auto;padding:clamp(18px,4vw,42px)}
 .intro{max-width:1180px;margin:0 auto 20px}
 .institutions{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;margin:0 0 16px;padding:11px 15px;border:1px solid var(--cardline);border-radius:14px;background:var(--chip);color:var(--text);font-size:clamp(.73rem,1.6vw,.9rem);font-weight:750}
 .institutions span{display:flex;align-items:center;gap:9px;min-width:0}.institutions span:before{content:"";flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--blue)}
@@ -38,7 +38,12 @@ button{font:inherit;color:inherit}
 .tile:hover,.tile:focus-visible{transform:translateY(-4px);border-color:var(--blue)}
 .tile .ico{height:110px;display:flex;align-items:center}.tile .ico svg{height:100%;width:auto;max-width:100%}
 .tile h2{margin:0;font-size:1.6rem}.tile p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.4}
-.tile em{margin-top:auto;font-style:normal;font-size:.76rem;font-weight:800;letter-spacing:.06em;color:var(--blue)}
+.tile .tp{font-size:.8rem;font-weight:800;color:#ffd43b;letter-spacing:.04em}.tile em{margin-top:auto;font-style:normal;font-size:.76rem;font-weight:800;letter-spacing:.06em;color:var(--blue)}
+.extras{max-width:1180px;margin:16px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.chip{display:flex;align-items:center;gap:12px;padding:13px 16px;text-align:left;border:2px solid var(--cardline);border-radius:18px;background:linear-gradient(150deg,var(--card1),var(--card2));color:var(--text);cursor:pointer;transition:.2s;box-shadow:0 8px 20px var(--shadow)}
+.chip:hover,.chip:focus-visible{transform:translateY(-3px);border-color:#ffd43b}.chip .ci{flex:0 0 46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.6rem;background:#ffd43b24}.chip b{display:block;font-size:1.02rem}.chip span{display:block;color:var(--muted);font-size:.78rem;line-height:1.3}
+.prog{max-width:1180px;margin:14px auto 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 16px;border-radius:16px;border:1px solid var(--cardline);background:var(--chip)}.prog b{color:#ffd43b;font-size:1.1rem}.prog .bar{flex:1 1 160px;height:10px;border-radius:6px;background:#0005;overflow:hidden}.prog .bar i{display:block;height:100%;background:linear-gradient(90deg,#35c8ff,#5ce0a0,#ffd43b,#ff8a3d);transition:width .6s}.prog .m{font-size:1.4rem}
+.stars{position:absolute;right:12px;top:10px;font-style:normal;font-size:.95rem;letter-spacing:1px;color:#ffd43b;text-shadow:0 0 8px #ffb40066}.stars.off{color:var(--muted);opacity:.5;text-shadow:none}
 .tile.t-datos{border-top:6px solid #e6b422}.card.dt:before{background:#e6b422}.tile.t-cc{border-top:6px solid #3ba7e0}.tile.t-ca{border-top:6px solid var(--brown)}.tile.t-mando{border-top:6px solid #8d6fe8}
 .ico .st{stroke:var(--text);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.ico .fl{fill:var(--blue)}.ico .ac{stroke:var(--brown)}.ico .vi{stroke:#8d6fe8}
 /* lista de prácticas */
@@ -78,13 +83,16 @@ button{font:inherit;color:inherit}
     <button id="themeButton" class="ib" title="Cambiar entre fondo oscuro y claro" aria-label="Cambiar tema">◐</button>
     <button id="boardButton" class="ib" title="Modo pizarra: letras y trazos más grandes para proyector" aria-label="Modo pizarra" aria-pressed="false"><b>Aa</b></button>
     <button id="fullButton" class="ib" title="Pantalla completa" aria-label="Pantalla completa">⛶</button>
+    <button id="medalsButton" title="Mis estrellas, medallas y logros">🏅 <span class="btn-label">Medallas</span></button>
     <button id="updateButton" hidden>↻ <span class="btn-label">Actualizar</span></button>
     <button id="musicButton" class="music" aria-pressed="false">🎵 <span class="music-label btn-label">Música zen</span></button>
   </header>
   <main class="stage">
+    <canvas id="bgfx" aria-hidden="true"></canvas>
     <section id="home" class="view">
-      <div class="intro"><div class="institutions" aria-label="Instituciones educativas"><span>Escuela Técnica Crucero ARA General Belgrano</span><span>Escuela Técnica N.º 1 de Bella Vista</span></div><h1>Elegí un tema</h1><p>Construí y comprendé circuitos eléctricos paso a paso.</p></div>
+      <div class="intro"><div class="institutions" aria-label="Instituciones educativas"><span>Escuela Técnica Crucero ARA General Belgrano</span><span>Escuela Técnica N.º 1 de Bella Vista</span></div><h1>Elegí un tema</h1><p>Construí y comprendé circuitos eléctricos paso a paso: cables que se iluminan, electrones que circulan y focos que explotan.</p></div>
       <div class="tiles" id="tiles"></div>
+      <div class="extras" id="extras"></div><div class="prog" id="prog"></div>
       <p class="note">Modo pizarra (Aa): letras y trazos más grandes para proyectar. Fondo claro/oscuro con ◐. Pantalla completa con ⛶.</p>
     </section>
     <section id="catview" class="view" hidden>
@@ -100,23 +108,25 @@ button{font:inherit;color:inherit}
 <script src="archivos/mando-datos.js"></script>
 <script src="archivos/casas-datos.js"></script>
 <script src="archivos/datos-datos.js"></script>
+<script src="archivos/progreso.js"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
 /* ---------- catálogo ---------- */
 const R=window.REDES||{groups:[],order:[],items:{}},M=window.MANDO||{groups:[],order:[],items:{}},C=window.CASAS||{groups:[],order:[],items:{}},DT=window.DATOS||{groups:[],order:[],items:{}};
 const CATS=[
- {id:'cc',title:'Corriente continua',cls:'t-cc',tag:'CC',desc:'Baterías, lámparas, resistencias, LED y fusibles. Serie, paralelo y mixtos, mediciones y búsqueda de fallas.',groups:['basico','serie','paralelo','mixto','proteccion','falla']},
+ {id:'cc',title:'Corriente continua',cls:'t-cc',tag:'CC',desc:'Baterías, lámparas, resistencias, LED y fusibles. Serie, paralelo y mixtos, mediciones y búsqueda de fallas.',groups:['taller','basico','serie','paralelo','mixto','artefactos','proteccion','falla']},
  {id:'ca',title:'Corriente alterna',cls:'t-ca',tag:'CA',desc:'Del río a tu casa, planos de casas y circuitos de instalación: fase, neutro y tierra, llaves, tomacorrientes, motor y jabalina.',groups:['origen','casas','ca']},
  {id:'mando',title:'Mando de motores',cls:'t-mando',tag:'MANDO',desc:'Contactores, relés, guardamotor y pulsadores. Arranque directo, inversión de giro, estrella-triángulo y más.',groups:M.groups.map(g=>g.id),src:'mando'},
  {id:'datos',title:'Datos curiosos sobre la electricidad',cls:'t-datos',tag:'DATOS',desc:'20 demostraciones interactivas: por qué el pájaro no se electrocuta, la tensión de paso, el rayo, el diferencial y mucho más.',groups:DT.groups.map(g=>g.id)}
 ];
-const PROF={'simple':'simple','serie-3':'series','par-3':'paralelo3','llave-doble':'double','llave-triple':'triple','combinacion':'combination','ca-1p':'onepoint','ca-2p':'twopoint','toma-doble':'outlets'},GPROF={basico:'simple',serie:'serieM',paralelo:'paraleloM',mixto:'mixtoM',ca:'onepoint',proteccion:'protM',falla:'fallaM'};
-const TAG={basico:'CC · BÁSICO',serie:'CC · SERIE',paralelo:'CC · PARALELO',mixto:'CC · MIXTO',ca:'CA · INSTALACIÓN',proteccion:'CC · PROTECCIÓN',falla:'DIAGNÓSTICO'};
+const PROF={'simple':'simple','serie-3':'series','par-3':'paralelo3','llave-doble':'double','llave-triple':'triple','combinacion':'combination','ca-1p':'onepoint','ca-2p':'twopoint','toma-doble':'outlets'},GPROF={artefactos:'simple',taller:'simple',basico:'simple',serie:'serieM',paralelo:'paraleloM',mixto:'mixtoM',ca:'onepoint',proteccion:'protM',falla:'fallaM'};
+const TAG={artefactos:'CC · ARTEFACTOS',taller:'CC · TALLER',basico:'CC · BÁSICO',serie:'CC · SERIE',paralelo:'CC · PARALELO',mixto:'CC · MIXTO',ca:'CA · INSTALACIÓN',proteccion:'CC · PROTECCIÓN',falla:'DIAGNÓSTICO'};
 const ITEMS=[];
 R.order.forEach(id=>{const s=R.items[id];if(s.hidden)return;const cat=s.group==='ca'?'ca':'cc';ITEMS.push({id,cat,group:s.group,title:s.title,desc:s.desc,file:'circuito-redes.html?c='+id,profile:PROF[id]||GPROF[s.group]||'simple',tag:TAG[s.group]||'',cls:s.group==='ca'||s.group==='falla'?'ac':''})});
 C.order.forEach(id=>{const s=C.items[id];ITEMS.push({id,cat:'ca',group:s.group,title:s.title,desc:s.desc,file:s.file,profile:'onepoint',tag:s.group==='origen'?'CA · ORIGEN':'CA · CASA',cls:'ac'})});
 DT.order.forEach(id=>{const s=DT.items[id];ITEMS.push({id,cat:'datos',group:s.group,title:s.title,desc:s.desc,file:'datos.html?c='+id,profile:'datosM',tag:'DATO CURIOSO',cls:'dt'})});
+ITEMS.push({id:'examen',cat:'extra',group:'examen',title:'Modo examen',desc:'Evaluación en vivo solo con el mouse: problemas que suben de nivel y notas para anotar.',file:'examen.html',profile:'simple',tag:'EXAMEN',cls:''});
 M.order.forEach(id=>{const s=M.items[id];ITEMS.push({id,cat:'mando',group:s.group,title:s.title,desc:s.desc,file:s.file||'mando.html?c='+id,profile:'mandoM',tag:'MANDO',cls:'vi',soon:!!s.soon})});
 const groupInfo=(cat,gid)=>cat==='mando'?M.groups.find(g=>g.id===gid):R.groups.find(g=>g.id===gid);
 const ICONS={
@@ -140,23 +150,32 @@ function setPizarra(p){pizarra=p;store.set('sim-pizarra',p?'1':'0');applySetting
 const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);
 function toggleFull(){const d=document,el=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement){(d.exitFullscreen||d.webkitExitFullscreen).call(d)}else{(el.requestFullscreen||el.webkitRequestFullscreen).call(el)}}
 ['#fullButton','#floatFull'].forEach(s=>{$(s).hidden=!canFull;$(s).onclick=toggleFull});
-window.addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='ajustes-desde-practica'){if(d.tema&&d.tema!==tema){tema=d.tema;store.set('sim-tema',tema)}if(d.pizarra!==undefined&&d.pizarra!==pizarra){pizarra=d.pizarra;store.set('sim-pizarra',pizarra?'1':'0')}applySettings()}});
+window.addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='hecho'){/* la práctica ya guardó las estrellas; se refrescan al volver a la lista */}if(d&&d.tipo==='ajustes-desde-practica'){if(d.tema&&d.tema!==tema){tema=d.tema;store.set('sim-tema',tema)}if(d.pizarra!==undefined&&d.pizarra!==pizarra){pizarra=d.pizarra;store.set('sim-pizarra',pizarra?'1':'0')}applySettings()}});
 /* ---------- vistas ---------- */
 const home=$('#home'),catview=$('#catview'),player=$('#player'),subtitle=$('#subtitle'),backButton=$('#backButton'),homeButton=$('#homeButton');
 let offlineReady=false,view={v:'home'},current=null;
-function buildTiles(){const box=$('#tiles');box.innerHTML='';CATS.forEach(c=>{const n=ITEMS.filter(i=>i.cat===c.id&&!i.soon).length,b=document.createElement('button');b.className='tile '+c.cls;b.innerHTML='<div class="ico">'+ICONS[c.id]+'</div><h2></h2><p></p><em></em>';b.querySelector('h2').textContent=c.title;b.querySelector('p').textContent=c.desc;b.querySelector('em').textContent=n?n+' PRÁCTICAS':'EN CONSTRUCCIÓN';b.onclick=()=>show({v:'cat',cat:c.id},true);box.append(b)})}
+/* prácticas que dan estrellas: las de circuito-redes (menos el taller libre) */
+const starItems=cid=>ITEMS.filter(i=>i.cat===cid&&i.file.startsWith('circuito-redes.html')&&i.group!=='taller'&&!i.soon);
+const catRes=()=>[{title:'Corriente continua',r:PROG.resumen(starItems('cc'))},{title:'Corriente alterna',r:PROG.resumen(starItems('ca'))}];
+function buildExtras(){const box=$('#extras');box.innerHTML='';
+ [['🛠','Taller libre','Mesa vacía con paleta: armá tus propios circuitos',()=>show({v:'play',cat:'home',id:'taller'},true)],['📝','Modo examen','Para proyectar: problemas con el mouse que suben de nivel',()=>show({v:'play',cat:'home',id:'examen'},true)],['🏅','Mis medallas','Estrellas, medallas y logros',()=>PROG.openMedals(catRes())]].forEach(([i,t,d,fn])=>{const b=document.createElement('button');b.className='chip';b.innerHTML='<div class="ci">'+i+'</div><div><b></b><span></span></div>';b.querySelector('b').textContent=t;b.querySelector('span').textContent=d;b.onclick=fn;box.append(b)});
+ const a=catRes(),tot=a.reduce((x,c)=>{x.s+=c.r.stars;x.m+=c.r.max;return x},{s:0,m:0}),best=a.map(c=>c.r.medal).filter(Boolean)[0],pr=$('#prog');
+ pr.innerHTML='<span class="m">⭐</span><span>Tus estrellas: <b>'+tot.s+'</b> de '+tot.m+'</span><div class="bar"><i style="width:'+Math.round(tot.m?tot.s/tot.m*100:0)+'%"></i></div><span>'+(best?best.ico+' '+best.name:'Conseguí tu primera medalla')+'</span>'}
+function buildTiles(){const box=$('#tiles');box.innerHTML='';CATS.forEach(c=>{const n=ITEMS.filter(i=>i.cat===c.id&&!i.soon).length,b=document.createElement('button');b.className='tile '+c.cls;b.innerHTML='<div class="ico">'+ICONS[c.id]+'</div><h2></h2><p></p><em></em>';b.querySelector('h2').textContent=c.title;b.querySelector('p').textContent=c.desc;b.querySelector('em').textContent=n?n+' PRÁCTICAS':'EN CONSTRUCCIÓN';const rs=starItems(c.id);if(rs.length){const r=PROG.resumen(rs);const p=document.createElement('div');p.className='tp';p.textContent='★ '+r.stars+' / '+r.max+(r.medal?'  '+r.medal.ico:'');b.insertBefore(p,b.querySelector('em'))}b.onclick=()=>show({v:'cat',cat:c.id},true);box.append(b)})}
 function buildCat(cid){const c=CATS.find(x=>x.id===cid),box=$('#cards');box.innerHTML='';$('#catTitle').textContent=c.title;$('#catDesc').textContent=c.desc;
  const gs=cid==='datos'?DT.groups:cid==='mando'?M.groups:cid==='ca'?C.groups.concat(R.groups.filter(g=>g.id==='ca')):R.groups.filter(g=>c.groups.includes(g.id));
  gs.forEach(g=>{const h=document.createElement('div');h.className='grp';h.innerHTML='<b></b><span></span>';h.firstChild.textContent=g.title;h.lastChild.textContent=g.desc;box.append(h);
-  ITEMS.filter(i=>i.cat===cid&&i.group===g.id).forEach(it=>{const b=document.createElement('button');b.className='card '+it.cls+(it.soon?' soon':'');b.innerHTML='<b></b><span></span><em></em>';b.children[0].textContent=it.title;b.children[1].textContent=it.desc;b.children[2].textContent=it.soon?'PRÓXIMAMENTE':it.tag;if(!it.soon)b.onclick=()=>show({v:'play',cat:cid,id:it.id},true);else b.disabled=true;box.append(b)})})}
+  ITEMS.filter(i=>i.cat===cid&&i.group===g.id).forEach(it=>{const b=document.createElement('button');b.className='card '+it.cls+(it.soon?' soon':'');b.innerHTML='<b></b><span></span><em></em>';b.children[0].textContent=it.title;b.children[1].textContent=it.desc;b.children[2].textContent=it.soon?'PRÓXIMAMENTE':it.tag;if(!it.soon)b.onclick=()=>show({v:'play',cat:cid,id:it.id},true);else b.disabled=true;
+   if(!it.soon&&it.file.startsWith('circuito-redes.html')&&it.group!=='taller'){const s=PROG.stars(it.id),e=document.createElement('i');e.className='stars'+(s?'':' off');e.textContent=PROG.starsHTML(s);e.title=s?s+' de 3 estrellas':'Todavía sin estrellas';b.append(e)}
+   box.append(b)})})}
 function show(st,push){view=st;current=st.id?ITEMS.find(i=>i.id===st.id):null;
  if(push){try{history.pushState(st,'')}catch{}}
  const playing=st.v==='play';home.hidden=st.v!=='home';catview.hidden=st.v!=='cat';document.body.classList.toggle('playing',playing);player.classList.toggle('active',playing);
  backButton.hidden=st.v!=='play';homeButton.hidden=st.v==='home';backButton.querySelector('.btn-label').textContent='Lista';
- if(st.v==='cat')buildCat(st.cat);
+ if(st.v==='cat')buildCat(st.cat);if(st.v==='home'){buildTiles();buildExtras()}
  if(playing){const it=current;subtitle.textContent=it.title;frame.src='archivos/'+it.file+(it.file.includes('?')?'&':'?')+'tema='+tema+'&pizarra='+(pizarra?1:0);currentProfile=it.profile;if(!musicOn)setMusic(true);else setProfile(currentProfile)}
  else{frame.src='about:blank';subtitle.textContent=offlineReady?'Disponible sin conexión':'Preparando modo sin conexión…';if(!updateButton.hidden&&st.v==='home')updateNotice.hidden=false;setProfile('menu')}}
-function goBack(){if(view.v==='play')show({v:'cat',cat:view.cat},true);else if(view.v==='cat')show({v:'home'},true)}
+function goBack(){if(view.v==='play'&&view.cat==='home')show({v:'home'},true);else if(view.v==='play')show({v:'cat',cat:view.cat},true);else if(view.v==='cat')show({v:'home'},true)}
 backButton.onclick=goBack;$('#catBack').onclick=()=>show({v:'home'},true);$('#floatBack').onclick=goBack;homeButton.onclick=$('#floatHome').onclick=()=>show({v:'home'},true);
 window.addEventListener('popstate',e=>show(e.state||{v:'home'},false));
 /* ---------- música ---------- */
@@ -164,7 +183,7 @@ const musicButton=$('#musicButton'),floatMusic=$('#floatMusic');
 const profiles={menu:{notes:[48,55,60,64],wave:'sine',bell:72},simple:{notes:[48,55,60,67],wave:'sine',bell:72},series:{notes:[50,57,62,66],wave:'sine',bell:74},paralelo3:{notes:[50,56,62,66],wave:'triangle',bell:76},serieM:{notes:[45,52,57,64],wave:'sine',bell:71},paraleloM:{notes:[50,56,62,66],wave:'triangle',bell:76},mixtoM:{notes:[47,53,59,63],wave:'sine',bell:73},protM:{notes:[40,47,52,59],wave:'triangle',bell:68},fallaM:{notes:[43,48,55,60],wave:'sine',bell:70},double:{notes:[45,52,57,61],wave:'triangle',bell:69},triple:{notes:[48,55,59,64],wave:'sine',bell:76},combination:{notes:[43,50,55,59],wave:'triangle',bell:67},onepoint:{notes:[47,54,59,62],wave:'sine',bell:71},twopoint:{notes:[42,49,54,57],wave:'triangle',bell:66},outlets:{notes:[52,59,64,68],wave:'sine',bell:80},mandoM:{notes:[41,48,53,57],wave:'triangle',bell:65},datosM:{notes:[52,57,61,66],wave:'triangle',bell:79}};
 let ctx=null,master=null,musicOn=false,currentProfile='menu',timer=null,voices=[];
 const hz=n=>440*Math.pow(2,(n-69)/12);
-function ensureAudio(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return false;ctx=new A();master=ctx.createGain();master.gain.value=.5;master.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume();return true}
+function ensureAudio(){if(!ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return false;ctx=new A();master=ctx.createGain();master.gain.value=1.5;const lim=ctx.createDynamicsCompressor();lim.threshold.value=-14;lim.ratio.value=8;lim.attack.value=.004;master.connect(lim);lim.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume();return true}
 function stopVoices(){clearInterval(timer);timer=null;const t=ctx?.currentTime||0;voices.forEach(v=>{try{v.gain.gain.cancelScheduledValues(t);v.gain.gain.setTargetAtTime(.0001,t,.35);v.osc.stop(t+1.5)}catch{}});voices=[]}
 function rememberVoice(osc,gain){const voice={osc,gain};voices.push(voice);osc.onended=()=>{voices=voices.filter(v=>v!==voice)}}
 function breathe(){if(!musicOn||!ctx)return;const p=profiles[currentProfile]||profiles.menu,now=ctx.currentTime;p.notes.forEach((note,i)=>{const osc=ctx.createOscillator(),gain=ctx.createGain(),filter=ctx.createBiquadFilter();osc.type=p.wave;osc.frequency.value=hz(note);osc.detune.value=(i-1.5)*2.5;filter.type='lowpass';filter.frequency.value=900;gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.014/(1+i*.12),now+2.3);gain.gain.exponentialRampToValueAtTime(.0001,now+10.5);osc.connect(filter).connect(gain).connect(master);osc.start(now);osc.stop(now+11);rememberVoice(osc,gain)});if(Math.floor(now/12)%2===0){const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.value=hz(p.bell);gain.gain.setValueAtTime(.0001,now+.7);gain.gain.exponentialRampToValueAtTime(.025,now+.73);gain.gain.exponentialRampToValueAtTime(.0001,now+4.8);osc.connect(gain).connect(master);osc.start(now+.7);osc.stop(now+5);rememberVoice(osc,gain)}}
@@ -178,8 +197,22 @@ function showLanding(){const q=new URLSearchParams(location.search),app=q.get('a
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;installApp.hidden=false});installApp.onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installApp.hidden=true};
 openPractice.onclick=()=>{installScreen.classList.remove('open');if(pendingItem)show({v:'play',cat:pendingItem.cat,id:pendingItem.id},true)};$('#installClose').onclick=()=>installScreen.classList.remove('open');
 if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const registration=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}),markFailure=()=>{offlineNote.textContent='No se pudo preparar el modo sin conexión. Vuelve a intentarlo con internet.';if(view.v!=='play')subtitle.textContent='Se necesita internet para preparar el modo sin conexión'},offerUpdate=()=>{if(registration.waiting){updateButton.hidden=false;if(view.v==='home')updateNotice.hidden=false}},track=worker=>worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)offerUpdate();if(worker.state==='redundant'&&!navigator.serviceWorker.controller)markFailure()});offerUpdate();track(registration.installing);registration.addEventListener('updatefound',()=>track(registration.installing));updateButton.onclick=()=>updateNotice.hidden=false;updateLater.onclick=()=>updateNotice.hidden=true;updateNow.onclick=()=>{updateNow.disabled=true;registration.waiting?.postMessage({type:'ACTIVATE_UPDATE'})};let hadController=Boolean(navigator.serviceWorker.controller),refreshing=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadController){hadController=true;return}if(refreshing)return;refreshing=true;location.reload()});navigator.serviceWorker.ready.then(()=>{offlineReady=true;offlineNote.textContent='Listo: todas las prácticas quedaron disponibles sin conexión.';if(view.v!=='play')subtitle.textContent='Disponible sin conexión'}).catch(markFailure)}catch{offlineNote.textContent='No se pudo preparar el modo sin conexión. Vuelve a intentarlo con internet.';subtitle.textContent='Se necesita internet para preparar el modo sin conexión'}});
+/* ---------- fondo animado: pistas de circuito con electrones ---------- */
+(()=>{const cv=document.getElementById("bgfx");if(!cv||matchMedia("(prefers-reduced-motion:reduce)").matches)return;const cx=cv.getContext("2d");let W=0,H=0,tr=[],dots=[],last=0;
+ const lens=p=>p.slice(1).map((q,i)=>Math.hypot(q[0]-p[i][0],q[1]-p[i][1]));
+ function at(t,s){let i=0;while(i<t.L.length-1&&s>t.L[i]){s-=t.L[i];i++}const a=t.pts[i],b=t.pts[i+1],k=t.L[i]?Math.min(1,s/t.L[i]):0;return[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k]}
+ function build(){tr=[];dots=[];const n=Math.max(7,Math.round(W*H/80000));for(let i=0;i<n;i++){let x=Math.random()*W,y=Math.random()*H,h=Math.random()<.5;const pts=[[x,y]];for(let k=0;k<4;k++){const len=(70+Math.random()*230)*(Math.random()<.5?-1:1);if(h)x=Math.max(0,Math.min(W,x+len));else y=Math.max(0,Math.min(H,y+len));pts.push([x,y]);h=!h}
+   const L=lens(pts),tot=L.reduce((a,b)=>a+b,0);if(tot<80){i--;continue}tr.push({pts,L,tot,pos:Math.random()<.5});for(let j=0;j<1+(Math.random()*2|0);j++)dots.push({t:tr.length-1,s:Math.random()*tot,v:45+Math.random()*70})}}
+ function size(){const r=cv.getBoundingClientRect();W=cv.width=Math.max(1,r.width|0);H=cv.height=Math.max(1,r.height|0);build()}
+ function frame(ts){requestAnimationFrame(frame);if(document.hidden||document.body.classList.contains("playing")||ts-last<33)return;const dt=Math.min(.1,(ts-last)/1000);last=ts;
+  const light=document.documentElement.dataset.theme==="light";cx.clearRect(0,0,W,H);cx.lineWidth=2;cx.lineJoin="round";
+  tr.forEach(t=>{cx.strokeStyle=light?"rgba(20,80,130,.10)":"rgba(121,217,241,.08)";cx.beginPath();t.pts.forEach((p,i)=>i?cx.lineTo(p[0],p[1]):cx.moveTo(p[0],p[1]));cx.stroke();[t.pts[0],t.pts[t.pts.length-1]].forEach(p=>{cx.fillStyle=light?"rgba(20,80,130,.16)":"rgba(121,217,241,.16)";cx.beginPath();cx.arc(p[0],p[1],4,0,6.3);cx.fill()})});
+  dots.forEach(d=>{const t=tr[d.t];d.s+=d.v*dt;if(d.s>t.tot)d.s-=t.tot;const p=at(t,d.s),c=t.pos?"255,138,61":"53,200,255",g=cx.createRadialGradient(p[0],p[1],0,p[0],p[1],12);g.addColorStop(0,"rgba("+c+","+(light?.75:.9)+")");g.addColorStop(1,"rgba("+c+",0)");cx.fillStyle=g;cx.beginPath();cx.arc(p[0],p[1],12,0,6.3);cx.fill()})}
+ size();addEventListener("resize",size);requestAnimationFrame(frame)})();
 /* ---------- inicio ---------- */
-applySettings();buildTiles();try{history.replaceState({v:'home'},'')}catch{}showLanding();
+$('#medalsButton').onclick=()=>PROG.openMedals(catRes());
+document.addEventListener('progreso-cambio',()=>{if(view.v==='home'){buildTiles();buildExtras()}else if(view.v==='cat')buildCat(view.cat)});
+applySettings();buildTiles();buildExtras();try{history.replaceState({v:'home'},'')}catch{}showLanding();
 window.__menu={show,ITEMS,CATS,state:()=>view};
 })();
 </script>

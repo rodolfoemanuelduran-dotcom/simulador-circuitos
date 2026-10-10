@@ -9,6 +9,10 @@ const red=()=>({id:'RED',t:'src',v:220,name:'Alimentación 220 V~'});
 const sw=(id,n)=>({id,t:'sw',name:n||'Llave '+id});
 const sw3=(id,flip)=>({id,t:'sw3',flip:!!flip,name:'Conmutador '+id});
 const lamp=(id,r,vr)=>({id,t:'lamp',r:r||12,vr:vr||12,name:'Lámpara '+id});
+const dcm=(id,vr)=>({id,t:'dcm',r:+(4*vr).toFixed(1),vr,name:'Motor '+id});
+const buz=(id,vr)=>({id,t:'buz',r:Math.round(vr/.03),vr,name:'Zumbador '+id});
+const cal=(id,vr,w)=>({id,t:'cal',r:+(vr*vr/w).toFixed(2),vr,w,name:'Calefactor '+id});
+const lampW=(id,vr,w)=>({id,t:'lamp',r:+(vr*vr/w).toFixed(2),vr,w,name:'Lámpara '+id+' ('+w+' W)'});
 const foco=id=>({id,t:'lamp',r:484,vr:220,name:'Foco '+id});
 const res=(id,r)=>({id,t:'res',r,name:'Resistor '+id});
 const fuse=(id,amp)=>({id,t:'fuse',amp,name:'Fusible '+amp+' A'});
@@ -56,10 +60,12 @@ function casaAmbiente(o){
 }
 
 const groups=[
+ {id:'taller',title:'Taller libre',desc:'Mesa vacía con paleta de componentes: inventá, armá y medí tus propios circuitos.'},
  {id:'basico',title:'Circuitos básicos',desc:'Corriente continua: el primer recorrido de la corriente.'},
  {id:'serie',title:'En serie',desc:'Un único camino para la corriente.'},
  {id:'paralelo',title:'En paralelo',desc:'Varios caminos entre los mismos dos puntos.'},
  {id:'mixto',title:'Circuitos mixtos',desc:'Serie y paralelo combinados.'},
+ {id:'artefactos',title:'Otros artefactos',desc:'Motor de corriente continua, zumbador y calefactor: no todo es una lámpara.'},
  {id:'ca',title:'Instalaciones en corriente alterna',desc:'Fase, neutro y tierra: llaves, tomas, motor y jabalina.'},
  {id:'proteccion',title:'Componentes y protección',desc:'LED, fusible y sobrecargas.'},
  {id:'falla',title:'Buscá la falla',desc:'Medí con el multímetro y reemplazá lo que está dañado.'}
@@ -138,6 +144,29 @@ const list=[
  comps:[bat(12),sw('S1'),lamp('L1'),lamp('L2')],
  sol:pairs(['B.p-S1.a','S1.b-L1.a','L1.b-L2.a','L2.b-B.n'])},
 
+{id:'serie-dist',group:'serie',title:'Serie · Lámparas de distinta potencia',
+ desc:'Tres lámparas de 12 V (5 W, 10 W y 21 W) en serie: ¿brillan igual?',
+ goal:'Conectá las tres lámparas en serie con la llave y fijate cuál brilla más y cuál casi no se ve. Medí la tensión y la corriente en cada una.',
+ tip:'Es un único camino: + → llave → L1 → L2 → L3 → −. Después tocá cada lámpara y compará su tensión: ¿cuánta corriente pasa por cada una?',
+ explain:'Por las tres pasa la MISMA corriente (0,24 A), pero la tensión se reparte según la resistencia: L1 (5 W, 28,8 Ω) recibe 6,9 V, L3 (10 W, 14,4 Ω) 3,5 V y L2 (21 W, 6,9 Ω) apenas 1,6 V. Como P = I² × R, brilla más la de mayor resistencia. Ojo: una lámpara de más watts tiene MENOS resistencia, así que en serie es la que menos se enciende.',
+ comps:[bat(12),sw('S1'),lampW('L1',12,5),lampW('L2',12,21),lampW('L3',12,10)],
+ sol:pairs(['B.p-S1.a','S1.b-L1.a','L1.b-L2.a','L2.b-L3.a','L3.b-B.n'])},
+
+{id:'serie-quema',group:'serie',noauto:true,title:'Serie · ¿Qué pasa si se quema una?',
+ desc:'Tres lámparas en serie: hacé explotar una y mirá qué les pasa a las otras.',
+ goal:'1) Conectá las tres lámparas en serie y cerrá la llave: mirá cuánta tensión recibe cada una y cómo brillan. 2) Tocá una lámpara y apretá «💥 Quemar»: ¿qué pasa con las otras dos?',
+ tip:'Un solo camino: + → llave → L1 → L2 → L3 → −. Cuando brillen, tocá L2 y usá el botón «💥 Quemar L2» del panel (botón ☰ si estás en el celular).',
+ explain:'En serie hay un solo camino: las lámparas se reparten la tensión (4 V cada una, por eso brillan poco) y por todas pasa la misma corriente. Si el filamento de una se corta, el camino queda abierto y se apagan TODAS. Comparalo con el paralelo, donde cada lámpara recibe los 12 V y las demás siguen encendidas.',
+ comps:[bat(12),sw('S1'),lamp('L1'),lamp('L2'),lamp('L3')],
+ sol:pairs(['B.p-S1.a','S1.b-L1.a','L1.b-L2.a','L2.b-L3.a','L3.b-B.n']),
+ check(c){
+  const u=c.simWith({allClosed:true,ignoreBroken:true});
+  if(u.short||!['L1','L2','L3'].every(k=>Math.abs(u.c[k].i-1/3)<.01))return null;
+  if(['L1','L2','L3'].some(k=>c.broken[k]))return{cls:'ok',head:'¡Lo viste!',text:'Se quemó una lámpara y se apagaron TODAS: en serie hay un solo camino y al cortarse se interrumpe la corriente en todo el circuito.',done:true,status:'on'};
+  if(!c.allClosed)return{cls:'',head:'Serie correcta',text:'Cerrá la llave y fijate cómo brillan las tres lámparas.'};
+  return{cls:'',head:'Funciona',text:'Cada lámpara recibe solo '+c.fV(c.sim.c.L1.v)+' de los 12 V (se reparten la tensión) y brilla poco. Ahora tocá una lámpara y apretá «💥 Quemar» para ver qué pasa con las otras.'}
+ }},
+
 {id:'serie-4',group:'serie',title:'Serie · Cuatro lámparas',
  desc:'Una guirnalda: cuatro lámparas en cadena.',
  goal:'Conectá las cuatro lámparas en serie con la llave general.',
@@ -171,6 +200,24 @@ const list=[
  comps:[bat(12),sw('S1'),lamp('L1'),lamp('L2')],
  pos:{S1:[.3,.5],L1:[.66,.22],L2:[.66,.76]},
  sol:pairs(['B.p-S1.a','S1.b-L1.a','S1.b-L2.a','L1.b-B.n','L2.b-B.n'])},
+
+{id:'par-quema',group:'paralelo',noauto:true,title:'Paralelo · ¿Qué pasa si se quema una?',
+ desc:'Tres lámparas en paralelo: hacé explotar una y mirá que las otras siguen encendidas.',
+ goal:'1) Conectá las tres lámparas en paralelo y cerrá la llave: mirá cuánta tensión recibe cada una y cómo brillan. 2) Tocá una lámpara y apretá «💥 Quemar»: ¿qué pasa con las otras dos?',
+ tip:'Los tres bornes izquierdos van juntos a la llave y los tres derechos juntos al −. Cuando brillen, tocá L2 y usá el botón «💥 Quemar L2» del panel.',
+ explain:'En paralelo cada lámpara tiene su propio camino hasta la batería: todas reciben los 12 V completos y brillan al máximo (por eso gastan más: 3 A en total). Si una se quema, solo se apaga esa: las demás siguen encendidas porque su camino sigue cerrado. Es el circuito de las casas.',
+ comps:[bat(12),sw('S1'),lamp('L1'),lamp('L2'),lamp('L3')],
+ pos:{S1:[.3,.5],L1:[.68,.15],L2:[.68,.5],L3:[.68,.79]},
+ sol:pairs(['B.p-S1.a','S1.b-L1.a','S1.b-L2.a','S1.b-L3.a','L1.b-B.n','L2.b-B.n','L3.b-B.n']),
+ check(c){
+  const u=c.simWith({allClosed:true,ignoreBroken:true});
+  if(u.short||!['L1','L2','L3'].every(k=>Math.abs(u.c[k].i-1)<.02))return null;
+  const nb=['L1','L2','L3'].filter(k=>c.broken[k]).length;
+  if(nb&&c.allClosed&&c.sim.ibat>.5)return{cls:'ok',head:'¡Lo viste!',text:'Se quemó una lámpara y las demás siguen encendidas: en paralelo cada una tiene su propio camino a la batería.',done:true,status:'on'};
+  if(nb)return{cls:'',head:'Cerrá la llave',text:'Con la llave abierta no circula corriente. Cerrala y fijate si las otras lámparas siguen encendidas.',status:'ready'};
+  if(!c.allClosed)return{cls:'',head:'Paralelo correcto',text:'Cerrá la llave y fijate cómo brillan las tres lámparas.'};
+  return{cls:'',head:'Funciona',text:'Cada lámpara recibe los '+c.fV(c.sim.c.L1.v)+' completos y brilla al máximo. Ahora tocá una lámpara y apretá «💥 Quemar» para ver qué pasa con las otras.'}
+ }},
 
 {id:'par-4',group:'paralelo',title:'Paralelo · Cuatro lámparas',
  desc:'Cuatro ramas iguales alimentadas por la misma batería.',
@@ -440,7 +487,75 @@ casaAmbiente({id:'casa-living',title:'Casa · Living-comedor',
  fault:['R1','R2','R3'],
  comps:[bat(12),sw('S1'),res('R1',100),res('R2',220),res('R3',330)],
  pos:{S1:[.28,.22],R1:[.52,.22],R2:[.82,.22],R3:[.82,.76]},
- sol:pairs(['B.p-S1.a','S1.b-R1.a','R1.b-R2.a','R1.b-R3.a','R2.b-B.n','R3.b-B.n'])}
+ sol:pairs(['B.p-S1.a','S1.b-R1.a','R1.b-R2.a','R1.b-R3.a','R2.b-B.n','R3.b-B.n'])},
+
+/* ---------------- OTROS ARTEFACTOS ---------------- */
+{id:'motor-simple',group:'artefactos',title:'Motor de corriente continua',
+ desc:'Un motor pequeño con carcasa de cristal: se ven los imanes, el rotor y el colector.',
+ goal:'Conectá la batería, la llave y el motor para que la hélice gire. Tocá el motor y mirá su velocidad en el multímetro.',
+ tip:'+ de la batería → llave → pata + del motor (la de arriba) y la otra pata vuelve al −. Cables: rojo al +, celeste al −.',
+ explain:'Un motor de CC convierte energía eléctrica en movimiento: la corriente pasa por las bobinas de cobre del rotor, que quedan entre dos imanes y son empujadas a girar. La velocidad depende de la tensión (6 V = 6000 rpm, la nominal) y el sentido de giro depende de la polaridad.',
+ comps:[bat(6),sw('S1'),dcm('M1',6)],
+ sol:pairs(['B.p-S1.a','S1.b-M1.a','M1.b-B.n'])},
+
+{id:'motor-giro',group:'artefactos',title:'Motor: hacelo girar al revés',
+ desc:'El sentido de giro depende de la polaridad con la que conectás el motor.',
+ goal:'Conectá el motor para que la hélice gire AL REVÉS (en sentido contrario al normal). Pista: mirá los signos + y − junto a las patas del motor.',
+ tip:'Para invertir el giro hay que invertir la polaridad: el + de la batería va a la pata − del motor y el − de la batería a la pata +.',
+ explain:'Cuando el + de la batería entra por la pata + del motor, gira en el sentido normal. Si se invierten las conexiones, la corriente recorre las bobinas al revés, cambia el sentido del empuje magnético y el motor gira al revés. Así se invierte el giro de un motor de juguete o de un autito a pilas.',
+ comps:[bat(6),sw('S1'),dcm('M1',6)],
+ sol:pairs(['B.p-S1.a','S1.b-M1.b','M1.a-B.n']),
+ check(c){const m=c.sim.c.M1;if(c.broken.M1)return{cls:'error',head:'Motor quemado',text:'Recibió demasiada tensión. Reemplazalo con 🔧.'};
+  if(!c.links.length)return null;if(!c.allClosed)return null;
+  if(m.level>.5&&m.dir<0)return{cls:'ok',head:'¡Gira al revés!',text:'Con la polaridad invertida el motor gira en sentido contrario ('+c.fV(m.v)+' con el + del lado de la pata −).',done:true};
+  if(m.level>.5&&m.dir>0)return{cls:'',head:'Gira en el sentido normal',text:'Invertí las conexiones del motor: el + de la batería a la pata − del motor.'};return null}},
+
+{id:'motor-resistor',group:'artefactos',title:'Motor: regulá la velocidad',
+ desc:'Motor de 6 V y batería de 9 V: ¿cómo lo protegés y lo hacés girar a velocidad normal?',
+ goal:'El motor es de 6 V y la batería de 9 V: conectado directo se quema. Poné UNO de los resistores en serie para que gire entre el 60 % y el 110 % de su velocidad.',
+ tip:'El resistor "se queda" con parte de la tensión: Vmotor = 9 V × Rmotor ÷ (Rmotor + R). El motor tiene 24 Ω. Con 10 Ω recibe ≈ 6,4 V; con 22 Ω ≈ 4,7 V; con 47 Ω ≈ 3 V.',
+ explain:'En serie la tensión se reparte en proporción a las resistencias. Con 10 Ω el motor recibe 6,4 V (107 % de su velocidad); con 22 Ω, 4,7 V (78 %); con 47 Ω solo 3 V y gira despacio. Sin resistor recibiría 9 V (150 %) y se quemaría.',
+ comps:[bat(9),sw('S1'),dcm('M1',6),res('Ra',10),res('Rb',22),res('Rc',47)],
+ sol:pairs(['B.p-S1.a','S1.b-Rb.a','Rb.b-M1.a','M1.b-B.n']),
+ check(c){const m=c.sim.c.M1;if(c.broken.M1)return{cls:'error',head:'Motor quemado',text:'Recibió más de 8,4 V y se quemó. Reemplazalo con 🔧 y poné un resistor en serie.'};
+  if(!c.allClosed)return null;if(m.level<=.02)return null;
+  if(m.level>=.6&&m.level<=1.1)return{cls:'ok',head:'Desafío completado',text:'El motor recibe '+c.fV(m.v)+' y gira al '+Math.round(m.level*100)+' % de su velocidad.',done:true};
+  if(m.level<.6)return{cls:'',head:'Gira muy despacio',text:'Recibe solo '+c.fV(m.v)+': el resistor es demasiado grande. Probá con uno menor.'};return null}},
+
+{id:'motor-lampara',group:'artefactos',title:'Motor y lámpara en paralelo',
+ desc:'Dos artefactos distintos con la misma batería: cada uno con su camino.',
+ goal:'Conectá el motor de 6 V y la lámpara de 6 V en paralelo, con una llave general.',
+ tip:'Las dos patas + (motor y lámpara) van a la llave; las dos patas − van al − de la batería.',
+ explain:'En paralelo cada artefacto recibe los 6 V completos: el motor gira a su velocidad nominal y la lámpara brilla al máximo, y la corriente de la batería es la suma de las dos (0,25 A + 0,5 A).',
+ comps:[bat(6),sw('S1'),dcm('M1',6),lampW('L1',6,3)],
+ sol:pairs(['B.p-S1.a','S1.b-M1.a','S1.b-L1.a','M1.b-B.n','L1.b-B.n'])},
+
+{id:'zumbador',group:'artefactos',title:'Zumbador: un artefacto polarizado',
+ desc:'El zumbador solo suena si el + va a su pata +.',
+ goal:'Conectá la batería de 5 V, la llave y el zumbador para que suene. ¡Cuidado con la polaridad!',
+ tip:'El + de la batería llega a la pata + del zumbador (la marcada con +). Si lo conectás al revés, no suena.',
+ explain:'Un zumbador (buzzer) es un componente polarizado: su electrónica interna solo funciona con el + en la pata + y el − en la otra. Al revés no pasa nada (y en algunos se daña). Por eso la polaridad —y el color de los cables— importa.',
+ comps:[bat(5),sw('S1'),buz('Z1',5)],
+ sol:pairs(['B.p-S1.a','S1.b-Z1.a','Z1.b-B.n']),
+ check(c){const z=c.sim.c.Z1;if(c.broken.Z1)return{cls:'error',head:'Zumbador quemado',text:'Recibió demasiada tensión. Reemplazalo con 🔧.'};
+  if(!c.links.length||!c.allClosed)return null;if(z.level>.5)return{cls:'ok',head:'¡Suena!',text:'El zumbador recibe '+c.fV(z.v)+' con el + en la pata +: funciona.',done:true};
+  if(z.v<-3)return{cls:'',head:'No suena',text:'Tiene la polaridad invertida: el + de la batería tiene que ir a la pata +.'};return null}},
+
+{id:'calefactor',group:'artefactos',title:'Calefactor con fusible',
+ desc:'Una resistencia calefactora de 24 W protegida por un fusible.',
+ goal:'Conectá en serie el fusible de 3 A, la llave y el calefactor a la batería de 12 V. ¿Cuánta corriente circula? (P = V × I)',
+ tip:'Un solo camino: + → fusible → llave → calefactor → −. El calefactor consume 24 W a 12 V.',
+ explain:'El calefactor es una resistencia de 6 Ω: con 12 V circulan 2 A y disipa 24 W (P = V × I) en forma de calor. El fusible de 3 A deja pasar esa corriente, pero se fundiría si se agregara otro artefacto en paralelo que superara los 3 A.',
+ comps:[bat(12),fuse('F',3),sw('S1'),cal('H1',12,24)],
+ sol:pairs(['B.p-F.a','F.b-S1.a','S1.b-H1.a','H1.b-B.n'])},
+
+/* ---------------- TALLER LIBRE (mesa vacía con paleta de componentes) ---------------- */
+{id:'taller',group:'taller',free:true,title:'Taller libre · Armá tu propio circuito',
+ desc:'Elegí componentes de la paleta, ubicalos, conectalos y probá: serie, paralelo, mixtos, LED, fusibles…',
+ goal:'Tocá un componente de la paleta (a la izquierda) para agregarlo a la mesa, arrastralo para ubicarlo y unilo con cables. ¡Inventá tu circuito!',
+ tip:'Empezá simple: batería + llave + una lámpara. Después sumá otra lámpara una a continuación de la otra (serie) y probá de nuevo con la segunda en paralelo: mirá cómo cambia el brillo y medí con el multímetro. Si usás un LED, no te olvides del resistor.',
+ explain:'',
+ comps:[bat(12)],pos:{B:[.12,.5]},sol:[]}
 ];
 
 const items={};list.forEach(s=>items[s.id]=s);
