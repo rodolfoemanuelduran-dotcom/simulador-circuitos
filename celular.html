@@ -356,7 +356,7 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){addEventL
  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadCtl){hadCtl=true;return}if(recargando)return;recargando=true;location.reload()});
 }catch{}})}
 /* bienvenida (la primera vez, y desde Más > Cómo se juega) */
-function bienvenida(){abrirFull(`<div class="big" style="margin-top:6vh"><img src="logo-red-banner.jpg" alt="R.E.D" width="960" height="458" style="width:min(340px,92%);height:auto;border-radius:20px;box-shadow:0 10px 34px #000b,0 0 0 1px #ffffff16"><h2>¡Bienvenido/a!</h2><p style="color:var(--mu)">Practicá circuitos eléctricos y llegá entrenado/a al examen.</p></div>
+function bienvenida(){abrirFull(`<div class="big" style="margin-top:6vh"><div style="font-size:3.4rem">⚡</div><h2>¡Bienvenido/a!</h2><p style="color:var(--mu)">Practicá circuitos eléctricos y llegá entrenado/a al examen.</p></div>
  <div class="card"><p>🛤️ <b>Camino:</b> superá niveles cada vez más difíciles. Si no usás pistas ni te equivocás, ¡3 estrellas!</p><p>🔌 <b>Armar circuitos:</b> con el celular <b>acostado</b>, tocá un borne y después otro. Cable <b style="color:#e5484d">rojo</b> al polo +, <b style="color:#4db5ee">celeste</b> al polo −. Pellizcá para acercar.</p><p>⏱️ <b>Simulacro:</b> 3 problemas con tiempo y sin ayudas, como en el examen.</p><p>🔥 Practicá todos los días para sumar racha.</p></div><div class="gap"><button class="cta" id="bvOk">¡Vamos! ▶</button></div>`);
  $('#bvOk').onclick=()=>{S.visto=1;save();capa('fs',false)}}
 /* inicio */

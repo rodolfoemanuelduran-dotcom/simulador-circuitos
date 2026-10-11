@@ -56,7 +56,7 @@ CABLES ENERGIZADOS, MESA MEZCLADA, ESTRELLAS, TALLER LIBRE Y EXAMEN (version 1.1
 Las pruebas automaticas (pruebas.js) incluyen LAYSH(n) para verificar la mezcla de la mesa.
 
 INSTALADOR PARA WINDOWS (carpeta INSTALADOR-WINDOWS)
-Instalar-Simulador-de-Circuitos-1.2.0.exe instala la aplicacion con acceso directo en el escritorio y
+Instalar-Simulador-de-Circuitos-1.2.1.exe instala la aplicacion con acceso directo en el escritorio y
 en el menu Inicio, y funciona sin internet. Para volver a generarlo despues de cambiar archivos:
 ejecutar aplicacion-windows\construir-instalador.ps1 (necesita Node.js e internet la primera vez).
 
