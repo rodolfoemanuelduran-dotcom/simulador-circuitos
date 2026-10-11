@@ -99,6 +99,10 @@ body.movil.wire .mvcols{display:flex;position:absolute;z-index:4;left:5px;top:50
 body.movil.wire .mvcols .colors{flex-direction:column;gap:9px}body.movil.wire .mvcols .colors button{width:40px;height:40px;border-width:3px}
 body.movil.wire #board{left:62px;width:calc(100% - 62px)}
 @media (orientation:portrait){body.movil.wire .mvcols{left:50%;top:auto;bottom:8px;transform:translateX(-50%);flex-direction:row;padding:5px 10px}body.movil.wire .mvcols .colors{flex-direction:row}body.movil.wire #board{left:0;width:100%;height:calc(100% - 64px)}}
+/* taller libre en el teléfono: la paleta de piezas va a la izquierda y los colores del cable pasan a la derecha */
+body.movil.free.wire .mvcols{left:auto;right:5px}body.movil.free.wire #board{left:68px;width:calc(100% - 128px)}
+@media (max-height:520px){body.movil.free.wire #board{left:56px;width:calc(100% - 116px)}}
+@media (orientation:portrait){body.movil.free.wire .mvcols{left:50%;right:auto}body.movil.free.wire #board{left:62px;width:calc(100% - 62px)}}
 /* lectura flotante del multímetro y consigna */
 body.movil.wire .mvread{display:block;position:absolute;z-index:4;top:6px;left:50%;transform:translateX(-50%);max-width:92%;padding:6px 14px;border-radius:999px;background:var(--hintbg);border:1px solid var(--bl);color:var(--tx);font:700 .88rem ui-monospace,Consolas,monospace;white-space:nowrap;pointer-events:none}.mvread[hidden]{display:none!important}
 body.movil .mvmission{position:absolute;inset:0;z-index:8;display:none;place-items:center;padding:14px;background:#04101bd9;backdrop-filter:blur(5px)}body.movil .mvmission.on{display:grid}
@@ -108,6 +112,19 @@ body.movil .mvmission{position:absolute;inset:0;z-index:8;display:none;place-ite
 body.movil .hint{bottom:4px;width:min(520px,calc(100% - 140px));font-size:.8rem;padding:5px 10px}
 body.movil .why{top:46px}body.movil .toast{bottom:44px}
 body.movil .tx{font-size:20px!important}body.movil .tv{font-size:17px!important}body.movil .tl{font-size:16px!important}body.movil .wire{stroke-width:9px}body.movil .wshadow{stroke-width:15px}
+#palCh{border-color:#ffd43b;background:#ffd43b22}
+.mm-card #mmTab{margin:0 0 10px;font-size:.78rem;text-align:center}.mm-card #mmTab:empty{display:none}.mm-card #mmTab table{font-size:.8rem}
+.chback{position:absolute;inset:0;z-index:10;display:grid;place-items:center;padding:12px;background:#04101bdd;backdrop-filter:blur(4px)}.chback[hidden]{display:none}
+.chcard{position:relative;width:min(760px,100%);max-height:100%;overflow:auto;padding:16px 18px 14px;border-radius:20px;border:2px solid #ffd43b;background:var(--p);color:var(--tx);box-shadow:0 20px 60px #000b}
+.chcard h2{margin:0 0 2px;font-size:1.25rem;padding-right:44px}.chcard>p{margin:2px 0 10px;color:var(--mu);font-size:.84rem}
+.chcard h3{margin:14px 0 2px;font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--yl)}.chcard .gd{margin:0 0 6px;color:var(--mu);font-size:.78rem}
+.chx{position:absolute;top:10px;right:10px;width:38px;height:38px;border:0;border-radius:50%;background:var(--p2);color:inherit;font-size:1.2rem;cursor:pointer}
+.chgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.chit{display:grid;gap:2px;text-align:left;padding:9px 11px;border-radius:12px;border:1px solid var(--line);background:var(--p2);color:var(--tx);cursor:pointer;font:inherit}.chit:hover,.chit:focus-visible{border-color:#ffd43b}.chit.cur{border-color:var(--bl);box-shadow:0 0 0 2px #79d9f144}.chit .lv{font-size:.66rem;font-weight:800;color:var(--yl);letter-spacing:.05em}.chit b{font-size:.9rem}.chit .st{color:#ffd43b;letter-spacing:2px;font-size:.85rem}.chit .st.off{color:#5b6b7e}
+.chmine{display:flex;align-items:center;gap:6px;padding:7px 10px;margin:5px 0;border-radius:12px;border:1px solid var(--line);background:var(--p2)}.chmine .t{flex:1;min-width:0;text-align:left;border:0;background:none;color:var(--tx);font:700 .9rem system-ui;cursor:pointer;padding:6px 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chmine .b{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:1rem}
+.chform label{display:block;margin:10px 0 3px;font-size:.78rem;font-weight:700;color:var(--mu)}.chform input,.chform textarea{width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--tx);font:inherit;font-size:.92rem}.chform textarea{min-height:84px;resize:vertical}
+.chcard .row{margin-top:12px}.chmsg{padding:9px 11px;border-radius:10px;background:var(--goalbg);border-left:3px solid var(--bl);font-size:.84rem;margin:8px 0}.chmsg.err{background:var(--errbg);border-color:var(--rd);color:var(--errtx)}
+table.tt{margin-top:6px}table.tt th,table.tt td{text-align:center;padding:3px 3px}table.tt tr{cursor:pointer}table.tt tr.cur td{background:#173651}table.tt td.st{font-weight:900}table.tt tr.ok td.st{color:var(--gr)}table.tt tr.bad td.st{color:var(--rd)}table.tt .lt{color:var(--yl);font-weight:800}table.tt .dk{color:var(--mu)}.chleg{font-size:.7rem;color:var(--mu);margin:3px 0 0}
 .hintring{fill:none;stroke:#ffd43b;stroke-width:5;transform-box:fill-box;transform-origin:center;animation:hring 1s ease-out infinite;pointer-events:none}@keyframes hring{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.9);opacity:0}}
 </style></head><body>
 <div id="mvbar" class="mvbar" hidden>
@@ -133,8 +150,8 @@ body.movil .tx{font-size:20px!important}body.movil .tv{font-size:17px!important}
 <div class="work">
  <aside id="panel" class="panel">
   <h2 id="pTitle"></h2><p id="pDesc"></p>
-  <div class="goal" id="pGoal"></div><div id="quiz" class="quiz" hidden><h3>Pregunta</h3><p id="qq"></p><div id="qo"></div></div><p id="pStars" style="margin:6px 0 0;font-size:.78rem"></p>
-  <div class="row"><button class="btn" id="tipBtn">💡 Pista</button><button class="btn" id="solBtn">👁 Ver solución</button><button class="btn" id="unplugBtn" hidden>🔌 Desenchufar</button></div>
+  <div class="goal" id="pGoal"></div><div id="chTab" hidden></div><div id="quiz" class="quiz" hidden><h3>Pregunta</h3><p id="qq"></p><div id="qo"></div></div><p id="pStars" style="margin:6px 0 0;font-size:.78rem"></p>
+  <div class="row"><button class="btn" id="tipBtn">💡 Pista</button><button class="btn" id="solBtn">👁 Ver solución</button><button class="btn" id="unplugBtn" hidden>🔌 Desenchufar</button><button class="btn" id="chExit" hidden>↩ Taller libre</button></div>
   <p id="pTip" hidden></p>
   <h3>Color del cable</h3><div class="colors" id="colors"></div>
   <h3>Cables con energía</h3><div class="vbar" id="vbar"></div><div class="vlab"><span id="vlo">−</span><span id="vhi">+</span></div>
@@ -156,17 +173,17 @@ body.movil .tx{font-size:20px!important}body.movil .tv{font-size:17px!important}
    <g id="gWires"></g><g id="gComps"></g><g id="gTerms"></g><g id="gPlug"></g><g id="gFx" pointer-events="none"></g><g id="gOver"><path id="prevS" class="wshadow" d=""/><path id="prev" class="wire" d="" stroke-dasharray="12 9"/></g>
   </svg>
   <div id="exConf" class="modal" hidden role="dialog" aria-modal="true"><div class="modal-card"><h3>¿Entregar este circuito?</h3><p>Después de entregar no podés volver a esta pregunta. El simulador no te dice si está bien: lo ve tu docente al final.</p><div class="row" style="justify-content:center"><button class="btn primary" id="cfYes">Sí, entregar</button><button class="btn" id="cfNo">Seguir trabajando</button></div></div></div>
-  <div id="pal" class="pal" hidden aria-label="Paleta de componentes"></div><div id="fly" class="fly" hidden></div><div id="toast" class="toast" hidden role="status"></div>
+  <div id="pal" class="pal" hidden aria-label="Paleta de componentes"></div><div id="fly" class="fly" hidden></div><div id="chBack" class="chback" hidden></div><div id="toast" class="toast" hidden role="status"></div>
   <div id="win" class="win" hidden role="status"><div class="win-st" id="winSt"></div><h3 id="winTit"></h3><p id="winTxt"></p><div id="winBadge"></div><div class="row" style="justify-content:center"><button class="btn primary" id="winNext" hidden>Siguiente práctica ▶</button><button class="btn" id="winClose">Seguir probando</button></div></div>
   <div id="why" class="why" hidden role="alert"><div class="why-ico" id="whyIco">⚡</div><div class="why-body"><h3><span id="whyTit"></span><span class="why-tap"> · ¿por qué? tocá</span></h3><p><b class="k1">Qué pasó</b><span id="whyWhat"></span></p><p><b class="k2">Por qué</b><span id="whyWhy"></span></p><p><b class="k3">Qué hacer</b><span id="whyFix"></span></p></div><button class="btn primary" id="whyOk">Entendido ✔</button></div>
   <div id="hint" class="hint"></div>
   <div class="mvcols" id="mvcols"></div><div class="mvread" id="mvread" hidden></div>
-  <div class="mvmission" id="mvmission"><div class="mm-card"><span class="mm-lv" id="mmLv"></span><h2 id="mmTit"></h2><p id="mmTxt"></p><button class="btn primary" id="mmGo">¡Empezar!</button><button class="btn sm" id="mmSol" hidden>🏳 Rendirme y ver la solución</button></div></div>
+  <div class="mvmission" id="mvmission"><div class="mm-card"><span class="mm-lv" id="mmLv"></span><h2 id="mmTit"></h2><p id="mmTxt"></p><div id="mmTab"></div><button class="btn primary" id="mmGo">¡Empezar!</button><button class="btn sm" id="mmSol" hidden>🏳 Rendirme y ver la solución</button></div></div>
  </section>
 </div>
 <div class="mvsheet" id="mvsheet"><div class="mvdiag" id="mvdiag"></div></div>
 </div>
-<script src="redes-datos.js"></script><script src="componentes-cristal.js"></script><script src="progreso.js"></script>
+<script src="redes-datos.js"></script><script src="componentes-cristal.js"></script><script src="progreso.js"></script><script src="taller-desafios.js"></script>
 <script>
 (()=>{
 const D=window.REDES,$=s=>document.querySelector(s),svg=$('#board'),gW=$('#gWires'),gC=$('#gComps'),gT=$('#gTerms'),gP=$('#gPlug'),gFx=$('#gFx'),prev=$('#prev'),prevS=$('#prevS');
@@ -186,7 +203,9 @@ const WIRE_COLORS=AC?ACW:DCW,wcol=k=>{const c=(WIRE_COLORS.find(c=>c[0]===k)||WI
 const cm={};sc.comps.forEach(c=>cm[c.id]=c);CRISTAL.install();svg.querySelector('defs').insertAdjacentHTML('beforeend',CRISTAL.DEFS);const FX=CRISTAL.FX;FX.init(gFx);FX.onSpark=()=>{const n=performance.now();if(n-(FX.ls||0)>140){FX.ls=n;play('zap')}};
 if(sc.kind==='led'&&!sc.check)sc.check=function(c){const d=c.sim.c.D;if(c.broken.D)return{cls:'error',head:'LED quemado',text:'La corriente superó los 30 mA y el LED se destruyó. Reiniciá y elegí un resistor mayor.'};if(!c.allClosed)return null;const i=d.i;if(d.level>0&&i>=.005&&i<=.025)return{cls:'ok',head:'Desafío completado',text:'El LED conduce '+c.fmtI(i)+': dentro del rango seguro.',done:true};if(d.level>0&&i<.005)return{cls:'',head:'LED muy tenue',text:'Circula solo '+c.fmtI(i)+'. Probá con un resistor menor.'};return null};
 const SRC=sc.comps.find(c=>c.t==='bat'||c.t==='src');
-const sws=sc.comps.filter(c=>c.t==='sw'||c.t==='sw3');
+const isSw=c=>c.t==='sw'||c.t==='sw3'||c.t==='sw4';
+const sws=sc.comps.filter(isSw);
+let CH=null;   /* desafío del taller en curso (null = mesa libre) */
 const tomas=sc.comps.filter(c=>c.t==='toma'),motor=sc.comps.find(c=>c.t==='motor');
 let links=[],swState={},broken={},color=AC?'brown':'red',selComp=null,selWire=null,drag=null,pend=null,showVals=!sc.fault&&!AC,tableOn=false,soundOn=true,faultId=null,attempts=0,fixed=false,done=false,lastSim=null,lastDiag=null,plugTo=null,plugPos=null,prevLit={},prevRun=false;
 
@@ -197,6 +216,7 @@ function tdefs(c){
   case'bat':return[BRK('n',0,62,0,1,'N','−'),BRK('p',0,-62,0,-1,'L','+')];
   case'src':return[BRK('L',62,-54,1,0,'L','L'),BRK('N',62,0,1,0,'N','N'),BRK('PE',62,54,1,0,'PE','PE')];
   case'sw3':{const f=c.flip?-1:1;return[BRK('c',-62*f,0,-f,0,'L','C'),BRK('a',62*f,-28,f,0,'L','1'),BRK('b',62*f,28,f,0,'L','2')]}
+  case'sw4':{const f=c.flip?-1:1;return[BRK('a1',-62*f,-28,-f,0,'L','1'),BRK('a2',-62*f,28,-f,0,'L','2'),BRK('b1',62*f,-28,f,0,'L','1'),BRK('b2',62*f,28,f,0,'L','2')]}
   case'led':return[BRK('a',-62,0,-1,0,'L','A'),BRK('k',62,0,1,0,'N','K')];
   case'toma':return[BRK('L',-62,-54,-1,0,'L','L'),BRK('N',-62,0,-1,0,'N','N'),BRK('PE',-62,54,-1,0,'PE','PE')];
   case'rod':return[BRK('p',0,-52,0,-1,'PE','PE')];
@@ -209,7 +229,7 @@ function tdefs(c){
 const TM={};sc.comps.forEach(c=>{c.defs=tdefs(c);c.defs.forEach(d=>{d.id=c.id+'.'+d.k;d.c=c;TM[d.id]=d})});
 const allT=Object.keys(TM);
 /* vuelve a armar bornes e índices cuando el taller libre agrega o quita componentes */
-function rebuild(){Object.keys(cm).forEach(k=>delete cm[k]);sc.comps.forEach(c=>cm[c.id]=c);Object.keys(TM).forEach(k=>delete TM[k]);sc.comps.forEach(c=>{c.defs=tdefs(c);c.defs.forEach(d=>{d.id=c.id+'.'+d.k;d.c=c;TM[d.id]=d})});allT.length=0;allT.push(...Object.keys(TM));sws.length=0;sc.comps.filter(c=>c.t==='sw'||c.t==='sw3').forEach(c=>sws.push(c))}
+function rebuild(){Object.keys(cm).forEach(k=>delete cm[k]);sc.comps.forEach(c=>cm[c.id]=c);Object.keys(TM).forEach(k=>delete TM[k]);sc.comps.forEach(c=>{c.defs=tdefs(c);c.defs.forEach(d=>{d.id=c.id+'.'+d.k;d.c=c;TM[d.id]=d})});allT.length=0;allT.push(...Object.keys(TM));sws.length=0;sc.comps.filter(isSw).forEach(c=>sws.push(c))}
 function tp(id){const d=TM[id],c=d.c;return{x:c.fx*W+d.x,y:c.fy*H+d.y,dx:d.dx,dy:d.dy}}
 const SLOTS=[[.3,.22],[.5,.22],[.7,.22],[.9,.22],[.9,.76],[.7,.76],[.5,.76],[.3,.76]];
 (function place(){let k=0;sc.comps.forEach(c=>{const s=(sc.pos&&sc.pos[c.id]);if(s){c.fx=s[0];c.fy=s[1]}else if(c.t==='bat'||c.t==='src'){c.fx=.1;c.fy=.5}else{const q=SLOTS[k++];c.fx=q[0];c.fy=q[1]}});plugHome=motor?(sc.plug||[motor.fx-.06,motor.fy+.22]):[0,0];plugPos={fx:plugHome[0],fy:plugHome[1]}})();
@@ -270,7 +290,9 @@ function setHum(level){try{const a=level>.07?audio():null;if(!a)level=0;if(level
 function solveLinear(A,b){const n=b.length;for(let i=0;i<n;i++){let p=i;for(let r=i+1;r<n;r++)if(Math.abs(A[r][i])>Math.abs(A[p][i]))p=r;[A[i],A[p]]=[A[p],A[i]];[b[i],b[p]]=[b[p],b[i]];const d=A[i][i]||1e-12;for(let r=i+1;r<n;r++){const f=A[r][i]/d;if(!f)continue;for(let c=i;c<n;c++)A[r][c]-=f*A[i][c];b[r]-=f*b[i]}}const x=new Array(n).fill(0);for(let i=n-1;i>=0;i--){let s=b[i];for(let c=i+1;c<n;c++)s-=A[i][c]*x[c];x[i]=s/(A[i][i]||1e-12)}return x}
 const VF=2,RS=10;
 const SRCP=SRC.t==='src'?SRC.id+'.L':SRC.id+'.p',SRCN=SRC.t==='src'?SRC.id+'.N':SRC.id+'.n',SRCPE=SRC.t==='src'?SRC.id+'.PE':null;let SRCV=SRC.v;
-function swConductions(o){const out=[];sws.forEach(c=>{const s=(o.sw&&o.sw[c.id]!==undefined)?o.sw[c.id]:(o.allClosed&&c.t==='sw'?true:!!swState[c.id]);if(c.t==='sw'){if(s)out.push({id:c.id,a:c.id+'.a',b:c.id+'.b'})}else out.push({id:c.id,a:c.id+'.c',b:c.id+(s?'.b':'.a')})});return out}
+function swConductions(o){const out=[];sws.forEach(c=>{const s=(o.sw&&o.sw[c.id]!==undefined)?o.sw[c.id]:(o.allClosed&&c.t==='sw'?true:!!swState[c.id]);if(c.t==='sw'){if(s)out.push({id:c.id,a:c.id+'.a',b:c.id+'.b'})}
+ else if(c.t==='sw4'){out.push({id:c.id,a:c.id+'.a1',b:c.id+(s?'.b2':'.b1')});out.push({id:c.id,a:c.id+'.a2',b:c.id+(s?'.b1':'.b2')})}   /* cruce: recto (1-1, 2-2) o cruzado (1-2, 2-1) */
+ else out.push({id:c.id,a:c.id+'.c',b:c.id+(s?'.b':'.a')})});return out}
 function tieEdges(){const out=[];sc.comps.filter(c=>c.t==='box').forEach(c=>c.rows.forEach(r=>{for(let i=1;i<r.t.length;i++)out.push({tie:true,a:c.id+'.'+r.t[0],b:c.id+'.'+r.t[i]})}));return out}
 const TIES=tieEdges();
 function nets(lk,o={}){const par={};allT.forEach(t=>par[t]=t);const find=t=>par[t]===t?t:(par[t]=find(par[t]));const join=(a,b)=>{a=find(a);b=find(b);if(a!==b)par[b]=a};
@@ -315,7 +337,8 @@ function simulate(lk,o={}){
  for(const root of allT){if(seen.has(root))continue;const order=[],parent=new Map();seen.add(root);const q=[root];while(q.length){const t=q.shift();order.push(t);for(const[u,k]of adj[t])if(!seen.has(u)){seen.add(u);parent.set(u,[t,k]);q.push(u)}}
   const sum=new Map(order.map(t=>[t,inj[t]]));for(let i=order.length-1;i>0;i--){const t=order[i],[p,k]=parent.get(t),s=sum.get(t);sum.set(p,sum.get(p)+s);fe[k]=edges[k].a===p?s:-s}}
  edges.forEach((e,k)=>{if(e.link!==undefined)out.flows[e.link]=fe[k]});
- sws.forEach(c=>{const e=edges.findIndex(x=>x.sw===c.id);let va,vb;if(c.t==='sw'){va=nv(find(c.id+'.a'));vb=nv(find(c.id+'.b'))}else{va=nv(find(c.id+'.c'));vb=0}out.c[c.id]={v:c.t==='sw'?va-vb:0,i:e>=0?Math.abs(fe[e]):0,p:0,level:0}});
+ sws.forEach(c=>{let ii=0,va=0,vb=0;edges.forEach((x,k)=>{if(x.sw===c.id)ii=Math.max(ii,Math.abs(fe[k]))});if(c.t==='sw'){va=nv(find(c.id+'.a'));vb=nv(find(c.id+'.b'))}
+  out.c[c.id]={v:c.t==='sw'?va-vb:0,i:ii,p:0,level:0}});
  return out;
 }
 const LIM={lamp:1.25,dcm:1.4,cal:1.4,buz:1.6};   /* hasta cuántas veces su tensión nominal aguanta cada artefacto */
@@ -362,7 +385,7 @@ function paintQuiz(){if(!sc.quiz)return;document.querySelectorAll('#qo .qopt').f
 function colorNets(lk){const par={};allT.forEach(t=>par[t]=t);const find=t=>par[t]===t?t:(par[t]=find(par[t]));const join=(a,b)=>{a=find(a);b=find(b);if(a!==b)par[b]=a};
  lk.forEach(l=>join(l.a,l.b));TIES.forEach(e=>join(e.a,e.b));sc.comps.forEach(c=>{if(c.t==='sw'||(c.t==='fuse'&&!broken[c.id]))join(c.id+'.a',c.id+'.b')});
  return{P:find(SRCP),N:find(SRCN),find}}
-function colorIssues(){if(AC||sc.quiz||sc.fault)return[];const cn=colorNets(links);if(cn.P===cn.N)return[];const bad=[];
+function colorIssues(){if(AC||sc.quiz||sc.fault||(CH&&CH.noColor))return[];const cn=colorNets(links);if(cn.P===cn.N)return[];const bad=[];
  links.forEach((l,i)=>{if(l.locked)return;const n=cn.find(l.a),want=n===cn.P?'red':n===cn.N?'blue':null;if(want&&l.color!==want)bad.push({i,want})});return bad}
 const COLOR_MSG='Los colores importan: el cable del polo + (y lo que sigue por llaves y fusibles) va ROJO y el que vuelve al polo − va CELESTE. Los cables marcados con ⚠ tienen el color equivocado.';
 let lastBad=[];
@@ -378,6 +401,7 @@ function diagnose(sim){
  return d}
 function diagnose0(sim){
  const allClosed=sws.every(c=>swState[c.id]),brokenList=sc.comps.filter(c=>broken[c.id]);
+ if(CH)return chDiagnose(sim);
  const lit=sc.comps.filter(c=>c.t==='lamp'&&sim.c[c.id].level>.01).length;
  const rt=sim.ibat>1e-6?SRCV/sim.ibat:null,tot=rt&&!AC?' Resistencia equivalente Rt = '+fR(rt)+' · corriente total '+fI(sim.ibat)+'.':'';
  if(sc.quiz){
@@ -426,6 +450,7 @@ function compBody(c,r){
  if(c.t==='src')return`${lead(40,62)}<g transform="translate(0 0)"><rect x="-56" y="-84" width="104" height="168" rx="12" fill="url(#boxg)" stroke="#c7d0db55" stroke-width="2"/><text class="tx" x="-4" y="-22" style="font-size:20px;fill:#fff">220 V~</text><text class="tx" x="-4" y="2" style="font-size:12px;fill:#c5d3e3">50 Hz</text><text class="tx" x="-4" y="28" style="font-size:12px;fill:#c5d3e3">RED · TABLERO</text></g>`;
  if(c.t==='sw'){const on=!!swState[c.id];return CRISTAL.sw(c,on,r)+`<rect data-sw="1" x="-52" y="-54" width="104" height="80" fill="transparent" style="cursor:pointer"/><text class="tx" y="-56" style="font-size:12px;fill:var(--mu)">${on?'CERRADA':'ABIERTA'}</text>`}
  if(c.t==='sw3'){const on=!!swState[c.id];return `<g transform="scale(${c.flip?-1:1} 1)">${CRISTAL.sw3(c,on,r)}</g><rect data-sw="1" x="-52" y="-52" width="104" height="104" fill="transparent" style="cursor:pointer"/><text class="tx" y="-54" style="font-size:12px;fill:var(--mu)">CONMUTADOR · POS. ${on?2:1}</text>`}
+ if(c.t==='sw4'){const on=!!swState[c.id];return `<g transform="scale(${c.flip?-1:1} 1)">${CRISTAL.sw4(c,on,r)}</g><rect data-sw="1" x="-52" y="-52" width="104" height="104" fill="transparent" style="cursor:pointer"/><text class="tx" y="-54" style="font-size:12px;fill:var(--mu)">LLAVE DE CRUCE · ${on?'CRUZADA':'RECTA'}</text>`}
  if(c.t==='lamp')return CRISTAL.lamp(c,r,bk);
  if(c.t==='dcm')return CRISTAL.dcm(c,r,bk);
  if(c.t==='buz')return CRISTAL.buz(c,r,bk);
@@ -459,10 +484,10 @@ function render(){
  gW.innerHTML=w;
  let s='';
  sc.comps.forEach(c=>{const r0=lastSim?lastSim.c[c.id]:null,r=r0?Object.assign({},r0,{en:enOf(c)}):null,x=c.fx*W,y=c.fy*H,sel=selComp===c.id;
-  const nm=labelOf(c,r),showNum=showVals&&r&&!['bat','src','sw3','toma','rod','box','motor'].includes(c.t)||showVals&&r&&c.t==='bat';
+  const nm=labelOf(c,r),showNum=showVals&&r&&!['bat','src','sw3','sw4','toma','rod','box','motor'].includes(c.t)||showVals&&r&&c.t==='bat';
   let vals='';if(showNum)vals=c.t==='bat'?fI(r.i)+' entregados':fV(r.v)+' · '+fI(r.i);
-  const ty=c.t==='lamp'?50:c.t==='led'?50:c.t==='dcm'?60:c.t==='buz'?52:c.t==='cal'?40:c.t==='bat'?98:c.t==='src'?102:c.t==='toma'?94:c.t==='rod'?78:c.t==='box'?(c.rows.length*58+54)/2+22:c.t==='motor'?58:c.t==='sw3'?54:42;
-  const hh=c.t==='box'?(c.rows.length*58+54)+50:c.t==='bat'?210:c.t==='src'?190:c.t==='toma'?180:c.t==='rod'?150:c.t==='dcm'?132:c.t==='buz'?116:c.t==='lamp'||c.t==='led'?122:c.t==='sw3'?132:c.t==='sw'?112:110,hy=c.t==='box'?-hh/2:c.t==='bat'?-84:c.t==='src'?-92:c.t==='toma'?-80:c.t==='rod'?-60:c.t==='dcm'?-64:c.t==='buz'?-58:c.t==='lamp'||c.t==='led'?-68:c.t==='sw3'?-66:c.t==='sw'?-66:-48;
+  const ty=c.t==='lamp'?50:c.t==='led'?50:c.t==='dcm'?60:c.t==='buz'?52:c.t==='cal'?40:c.t==='bat'?98:c.t==='src'?102:c.t==='toma'?94:c.t==='rod'?78:c.t==='box'?(c.rows.length*58+54)/2+22:c.t==='motor'?58:c.t==='sw3'||c.t==='sw4'?54:42;
+  const hh=c.t==='box'?(c.rows.length*58+54)+50:c.t==='bat'?210:c.t==='src'?190:c.t==='toma'?180:c.t==='rod'?150:c.t==='dcm'?132:c.t==='buz'?116:c.t==='lamp'||c.t==='led'?122:c.t==='sw3'||c.t==='sw4'?132:c.t==='sw'?112:110,hy=c.t==='box'?-hh/2:c.t==='bat'?-84:c.t==='src'?-92:c.t==='toma'?-80:c.t==='rod'?-60:c.t==='dcm'?-64:c.t==='buz'?-58:c.t==='lamp'||c.t==='led'?-68:c.t==='sw3'||c.t==='sw4'?-66:c.t==='sw'?-66:-48;
   const hw=c.t==='dcm'?162:140,lx=c.t==='dcm'?8:0;
   s+=`<g data-c="${c.id}" transform="translate(${x} ${y})"><rect x="-70" y="${hy}" width="${hw}" height="${hh}" fill="transparent"/>${sel?`<rect class="sel-box" x="-70" y="${hy}" width="${hw}" height="${hh}" rx="12"/>`:''}${compBody(c,r)}<text class="tx" x="${lx}" y="${ty}" style="${broken[c.id]&&!sc.fault?'fill:#ff9a9a':''}">${esc(nm)}${broken[c.id]&&!sc.fault?' ✖':''}</text>${vals?`<text class="tv" x="${lx}" y="${ty+18}">${vals}</text>`:''}</g>`});
  gC.innerHTML=s;
@@ -503,18 +528,19 @@ function meterHTML(){
  else if(c.t==='led')extra=`<div style="margin-top:5px">Cae ≈ ${VF} V · máx. 30 mA${broken[c.id]?' · <b style="color:#ff9a9a">QUEMADO</b>':''}</div>`;
  else if(c.t==='toma')extra=`<div style="margin-top:5px;color:var(--mu)">Tensión entre L y N del tomacorriente.</div>`;
  const nm=c.t==='bat'||c.t==='sw'||c.t==='fuse'||c.t==='src'||c.t==='toma'?(labelOf(c,r)):c.t==='led'?'LED':c.id;
- const showP=!['sw','sw3','bat','src','toma','rod','box'].includes(c.t);
+ const showP=!['sw','sw3','sw4','bat','src','toma','rod','box'].includes(c.t);
  if(c.t==='rod'||c.t==='box')return`<b>${esc(labelOf(c,r))}</b><div style="margin-top:5px;color:var(--mu)">No tiene medición: es un conector de ${c.t==='rod'?'puesta a tierra':'empalme'}.</div>`;
  return`<b>${esc(nm)}</b><div class="big"><div><small>TENSIÓN</small>${fV(r.v)}</div><div><small>CORRIENTE</small>${fI(r.i)}</div></div>${showP?`<div style="margin-top:5px;color:var(--mu)">Potencia: ${fP(r.p)}</div>`:''}${extra}`}
-function tableHTML(){let h='<table><tr><th>Elemento</th><th>V</th><th>I</th><th>P</th></tr>';sc.comps.filter(c=>!['rod','box','motor'].includes(c.t)||c.t==='motor').forEach(c=>{const r=lastSim.c[c.id];h+=`<tr class="${selComp===c.id?'sel':''}"><td>${esc(c.t==='bat'?'Batería':c.t==='src'?'Red 220 V':c.id)}</td><td>${dc(r.v.toFixed(2))}</td><td>${fI(r.i)}</td><td>${['bat','src','sw','sw3','toma'].includes(c.t)?'—':fP(r.p)}</td></tr>`});return h+'</table>'}
+function tableHTML(){let h='<table><tr><th>Elemento</th><th>V</th><th>I</th><th>P</th></tr>';sc.comps.filter(c=>!['rod','box','motor'].includes(c.t)||c.t==='motor').forEach(c=>{const r=lastSim.c[c.id];h+=`<tr class="${selComp===c.id?'sel':''}"><td>${esc(c.t==='bat'?'Batería':c.t==='src'?'Red 220 V':c.id)}</td><td>${dc(r.v.toFixed(2))}</td><td>${fI(r.i)}</td><td>${['bat','src','sw','sw3','sw4','toma'].includes(c.t)?'—':fP(r.p)}</td></tr>`});return h+'</table>'}
 function updatePanel(){
+ if(CH){chTab.hidden=false;chTab.innerHTML=chTableHTML()}else chTab.hidden=true;$('#chExit').hidden=!CH;
  $('#meter').innerHTML=meterHTML();
  const t=$('#table');t.hidden=!tableOn;if(tableOn&&lastSim)t.innerHTML=tableHTML();
  const c=selComp?cm[selComp]:null,canRepl=c&&['lamp','res','fuse','led','dcm','buz','cal'].includes(c.t)&&(sc.fault||broken[c.id]);
  const bb=$('#burnBtn');bb.hidden=EXAM||sc.fault||sc.quiz||AC||!(c&&LIM[c.t]&&!broken[c.id]);if(!bb.hidden)bb.textContent='💥 Quemar '+c.id;
  const rb=$('#replBtn');rb.hidden=!(sc.fault||sc.comps.some(x=>broken[x.id]));rb.disabled=!canRepl;rb.textContent=c&&canRepl?'🔧 Reemplazar '+c.id:'🔧 Reemplazar (elegí uno)';
  $('#unplugBtn').hidden=!motor;$('#unplugBtn').disabled=!plugTo;
- const rs=$('#result');if(lastDiag&&lastDiag.done&&!EXAM){const nx=sc.hidden?null:D.order[D.order.indexOf(sc.id)+1],cont=sc.hidden&&!sc.gen&&window.parent!==window;rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:inherit;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">Siguiente práctica ▶</button>`:''}${cont?`<button class="btn primary" id="nextBtn">Continuar ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{if(cont)parent.postMessage({tipo:'continuar',id:sc.id},'*');else location.search='?c='+nx}}else rs.hidden=true;
+ const rs=$('#result');if(lastDiag&&lastDiag.done&&!EXAM){const nx=CH?chNext():sc.hidden?null:D.order[D.order.indexOf(sc.id)+1],cont=!CH&&sc.hidden&&!sc.gen&&window.parent!==window;rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:inherit;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">${CH?'Siguiente desafío ▶':'Siguiente práctica ▶'}</button>`:''}${CH?`<button class="btn" id="chMore">🎯 Todos los desafíos</button>`:''}${cont?`<button class="btn primary" id="nextBtn">Continuar ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{if(CH)chStart(nx);else if(cont)parent.postMessage({tipo:'continuar',id:sc.id},'*');else location.search='?c='+nx};const cmb=$('#chMore');if(cmb)cmb.onclick=chOpen}else rs.hidden=true;
  $('#bDel').disabled=selWire===null||!!links[selWire]?.locked;$('#bUndo').disabled=!links.some(l=>!l.locked);
  if(MOVIL){mvUpdate();$('#mvUndo').disabled=$('#bUndo').disabled}
 }
@@ -559,7 +585,7 @@ function update(){
  setBuzz(sc.comps.some(c=>c.t==='buz'&&!broken[c.id]&&sim.c[c.id].level>.5));
  if(motor){const run=sim.c[motor.id].level>.01;if(run&&!prevRun)play('motorOn');if(!run&&prevRun)play('motorOff');prevRun=run}
  if(d.done&&!done){done=true;onDone()}if(!d.done)done=false;
- if(FREE){saveTaller();if(!update.tf&&links.length>=3&&sc.comps.some(c=>['lamp','led','dcm','buz','cal'].includes(c.t)&&sim.c[c.id].level>.01&&!broken[c.id])){update.tf=true;badgeToast(PROG.flag('taller'))}}
+ if(FREE){saveTaller();if(!CH&&!update.tf&&links.length>=3&&sc.comps.some(c=>['lamp','led','dcm','buz','cal'].includes(c.t)&&sim.c[c.id].level>.01&&!broken[c.id])){update.tf=true;badgeToast(PROG.flag('taller'))}}
 }
 /* ---------- estrellas y festejo ---------- */
 function starsFor(){
@@ -572,7 +598,7 @@ function onDone(){
  if(MOVIL&&NIVEL>0){if(levelSent)return;levelSent=true;const errs=stat.tShorts+stat.tBurns+quizWrong+(sc.fault?attempts:0),stars=Math.max(1,3-(stat.hint?1:0)-(errs>0?1:0));
   setTimeout(()=>play('success'),150);parentPost({tipo:'movil-resultado',ok:true,stars,t:Math.round((Date.now()-T00)/1000),hint:!!stat.hint,errs,nivel:NIVEL});return}
  setTimeout(()=>play('success'),150);
- if(!sc.hidden&&!celebrated){celebrated=true;const n=starsFor(),r=PROG.record(sc.id,n,{g:sc.group,cat:sc.group==='ca'?'ca':'cc',t:Math.round((Date.now()-stat.t0)/1000)});info.s=n;updateStars();
+ if(!sc.hidden&&!celebrated){celebrated=true;const n=starsFor(),r=PROG.record(CH?CH.pid:sc.id,n,{g:CH?'tdes':sc.group,cat:sc.group==='ca'?'ca':'cc',t:Math.round((Date.now()-stat.t0)/1000)});info.s=n;updateStars();
   /* si hay un cartel explicativo abierto se espera a que se lea antes de festejar */
   let waited=0;const go=()=>{if(!whyEl.hidden&&!whyEl.classList.contains('mini')&&waited<24000){waited+=600;setTimeout(go,600)}else showWin(n,r)};go()}
  try{if(window.parent!==window)parent.postMessage({tipo:'hecho',id:sc.id,estrellas:info.s},'*')}catch{}}
@@ -586,11 +612,11 @@ function showWin(n,r){
  $('#winTxt').textContent=n>=3?'Tres estrellas: lo resolviste sin ayuda y sin accidentes.':'Para conseguir ★★★ resolvela sin ver la solución ni la pista y sin cortocircuitos'+(why.length?' (esta vez '+why.join(' y ')+').':'.');
  const nm=(r.logros||[]).map(id=>PROG.BADGES.find(b=>b.id===id)).filter(Boolean);
  $('#winBadge').innerHTML=nm.map(b=>`<div class="win-b">${b.ico} Nuevo logro: <b>${esc(b.name)}</b></div>`).join('');
- const nx=sc.hidden?null:D.order[D.order.indexOf(sc.id)+1];const nb=$('#winNext');nb.hidden=!nx;nb.onclick=()=>{location.search='?c='+nx};
+ const nx=CH?chNext():sc.hidden?null:D.order[D.order.indexOf(sc.id)+1];const nb=$('#winNext');nb.hidden=!nx;nb.onclick=()=>{if(CH)chStart(nx);else location.search='?c='+nx};
  winEl.hidden=false;winEl.style.animation='none';void winEl.offsetWidth;winEl.style.animation='';winEl.title=$('#winTxt').textContent;clearTimeout(showWin.tm);showWin.tm=setTimeout(()=>{winEl.hidden=true},5000);
  for(let k=0;k<5;k++)setTimeout(()=>FX.spark(W*(.2+Math.random()*.6),H*(.15+Math.random()*.5),22,{v:230}),k*170)}
 $('#winClose').onclick=()=>{winEl.hidden=true};winEl.addEventListener('pointerdown',()=>{winEl.hidden=true});
-function updateStars(){const el=$('#pStars');if(!el||sc.hidden||EXAM)return;const s=PROG.stars(sc.id);el.innerHTML=s?`Tu récord: <b style="color:#ffd43b;letter-spacing:2px">${PROG.starsHTML(s)}</b>`:'Todavía sin estrellas: ¡completá la consigna!'}
+function updateStars(){const el=$('#pStars');if(!el||sc.hidden||EXAM)return;const s=PROG.stars(CH?CH.pid:sc.id);el.innerHTML=s?`Tu récord: <b style="color:#ffd43b;letter-spacing:2px">${PROG.starsHTML(s)}</b>`:'Todavía sin estrellas: ¡completá la consigna!'}
 const exam={ok:false,t:0,shorts:0,burns:0};
 
 /* ---------- interacción ---------- */
@@ -606,7 +632,7 @@ svg.addEventListener('pointerdown',e=>{
  if(pl){e.preventDefault();try{svg.setPointerCapture(e.pointerId)}catch{}const was=plugTo;plugTo=null;drag={plug:true,id:e.pointerId,was};if(was){play('unplug');update()}plugPos={fx:pos.x/W,fy:pos.y/H};renderPlug();return}
  const w=e.target.closest('[data-w]');if(w){selWire=+w.dataset.w;selComp=null;pend=null;play('wiresel');render();updatePanel();return}
  const c=e.target.closest('[data-c]');
- if(c){const comp=cm[c.dataset.c];selComp=comp.id;selWire=null;pend=null;if((comp.t==='sw'||comp.t==='sw3')&&e.target.closest('[data-sw]')){swState[comp.id]=!swState[comp.id];stat.swaps++;play(comp.t==='sw3'?'sw3':swState[comp.id]?'on':'off');update();return}
+ if(c){const comp=cm[c.dataset.c];selComp=comp.id;selWire=null;pend=null;if(isSw(comp)&&e.target.closest('[data-sw]')){swState[comp.id]=!swState[comp.id];stat.swaps++;play(comp.t!=='sw'?'sw3':swState[comp.id]?'on':'off');update();return}
   if(FREE){try{svg.setPointerCapture(e.pointerId)}catch{}drag={mv:true,id:e.pointerId,cid:comp.id,ox:pos.x-comp.fx*W,oy:pos.y-comp.fy*H,x0:e.clientX,y0:e.clientY,moved:false}}
   play('select');render();updatePanel();return}
  pend=null;selComp=null;selWire=null;closeFly();render();updatePanel();startPan(e)});
@@ -631,8 +657,8 @@ function toast(html,ms){toastEl.innerHTML=html;toastEl.hidden=false;toastEl.styl
 const badgeToast=ids=>{const b=(ids||[]).map(id=>PROG.BADGES.find(x=>x.id===id)).filter(Boolean)[0];if(b)toast(b.ico+' Nuevo logro: <b>'+esc(b.name)+'</b>',4200)};
 
 /* ---------- mesa mezclada al reiniciar ---------- */
-const MOVABLE=['bat','sw','sw3','lamp','led','res','fuse','toma','rod','dcm','buz','cal'];
-const EXT={dcm:[-66,84,-54,56],buz:[-64,64,-50,48],cal:[-64,64,-34,48],lamp:[-64,64,-64,72],bat:[-34,34,-76,124],sw:[-64,64,-60,60],sw3:[-64,64,-64,76],led:[-64,64,-64,70],res:[-64,64,-22,60],fuse:[-64,64,-22,60],src:[-60,64,-86,116],toma:[-64,64,-78,104],rod:[-44,44,-56,82],motor:[-56,56,-50,38]};
+const MOVABLE=['bat','sw','sw3','sw4','lamp','led','res','fuse','toma','rod','dcm','buz','cal'];
+const EXT={dcm:[-66,84,-54,56],buz:[-64,64,-50,48],cal:[-64,64,-34,48],lamp:[-64,64,-64,72],bat:[-34,34,-76,124],sw:[-64,64,-60,60],sw3:[-64,64,-64,76],sw4:[-64,64,-52,64],led:[-64,64,-64,70],res:[-64,64,-22,60],fuse:[-64,64,-22,60],src:[-60,64,-86,116],toma:[-64,64,-78,104],rod:[-44,44,-56,82],motor:[-56,56,-50,38]};
 const extOf=c=>c.t==='box'?[-(c.w||280)/2-4,(c.w||280)/2+4,-(c.rows.length*58+54)/2-4,(c.rows.length*58+54)/2+26]:(EXT[c.t]||[-64,64,-64,72]);
 const BX=1000,BY=H;   /* se valida con el ancho mínimo de la mesa (1000): al ensancharse solo aumentan las separaciones */
 const itemAt=(c,fx,fy)=>{const e=extOf(c),x=fx*BX,y=fy*BY;return{id:c.id,x0:x+e[0],x1:x+e[1],y0:y+e[2],y1:y+e[3],T:c.defs.map(d=>[x+d.x,y+d.y])}};
@@ -666,7 +692,7 @@ function reset(first){
  FX.clearAll();links=[];swState={};broken={};selComp=null;selWire=null;pend=null;attempts=0;fixed=false;done=false;plugTo=null;plugPos={fx:plugHome[0],fy:plugHome[1]};prevLit={};prevRun=false;
  if(animT){clearTimeout(animT);animT=null;sc.comps.forEach(c=>{if(c.tx!==undefined){c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty}})}
  stat.shorts=0;stat.burns=0;stat.swaps=0;stat.t0=Date.now();hideWhy();winEl.hidden=true;celebrated=false;update.wasRev='';updateStars();
- if(FREE){sc.comps=sc.comps.filter(c=>c===SRC);SRC.fx=.12;SRC.fy=.5;rebuild();closeFly()}
+ if(FREE){sc.comps=sc.comps.filter(c=>c===SRC);SRC.fx=.12;SRC.fy=.5;rebuild();closeFly();if(CH)chLoadParts()}
  const moved=!first&&!FREE&&shuffleLayout();
  if(sc.fault){links=sc.sol.map(p=>({a:p[0],b:p[1],color:p[1]==='B.n'||p[0]==='B.n'?'blue':'red',locked:true}));faultId=sc.fault[Math.floor(Math.random()*sc.fault.length)];broken[faultId]=true}
  /* problemas generados: circuito ya armado, llaves cerradas y componentes quemados de antemano */
@@ -685,13 +711,15 @@ const PAL=[
  {k:'res',ico:'▭',lab:'Resistor',tit:'Valor del resistor',opts:[['10 Ω',10],['47 Ω',47],['100 Ω',100],['220 Ω',220],['330 Ω',330],['470 Ω',470],['1 kΩ',1000],['4,7 kΩ',4700],['10 kΩ',10000]]},
  {k:'fuse',ico:'🛡',lab:'Fusible',tit:'Corriente máxima del fusible',opts:[['0,5 A',.5],['1 A',1],['2,5 A',2.5],['5 A',5],['10 A',10]]},
  {k:'sw',ico:'⏻',lab:'Llave'},
- {k:'sw3',ico:'⇅',lab:'Conmut.'}];
+ {k:'sw3',ico:'⇅',lab:'Conmut.'},
+ {k:'sw4',ico:'✕',lab:'Cruce'}];
 const VOLTS=[3,6,9,12,24],palEl=$('#pal'),flyEl=$('#fly');
 function closeFly(){flyEl.hidden=true}
 function clampFly(){const H0=wrap.clientHeight,h=flyEl.offsetHeight,t0=parseFloat(flyEl.style.top)||6;if(t0+h>H0-8)flyEl.style.top=Math.max(6,H0-h-8)+'px'}
 function openFly(p,btn){flyEl.innerHTML='<b>'+p.tit+'</b>';p.opts.forEach(([t,v])=>{const o=document.createElement('button');o.textContent=t;o.onclick=()=>{closeFly();addComp(p.k,v)};flyEl.append(o)});flyEl.style.top=Math.max(6,btn.offsetTop-palEl.scrollTop+palEl.offsetTop)+'px';flyEl.hidden=false;clampFly()}
 function updatePalV(){const b=$('#palV');if(b)b.innerHTML='🔋<small>'+dc(SRCV)+' V</small>'}
-function setVolt(v,quiet){v=Math.max(1,Math.min(30,+v||12));SRC.v=v;SRC.name='Batería '+dc(v)+' V';SRCV=v;$('#vhi').textContent='+ '+dc(v)+' V';updatePalV();if(!quiet)play('color',3);update()}
+function applyVolt(v){v=Math.max(1,Math.min(30,+v||12));SRC.v=v;SRC.name='Batería '+dc(v)+' V';SRCV=v;$('#vhi').textContent='+ '+dc(v)+' V';updatePalV()}
+function setVolt(v,quiet){applyVolt(v);if(!quiet)play('color',3);update()}
 /* fuente variable: se sube la tensión de a poco y se ve cuál lámpara se funde primero */
 function openVolt(btn){flyEl.dataset.k='volt';
  flyEl.innerHTML='<b>Tensión de la batería: <span id="vv" style="color:var(--yl)">'+dc(SRCV)+' V</span></b><input type="range" id="vr" min="1" max="30" step="0.5" value="'+SRCV+'" style="grid-column:1/-1;width:100%;height:30px;accent-color:#ffd43b" aria-label="Tensión de la batería"><span style="grid-column:1/-1;font-size:.72rem;color:var(--mu)">Arrastrá el control o elegí un valor. Subí de a poco: ¿cuál lámpara se funde primero?</span>';
@@ -699,11 +727,12 @@ function openVolt(btn){flyEl.dataset.k='volt';
  const r=$('#vr');r.oninput=()=>{setVolt(r.value,true);$('#vv').textContent=dc(SRCV)+' V'};
  flyEl.style.top=Math.max(6,btn.offsetTop-palEl.scrollTop+palEl.offsetTop-40)+'px';flyEl.hidden=false;clampFly()}
 function buildPalette(){if(!FREE)return;document.body.classList.add('free');palEl.hidden=false;palEl.innerHTML='';
+ const gb=document.createElement('button');gb.id='palCh';gb.innerHTML='🎯<small>Desafíos</small>';gb.title='Desafíos del taller';gb.setAttribute('aria-label','Desafíos del taller');gb.onclick=()=>{audio();play('select');chOpen()};palEl.append(gb);
  PAL.forEach(p=>{const b=document.createElement('button');b.innerHTML=p.ico+'<small>'+p.lab+'</small>';b.title='Agregar: '+p.lab;b.setAttribute('aria-label','Agregar '+p.lab);b.onclick=()=>{audio();if(p.opts){if(!flyEl.hidden&&flyEl.dataset.k===p.k){closeFly();return}flyEl.dataset.k=p.k;openFly(p,b)}else{closeFly();addComp(p.k)}};palEl.append(b)});
  const v=document.createElement('button');v.id='palV';v.title='Cambiar la tensión de la batería';v.setAttribute('aria-label','Cambiar la tensión de la batería');v.onclick=()=>{audio();if(!flyEl.hidden&&flyEl.dataset.k==='volt'){closeFly();return}openVolt(v)};palEl.append(v);
  const d=document.createElement('button');d.id='palDel';d.innerHTML='🗑<small>Quitar</small>';d.title='Quitar el componente seleccionado';d.setAttribute('aria-label','Quitar el componente seleccionado');d.onclick=delSelected;palEl.append(d);updatePalV()}
 function addComp(k,val){
- const pre={lamp:'L',led:'D',res:'R',fuse:'F',sw:'S',sw3:'C',dcm:'M',buz:'Z',cal:'H'}[k];let n=1;while(cm[pre+n])n++;const id=pre+n;let c;
+ const pre={lamp:'L',led:'D',res:'R',fuse:'F',sw:'S',sw3:'C',sw4:'X',dcm:'M',buz:'Z',cal:'H'}[k];let n=1;while(cm[pre+n])n++;const id=pre+n;let c;
  if(k==='lamp'){const vr=val[0],w=val[1];c={id,t:'lamp',r:+(vr*vr/w).toFixed(2),vr,w,tol:+(1.05+Math.random()*.25).toFixed(2),name:'Lámpara '+id}}
  else if(k==='dcm')c={id,t:'dcm',r:+(4*val).toFixed(1),vr:val,tol:+(1.2+Math.random()*.3).toFixed(2),name:'Motor '+id};
  else if(k==='buz')c={id,t:'buz',r:Math.round(val/.03),vr:val,name:'Zumbador '+id};
@@ -712,6 +741,7 @@ function addComp(k,val){
  else if(k==='res')c={id,t:'res',r:val,name:'Resistor '+id};
  else if(k==='fuse')c={id,t:'fuse',amp:val,name:'Fusible '+val+' A'};
  else if(k==='sw')c={id,t:'sw',name:'Llave '+id};
+ else if(k==='sw4')c={id,t:'sw4',flip:false,name:'Llave de cruce '+id};
  else c={id,t:'sw3',flip:false,name:'Conmutador '+id};
  c.defs=tdefs(c);
  const placed=sc.comps.map(x=>itemAt(x,x.fx,x.fy));let put=null;
@@ -720,16 +750,142 @@ function addComp(k,val){
  for(let k2=0;!put&&k2<300;k2++){const fx=.12+Math.random()*.78,fy=.15+Math.random()*.6;if(fitsAt(itemAt(c,fx,fy),placed))put=[fx,fy]}
  if(!put)put=[.5,.5];c.fx=put[0];c.fy=put[1];sc.comps.push(c);rebuild();selComp=id;selWire=null;play('connect');
  FX.spark(c.fx*W,c.fy*H,12,{v:150});update();toast('Agregaste <b>'+esc(c.name)+'</b>. Arrastralo para ubicarlo y unilo con cables.',2600)}
-function delComp(id){const c=cm[id];if(!c||c===SRC)return;sc.comps=sc.comps.filter(x=>x!==c);const pre=id+'.';links=links.filter(l=>!(l.a.startsWith(pre)||l.b.startsWith(pre)));delete swState[id];delete broken[id];rebuild();selComp=null;selWire=null;play('remove');update()}
+function delComp(id){const c=cm[id];if(!c||c===SRC)return;if(c.fixed){toast('<b>'+esc(c.id)+'</b> es una pieza del desafío: no se puede quitar.',2600);return}sc.comps=sc.comps.filter(x=>x!==c);const pre=id+'.';links=links.filter(l=>!(l.a.startsWith(pre)||l.b.startsWith(pre)));delete swState[id];delete broken[id];rebuild();selComp=null;selWire=null;play('remove');update()}
 function delSelected(){if(selComp&&selComp!==SRC.id)delComp(selComp);else toast('Tocá primero un componente (no la batería) y después 🗑 para quitarlo.',2800)}
 window.addEventListener('keydown',e=>{if(FREE&&(e.key==='Delete'||e.key==='Backspace')&&selComp&&selComp!==SRC.id&&!/INPUT|SELECT|TEXTAREA/.test((e.target||{}).tagName||'')){e.preventDefault();delComp(selComp)}});
 /* el taller se guarda solo en este dispositivo */
 const TKEY='sim-taller-v1';
-let tReady=false;function saveTaller(){if(!FREE||!tReady)return;try{localStorage.setItem(TKEY,JSON.stringify({v:SRCV,comps:sc.comps.map(c=>({id:c.id,t:c.t,fx:+c.fx.toFixed(4),fy:+c.fy.toFixed(4),r:c.r,vr:c.vr,w:c.w,tol:c.tol,amp:c.amp,flip:c.flip,name:c.name})),links:links.map(l=>({a:l.a,b:l.b,color:l.color})),sw:swState}))}catch{}}
+let tReady=false;function saveTaller(){if(!FREE||!tReady||CH)return;try{localStorage.setItem(TKEY,JSON.stringify({v:SRCV,comps:sc.comps.map(c=>({id:c.id,t:c.t,fx:+c.fx.toFixed(4),fy:+c.fy.toFixed(4),r:c.r,vr:c.vr,w:c.w,tol:c.tol,amp:c.amp,flip:c.flip,name:c.name})),links:links.map(l=>({a:l.a,b:l.b,color:l.color})),sw:swState}))}catch{}}
 function loadTaller(){if(!FREE)return;try{const o=JSON.parse(localStorage.getItem(TKEY));if(!o||!o.comps){tReady=true;return}SRC.v=o.v||12;SRC.name='Batería '+dc(SRC.v)+' V';SRCV=SRC.v;
  const b=o.comps.find(c=>c.t==='bat');if(b){SRC.fx=b.fx;SRC.fy=b.fy}
- sc.comps=[SRC].concat(o.comps.filter(c=>c.t!=='bat'&&['lamp','led','res','fuse','sw','sw3','dcm','buz','cal'].includes(c.t)).map(c=>{const x={id:c.id,t:c.t,fx:c.fx,fy:c.fy,name:c.name};if(c.r!==undefined)x.r=c.r;if(c.vr!==undefined)x.vr=c.vr;if(c.w!==undefined)x.w=c.w;if(c.tol!==undefined)x.tol=c.tol;if(c.amp!==undefined)x.amp=c.amp;if(c.flip)x.flip=true;return x}));
+ sc.comps=[SRC].concat(o.comps.filter(c=>c.t!=='bat'&&['lamp','led','res','fuse','sw','sw3','sw4','dcm','buz','cal'].includes(c.t)).map(c=>{const x={id:c.id,t:c.t,fx:c.fx,fy:c.fy,name:c.name};if(c.r!==undefined)x.r=c.r;if(c.vr!==undefined)x.vr=c.vr;if(c.w!==undefined)x.w=c.w;if(c.tol!==undefined)x.tol=c.tol;if(c.amp!==undefined)x.amp=c.amp;if(c.flip)x.flip=true;return x}));
  rebuild();links=(o.links||[]).filter(l=>TM[l.a]&&TM[l.b]).map(l=>({a:l.a,b:l.b,color:l.color||'red'}));swState={};Object.keys(o.sw||{}).forEach(k=>{if(cm[k])swState[k]=!!o.sw[k]});$('#vhi').textContent='+ '+dc(SRCV)+' V';updatePalV();tReady=true;update()}catch{tReady=true}}
+/* ---------- desafíos del taller: piezas sueltas + regla de comportamiento (tabla de combinaciones de las llaves) ---------- */
+const TD=window.TDES,PKEY='sim-taller-propios-v1';
+let TAL0=null,chLast=null;
+const chBack=$('#chBack'),chTab=$('#chTab');
+const TXT_SW=(c,v)=>c.t==='sw'?(v?'cerrada':'abierta'):c.t==='sw3'?'en posición '+(v?2:1):(v?'cruzada':'recta');
+const SHORT_SW=(c,v)=>c.t==='sw'?(v?'cerrada':'abierta'):c.t==='sw3'?'pos. '+(v?2:1):(v?'cruce':'recta');
+const OUT_TXT={lamp:['apagada','encendida','la lámpara'],led:['apagado','encendido','el LED'],buz:['en silencio','sonando','el zumbador'],dcm:['detenido','girando','el motor'],cal:['frío','caliente','el calefactor']};
+const outInfo=c=>{const o=OUT_TXT[c.t]||['apagado','encendido','la salida'];return{off:o[0],on:o[1],name:o[2]+' '+c.id}};
+const joinY=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' y '+a[a.length-1];
+const chWhen=(row,sp)=>joinY(sp.sws.filter(id=>cm[id]).map(id=>id+' '+TXT_SW(cm[id],row.sw[id])));
+/* prueba el circuito del alumno con cada combinación de llaves: no compara cables, compara comportamiento */
+function chEval(sp){
+ const act=[],out={rows:[],okN:0,total:sp.rows.length,short:null,burn:null,bad:null,inv:false};
+ sp.rows.forEach(row=>{const s=simulate(links,{sw:row.sw}),a={short:!!s.short,lit:{},burn:null};
+  if(!s.short){sp.outs.forEach(id=>{const c=cm[id];a.lit[id]=c?(s.c[id].level>.01&&!broken[id]):null});
+   sc.comps.forEach(c=>{if(!a.burn&&c.vr&&LIM[c.t]&&Math.abs(s.c[c.id].v)>c.vr*(c.tol||LIM[c.t]))a.burn={c,v:Math.abs(s.c[c.id].v)}})}
+  act.push(a);if(a.short&&!out.short)out.short=row;if(a.burn&&!out.burn)out.burn={row,c:a.burn.c,v:a.burn.v}});
+ /* inv: en los comandos desde varios puntos vale también la tabla "al revés" (según cómo se crucen los viajeros la lámpara arranca encendida o apagada) */
+ const score=inv=>{let n=0,bad=null;const rows=sp.rows.map((row,i)=>{const a=act[i];let ok=!a.short&&!a.burn;
+   if(ok)sp.outs.forEach(id=>{if(a.lit[id]===null){ok=false;return}const want=(!!row.lit[id])!==inv;if(a.lit[id]!==want){ok=false;if(!bad)bad={row,id,lit:a.lit[id],want}}});
+   if(ok)n++;return{ok}});return{n,rows,bad}};
+ let r=score(false);if(sp.inv){const r2=score(true);if(r2.n>r.n){r=r2;out.inv=true}}
+ out.okN=r.n;out.rows=r.rows;out.bad=r.bad;return out}
+function chDiagnose(sim){
+ const sp=CH;chLast=chEval(sp);const e=chLast;
+ if(sim.short)return{cls:'error',head:'CORTOCIRCUITO',text:'Un cable une directamente el + con el − sin nada en el medio. Quitá el último cable (↶).',status:'error'};
+ const bl=sc.comps.filter(c=>broken[c.id]);
+ if(bl.length){const b=bl[0];return{cls:'error',head:b.t==='fuse'?'Fusible fundido':b.t==='lamp'?'Lámpara quemada':'Componente quemado',text:b.t==='lamp'?'El filamento de '+b.id+' se cortó: recibió más tensión de la que aguanta. Reemplazala con 🔧 y revisá cómo la conectaste.':'Se superó el máximo de '+b.name+'. Reemplazalo con 🔧 y corregí la causa.',status:'error'}}
+ if(!links.length)return{cls:'',head:'🎯 '+sp.title,text:sp.goal,status:''};
+ if(e.short)return{cls:'error',head:'Cortocircuito en una combinación',text:'Con '+chWhen(e.short,sp)+' el + y el − quedan unidos sin nada en el medio. Tocá esa fila de la tabla para verlo y corregí los cables.',status:'error'};
+ if(e.burn)return{cls:'error',head:'Una pieza se quemaría',text:'Con '+chWhen(e.burn.row,sp)+', '+e.burn.c.id+' recibiría '+fV(e.burn.v)+' y aguanta menos: se quemaría. Revisá que no quede sola frente a la batería.',status:'error'};
+ if(e.okN===e.total)return{cls:'ok',head:'¡Desafío resuelto!',text:(sp.explain||'Tu circuito cumple todas las combinaciones.'),done:true,status:'on'};
+ if(e.bad){const o=outInfo(cm[e.bad.id]);return{cls:'',head:e.okN+' de '+e.total+' combinaciones bien',text:'Con '+chWhen(e.bad.row,sp)+', '+o.name+' debería estar '+(e.bad.want?o.on:o.off)+' pero está '+(e.bad.lit?o.on:o.off)+'.',status:'ready'}}
+ return{cls:'',head:e.okN+' de '+e.total+' combinaciones bien',text:'Revisá la tabla del panel (☰): cada fila es una combinación de las llaves.',status:'ready'}}
+function chTableHTML(){
+ const sp=CH,e=chLast;if(!e)return'';
+ let h='<table class="tt"><tr>'+sp.sws.map(id=>'<th>'+esc(id)+'</th>').join('')+'<th>Debe</th><th></th></tr>';
+ sp.rows.forEach((row,i)=>{const r=e.rows[i]||{},cur=sp.sws.every(id=>!!swState[id]===!!row.sw[id]);
+  h+='<tr data-r="'+i+'" class="'+(cur?'cur ':'')+(links.length?(r.ok?'ok':'bad'):'')+'">'+sp.sws.map(id=>'<td>'+(cm[id]?SHORT_SW(cm[id],row.sw[id]):'')+'</td>').join('')+'<td>'+sp.outs.map(id=>{const on=(!!row.lit[id])!==!!e.inv;return'<span class="'+(on?'lt':'dk')+'">'+esc(id)+(on?' ●':' ○')+'</span>'}).join(' ')+'</td><td class="st">'+(links.length?(r.ok?'✔':'✘'):'')+'</td></tr>'});
+ return h+'</table><p class="chleg">● debe estar encendida · ○ apagada. Tocá una fila para probar esa combinación.'+(sp.inv?' Vale también la tabla al revés (todo invertido): depende de cómo cruces los viajeros.':'')+'</p>'}
+const mmTabHTML=open=>CH?'<details'+(open?' open':'')+'><summary style="cursor:pointer;font-weight:700;padding:6px">📋 Tabla de combinaciones</summary><div style="max-height:36vh;overflow:auto">'+chTableHTML()+'</div></details>':'';
+const chRowClick=e=>{const tr=e.target.closest('tr[data-r]');if(!tr||!CH)return;const row=CH.rows[+tr.dataset.r];CH.sws.forEach(id=>{if(cm[id])swState[id]=!!row.sw[id]});play('sw3');update();const mt=$('#mmTab');if(mt&&$('#mvmission').classList.contains('on'))mt.innerHTML=mmTabHTML(true)};
+chTab.addEventListener('click',chRowClick);$('#mmTab').addEventListener('click',chRowClick);
+const chNext=()=>CH&&!CH.custom?TD.nextOf(CH):null;
+function chText(){document.title=sc.title;$('#title').textContent=sc.title;$('#sub').textContent=CH?'Taller libre · '+(CH.custom?'Mis desafíos':(TD.groups.find(g=>g.id===CH.grupo)||{title:''}).title):(TAL0?TAL0.sub:'');$('#pTitle').textContent=sc.title;$('#pDesc').textContent=sc.desc;$('#pGoal').innerHTML='<b>Consigna:</b> '+esc(sc.goal);updateStars();$('#mvLvl').textContent=sc.title;$('#mvSub').textContent=sc.desc}
+/* arma las piezas del desafío en la mesa (se llama desde reset) */
+function chLoadParts(){const sp=CH;applyVolt(sp.volts||12);SRC.fx=.1;SRC.fy=.5;
+ sp.parts.forEach((p,i)=>{const c=Object.assign({},p,{fixed:true}),q=(sp.pos&&sp.pos[p.id])||(p.fx!==undefined?[p.fx,p.fy]:SLOTS[i%SLOTS.length]);c.fx=q[0];c.fy=q[1];delete c.defs;sc.comps.push(c)});rebuild()}
+function chStart(sp){
+ closeFly();chClose();
+ if(!CH)TAL0={title:sc.title,desc:sc.desc,goal:sc.goal,tip:sc.tip,explain:sc.explain,sub:$('#sub').textContent};
+ CH=TD.prepare(sp);
+ sc.title='Desafío · '+sp.title;sc.desc=sp.custom?'Desafío propio':'Nivel '+sp.nivel;sc.goal=sp.goal;sc.tip=sp.tip||'Probá cada fila de la tabla: tocala y fijate qué tiene que pasar en esa combinación.';sc.explain=sp.explain||'¡Tu circuito cumple todas las combinaciones!';
+ sc.sol=sp.sol;refLinks.length=0;sp.sol.forEach(p=>refLinks.push({a:p[0],b:p[1]}));REFPOT=null;
+ $('#solBtn').hidden=false;$('#pTip').hidden=true;
+ chText();reset(false);setPanel(!phone());
+ if(MOVIL)mvMission(true);else toast('🎯 <b>'+esc(sp.title)+'</b><br>'+esc(sp.goal),9000)}
+function chExit(){if(!CH)return;CH=null;chLast=null;
+ Object.assign(sc,{title:TAL0.title,desc:TAL0.desc,goal:TAL0.goal,tip:TAL0.tip,explain:TAL0.explain,sol:[]});refLinks.length=0;REFPOT=null;
+ $('#solBtn').hidden=true;$('#pTip').hidden=true;tReady=false;applyVolt(12);reset(true);loadTaller();chText();toast('Volviste al taller libre. Tu mesa quedó como la dejaste.',3000)}
+$('#chExit').onclick=chExit;
+/* ----- mis desafíos (los crea el docente a partir de un circuito que funciona) ----- */
+const loadProp=()=>{try{const a=JSON.parse(localStorage.getItem(PKEY));return Array.isArray(a)?a:[]}catch{return[]}};
+const saveProp=a=>{try{localStorage.setItem(PKEY,JSON.stringify(a))}catch{}};
+const propSpec=s=>Object.assign(JSON.parse(JSON.stringify(s)),{custom:true,pid:'tu-'+s.id});
+const encCode=o=>'DESAFIO1:'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+const decCode=s=>{s=String(s).trim().replace(/\s+/g,'');if(s.indexOf('DESAFIO1:')!==0)throw 0;return JSON.parse(decodeURIComponent(escape(atob(s.slice(9)))))};
+/* un código pegado es un dato ajeno: se validan tipos, ids, bornes y tamaños antes de usarlo */
+function chSanitize(o){
+ if(!o||typeof o!=='object'||typeof o.title!=='string')throw 0;
+ const OKT=['lamp','led','res','fuse','sw','sw3','sw4','dcm','buz','cal'],num=(v,d)=>typeof v==='number'&&isFinite(v)?v:d;
+ const parts=(Array.isArray(o.parts)?o.parts:[]).slice(0,14).map(p=>{if(!p||OKT.indexOf(p.t)<0||typeof p.id!=='string'||!/^[A-Za-z0-9_]{1,8}$/.test(p.id)||p.id==='B')throw 0;
+  const q={id:p.id,t:p.t,name:String(p.name||p.id).slice(0,40),fx:Math.max(.05,Math.min(.95,num(p.fx,.5))),fy:Math.max(.1,Math.min(.85,num(p.fy,.5)))};
+  ['r','vr','w','tol','amp'].forEach(k=>{if(p[k]!==undefined){q[k]=num(p[k],1);if(q[k]<=0)throw 0}});if(p.flip)q.flip=true;return q});
+ if(!parts.length||new Set(parts.map(p=>p.id)).size!==parts.length)throw 0;
+ const sws=parts.filter(p=>TD.SWT.indexOf(p.t)>=0).map(p=>p.id),outs=parts.filter(p=>TD.OUTT.indexOf(p.t)>=0).map(p=>p.id);
+ if(!sws.length||!outs.length||sws.length>5)throw 0;
+ const valid=new Set(['B.p','B.n']);parts.forEach(p=>tdefs(p).forEach(d=>valid.add(p.id+'.'+d.k)));
+ const sol=(Array.isArray(o.sol)?o.sol:[]).slice(0,80).filter(p=>Array.isArray(p)&&p.length===2&&valid.has(p[0])&&valid.has(p[1]));
+ const rows=(Array.isArray(o.rows)?o.rows:[]).slice(0,32).map(r=>{const sw={},lit={};sws.forEach(id=>sw[id]=!!(r&&r.sw&&r.sw[id]));outs.forEach(id=>lit[id]=!!(r&&r.lit&&r.lit[id]));return{sw,lit}});
+ if(rows.length!==(1<<sws.length))throw 0;
+ return{id:'u'+Date.now().toString(36)+Math.floor(Math.random()*99),title:o.title.slice(0,60),goal:String(o.goal||'').slice(0,400),tip:String(o.tip||'').slice(0,300),explain:'',volts:Math.max(1,Math.min(30,num(o.volts,12))),parts,sol,sws,outs,rows,inv:!!o.inv}}
+/* ----- ventana de desafíos ----- */
+function chClose(){chBack.hidden=true;chBack.innerHTML=''}
+function chScreen(inner){chBack.innerHTML='<div class="chcard" role="dialog" aria-modal="true" aria-label="Desafíos del taller"><button class="chx" data-a="close" aria-label="Cerrar">×</button>'+inner+'</div>';chBack.hidden=false}
+function chOpen(){closeFly();const mine=loadProp();
+ let h='<h2>🎯 Desafíos del taller</h2><p>Te damos las piezas sueltas y una consigna. Armá el circuito: el simulador prueba todas las combinaciones de las llaves y vale cualquier cableado que funcione.</p>';
+ if(CH)h+='<div class="row" style="margin:0 0 4px"><button class="btn" data-a="exit">↩ Volver al taller libre</button></div>';
+ TD.groups.forEach(g=>{h+='<h3>'+esc(g.title)+'</h3><p class="gd">'+esc(g.desc)+'</p><div class="chgrid">'+TD.list.filter(s=>s.grupo===g.id).map(s=>{const st=PROG.stars(s.pid);return'<button class="chit'+(CH===s?' cur':'')+'" data-a="go" data-id="'+s.id+'"><span class="lv">NIVEL '+s.nivel+'</span><b>'+esc(s.title)+'</b><span class="st'+(st?'':' off')+'">'+PROG.starsHTML(st)+'</span></button>'}).join('')+'</div>'});
+ h+='<h3>Mis desafíos</h3>';
+ h+=mine.length?mine.map((s,i)=>'<div class="chmine"><button class="t" data-a="mine" data-i="'+i+'" title="Jugar este desafío">▶ '+esc(s.title)+'</button><span style="color:#ffd43b;letter-spacing:2px;font-size:.8rem">'+PROG.starsHTML(PROG.stars('tu-'+s.id))+'</span><button class="b" data-a="share" data-i="'+i+'" title="Copiar el código para compartirlo" aria-label="Compartir">📋</button><button class="b" data-a="del" data-i="'+i+'" title="Borrar" aria-label="Borrar">🗑</button></div>').join(''):'<p class="gd">Todavía no creaste ninguno. Armá en el taller libre un circuito que funcione, tocá «Crear desafío» y quedará acá para tus alumnos.</p>';
+ h+='<div class="row"><button class="btn" data-a="new">➕ Crear desafío con mi circuito</button><button class="btn" data-a="imp">📥 Importar código</button></div>';
+ chScreen(h)}
+function chCreate(){
+ if(CH){chScreen('<h2>Primero volvé al taller libre</h2><div class="chmsg">Un desafío nuevo se crea a partir de un circuito que armaste en la mesa libre.</div><div class="row"><button class="btn primary" data-a="exit">↩ Volver al taller libre</button><button class="btn" data-a="list">Ver desafíos</button></div>');return}
+ const parts=sc.comps.filter(c=>c!==SRC),swl=parts.filter(isSw),outs=parts.filter(c=>TD.OUTT.indexOf(c.t)>=0);let err='';const rows=[];
+ if(!swl.length||!outs.length)err='Para crear un desafío la mesa necesita al menos una llave (o conmutador) y una salida (lámpara, LED, motor, zumbador…). Armá un circuito que funcione y volvé a tocar «Crear desafío».';
+ else if(swl.length>5)err='Usá hasta 5 llaves: con más, la tabla de combinaciones se hace demasiado larga.';
+ else if(!links.length)err='Primero conectá el circuito que resuelve el desafío: el simulador aprende de él cómo se tiene que comportar.';
+ else if(sc.comps.some(c=>broken[c.id]))err='Hay una pieza quemada: reemplazala con 🔧 antes de guardar.';
+ if(!err){const n=swl.length;for(let k=0;k<(1<<n)&&!err;k++){const s={};swl.forEach((c,i)=>s[c.id]=!!(k&(1<<(n-1-i))));const r=simulate(links,{sw:s});
+   if(r.short)err='Con alguna combinación de llaves hay un cortocircuito. Corregí el circuito antes de guardarlo.';
+   else if(parts.some(c=>c.vr&&LIM[c.t]&&Math.abs(r.c[c.id].v)>c.vr*(c.tol||LIM[c.t])))err='Con alguna combinación de llaves una pieza se quemaría. Corregí el circuito antes de guardarlo.';
+   else{const lit={};outs.forEach(c=>lit[c.id]=r.c[c.id].level>.01);rows.push({sw:s,lit})}}
+  if(!err&&outs.every(c=>rows.every(r=>r.lit[c.id]===rows[0].lit[c.id])))err='Con este circuito las salidas nunca cambian, así que no hay nada que resolver. Probá una conexión en la que alguna salida dependa de las llaves.'}
+ if(err){chScreen('<h2>Todavía no se puede guardar</h2><div class="chmsg err">'+esc(err)+'</div><div class="row"><button class="btn primary" data-a="close">Entendido</button></div>');return}
+ const dg='Armá un circuito que cumpla la tabla de combinaciones: llaves '+swl.map(c=>c.id).join(', ')+' y salidas '+outs.map(c=>c.id).join(', ')+'.';
+ chScreen('<h2>➕ Crear desafío</h2><p>Tu circuito de la mesa es la solución de referencia. Los alumnos van a recibir las mismas piezas sueltas y el simulador va a exigir que se comporte igual ante las '+rows.length+' combinaciones de llaves.</p><div class="chform"><label for="cfT">Título</label><input id="cfT" maxlength="60" placeholder="Ej.: Luz del taller"><label for="cfG">Consigna para el alumno</label><textarea id="cfG" maxlength="400">'+esc(dg)+'</textarea><label for="cfP">Pista (opcional)</label><input id="cfP" maxlength="300" placeholder="Ej.: las dos llaves van en serie"><label style="display:flex;gap:8px;align-items:flex-start;font-weight:600"><input type="checkbox" id="cfI" style="width:auto;margin-top:3px"><span>Aceptar también la tabla «al revés» (todas las salidas invertidas). Útil para comandos desde varios puntos, donde la lámpara puede arrancar encendida o apagada.</span></label></div><div class="row"><button class="btn primary" data-a="save">💾 Guardar desafío</button><button class="btn" data-a="close">Cancelar</button></div>');
+ chBack._draft={parts,rows,swl,outs};setTimeout(()=>{const t=$('#cfT');if(t)t.focus()},50)}
+function chSave(){const d=chBack._draft,t=($('#cfT').value||'').trim();if(!t){$('#cfT').focus();toast('Escribí un título para el desafío.',2500);return}
+ const spec={id:'u'+Date.now().toString(36),title:t,goal:($('#cfG').value||'').trim(),tip:($('#cfP').value||'').trim(),explain:'',volts:SRCV,
+  parts:d.parts.map(c=>{const q={id:c.id,t:c.t,name:c.name,fx:+c.fx.toFixed(3),fy:+c.fy.toFixed(3)};['r','vr','w','tol','amp'].forEach(k=>{if(c[k]!==undefined)q[k]=c[k]});if(c.flip)q.flip=true;return q}),
+  sol:links.map(l=>[l.a,l.b]),sws:d.swl.map(c=>c.id),outs:d.outs.map(c=>c.id),rows:d.rows,inv:!!$('#cfI').checked};
+ const a=loadProp();a.push(spec);saveProp(a);play('success');chOpen();toast('✔ Desafío guardado en «Mis desafíos». Con 📋 copiás un código para compartirlo.',4200)}
+function chImport(msg){chScreen('<h2>📥 Importar un desafío</h2><p>Pegá el código que te pasó otro docente (empieza con DESAFIO1:).</p>'+(msg?'<div class="chmsg err">'+esc(msg)+'</div>':'')+'<div class="chform"><textarea id="cfC" placeholder="DESAFIO1:..." style="min-height:110px;font-family:ui-monospace,Consolas,monospace;font-size:.78rem"></textarea></div><div class="row"><button class="btn primary" data-a="doimp">Importar</button><button class="btn" data-a="list">Volver</button></div>')}
+function chShare(i){const s=loadProp()[i];if(!s)return;const code=encCode(s);chScreen('<h2>📋 Compartir «'+esc(s.title)+'»</h2><p>Copiá este código y pegalo en «Importar código» en otra computadora o celular. No contiene ningún dato personal.</p><div class="chform"><textarea id="cfK" readonly style="min-height:110px;font-family:ui-monospace,Consolas,monospace;font-size:.72rem">'+esc(code)+'</textarea></div><div class="row"><button class="btn primary" data-a="copy">Copiar código</button><button class="btn" data-a="list">Volver</button></div>');
+ const ta=$('#cfK');ta.onfocus=()=>ta.select()}
+chBack.addEventListener('click',e=>{if(e.target===chBack){chClose();return}const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,i=+b.dataset.i;
+ if(a==='close')chClose();else if(a==='list')chOpen();
+ else if(a==='go'){const s=TD.byId[b.dataset.id];if(s)chStart(s)}
+ else if(a==='mine'){const s=loadProp()[i];if(s)chStart(propSpec(s))}
+ else if(a==='exit'){chClose();chExit()}
+ else if(a==='new')chCreate();else if(a==='save')chSave();else if(a==='imp')chImport();else if(a==='share')chShare(i);
+ else if(a==='del'){const s=loadProp()[i];if(s&&confirm('¿Borrar el desafío «'+s.title+'»?')){const arr=loadProp();arr.splice(i,1);saveProp(arr);chOpen()}}
+ else if(a==='copy'){const ta=$('#cfK');ta.select();try{navigator.clipboard.writeText(ta.value).then(()=>toast('Código copiado.',2200),()=>{document.execCommand('copy');toast('Código copiado.',2200)})}catch{try{document.execCommand('copy');toast('Código copiado.',2200)}catch{}}}
+ else if(a==='doimp'){try{const s=chSanitize(decCode($('#cfC').value));const arr=loadProp();arr.push(s);saveProp(arr);chOpen();toast('✔ Desafío importado: «'+esc(s.title)+'».',3500)}catch{chImport('El código no es válido o está incompleto. Copialo de nuevo completo, desde DESAFIO1: hasta el final.')}}});
 function replaceSel(){if(!selComp)return;const c=cm[selComp];
  if(sc.fault){if(c.id===faultId&&broken[c.id]){delete broken[c.id];fixed=true;play('repair')}else{attempts++;play('error');$('#hint').className='hint error';$('#hint').innerHTML='<strong>'+c.id+' estaba en buen estado.</strong> Medí otra vez: el dañado tiene tensión pero no deja pasar corriente.';lastSim=simulate(links);updatePanel();setTimeout(update,2600);return}}
  else if(broken[c.id]){delete broken[c.id];play('repair')}
@@ -815,9 +971,9 @@ buildColors();buildPalette();buildQuiz();setPanel(!phone()||!!sc.quiz);fit();res
 /* ---------- teléfono: barra superior, consigna inicial, pistas y lectura del multímetro ---------- */
 let hintStep=0,hintTm=null,started=false;
 const termName=id=>{const d=TM[id],c=d.c;if(c.t==='bat')return d.k==='p'?'el polo + de la batería':'el polo − de la batería';
- const s=c.t==='led'?(d.k==='a'?'ánodo A':'cátodo K'):(c.t==='dcm'||c.t==='buz')?(d.k==='a'?'pata +':'pata −'):c.t==='sw3'?(d.k==='c'?'común':'posición '+(d.k==='a'?'1':'2')):(d.k==='a'?'borne izquierdo':'borne derecho');
+ const s=c.t==='led'?(d.k==='a'?'ánodo A':'cátodo K'):(c.t==='dcm'||c.t==='buz')?(d.k==='a'?'pata +':'pata −'):c.t==='sw3'?(d.k==='c'?'común':'posición '+(d.k==='a'?'1':'2')):c.t==='sw4'?(d.k[0]==='a'?'entrada ':'salida ')+d.k[1]:(d.k==='a'?'borne izquierdo':'borne derecho');
  return (c.name||c.id)+' ('+s+')'};
-function mvMission(first){const m=$('#mvmission');$('#mmLv').textContent=NIVEL?'Nivel '+NIVEL:EXAM?'Examen':'Misión';$('#mmTit').textContent=sc.title||'';$('#mmTxt').textContent=sc.goal||'';
+function mvMission(first){const m=$('#mvmission');$('#mmLv').textContent=NIVEL?'Nivel '+NIVEL:CH?'Desafío · '+sc.desc:EXAM?'Examen':'Misión';$('#mmTit').textContent=sc.title||'';$('#mmTxt').textContent=sc.goal||'';$('#mmTab').innerHTML=mmTabHTML(false);
  $('#mmGo').textContent=first?'¡Empezar!':'Cerrar';$('#mmSol').hidden=!(NIVEL>0&&!EXAM&&!first);m.classList.add('on')}
 function mvHint(){if(EXAM)return;stat.hint=true;hintStep++;
  if(sc.quiz){if(hintStep===1){toast('💡 '+(sc.tip||'Tocá cada componente del circuito y mirá su tensión y su corriente.'),6500);return}
@@ -849,6 +1005,6 @@ if(MOVIL){
  if(sc.goal&&!SHEET&&!FREE)mvMission(true);else if(!started){started=true;setTimeout(()=>parentPost({tipo:'movil-empezo'}),50)}
  if(NIVEL||EXAM)document.querySelectorAll('#tipBtn,#solBtn').forEach(b=>b.hidden=true);
 }
-window.__sim={faultId:()=>faultId,select:id=>{selComp=id;selWire=null;render();updatePanel()},quizSel:()=>quizSel,colorFor,colorIssues:()=>colorIssues(),addComp,delComp,setVolt,stat,starsFor,reset:f=>reset(!!f),shuffle:()=>{const m=shuffleLayout();sc.comps.forEach(c=>{if(c.tx!==undefined){c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty}});render();return m},setW:w=>{W=w;svg.setAttribute('viewBox','0 0 '+W+' '+VH);render()},getW:()=>W,sc,links:()=>links,swState:()=>swState,setLinks:l=>{links=l;update()},toggle:id=>{swState[id]=!swState[id];update()},plug:id=>{plugTo=id;update()},diag:()=>lastDiag,sim:()=>lastSim,allT,tp,TM,nearestTerm,scaleNow:()=>scale};
+window.__sim={faultId:()=>faultId,select:id=>{selComp=id;selWire=null;render();updatePanel()},quizSel:()=>quizSel,colorFor,colorIssues:()=>colorIssues(),addComp,delComp,setVolt,stat,starsFor,reset:f=>reset(!!f),shuffle:()=>{const m=shuffleLayout();sc.comps.forEach(c=>{if(c.tx!==undefined){c.fx=c.tx;c.fy=c.ty;delete c.tx;delete c.ty}});render();return m},setW:w=>{W=w;svg.setAttribute('viewBox','0 0 '+W+' '+VH);render()},getW:()=>W,sc,links:()=>links,swState:()=>swState,setLinks:l=>{links=l;update()},toggle:id=>{swState[id]=!swState[id];update()},plug:id=>{plugTo=id;update()},chStart,chExit,chOpen,chCreate,chSave,chSanitize,encCode,decCode,loadProp,saveProp,propSpec,ch:()=>CH,chLast:()=>chLast,cm,simulate,broken:()=>broken,diag:()=>lastDiag,sim:()=>lastSim,allT,tp,TM,nearestTerm,scaleNow:()=>scale};
 })();
 </script><script src="autor.js"></script></body></html>

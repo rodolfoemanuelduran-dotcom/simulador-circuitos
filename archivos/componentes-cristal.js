@@ -111,6 +111,21 @@ function sw3(c,on,r){const cur=!!(r&&Math.abs(r.i)>1e-4),en=(r&&r.en)||{};let s=
  s+=housing(-52,-40,52,40,10);
  return s}
 
+/* llave de cruce (inversora): 4 bornes; recta une 1-1 y 2-2, cruzada une 1-2 y 2-1 */
+function sw4(c,on,r){const cur=!!(r&&Math.abs(r.i)>1e-4),en=(r&&r.en)||{};let s='';
+ s+=wireCu('M-62 -28H-40',cur,en.a1)+wireCu('M-62 28H-40',cur,en.a2)+wireCu('M40 -28H62',cur,en.b1)+wireCu('M40 28H62',cur,en.b2);
+ const S=[[-32,-28],[-32,28]],T=[[32,-28],[32,28]];
+ /* contactos que NO están conectados: se ven fantasma; los activos son de latón */
+ const bar=(a,b,act)=>`<path d="M${a[0]} ${a[1]}L${b[0]} ${b[1]}" stroke="${act?'url(#gBrass)':'#ffffff'}" stroke-opacity="${act?1:.16}" stroke-width="${act?6.5:4}" stroke-linecap="round"${act?'':' stroke-dasharray="3 6"'}/>`;
+ const straight=[[S[0],T[0]],[S[1],T[1]]],crossed=[[S[0],T[1]],[S[1],T[0]]];
+ (on?straight:crossed).forEach(([a,b])=>s+=bar(a,b,false));
+ (on?crossed:straight).forEach(([a,b])=>{if(cur)s+=`<path d="M${a[0]} ${a[1]}L${b[0]} ${b[1]}" stroke="#ffc15a" stroke-width="12" opacity=".5" stroke-linecap="round" filter="url(#fB3)"/>`;s+=bar(a,b,true);s+=`<path d="M${a[0]} ${a[1]-1.5}L${b[0]} ${b[1]-1.5}" stroke="#fff" stroke-opacity=".5" stroke-width="1.2" stroke-linecap="round"/>`});
+ [['a1',-32,-28],['a2',-32,28],['b1',32,-28],['b2',32,28]].forEach(([k,x,y],i)=>{s+=post(x,y,cur,10+i*17,en[k])});
+ /* perilla central: gira un cuarto de vuelta */
+ s+=`<g transform="rotate(${on?90:0})"><circle r="9.5" fill="url(#gKnob)" stroke="#3a0905"/><path d="M0 -8V8" stroke="#fff" stroke-opacity=".7" stroke-width="2" stroke-linecap="round"/><ellipse cx="-3" cy="-4" rx="3.2" ry="2" fill="#fff" opacity=".55"/></g>`;
+ s+=housing(-52,-44,52,44,10);
+ return s}
+
 /* ------------------------------------------------------------ LED */
 function led(c,r,bk){const lv=r?r.level:0,on=lv>.02&&!bk,cur=!!(r&&Math.abs(r.i)>1e-4&&!bk),en=(r&&r.en)||{};let s='';
  if(on)s+=`<circle cx="0" cy="-34" r="${46+40*lv}" fill="url(#glowR)" opacity="${.5+.5*lv}"/>`;
@@ -259,5 +274,5 @@ const FX={ps:[],em:{},g:null,run:false,last:0,onSpark:null,
   /* las llamas y chispas van encima del humo */
   this.g.innerHTML=s;
   if(this.ps.length||Object.keys(this.em).length)requestAnimationFrame(t2=>this.tick(t2));else{this.run=false;this.g.innerHTML=''}}};
-return{DEFS,install,lamp,bat,sw,sw3,led,res,fuse,dcm,buz,cal,wire,FX,mix,potColor};
+return{DEFS,install,lamp,bat,sw,sw3,sw4,led,res,fuse,dcm,buz,cal,wire,FX,mix,potColor};
 })();

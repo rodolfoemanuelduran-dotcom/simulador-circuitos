@@ -29,6 +29,7 @@ const BADGES=[
  {id:'mixto',ico:'🧩',name:'Mixto',desc:'Completá una práctica de circuito mixto.',ok:d=>grp(d,'mixto')},
  {id:'detective',ico:'🔍',name:'Detective',desc:'Encontrá una falla y reparala.',ok:d=>grp(d,'falla')},
  {id:'alterna',ico:'🏠',name:'Instalador',desc:'Completá una práctica de corriente alterna.',ok:d=>Object.values(d.items).some(i=>i.s>0&&i.cat==='ca')},
+ {id:'logico',ico:'🧠',name:'Lógico',desc:'Resolvé 3 desafíos del Taller libre.',ok:d=>Object.values(d.items).filter(i=>i.s>0&&i.g==='tdes').length>=3},
  {id:'taller',ico:'🛠',name:'Inventor',desc:'Hacé funcionar un circuito propio en el Taller libre.',ok:d=>!!d.flags.taller},
  {id:'examen',ico:'📝',name:'Examinado',desc:'Rendí un examen completo.',ok:d=>!!d.flags.examen}
 ];

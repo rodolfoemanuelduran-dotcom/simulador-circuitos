@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Circuitos">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png"><link rel="icon" type="image/png" href="icon-192.png">
 <style>
 :root{color-scheme:dark;--bg:#06101c;--bg2:#1b4468;--panel:#0d1d2e;--panel2:#142a41;--text:#f4f9ff;--muted:#abc0d5;--blue:#70dbf4;--green:#67e0a7;--brown:#cf8150;--line:#294761;--card1:#18334f;--card2:#0c1d2e;--cardline:#345673;--bar:#071321ee;--shadow:#0006;--chip:#193b55b8;--ink:#06101c}
 :root[data-theme=light]{color-scheme:light;--bg:#eef3f9;--bg2:#ffffff;--panel:#ffffff;--panel2:#e2ebf5;--text:#0f1b2a;--muted:#4b5d73;--blue:#0a6f9a;--green:#117a48;--brown:#a8581e;--line:#b4c3d5;--card1:#ffffff;--card2:#eaf1f8;--cardline:#a9bbd0;--bar:#ffffffee;--shadow:#1b2f4a26;--chip:#dcebf7;--ink:#ffffff}
@@ -20,7 +20,7 @@ button{font:inherit;color:inherit}
 .topbar{height:58px;flex:0 0 58px;display:flex;align-items:center;gap:8px;padding:7px 14px;background:var(--bar);border-bottom:1px solid var(--line);box-shadow:0 7px 18px var(--shadow);z-index:10}
 .pizarra .topbar{height:70px;flex-basis:70px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}.brand i{flex:0 0 35px;width:35px;height:35px;border-radius:50%;background:radial-gradient(circle,#fff6a4 0 12%,#6fe9ff 16% 30%,#173954 34%);box-shadow:0 0 16px #6fe9ff66}
-.brand b{font-size:1.05rem;white-space:nowrap}.brand small{display:block;color:var(--muted);font-size:.66rem}
+.hero-logo{display:block;width:min(440px,88%);height:auto;margin:0 auto 16px;border-radius:20px;box-shadow:0 14px 44px #000b,0 0 0 1px #ffffff16}.brand .logo{flex:0 0 40px;width:40px;height:40px;border-radius:10px;box-shadow:0 0 16px #6fe9ff55}.brand b{font-size:1.05rem;white-space:nowrap}.brand small{display:block;color:var(--muted);font-size:.66rem}
 .spacer{flex:1}
 .topbar button{min-height:40px;padding:6px 12px;border:1px solid var(--cardline);border-radius:12px;background:var(--panel2);color:var(--text);font-weight:750;cursor:pointer}
 .topbar button[hidden]{display:none}
@@ -76,7 +76,7 @@ button{font:inherit;color:inherit}
 <body>
 <div class="shell">
   <header class="topbar">
-    <div class="brand"><i aria-hidden="true"></i><div><b>Simulador de circuitos</b><small id="subtitle">Preparando modo sin conexión…</small></div></div>
+    <div class="brand"><img class="logo" src="icon-192.png" alt="R.E.D" width="40" height="40"><div><b>Simulador de circuitos</b><small id="subtitle">Preparando modo sin conexión…</small></div></div>
     <div class="spacer"></div>
     <button id="backButton" hidden>‹ <span class="btn-label">Volver</span></button>
     <button id="homeButton" hidden>⌂ <span class="btn-label">Inicio</span></button>
@@ -90,7 +90,7 @@ button{font:inherit;color:inherit}
   <main class="stage">
     <canvas id="bgfx" aria-hidden="true"></canvas>
     <section id="home" class="view">
-      <div class="intro"><div class="institutions" aria-label="Instituciones educativas"><span>Escuela Técnica Crucero ARA General Belgrano</span><span>Escuela Técnica N.º 1 de Bella Vista</span></div><h1>Elegí un tema</h1><p>Construí y comprendé circuitos eléctricos paso a paso: cables que se iluminan, electrones que circulan y focos que explotan.</p></div>
+      <div class="intro"><img class="hero-logo" src="logo-red-banner.jpg" alt="R.E.D · Rodolfo Emanuel Durán" width="960" height="458"><div class="institutions" aria-label="Instituciones educativas"><span>Escuela Técnica Crucero ARA General Belgrano</span><span>Escuela Técnica N.º 1 de Bella Vista</span></div><h1>Elegí un tema</h1><p>Construí y comprendé circuitos eléctricos paso a paso: cables que se iluminan, electrones que circulan y focos que explotan.</p></div>
       <div class="tiles" id="tiles"></div>
       <div class="extras" id="extras"></div><div class="prog" id="prog"></div>
       <p class="note">Modo pizarra (Aa): letras y trazos más grandes para proyectar. Fondo claro/oscuro con ◐. Pantalla completa con ⛶.</p>

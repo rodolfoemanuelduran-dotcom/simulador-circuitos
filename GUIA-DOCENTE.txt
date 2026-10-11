@@ -57,6 +57,23 @@ TALLER LIBRE
   bateria de 3 a 24 V. Se agrega con un toque, se arrastra para ubicarlo y se cablea como siempre. Se guarda solo.
   Ideas: armar serie, paralelo y mixto con lamparas distintas; calcular el resistor de un LED; probar un fusible.
 
+DESAFIOS DEL TALLER LIBRE (boton con la diana, primero de la paleta)
+- Cada desafio abre la mesa con las piezas sueltas y una consigna. El simulador NO compara cables con una solucion:
+  prueba todas las combinaciones de las llaves y conmutadores y mira que enciende cada salida. Cualquier cableado que
+  funcione vale. El panel (boton de las tres rayas) muestra la tabla de combinaciones: "Debe" = lo pedido, tilde o cruz =
+  si el circuito del alumno ya lo cumple; tocando una fila se prueba esa combinacion en la mesa.
+- Si falla, dice cual combinacion no cumple ("Con S1 abierta y S2 cerrada, la lampara L1 deberia estar apagada pero esta
+  encendida"). Tambien avisa si en alguna combinacion hay cortocircuito o una pieza se quemaria.
+- 12 desafios incluidos: Logica con llaves (Y, O, NO, combinaciones, llave maestra, puente), Conmutadores (elegir una luz,
+  escalera, alarma de tres puertas) y Una lampara desde varios lugares (3 y 4 puntos con llave de cruce, nueva en la paleta).
+  Dan estrellas (3 = sin pista ni solucion y sin accidentes) y el logro "Logico" a los 3 resueltos.
+- MIS DESAFIOS (para vos): arma en el taller libre un circuito que funcione (con al menos una llave y una lampara u otra
+  salida), toca la diana y "Crear desafio con mi circuito". El circuito es la solucion de referencia: los alumnos reciben las
+  piezas sueltas y el simulador exige el mismo comportamiento. Se guarda en este dispositivo; con el boton de copiar sacas un
+  codigo (empieza con DESAFIO1:) para mandarlo por mensaje y pegarlo en "Importar codigo" en otra computadora o celular.
+  La casilla "Aceptar tambien la tabla al reves" sirve para comandos desde varios puntos, donde la lampara puede arrancar
+  encendida o apagada segun como se crucen los viajeros.
+
 MODO EXAMEN EN VIVO (para evaluar frente a toda la clase; se usa SOLO CON EL MOUSE)
 - Pensado para proyectar en la pizarra y pasar el mouse inalambrico de alumno en alumno, mientras el docente anota las notas
   en su lista impresa. No hay nombres ni teclado: todo se maneja con el mouse.

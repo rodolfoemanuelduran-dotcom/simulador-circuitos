@@ -9,7 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Circuitos">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png"><link rel="icon" type="image/png" href="icon-192.png">
 <style>
 :root{color-scheme:dark;--bg:#06101c;--bg2:#0c2036;--card:#0f2338;--card2:#15304b;--line:#24405b;--tx:#f2f7ff;--mu:#9db3c9;--bl:#6fd8f2;--or:#ff9a3d;--gold:#ffd43b;--gr:#5ce0a0;--rd:#ff6b6b;--ink:#06101c;--shadow:#0007}
 :root[data-theme=light]{color-scheme:light;--bg:#eef3f9;--bg2:#ffffff;--card:#ffffff;--card2:#e4edf6;--line:#b9c9da;--tx:#0f1b2a;--mu:#4b5d73;--bl:#0a6f9a;--or:#c8641a;--gold:#b88400;--gr:#0f7a45;--rd:#c62828;--ink:#ffffff;--shadow:#1b2f4a30}
@@ -104,6 +104,7 @@ h3.sec{margin:20px 14px 8px;font-size:.75rem;letter-spacing:.08em;text-transform
 .tip{margin:12px 14px;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;color:var(--mu);font-size:.85rem;background:var(--card)}.tip button{margin-top:8px;padding:9px 14px;border-radius:10px;background:var(--bl);color:var(--ink);font-weight:800}
 .foot{margin:18px 14px 8px;text-align:center;color:var(--mu);font-size:.76rem}.foot a{color:var(--bl)}
 input[type=search]{display:block;width:calc(100% - 28px);margin:0 14px 12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--tx);font-size:1rem;user-select:text;-webkit-user-select:text}
+#upd{position:fixed;left:10px;right:10px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:35;display:none;align-items:center;gap:8px;padding:10px 10px 10px 14px;border-radius:16px;background:linear-gradient(135deg,#1d5b86,#12304b);color:#fff;border:1px solid var(--bl);box-shadow:0 10px 30px #000a;font-size:.9rem}#upd.on{display:flex}#upd span{flex:1}.updb{padding:9px 14px;border-radius:12px;background:#ffd43b;color:#241a00;font-weight:900}.updb:disabled{opacity:.6}.updx{width:34px;height:34px;border-radius:10px;background:#ffffff22;color:#fff}
 #toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;max-width:90%;padding:10px 16px;border-radius:999px;background:var(--card2);border:1px solid var(--bl);font-weight:700;font-size:.9rem;box-shadow:0 8px 24px #000a;display:none}
 @media (orientation:landscape) and (max-height:520px){#tabs{padding:2px}#tabs button span{font-size:1.1rem}.node{width:64px;height:64px}.hero{margin:6px 14px}.shcard{left:50%;right:auto;width:min(560px,96%);transform:translateX(-50%);animation:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
@@ -129,6 +130,7 @@ input[type=search]{display:block;width:calc(100% - 28px);margin:0 14px 12px;padd
 <div id="sheet" class="layer"><div class="shbg"></div><div class="shcard" id="shcard"></div></div>
 <div id="fs" class="full"></div>
 <div id="rotar"><div class="ph">📱</div><h2>Girá el celular</h2><p>Para armar circuitos necesitás la pantalla acostada: así los cables y los bornes se ven bien grandes.</p><button class="cta sec" id="rotarBack" style="max-width:260px">Volver al camino</button></div>
+<div id="upd" role="status"><span>✨ Hay una <b>versión nueva</b> de la app</span><button id="updOk" class="updb">Actualizar</button><button id="updNo" class="updx" aria-label="Más tarde">✕</button></div>
 <div id="toast" role="status"></div>
 <script src="archivos/redes-datos.js"></script>
 <script src="archivos/casas-datos.js"></script>
@@ -343,10 +345,18 @@ $('#frm').addEventListener('load',()=>{try{$('#frm').contentWindow.postMessage({
 /* instalación (Android/Chrome) */
 let deferred=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;mostrarInstalar()});
 function mostrarInstalar(){const box=$('#inst');if(!box||!deferred)return;box.innerHTML='<button id="doInst">Instalar la aplicación</button>';$('#doInst').onclick=async()=>{deferred.prompt();try{await deferred.userChoice}catch{}deferred=null;box.innerHTML=''}}
-/* service worker */
-if('serviceWorker' in navigator&&location.protocol.startsWith('http')){addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
+/* service worker: modo sin conexión y aviso de «nueva versión» (se busca al abrir la app y cada vez que se vuelve a ella) */
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')){addEventListener('load',async()=>{try{
+ const reg=await navigator.serviceWorker.register('sw.js',{updateViaCache:'none'});let hadCtl=!!navigator.serviceWorker.controller,recargando=false;
+ const ofrecer=()=>{if(reg.waiting)$('#upd').classList.add('on')};
+ ofrecer();reg.addEventListener('updatefound',()=>{const w=reg.installing;if(w)w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)ofrecer()})});
+ const buscar=()=>reg.update().catch(()=>{});setTimeout(buscar,4000);setInterval(buscar,30*60*1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)buscar()});
+ $('#updOk').onclick=()=>{$('#updOk').disabled=true;$('#updOk').textContent='Actualizando…';if(reg.waiting)reg.waiting.postMessage({type:'ACTIVATE_UPDATE'});else location.reload()};
+ $('#updNo').onclick=()=>$('#upd').classList.remove('on');
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadCtl){hadCtl=true;return}if(recargando)return;recargando=true;location.reload()});
+}catch{}})}
 /* bienvenida (la primera vez, y desde Más > Cómo se juega) */
-function bienvenida(){abrirFull(`<div class="big" style="margin-top:6vh"><div style="font-size:3.4rem">⚡</div><h2>¡Bienvenido/a!</h2><p style="color:var(--mu)">Practicá circuitos eléctricos y llegá entrenado/a al examen.</p></div>
+function bienvenida(){abrirFull(`<div class="big" style="margin-top:6vh"><img src="logo-red-banner.jpg" alt="R.E.D" width="960" height="458" style="width:min(340px,92%);height:auto;border-radius:20px;box-shadow:0 10px 34px #000b,0 0 0 1px #ffffff16"><h2>¡Bienvenido/a!</h2><p style="color:var(--mu)">Practicá circuitos eléctricos y llegá entrenado/a al examen.</p></div>
  <div class="card"><p>🛤️ <b>Camino:</b> superá niveles cada vez más difíciles. Si no usás pistas ni te equivocás, ¡3 estrellas!</p><p>🔌 <b>Armar circuitos:</b> con el celular <b>acostado</b>, tocá un borne y después otro. Cable <b style="color:#e5484d">rojo</b> al polo +, <b style="color:#4db5ee">celeste</b> al polo −. Pellizcá para acercar.</p><p>⏱️ <b>Simulacro:</b> 3 problemas con tiempo y sin ayudas, como en el examen.</p><p>🔥 Practicá todos los días para sumar racha.</p></div><div class="gap"><button class="cta" id="bvOk">¡Vamos! ▶</button></div>`);
  $('#bvOk').onclick=()=>{S.visto=1;save();capa('fs',false)}}
 /* inicio */
