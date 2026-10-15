@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Modo examen</title>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Modo examen</title>
 <style>
 :root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd43b;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f}
 :root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#ffffff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#ffffff}
@@ -51,7 +51,7 @@ table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:8px 8px
  <section class="scr" id="res" hidden><div class="card" id="resCard"></div></section>
  <div class="modal" id="modal" hidden><div class="card center" id="modalCard"></div></div>
 </main>
-<script src="redes-datos.js"></script><script src="examen-gen.js"></script><script src="progreso.js"></script>
+<script src="comun.js"></script><script src="redes-datos.js"></script><script src="examen-gen.js"></script><script src="progreso.js"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s),GEN=window.GEN;
@@ -59,15 +59,15 @@ const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v
 const params=new URLSearchParams(location.search);
 let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
 const embedded=window.parent!==window;
-function apply(){document.documentElement.dataset.theme=tema;try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:true},'*')}catch{}}
-window.addEventListener('message',e=>{const d=e.data;if(!d)return;
+function apply(){document.documentElement.dataset.theme=tema;try{SIM.post($('#frm').contentWindow,{tipo:'ajustes',tema,pizarra:true})}catch{}}
+SIM.alRecibir(e=>{const d=e.data;if(!d)return;
  if(e.source===$('#frm').contentWindow){
   if(d.tipo==='examen-entrega'){entregada(d);return}
-  if(d.tipo==='ajustes-desde-practica'){tema=d.tema;stg.set('sim-tema',tema);apply();try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra:true},'*')}catch{}}
+  if(d.tipo==='ajustes-desde-practica'){tema=d.tema;stg.set('sim-tema',tema);apply();try{if(embedded)SIM.post(parent,{tipo:'ajustes-desde-practica',tema,pizarra:true})}catch{}}
   return}
  if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}
  if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;apply()}});
-$('#frm').addEventListener('load',()=>{try{$('#frm').contentWindow.postMessage({tipo:'reserva',px:12},'*');$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:true},'*')}catch{}});
+$('#frm').addEventListener('load',()=>{try{SIM.post($('#frm').contentWindow,{tipo:'reserva',px:12});SIM.post($('#frm').contentWindow,{tipo:'ajustes',tema,pizarra:true})}catch{}});
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const fmtT=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
 const val=name=>(document.querySelector('input[name='+name+']:checked')||{}).value;
@@ -96,20 +96,20 @@ function cargar(){show('run');$('#verd').hidden=true;$('#cont').hidden=true;head
 function clearTimer(){clearInterval(timerId);timerId=null;clearTimeout(waitTm)}
 function iniciarTimer(){clearTimer();const T=$('#timer');T.hidden=false;t0=Date.now();deadline=ex.cfg.lim?t0+ex.cfg.lim*1000:0;tick();timerId=setInterval(tick,250)}
 function tick(){const T=$('#timer');if(deadline){const r=Math.max(0,Math.ceil((deadline-Date.now())/1000));T.textContent=fmtT(r);T.classList.toggle('warn',r<=30);if(r<=0){clearInterval(timerId);timerId=null;forzar()}}else{T.textContent=fmtT(Math.round((Date.now()-t0)/1000));T.classList.remove('warn')}}
-function forzar(){try{$('#frm').contentWindow.postMessage({tipo:'examen-forzar'},'*')}catch{}
+function forzar(){try{SIM.post($('#frm').contentWindow,{tipo:'examen-forzar'})}catch{}
  waitTm=setTimeout(()=>entregada({ok:false,t:Math.round((Date.now()-t0)/1000),shorts:0,burns:0,agotado:true}),1800)}
 
 /* ---------- entrega y resultado del problema ---------- */
 const nota=r=>r.ok?Math.max(6,10-(r.shorts+r.burns)):0;
 function entregada(d){if(!ex||!ex.cur)return;clearTimer();if(ex.hist.length&&ex.hist[ex.hist.length-1].spec===ex.cur)return;
- const r={n:ex.hist.length+1,level:ex.cur.level,tipo:GEN.tipoDe(ex.cur.level),titulo:ex.cur.title,kind:ex.cur.kind,spec:ex.cur,ok:!!d.ok,t:d.t||Math.round((Date.now()-t0)/1000),shorts:d.shorts||0,burns:d.burns||0,agotado:!!d.agotado};
+ const r={n:ex.hist.length+1,level:ex.cur.level,tipo:GEN.tipoDe(ex.cur.level),titulo:ex.cur.title,kind:ex.cur.kind,spec:ex.cur,ok:!!d.ok,t:d.t||Math.round((Date.now()-t0)/1000),shorts:d.shorts||0,burns:d.burns||0,agotado:!!d.agotado,revisar:!!d.revisar};
  ex.hist.push(r);ex.next=r.ok?r.level+1:r.level;$('#timer').classList.remove('warn');
  if(ex.cfg.show)verdicto(r);else{ex.level=ex.next;preparar()}}
 function verdicto(r){const v=$('#verd');v.className='verd '+(r.ok?'ok':'no');
  const inc=r.shorts+r.burns?(r.shorts?r.shorts+' cortocircuito'+(r.shorts>1?'s':''):'')+(r.shorts&&r.burns?' y ':'')+(r.burns?r.burns+' componente'+(r.burns>1?'s':'')+' quemado'+(r.burns>1?'s':''):''):'sin incidentes';
  const corr=!r.ok&&r.kind==='quiz'?`<div class="ans">Respuesta correcta: <b>${esc(r.spec.quiz.opts[r.spec.quiz.ans])}</b></div>`:'';
  v.innerHTML=`<div class="card center"><div class="ico">${r.ok?'✅':r.agotado?'⏰':'❌'}</div><div class="ttl">${r.ok?'¡Correcto!':r.agotado?'Se acabó el tiempo':'Todavía no'}</div><div class="meta">Problema ${r.n} · Nivel ${r.level} · ${esc(r.tipo)}</div>
- <div class="nota"><b>${nota(r)}</b><span>/ 10</span></div><div class="meta">Tiempo ${fmtT(r.t)} · ${inc}</div>${corr}
+ <div class="nota"><b>${nota(r)}</b><span>/ 10</span></div><div class="meta">Tiempo ${fmtT(r.t)} · ${inc}</div>${corr}${r.revisar?'<div class="ans" style="border-color:#ffd43b;color:#ffd43b">⚠ El simulador no pudo corregir este problema por su cuenta: revisalo vos (tocá «Ver la solución») antes de anotar la nota.</div>':''}
  <div class="row c"><button class="btn" id="bSol">👁 Ver la solución</button><button class="btn" id="bDn">⬇ Bajar nivel</button><button class="btn" id="bUp">⬆ Subir nivel</button></div>
  <div class="meta" style="margin-top:8px">El próximo problema será de <b id="nxL">nivel ${ex.next}</b></div>
  <div class="row c"><button class="btn primary big" id="bNext">Siguiente problema ▶</button></div></div>`;

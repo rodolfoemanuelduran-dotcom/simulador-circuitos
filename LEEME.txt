@@ -1,9 +1,32 @@
-SIMULADORES DE CIRCUITOS ELECTRICOS
+﻿SIMULADORES DE CIRCUITOS ELECTRICOS
 ===================================
 
 Escuela Técnica Crucero ARA General Belgrano
 Escuela Técnica N.º 1 de Bella Vista
 Autor: ver archivos/autor.js
+
+NOVEDADES DE LA VERSIÓN 1.3.0
+-----------------------------
+- NUEVO en Corriente alterna, grupo "Protecciones del tablero":
+  * La llave termomagnética: corte lateral con carcasa transparente para ver el mecanismo en acción (palanca, eslabón,
+    cerrojo, resorte, bimetal, bobina y cámara de extinción del arco), curvas de disparo B, C y D, poder de corte, fallas
+    (borne flojo, tablero caliente, contactos soldados), práctica de conexión y problemas para calcular su tamaño.
+  * El disyuntor diferencial: frontal con tapa transparente, el toroide como "balanza" de corrientes, botón de prueba T,
+    efectos de la corriente en el cuerpo, fallas (mecanismo trabado, neutro a tierra), práctica de conexión y problemas
+    para calcular sensibilidad, corriente asignada, tipo y puesta a tierra.
+  * Cada problema de cálculo es distinto cada vez. "Ver resolución" y "Ver conexión" quedan anotados para el docente.
+- Camino de niveles del celular:
+  * "Ver solución" ya NO da el nivel por superado: el intento no cuenta y queda anotado. Para superar el nivel hay que
+    resolver otra variante por cuenta propia.
+  * En las preguntas, la segunda respuesta equivocada termina el intento (no se puede acertar probando una por una).
+  * Al superar un nivel el circuito queda funcionando, con sus valores y animaciones, y una barra fina abajo muestra las
+    estrellas y el botón "Siguiente" sin tapar nada. Tocando la barra se ve el detalle.
+- Informe para el docente: en el celular (Mi progreso) y en la PC (Medallas) hay un informe que dice qué superó el alumno
+  por su cuenta, con pista o errores, y cuáles vio con la solución. El nombre es opcional y NO se guarda: se escribe
+  recién al compartir.
+- Convención de colores en corriente continua: rojo al polo + y celeste al polo - es el código de este simulador (la norma
+  IEC 60445 reserva el azul para el neutro).
+- Revisión general: accesibilidad con teclado, avisos de error visibles, datos guardados validados, versión visible en el menú.
 
 CONTENIDO (27 practicas, todas en archivos/circuito-redes.html)
 - Circuitos basicos: circuito simple, serie y paralelo de tres lamparas,
@@ -56,7 +79,7 @@ CABLES ENERGIZADOS, MESA MEZCLADA, ESTRELLAS, TALLER LIBRE Y EXAMEN (version 1.1
 Las pruebas automaticas (pruebas.js) incluyen LAYSH(n) para verificar la mezcla de la mesa.
 
 INSTALADOR PARA WINDOWS (carpeta INSTALADOR-WINDOWS)
-Instalar-Simulador-de-Circuitos-1.2.1.exe instala la aplicacion con acceso directo en el escritorio y
+Instalar-Simulador-de-Circuitos-1.3.0.exe instala la aplicacion con acceso directo en el escritorio y
 en el menu Inicio, y funciona sin internet. Para volver a generarlo despues de cambiar archivos:
 ejecutar aplicacion-windows\construir-instalador.ps1 (necesita Node.js e internet la primera vez).
 
@@ -140,8 +163,8 @@ Al escanear el QR (o abrir la direccion publicada) el celular se redirige solo a
   se resuelven en vertical. Cables: tocar un borne y despues el otro (bornes grandes); pellizcar para acercar y arrastrar
   para mover el tablero; doble toque para volver a verlo todo. Rojo al polo +, celeste al polo -.
 - SIMULACRO: tres simulacros (uno por bloque) de 3 problemas con tiempo (3 min cada uno), sin pistas, nota sobre 10.
-- MI PROGRESO: nombre, niveles superados, estrellas, racha de dias, notas de simulacros y logros; boton para compartir o
-  copiar el resumen y mostrarselo al docente. Todo se guarda en el telefono (no hay servidores).
+- MI PROGRESO: niveles superados, estrellas, racha de dias, notas de simulacros y logros; boton "Informe para mi docente"
+  (se escribe el nombre, opcional, recien al compartir) que indica que supero por su cuenta y que vio con la solucion. Todo se guarda en el telefono (no hay servidores).
 - MAS: todas las demas practicas (corriente alterna, mando de motores, datos curiosos, taller libre).
 Funciona sin conexion una vez abierta e instalada (menu del navegador: "Instalar aplicacion" / "Agregar a pantalla de
 inicio"). Usa el mismo generador de problemas del modo examen de la PC (archivos/examen-gen.js) y la "piel movil" de

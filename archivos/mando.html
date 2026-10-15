@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Circuitos de mando</title>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Circuitos de mando</title>
 <style>
 :root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;--badbg:#42202a;--badtx:#ffd1d1;--stg1:#13243a;--stg2:#08111d;--ink:#e9f1fa;--sel:#1d4d63;--dead:#5b6b7e;--coilon:#8a5a14}
 :root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#fff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#fff;--okbg:#e1f5ea;--oktx:#0b4a2b;--warnbg:#fff1cc;--warntx:#6b4a00;--badbg:#fde4e4;--badtx:#7a1212;--stg1:#fbfdff;--stg2:#dbe5f0;--ink:#14253a;--sel:#cfe8f3;--dead:#8a99ab;--coilon:#f3c97a}
@@ -8,6 +8,7 @@ button{font:inherit;color:inherit}
 header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px;padding:5px 108px 5px 12px;background:var(--hdr);border-bottom:1px solid var(--line)}
 .ttl{min-width:0;flex:1 1 auto}.ttl h1{margin:0;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttl small{display:block;color:var(--mu);font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+@media (pointer:coarse) and (min-height:521px){.tools button{width:44px;height:44px}.tools{gap:6px}}
 .top .autor-badge{margin-left:6px}
 .work{flex:1 1 auto;min-height:0;display:flex}
 .stage{position:relative;flex:1 1 auto;min-width:0;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 30%,var(--stg1),var(--stg2))}
@@ -60,7 +61,7 @@ input[type=range]{width:100%;accent-color:var(--bl);height:28px}.sv{float:right;
  </section>
  <aside id="panel" class="panel"></aside>
 </div>
-<script>window.CIRCUITOS={};</script>
+<script src="comun.js"></script><script>window.CIRCUITOS={};</script>
 <script src="mando-circuitos.js"></script>
 <script>
 (()=>{
@@ -400,8 +401,8 @@ const embedded=window.parent!==window;if(embedded)document.querySelectorAll('.so
 const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
 let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
 function apply(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra))}
-function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
-window.addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
+function avisar(){try{if(embedded)SIM.post(parent,{tipo:'ajustes-desde-practica',tema,pizarra})}catch{}}
+SIM.alRecibir(e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
 $('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply();avisar()};
 $('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply();avisar()};
 const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;

@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>¿De dónde viene la corriente eléctrica?</title>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>¿De dónde viene la corriente eléctrica?</title>
 <style>
 :root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--card:#0a1827ee;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;
  --sky1:#0b1d33;--sky2:#1d4468;--mt1:#14293f;--mt2:#1d3a56;--ground:#12304a;--water:#2f8fd1;--water2:#68b9ee;--ink:#dbe7f4;--metal:#8d99a8;--metal2:#5d6a79;--wire:#ffd65a;--tube:#6c7a89;--house:#e9d9b8;--roof:#a8583a;--ledtx:#8ff0b8;--inactive:#6d7f93}
@@ -12,6 +12,7 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
 .status{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:999px;background:var(--p2);font-size:.75rem;font-weight:700;white-space:nowrap}
 .bar{width:90px;height:8px;border-radius:5px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--gr);transition:width .5s}
 .tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+@media (pointer:coarse) and (min-height:521px){.tools button{width:44px;height:44px}.tools{gap:6px}}
 .top .autor-badge{margin-left:6px}
 .stage{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;background:var(--sky2)}
 .mapwrap{position:relative;flex:1 1 auto;min-height:0;background:linear-gradient(var(--sky1),var(--sky2))}
@@ -69,7 +70,7 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
  </div>
  <div class="info" id="info"></div>
 </div>
-<script>
+<script src="comun.js"></script><script>
 (()=>{
 const $=s=>document.querySelector(s),svg=$('#map');
 /* ---------- datos de las etapas ---------- */
@@ -153,7 +154,7 @@ const SND={
 };
 const play=n=>{try{SND[n]&&SND[n]()}catch{}};
 const tramoSnd=i=>i<2?'agua':i===2?'eje':i===3?'trafo':i===4?'alta':'click';
-function buzz(p){try{if(soundOn&&navigator.vibrate)navigator.vibrate(p)}catch{}}
+function buzz(p){try{if(soundOn&&navigator.vibrate&&(!navigator.userActivation||navigator.userActivation.hasBeenActive))navigator.vibrate(p)}catch{}}
 /* ---------- dibujo ---------- */
 const S=(c,a)=>`<g class="${c}" ${a||''}>`;
 function icon(id,on){
@@ -233,8 +234,8 @@ if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
 const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
 let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
 function apply(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra));render()}
-function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
-window.addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d&&d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
+function avisar(){try{if(embedded)SIM.post(parent,{tipo:'ajustes-desde-practica',tema,pizarra})}catch{}}
+SIM.alRecibir(e=>{const d=e.data;if(d&&d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d&&d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply()}});
 $('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply();avisar()};
 $('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply();avisar()};
 const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;

@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>Circuitos eléctricos</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Simulador de circuitos eléctricos</title>
 <meta name="theme-color" content="#06101c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -82,7 +82,18 @@ table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:7px 6px;
 #play iframe,#otro iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
 #timer{position:absolute;z-index:45;top:calc(env(safe-area-inset-top) + 7px);left:50%;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:#000a;border:2px solid var(--bl);color:#fff;font:900 1.15rem ui-monospace,Consolas,monospace;pointer-events:none}
 #timer.warn{border-color:var(--rd);color:var(--rd);animation:blink .8s steps(2) infinite}@keyframes blink{50%{background:#ff6b6b44}}
-#seguir{position:absolute;z-index:45;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));padding:12px 20px;border-radius:999px;background:#ffd43b;color:#241a00;font-weight:900;box-shadow:0 8px 24px #000a}
+/* barra de resultado del nivel: delgada, abajo; el circuito queda a la vista y sigue funcionando (el iframe se achica, nada lo tapa) */
+#resbar{position:absolute;left:0;right:0;bottom:0;z-index:46;display:none;align-items:center;gap:8px;padding:6px 10px calc(6px + env(safe-area-inset-bottom));background:var(--card);border-top:3px solid var(--gr);box-shadow:0 -4px 14px var(--shadow)}
+#resbar.on{display:flex}#resbar.mal{border-top-color:var(--or)}
+#play.conbarra #frm{height:calc(100% - var(--rbh,58px))}
+.rb-st{letter-spacing:1px;color:var(--gold)}
+.rb-tx{flex:1 1 auto;min-width:0;text-align:left;padding:2px 4px;border-radius:10px;line-height:1.2;color:var(--tx)}
+.rb-tx b{display:block;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rb-tx small{display:block;color:var(--mu);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rb-b{flex:0 0 auto;min-width:44px;height:44px;padding:0 10px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-size:1.05rem;font-weight:800;color:var(--tx)}.rb-b[hidden]{display:none}
+.rb-go{background:#ffd43b;border-color:#ffd43b;color:#241a00;font-size:.95rem;font-weight:900}
+@media (max-width:480px){.rb-l{display:none}}
+.rb-b:focus-visible,.rb-tx:focus-visible{outline:3px solid var(--bl);outline-offset:2px}
 #rotar{position:fixed;inset:0;z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:30px;text-align:center;background:radial-gradient(circle at 50% 30%,#1b4468,#06101c 70%);color:#fff}#rotar.on{display:flex}
 #rotar .ph{font-size:4.5rem;animation:rot 2.2s ease-in-out infinite}@keyframes rot{0%,35%{transform:rotate(0)}65%,100%{transform:rotate(-90deg)}}
 #rotar h2{margin:0}#rotar p{margin:0;opacity:.85}
@@ -103,6 +114,7 @@ h3.sec{margin:20px 14px 8px;font-size:.75rem;letter-spacing:.08em;text-transform
 .t1{background:linear-gradient(135deg,#2d7fb8,#1b4f7a)}.t2{background:linear-gradient(135deg,#d89034,#9a5d14)}.t3{background:linear-gradient(135deg,#8c5bd1,#5a3490)}.t4{background:linear-gradient(135deg,#3a9d6b,#1d6a45)}.t5{background:linear-gradient(135deg,#c24b6a,#82263f)}
 .tip{margin:12px 14px;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;color:var(--mu);font-size:.85rem;background:var(--card)}.tip button{margin-top:8px;padding:9px 14px;border-radius:10px;background:var(--bl);color:var(--ink);font-weight:800}
 .foot{margin:18px 14px 8px;text-align:center;color:var(--mu);font-size:.76rem}.foot a{color:var(--bl)}
+.nom-in{display:block;width:calc(100% - 28px);margin:6px 14px 14px;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--tx);font-size:1.05rem;user-select:text;-webkit-user-select:text}
 input[type=search]{display:block;width:calc(100% - 28px);margin:0 14px 12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--tx);font-size:1rem;user-select:text;-webkit-user-select:text}
 #upd{position:fixed;left:10px;right:10px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:35;display:none;align-items:center;gap:8px;padding:10px 10px 10px 14px;border-radius:16px;background:linear-gradient(135deg,#1d5b86,#12304b);color:#fff;border:1px solid var(--bl);box-shadow:0 10px 30px #000a;font-size:.9rem}#upd.on{display:flex}#upd span{flex:1}.updb{padding:9px 14px;border-radius:12px;background:#ffd43b;color:#241a00;font-weight:900}.updb:disabled{opacity:.6}.updx{width:34px;height:34px;border-radius:10px;background:#ffffff22;color:#fff}
 #toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;max-width:90%;padding:10px 16px;border-radius:999px;background:var(--card2);border:1px solid var(--bl);font-weight:700;font-size:.9rem;box-shadow:0 8px 24px #000a;display:none}
@@ -125,14 +137,15 @@ input[type=search]{display:block;width:calc(100% - 28px);margin:0 14px 12px;padd
   <button data-t="mas"><span>🔎</span>Más</button>
  </nav>
 </div>
-<section id="play"><iframe id="frm" title="Problema" allow="fullscreen"></iframe><div id="timer" hidden>3:00</div><button id="seguir" hidden>Seguir ▶</button></section>
+<section id="play"><iframe id="frm" title="Problema" allow="fullscreen"></iframe><div id="timer" hidden>3:00</div>
+ <div id="resbar" role="status" aria-live="polite"><button class="rb-tx" id="rbTx"></button><button class="rb-b" id="rbAgain" aria-label="Jugar de nuevo" title="Jugar de nuevo" hidden>↻</button><button class="rb-b" id="rbBack" aria-label="Volver al camino" title="Volver al camino">🛤️</button><button class="rb-b rb-go" id="rbNext"><span class="rb-l">Siguiente </span>▶</button></div></section>
 <section id="otro"><div class="ob"><button class="ib" id="otroBack" aria-label="Volver">←</button><b id="otroTit"></b></div><div class="ow"><iframe id="frm2" title="Práctica"></iframe></div></section>
 <div id="sheet" class="layer"><div class="shbg"></div><div class="shcard" id="shcard"></div></div>
 <div id="fs" class="full"></div>
 <div id="rotar"><div class="ph">📱</div><h2>Girá el celular</h2><p>Para armar circuitos necesitás la pantalla acostada: así los cables y los bornes se ven bien grandes.</p><button class="cta sec" id="rotarBack" style="max-width:260px">Volver al camino</button></div>
 <div id="upd" role="status"><span>✨ Hay una <b>versión nueva</b> de la app</span><button id="updOk" class="updb">Actualizar</button><button id="updNo" class="updx" aria-label="Más tarde">✕</button></div>
 <div id="toast" role="status"></div>
-<script src="archivos/redes-datos.js"></script>
+<script src="archivos/comun.js"></script><script src="archivos/redes-datos.js"></script>
 <script src="archivos/casas-datos.js"></script>
 <script src="archivos/datos-datos.js"></script>
 <script src="archivos/mando-datos.js"></script>
@@ -145,9 +158,11 @@ const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math
 /* ---------- guardado en el teléfono ---------- */
 const KEY='sim-niveles-v1';
 const lsGet=k=>{try{return localStorage.getItem(k)}catch{return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
-let S;try{S=JSON.parse(lsGet(KEY))||{}}catch{S={}}
-S.niv=S.niv||{};S.sim=S.sim||{};S.racha=S.racha||{ult:'',dias:0,mejor:0};S.logros=S.logros||{};S.nombre=S.nombre||'';S.jugados=S.jugados||0;
-const save=()=>lsSet(KEY,JSON.stringify(S));
+/* lectura segura: si lo guardado está dañado o tiene otro formato se arranca de cero en vez de romper la app */
+let S=SIM.leerJSON(KEY,SIM.esObj,{});
+S.niv=SIM.esObj(S.niv)?S.niv:{};S.sim=SIM.esObj(S.sim)?S.sim:{};S.racha=SIM.esObj(S.racha)?S.racha:{ult:'',dias:0,mejor:0};S.logros=SIM.esObj(S.logros)?S.logros:{};S.jugados=Number.isFinite(S.jugados)?S.jugados:0;
+delete S.nombre;   /* el nombre ya no se guarda en el teléfono: se escribe recién al compartir (y se descarta) */
+const save=()=>SIM.guardar(KEY,JSON.stringify(S));
 const pad=n=>String(n).padStart(2,'0'),dayStr=o=>{const d=new Date();d.setDate(d.getDate()+(o||0));return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
 const fechaHora=ts=>{const d=new Date(ts);return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes())};
 /* ---------- niveles y bloques ---------- */
@@ -182,7 +197,7 @@ const LOGROS=[
 function chequearLogros(){const nuevos=[];LOGROS.forEach(l=>{if(!S.logros[l.id]&&l.ok()){S.logros[l.id]=Date.now();nuevos.push(l)}});return nuevos}
 /* ---------- ajustes ---------- */
 let tema=lsGet('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
-function aplicarTema(){document.documentElement.dataset.theme=tema;const m=document.querySelector('meta[name=theme-color]');if(m)m.content=tema==='light'?'#eef3f9':'#06101c';[$('#frm'),$('#frm2')].forEach(f=>{try{f.contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}})}
+function aplicarTema(){document.documentElement.dataset.theme=tema;const m=document.querySelector('meta[name=theme-color]');if(m)m.content=tema==='light'?'#eef3f9':'#06101c';[$('#frm'),$('#frm2')].forEach(f=>{try{SIM.post(f.contentWindow,{tipo:'ajustes',tema,pizarra:false})}catch{}})}
 function toggleTema(){tema=tema==='light'?'dark':'light';lsSet('sim-tema',tema);aplicarTema()}
 let toastTm=null;function toast(t,ms){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toastTm);toastTm=setTimeout(()=>e.style.display='none',ms||2600)}
 /* ---------- pestañas ---------- */
@@ -222,44 +237,66 @@ function abrirNivel(n){const un=desbl(n),k=KIND[n]||null,s=est(n);
 $('.shbg').onclick=()=>capa('sheet',false);
 /* ---------- JUGAR UN NIVEL ---------- */
 let cur=null,timerId=null;
-function mostrarPlay(on){capa('play',on);if(!on){$('#frm').src='about:blank';$('#timer').hidden=true;$('#seguir').hidden=true;capa('rotar',false);clearInterval(timerId)}}
+/* barra de resultado: discreta, abajo; el circuito sigue a la vista y funcionando mientras la barra está */
+function barraOff(){$('#resbar').classList.remove('on','mal');$('#play').classList.remove('conbarra')}
+function barraOn(o){const rb=$('#resbar'),tx=$('#rbTx'),ag=$('#rbAgain'),nx=$('#rbNext');
+ tx.innerHTML='<b>'+(o.st?'<span class="rb-st">'+esc(o.st)+'</span> ':'')+esc(o.tit)+'</b><small>'+esc(o.sub||'')+'</small>';tx.onclick=o.detalle||null;tx.disabled=!o.detalle;
+ tx.setAttribute('aria-label',(o.st&&/^[★☆]+$/.test(o.st)?o.st.split('★').length-1+' de 3 estrellas. ':'')+o.tit+(o.sub?'. '+o.sub:'')+(o.detalle?'. Tocá para ver el detalle':''));
+ ag.hidden=!o.again;ag.onclick=o.again||null;$('#rbBack').onclick=o.back;nx.innerHTML='<span class="rb-l">'+esc(o.nextTxt)+' </span>▶';nx.setAttribute('aria-label',o.nextTxt==='Siguiente'?'Siguiente nivel':o.nextTxt);nx.title=nx.getAttribute('aria-label');nx.onclick=o.next;
+ rb.classList.toggle('mal',!!o.mal);rb.classList.add('on');const pl=$('#play');pl.classList.add('conbarra');pl.style.setProperty('--rbh',rb.offsetHeight+'px')}
+function mostrarPlay(on){capa('play',on);if(!on){$('#frm').src='about:blank';$('#timer').hidden=true;barraOff();capa('rotar',false);clearInterval(timerId)}}
 function cargarProblema(spec,o){o=o||{};lsSet('sim-gen-cur',JSON.stringify(spec));const q=new URLSearchParams({gen:'@cur',movil:'1',tema,pizarra:'0',t:String(Date.now())});if(o.nivel)q.set('nivel',o.nivel);if(o.examen)q.set('examen','1');
- cur.need=needLand(spec.kind);cur.spec=spec;$('#seguir').hidden=true;$('#timer').hidden=true;
+ cur.need=needLand(spec.kind);cur.spec=spec;barraOff();$('#timer').hidden=true;
  $('#frm').src='archivos/circuito-redes.html?'+q.toString();mostrarPlay(true);history.pushState({l:'play'},'');revisarOrientacion();intentarBloqueo(cur.need)}
 function intentarBloqueo(land){try{if(screen.orientation&&screen.orientation.lock&&document.fullscreenElement)screen.orientation.lock(land?'landscape':'any').catch(()=>{})}catch{}}
 function revisarOrientacion(){const play=$('#play').classList.contains('on');const vertical=matchMedia('(orientation: portrait)').matches;capa('rotar',!!(play&&cur&&cur.need&&vertical&&!cur.exitSolo))}
 addEventListener('resize',revisarOrientacion);addEventListener('orientationchange',()=>setTimeout(revisarOrientacion,150));
 $('#rotarBack').onclick=()=>salirPlay(true);
-function jugarNivel(n){S.jugados++;cur={mode:'nivel',n,done:false};cargarProblema(GEN.make(n),{nivel:n})}
+/* registro de cada nivel (para el informe del docente): s = mejores estrellas · n = veces superado · j = partidas empezadas ·
+   v = veces que apretó «Ver solución» · f = intentos terminados por demasiados errores · pri = cómo lo superó la primera vez */
+const nivReg=n=>{const e=S.niv[n]=Object.assign({s:0,n:0},S.niv[n]);return e};
+function jugarNivel(n){S.jugados++;const e=nivReg(n);e.j=(e.j||0)+1;save();cur={mode:'nivel',n,done:false};cargarProblema(GEN.make(n),{nivel:n})}
 function salirPlay(directo){if(cur&&cur.mode==='sim'&&!directo&&cur.enCurso){preguntar('¿Abandonar el simulacro?','Se pierde este intento.','Sí, abandonar','Seguir',()=>{cerrarJuego()});history.pushState({l:'play'},'');return}cerrarJuego()}
 function cerrarJuego(){clearInterval(timerId);mostrarPlay(false);capa('fs',false);const m=cur?cur.mode:'';cur=null;if(m==='explora'){irTab('mas')}else irTab(tab)}
 addEventListener('popstate',()=>{if($('#play').classList.contains('on')){salirPlay(false)}else if($('#otro').classList.contains('on')){cerrarOtro()}else if($('#fs').classList.contains('on')){capa('fs',false)}else if($('#sheet').classList.contains('on')){capa('sheet',false)}});
-addEventListener('message',e=>{const d=e.data;if(!d||typeof d!=='object')return;
+SIM.alRecibir(e=>{const d=e.data;if(!d||typeof d!=='object')return;
  if(e.source===$('#frm').contentWindow){switch(d.tipo){
   case'movil-salir':salirPlay(false);break;
   case'movil-resultado':resultadoNivel(d);break;
-  case'movil-fallo':falloNivel();break;
+  case'movil-fallo':falloNivel(d);break;
   case'movil-empezo':if(cur&&cur.mode==='sim')iniciarTimer();break;
   case'examen-entrega':entregaSim(d);break;
   case'hecho':if(cur&&cur.mode==='explora'){S.jugados++;if(tickRacha())toast('🔥 ¡Racha de '+S.racha.dias+' día'+(S.racha.dias>1?'s':'')+'!');chequearLogros();save();if(d.estrellas)toast('¡Práctica completada! '+starsTxt(d.estrellas),3200)}break;
   case'ajustes-desde-practica':if(d.tema&&d.tema!==tema){tema=d.tema;lsSet('sim-tema',tema);aplicarTema()}break}}
  else if(e.source===$('#frm2').contentWindow&&d.tipo==='ajustes-desde-practica'&&d.tema&&d.tema!==tema){tema=d.tema;lsSet('sim-tema',tema);aplicarTema()}});
-function resultadoNivel(d){if(!cur||cur.mode!=='nivel'||cur.done)return;cur.done=true;const n=cur.n,prev=S.niv[n]||{s:0,n:0},nuevo=!prev.s;
- S.niv[n]={s:Math.max(prev.s||0,d.stars),n:(prev.n||0)+1,t:Math.min(prev.t||1e9,d.t||0),at:Date.now()};
+/* El resultado de un nivel se muestra en una barrita abajo (el circuito sigue a la vista y funcionando); el detalle completo, con las estrellas grandes, se abre solo si se toca. */
+function resultadoNivel(d){if(!cur||cur.mode!=='nivel'||cur.done)return;cur.done=true;
+ const n=cur.n,e=nivReg(n),nuevo=!(e.s>0),stars=Math.max(1,Math.min(3,(d.stars|0)||1));
+ e.s=Math.max(e.s||0,stars);e.n=(e.n||0)+1;e.t=Math.min(e.t||1e9,d.t||0);e.at=Date.now();e.ult='ok';
+ if(d.hint)e.hp=(e.hp||0)+1;
+ if(nuevo)e.pri={s:stars,h:d.hint?1:0,e:Math.max(0,d.errs|0),v:e.v|0,j:e.j|0};   /* cómo lo superó la primera vez: pista, errores y cuántas veces vio la solución antes */
  const racha=tickRacha(),logros=chequearLogros();save();
- const sig=n+1,bloque=BLOQUES.find(b=>b.to===n),
-  razones=[];if(d.stars<3){if(d.hint)razones.push('usaste una pista');if(d.errs)razones.push(d.errs>1?'hubo '+d.errs+' errores':'hubo un error')}
- let h=`<div class="big"><div class="meta" style="color:var(--mu);font-weight:800">${n>12?'Desafío':'Nivel '+n} superado</div><h2 style="margin:4px 0">${d.stars>=3?'¡Perfecto!':d.stars===2?'¡Muy bien!':'¡Lo lograste!'}</h2><div class="bigstars">${[1,2,3].map(i=>`<span class="${i<=d.stars?'on':''}" style="animation-delay:${.15+i*.22}s">★</span>`).join('')}</div>
-  <p style="color:var(--mu)">${d.stars>=3?'Sin pistas y sin errores.':'Para ★★★ jugalo de nuevo sin pistas y sin errores'+(razones.length?' (esta vez '+razones.join(' y ')+')':'')+'.'}</p></div><div class="card">`;
- if(racha)h+=`<span class="tag f">🔥 ¡Racha de ${S.racha.dias} día${S.racha.dias>1?'s':''}!</span>`;
- if(nuevo)h+=`<span class="tag g">🔓 Nivel ${sig} desbloqueado</span>`;
- if(bloque&&blkDone(bloque))h+=`<span class="tag g">🏁 ¡Bloque completo! Se abrió el Simulacro ${BLOQUES.indexOf(bloque)+1}</span>`;
- logros.forEach(l=>h+=`<span class="tag g">${l.ico} Logro: ${esc(l.n)}</span>`);
- h+=`</div><div class="gap"><button class="cta" id="rNext">Siguiente nivel ▶</button>${d.stars<3?'<button class="cta sec" id="rAgain">Jugar de nuevo para mejorar</button>':''}<button class="cta sec" id="rBack">Volver al camino</button></div>`;
- abrirFull(h);$('#rNext').onclick=()=>{capa('fs',false);jugarNivel(sig)};const ag=$('#rAgain');if(ag)ag.onclick=()=>{capa('fs',false);jugarNivel(n)};$('#rBack').onclick=()=>{capa('fs',false);cerrarJuego()}}
-function falloNivel(){if(!cur||cur.mode!=='nivel')return;cur.done=true;$('#seguir').hidden=false;$('#seguir').onclick=()=>{$('#seguir').hidden=true;const n=cur.n;
-  abrirFull(`<div class="big"><div style="font-size:3.4rem">👀</div><h2>Mirá la solución con calma</h2><p style="color:var(--mu)">Cuando entiendas cómo se resuelve, probá otra variante: ¡el circuito va a ser distinto!</p></div><div class="gap"><button class="cta" id="fAgain">Probar otra variante ▶</button><button class="cta sec" id="fBack">Volver al camino</button></div>`);
-  $('#fAgain').onclick=()=>{capa('fs',false);jugarNivel(n)};$('#fBack').onclick=()=>{capa('fs',false);cerrarJuego()}}}
+ const sig=n+1,bloque=BLOQUES.find(b=>b.to===n),nom=(n>12?'Desafío ':'Nivel ')+n,
+  razones=[];if(stars<3){if(d.hint)razones.push('usaste una pista');if(d.errs)razones.push(d.errs>1?'hubo '+d.errs+' errores':'hubo un error')}
+ const tip=typeof d.tip==='string'?d.tip:'',extra=[];
+ if(nuevo)extra.push('🔓 Nivel '+sig+' desbloqueado');
+ if(bloque&&blkDone(bloque))extra.push('🏁 ¡Bloque completo! Se abrió el Simulacro '+(BLOQUES.indexOf(bloque)+1));
+ if(racha)extra.push('🔥 Racha de '+S.racha.dias+' día'+(S.racha.dias>1?'s':''));
+ logros.forEach(l=>extra.push(l.ico+' Logro: '+l.n));
+ const siguiente=()=>{capa('fs',false);barraOff();jugarNivel(sig)},repetir=()=>{capa('fs',false);barraOff();jugarNivel(n)},volver=()=>{capa('fs',false);barraOff();cerrarJuego()};
+ const detalle=()=>{let h=`<div class="big"><div class="meta" style="color:var(--mu);font-weight:800">${nom} superado</div><h2 style="margin:4px 0">${stars>=3?'¡Perfecto!':stars===2?'¡Muy bien!':'¡Lo lograste!'}</h2><div class="bigstars">${[1,2,3].map(i=>`<span class="${i<=stars?'on':''}" style="animation-delay:${.15+i*.22}s">★</span>`).join('')}</div>
+  <p style="color:var(--mu)">${stars>=3?'Sin pistas y sin errores.':'Para ★★★ jugalo de nuevo sin pistas y sin errores'+(razones.length?' (esta vez '+razones.join(' y ')+')':'')+'.'}</p></div><div class="card">`;
+  extra.forEach(t=>h+=`<span class="tag g">${esc(t)}</span>`);
+  h+=`</div>${tip?`<div class="card"><b>💡 Para recordar</b><p style="margin:6px 0 0">${esc(tip)}</p></div>`:''}<div class="gap"><button class="cta sec" id="rVer">Seguir mirando el circuito</button><button class="cta" id="rNext">Siguiente nivel ▶</button>${stars<3?'<button class="cta sec" id="rAgain">Jugar de nuevo para mejorar</button>':''}<button class="cta sec" id="rBack">Volver al camino</button></div>`;
+  abrirFull(h);$('#rVer').onclick=()=>capa('fs',false);$('#rNext').onclick=siguiente;const ag=$('#rAgain');if(ag)ag.onclick=repetir;$('#rBack').onclick=volver};
+ barraOn({st:starsTxt(stars),tit:nom+' superado'+(stars>=3?' · ¡perfecto!':''),sub:extra.length?extra.join(' · '):'Tocá un componente del circuito para medirlo.',detalle,next:siguiente,nextTxt:'Siguiente',again:stars<3?repetir:null,back:volver})}
+/* el intento termina sin acreditarse: apretó «Ver solución» o se equivocó demasiadas veces. Queda anotado para el informe del docente. */
+function falloNivel(d){if(!cur||cur.mode!=='nivel'||cur.done)return;cur.done=true;
+ const n=cur.n,porErrores=!!d&&d.motivo==='errores',e=nivReg(n);if(porErrores)e.f=(e.f||0)+1;else e.v=(e.v||0)+1;e.ult=porErrores?'f':'v';e.at=Date.now();save();
+ const otra=()=>{capa('fs',false);barraOff();jugarNivel(n)},volver=()=>{capa('fs',false);barraOff();cerrarJuego()};
+ const detalle=()=>{abrirFull(`<div class="big"><div style="font-size:3.4rem">${porErrores?'✖':'👀'}</div><h2>${porErrores?'Demasiados errores':'Mirá la solución con calma'}</h2><p style="color:var(--mu)">${porErrores?'Este intento no cuenta. Repasá cómo se mide y probá con otra variante.':'Este intento no cuenta como superado y le queda anotado a tu docente. Cuando entiendas cómo se resuelve, probá otra variante: ¡el circuito va a ser distinto!'}</p></div><div class="gap"><button class="cta sec" id="fVer">Seguir mirando el circuito</button><button class="cta" id="fAgain">Probar otra variante ▶</button><button class="cta sec" id="fBack">Volver al camino</button></div>`);
+  $('#fVer').onclick=()=>capa('fs',false);$('#fAgain').onclick=otra;$('#fBack').onclick=volver};
+ barraOn({mal:true,st:porErrores?'✖':'👀',tit:porErrores?'Demasiados errores':'Estás viendo la solución',sub:'Este intento no cuenta: estudialo y probá otra variante.',detalle,next:otra,nextTxt:'Otra variante',back:volver})}
 function abrirFull(html){const f=$('#fs');f.innerHTML=html;f.scrollTop=0;capa('fs',true)}
 /* ---------- confirmaciones ---------- */
 function preguntar(t,p,si,no,onSi){abrirFull(`<div class="big" style="margin-top:20vh"><h2>${esc(t)}</h2><p style="color:var(--mu)">${esc(p)}</p></div><div class="gap"><button class="cta" id="qSi">${esc(si)}</button><button class="cta sec" id="qNo">${esc(no)}</button></div>`);$('#qSi').onclick=()=>{capa('fs',false);onSi()};$('#qNo').onclick=()=>capa('fs',false)}
@@ -279,7 +316,7 @@ function intermedioSim(){const sp=cur.specs[cur.i],l=cur.levels[cur.i],land=need
  abrirFull(`<div class="big" style="margin-top:12vh"><div class="meta" style="color:var(--mu);font-weight:800">Simulacro ${cur.k} · Problema ${cur.i+1} de 3</div><h2 style="margin:6px 0">Nivel ${l}</h2><p style="font-size:1.2rem;font-weight:800">${esc(tipoDe(l))}</p><p style="color:var(--mu)">⏱️ ${LIM/60} minutos · sin pistas</p><p class="card" style="margin-top:12px">${land?'📱 Este problema se resuelve con el celular <b>acostado</b>.':'📱 Este problema se resuelve en <b>vertical</b>.'}</p></div><div class="gap"><button class="cta" id="iGo">¡Comenzar! ▶</button><button class="cta sec" id="iX">Salir del simulacro</button></div>`);
  $('#iGo').onclick=()=>{capa('fs',false);cur.enCurso=true;cargarProblema(sp,{examen:true})};$('#iX').onclick=()=>{capa('fs',false);cur=null;irTab('sim')}}
 function iniciarTimer(){clearInterval(timerId);const T=$('#timer');T.hidden=false;const fin=Date.now()+LIM*1000;cur.fin=fin;
- const tick=()=>{const r=Math.max(0,Math.ceil((fin-Date.now())/1000));T.textContent=Math.floor(r/60)+':'+pad(r%60);T.classList.toggle('warn',r<=30);if(r<=0){clearInterval(timerId);try{$('#frm').contentWindow.postMessage({tipo:'examen-forzar'},'*')}catch{}setTimeout(()=>{if(cur&&cur.mode==='sim'&&cur.res.length===cur.i)entregaSim({ok:false,agotado:true,t:LIM})},2200)}};tick();timerId=setInterval(tick,250)}
+ const tick=()=>{const r=Math.max(0,Math.ceil((fin-Date.now())/1000));T.textContent=Math.floor(r/60)+':'+pad(r%60);T.classList.toggle('warn',r<=30);if(r<=0){clearInterval(timerId);try{SIM.post($('#frm').contentWindow,{tipo:'examen-forzar'})}catch{}setTimeout(()=>{if(cur&&cur.mode==='sim'&&cur.res.length===cur.i)entregaSim({ok:false,agotado:true,t:LIM})},2200)}};tick();timerId=setInterval(tick,250)}
 function entregaSim(d){if(!cur||cur.mode!=='sim'||cur.res.length!==cur.i)return;clearInterval(timerId);$('#timer').hidden=true;
  cur.res.push({level:cur.levels[cur.i],tipo:tipoDe(cur.levels[cur.i]),ok:!!d.ok,t:d.t||0,inc:(d.shorts||0)+(d.burns||0),agotado:!!d.agotado});cur.i++;mostrarPlay(false);
  if(cur.i<3)intermedioSim();else finSim()}
@@ -294,23 +331,44 @@ function finSim(){const r=cur.res,nota=Math.round(r.reduce((s,x)=>s+notaP(x),0)/
  h+=`<span class="tag">${fechaHora(Date.now())}</span></div><div class="gap"><button class="cta" id="sAgain">Rendir otro simulacro ▶</button><button class="cta sec" id="sBack">Volver</button></div>`;
  cur=null;abrirFull(h);$('#sAgain').onclick=()=>{capa('fs',false);iniciarSim(k)};$('#sBack').onclick=()=>{capa('fs',false);irTab('sim')}}
 /* ---------- MI PROGRESO ---------- */
-function pintarProg(){const el=$('#s-prog');const act=nivActual(),max=Math.max(0,act-1),ini=(S.nombre||'?').trim().charAt(0).toUpperCase()||'?';
+function pintarProg(){const el=$('#s-prog');const act=nivActual(),max=Math.max(0,act-1);
  const sims=Object.keys(S.sim).sort().map(k=>`<tr><td>Simulacro ${k}</td><td><b>${String(S.sim[k].nota).replace('.',',')}</b> / 10</td><td>${fechaHora(S.sim[k].at)}</td></tr>`).join('');
  const total=totalEst(),maxStars=Math.max(act-1,0)*3;
- let h=topbar('Mi progreso')+`<div class="pad"><div class="card"><div class="pr-top"><div class="avatar" id="avt">${esc(ini)}</div><input id="nom" type="text" maxlength="40" placeholder="Escribí tu nombre" value="${esc(S.nombre)}" autocomplete="off" aria-label="Tu nombre"></div>
+ let h=topbar('Mi progreso')+`<div class="pad"><div class="card"><div class="pr-top"><div class="avatar" aria-hidden="true">🎓</div><div><b>Tu progreso</b><small style="display:block;color:var(--mu);line-height:1.35">Queda guardado solo en este teléfono. No se guarda tu nombre: si querés mostrárselo a tu docente, lo escribís recién al compartir.</small></div></div>
  <div class="stat"><div><b>${max}</b><small>NIVELES SUPERADOS</small></div><div><b>⭐ ${total}</b><small>ESTRELLAS${maxStars?' DE '+maxStars:''}</small></div><div><b>🔥 ${rachaAct()}</b><small>DÍAS SEGUIDOS</small></div><div><b>${S.racha.mejor||0}</b><small>MEJOR RACHA</small></div></div>
  ${BLOQUES.map((b,i)=>`<span class="tag ${blkDone(b)?'g':''}">${b.ico} Bloque ${i+1} ${blkDone(b)?(medalla(blkStars(b),(b.to-b.from+1)*3)||'✔'):`${[...Array(b.to-b.from+1).keys()].filter(j=>est(b.from+j)>=1).length}/${b.to-b.from+1}`}</span>`).join('')}
  ${sims?`<table style="margin-top:12px"><tr><th>Simulacro</th><th>Nota</th><th>Fecha</th></tr>${sims}</table>`:'<p style="color:var(--mu);font-size:.88rem;margin:12px 0 0">Todavía no rendiste ningún simulacro.</p>'}
+ ${(()=>{const v=Object.values(S.niv).reduce((a,x)=>a+(x.v||0),0);return v?`<p style="color:var(--or);font-size:.85rem;margin:12px 0 0">👀 Veces que viste la solución: <b>${v}</b>. Un nivel visto con la solución no se acredita y queda anotado en el informe para tu docente.</p>`:''})()}
  <p style="color:var(--mu);font-size:.8rem;margin:12px 0 0">Resumen al ${fechaHora(Date.now())}</p></div>
- <button class="cta" id="pShare">📤 Compartir o copiar mi progreso</button></div>
+ <button class="cta" id="pShare">📤 Informe para mi docente (compartir o copiar)</button></div>
  <h3 class="sec">Logros (${Object.keys(S.logros).length}/${LOGROS.length})</h3><div class="pad">${LOGROS.map(l=>`<div class="logro ${S.logros[l.id]?'':'off'}"><div class="i">${l.ico}</div><div><b>${esc(l.n)}</b><small>${esc(l.d)}</small></div></div>`).join('')}</div>
  <div class="pad" style="margin-top:16px"><button class="cta sec" id="pReset">Borrar mi progreso</button></div>`;
  el.innerHTML=h;bindTop(el);
- const nom=$('#nom');nom.oninput=()=>{S.nombre=nom.value;$('#avt').textContent=(nom.value.trim().charAt(0)||'?').toUpperCase();save()};
- $('#pShare').onclick=()=>{const t=resumenTexto();if(navigator.share){navigator.share({title:'Mi progreso en Circuitos',text:t}).catch(()=>{})}else{try{navigator.clipboard.writeText(t).then(()=>toast('Resumen copiado: pegalo en un mensaje.'),()=>toast('No se pudo copiar.'))}catch{toast('No se pudo copiar.')}}};
- $('#pReset').onclick=()=>preguntar('¿Borrar todo tu progreso?','Se pierden las estrellas, la racha, las notas y los logros de este teléfono.','Sí, borrar','Cancelar',()=>{S={niv:{},sim:{},racha:{ult:'',dias:0,mejor:0},logros:{},nombre:'',jugados:0};save();irTab('prog');toast('Progreso borrado.')})}
-function resumenTexto(){const act=nivActual();const l=[`MI PROGRESO · Circuitos eléctricos`,`${S.nombre||'Alumno/a sin nombre'} · ${fechaHora(Date.now())}`,`Niveles superados: ${Math.max(0,act-1)} · Estrellas: ${totalEst()} · Racha: ${rachaAct()} día(s) (mejor ${S.racha.mejor||0})`];
- Object.keys(S.sim).sort().forEach(k=>l.push(`Simulacro ${k}: ${String(S.sim[k].nota).replace('.',',')}/10 (${fechaHora(S.sim[k].at)})`));return l.join('\n')}
+ $('#pShare').onclick=()=>pedirNombre(nombre=>{const t=resumenTexto(nombre);if(navigator.share){navigator.share({title:'Mi progreso en Circuitos',text:t}).catch(()=>{})}else{try{navigator.clipboard.writeText(t).then(()=>toast('Resumen copiado: pegalo en un mensaje.'),()=>toast('No se pudo copiar.'))}catch{toast('No se pudo copiar.')}}});
+ $('#pReset').onclick=()=>preguntar('¿Borrar todo tu progreso?','Se pierden las estrellas, la racha, las notas y los logros de este teléfono.','Sí, borrar','Cancelar',()=>{S={niv:{},sim:{},racha:{ult:'',dias:0,mejor:0},logros:{},jugados:0};save();irTab('prog');toast('Progreso borrado.')})}
+/* el nombre es opcional, no se guarda y solo viaja dentro del mensaje que el alumno decide compartir */
+function pedirNombre(cb){abrirFull(`<div class="big" style="margin-top:14vh"><h2>¿Con qué nombre lo mandás?</h2><p style="color:var(--mu)">Es opcional. No se guarda en la app: solo va dentro del mensaje que compartís.</p></div><input id="nom2" class="nom-in" type="text" maxlength="40" placeholder="Escribí tu nombre (opcional)" autocomplete="off" aria-label="Tu nombre (opcional)"><div class="gap"><button class="cta" id="nOk">Compartir</button><button class="cta sec" id="nNo">Cancelar</button></div>`);
+ const i=$('#nom2');setTimeout(()=>{try{i.focus()}catch{}},60);$('#nOk').onclick=()=>{const v=i.value.trim();capa('fs',false);cb(v)};$('#nNo').onclick=()=>capa('fs',false);i.onkeydown=e=>{if(e.key==='Enter')$('#nOk').click()}}
+/* informe para el docente: dice qué niveles superó por su cuenta y cuáles con pista, errores o tras ver la solución */
+const veces=n=>n+(n>1?' veces':' vez');
+function lineaNivel(n){const e=S.niv[n]||{},p=e.pri,et=(n>12?'Desafío ':'Nivel ')+n+' · '+tipoDe(n);
+ if(e.s>=1){if(!p)return{k:'ant',t:'✔ '+et+' '+starsTxt(e.s)+' · (registro de una versión anterior, sin detalle)'};
+  const nt=[];if(p.j>1)nt.push('a la partida '+p.j);
+  if(p.v>0){nt.unshift('VIO LA SOLUCIÓN '+veces(p.v)+' antes de superarlo');if(p.h)nt.push('usó pista');if(p.e)nt.push(p.e+(p.e>1?' errores':' error'));return{k:'sol',t:'⚠ '+et+' '+starsTxt(e.s)+' · '+nt.join(' · ')}}
+  if(p.h)nt.push('usó pista');if(p.e)nt.push(p.e+(p.e>1?' errores':' error'));
+  return{k:p.h||p.e?'ayuda':'solo',t:'✔ '+et+' '+starsTxt(e.s)+(nt.length?' · '+nt.join(' · '):' · sin ayuda')}}
+ const nt=[];if(e.j)nt.push(e.j+(e.j>1?' partidas':' partida'));if(e.v)nt.push('vio la solución '+veces(e.v));if(e.f)nt.push(e.f+(e.f>1?' intentos terminados':' intento terminado')+' por errores');
+ return{k:'no',t:'✘ '+et+' · TODAVÍA NO SUPERADO'+(nt.length?' · '+nt.join(' · '):'')}}
+function resumenTexto(nombre){const act=nivActual();
+ const ns=Object.keys(S.niv).map(Number).filter(n=>n>0).sort((a,b)=>a-b),ls=ns.map(lineaNivel),c=k=>ls.filter(x=>x.k===k).length,vistas=ns.reduce((a,n)=>a+(S.niv[n].v||0),0);
+ const l=[`INFORME DE PROGRESO · Simulador de circuitos eléctricos (v${SIM.VERSION})`,`${nombre||'Alumno/a'} · ${fechaHora(Date.now())}`,
+  `Camino de niveles: ${Math.max(0,act-1)} superados · Estrellas: ${totalEst()} · Racha: ${rachaAct()} día(s) (mejor ${S.racha.mejor||0})`,
+  `Superados por su cuenta y sin ayuda: ${c('solo')+c('ant')} · con pista o errores: ${c('ayuda')} · tras ver la solución: ${c('sol')} · sin superar: ${c('no')}`,
+  `Veces que apretó «Ver solución»: ${vistas}`,'','DETALLE POR NIVEL'];
+ ls.forEach(x=>l.push(x.t));
+ const sk=Object.keys(S.sim).sort();if(sk.length){l.push('','SIMULACROS (sin pistas ni solución)');sk.forEach(k=>l.push(`Simulacro ${k}: ${String(S.sim[k].nota).replace('.',',')}/10 (${fechaHora(S.sim[k].at)})`))}
+ l.push('','Cómo leerlo: ✔ lo resolvió por su cuenta · ⚠ apretó «Ver solución» (un nivel visto con la solución nunca se acredita: debe superar otra variante) · ✘ todavía no superado.');
+ return l.join('\n')}
 /* ---------- MÁS: explorar el resto de las prácticas ---------- */
 const R=window.REDES||{groups:[],order:[],items:{}},C=window.CASAS||{groups:[],order:[],items:{}},DT=window.DATOS||{groups:[],order:[],items:{}},M=window.MANDO||{groups:[],order:[],items:{}};
 const gt=(src,id)=>{const g=(src.groups||[]).find(x=>x.id===id);return g?g.title:''};
@@ -328,7 +386,7 @@ function pintarMas(){const el=$('#s-mas');if(masVista!=='home')return pintarList
  h+=`<button class="tilebtn t5" data-taller="1"><span class="ic">🛠️</span><span><b>Taller libre</b><span>Armá tus propios circuitos (con el celular acostado)</span></span></button>`;
  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
  if(!standalone)h+=`<div class="tip" id="tip">📲 <b>Usala sin conexión:</b> ${ios?'tocá el botón Compartir y elegí “Agregar a pantalla de inicio”.':'abrí el menú del navegador y elegí “Instalar aplicación” o “Agregar a pantalla de inicio”.'}<div id="inst"></div></div>`;
- h+=`<p class="foot">Simulador de circuitos eléctricos · Escuela Técnica Crucero ARA General Belgrano y Escuela Técnica N.º 1 de Bella Vista<br>Autor: Rodolfo Emanuel Durán<br><a href="index.html?pc=1">Ver versión completa (para PC y tablet)</a></p>`;
+ h+=`<p class="foot">Simulador de circuitos eléctricos · Escuela Técnica Crucero ARA General Belgrano y Escuela Técnica N.º 1 de Bella Vista<br>Autor: Rodolfo Emanuel Durán · versión ${SIM.VERSION}<br><a href="index.html?pc=1">Ver versión completa (para PC y tablet)</a></p>`;
  el.innerHTML=h;bindTop(el);el.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{masVista=b.dataset.c;pintarMas();el.scrollTop=0});
  el.querySelectorAll('[data-taller]').forEach(b=>b.onclick=()=>abrirExplora(ITEMS.find(i=>i.id==='taller')));el.querySelectorAll('[data-ayuda]').forEach(b=>b.onclick=bienvenida);if(deferred)mostrarInstalar()}
 function pintarLista(cid){const el=$('#s-mas'),c=CATS.find(x=>x.id===cid),its=ITEMS.filter(i=>i.cat===cid&&i.id!=='taller');
@@ -340,8 +398,8 @@ function abrirExplora(it){if(!it)return;S.jugados++;
  else{$('#otroTit').textContent=it.t;const sep=it.f.includes('?')?'&':'?';$('#frm2').src='archivos/'+it.f+sep+'tema='+tema+'&pizarra=0';capa('otro',true);history.pushState({l:'otro'},'')}}
 function cerrarOtro(){capa('otro',false);$('#frm2').src='about:blank'}
 $('#otroBack').onclick=()=>history.back();
-$('#frm2').addEventListener('load',()=>{try{$('#frm2').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}});
-$('#frm').addEventListener('load',()=>{try{$('#frm').contentWindow.postMessage({tipo:'ajustes',tema,pizarra:false},'*')}catch{}});
+$('#frm2').addEventListener('load',()=>{try{SIM.post($('#frm2').contentWindow,{tipo:'ajustes',tema,pizarra:false})}catch{}});
+$('#frm').addEventListener('load',()=>{try{SIM.post($('#frm').contentWindow,{tipo:'ajustes',tema,pizarra:false})}catch{}});
 /* instalación (Android/Chrome) */
 let deferred=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;mostrarInstalar()});
 function mostrarInstalar(){const box=$('#inst');if(!box||!deferred)return;box.innerHTML='<button id="doInst">Instalar la aplicación</button>';$('#doInst').onclick=async()=>{deferred.prompt();try{await deferred.userChoice}catch{}deferred=null;box.innerHTML=''}}
@@ -357,11 +415,11 @@ if('serviceWorker' in navigator&&location.protocol.startsWith('http')){addEventL
 }catch{}})}
 /* bienvenida (la primera vez, y desde Más > Cómo se juega) */
 function bienvenida(){abrirFull(`<div class="big" style="margin-top:6vh"><div style="font-size:3.4rem">⚡</div><h2>¡Bienvenido/a!</h2><p style="color:var(--mu)">Practicá circuitos eléctricos y llegá entrenado/a al examen.</p></div>
- <div class="card"><p>🛤️ <b>Camino:</b> superá niveles cada vez más difíciles. Si no usás pistas ni te equivocás, ¡3 estrellas!</p><p>🔌 <b>Armar circuitos:</b> con el celular <b>acostado</b>, tocá un borne y después otro. Cable <b style="color:#e5484d">rojo</b> al polo +, <b style="color:#4db5ee">celeste</b> al polo −. Pellizcá para acercar.</p><p>⏱️ <b>Simulacro:</b> 3 problemas con tiempo y sin ayudas, como en el examen.</p><p>🔥 Practicá todos los días para sumar racha.</p></div><div class="gap"><button class="cta" id="bvOk">¡Vamos! ▶</button></div>`);
+ <div class="card"><p>🛤️ <b>Camino:</b> superá niveles cada vez más difíciles. Si no usás pistas ni te equivocás, ¡3 estrellas!</p><p>🔌 <b>Armar circuitos:</b> con el celular <b>acostado</b>, tocá un borne y después otro. Cable <b style="color:#e5484d">rojo</b> al polo +, <b style="color:#4db5ee">celeste</b> al polo − (es el código de colores de este simulador). Pellizcá para acercar.</p><p>⏱️ <b>Simulacro:</b> 3 problemas con tiempo y sin ayudas, como en el examen.</p><p>🔥 Practicá todos los días para sumar racha.</p></div><div class="gap"><button class="cta" id="bvOk">¡Vamos! ▶</button></div>`);
  $('#bvOk').onclick=()=>{S.visto=1;save();capa('fs',false)}}
 /* inicio */
 aplicarTema();history.replaceState({l:'home'},'');irTab('camino');if(!S.visto)bienvenida();
-window.__cel={irTab,jugarNivel,iniciarSim,abrirNivel,S:()=>S,GEN,cur:()=>cur,save,dayStr,tickRacha};
+window.__cel={irTab,jugarNivel,iniciarSim,abrirNivel,S:()=>S,GEN,cur:()=>cur,save,dayStr,tickRacha,informe:resumenTexto};
 })();
 </script>
 </body></html>

@@ -7,14 +7,17 @@
 window.CASAS=(function(){
 const groups=[
  {id:'origen',title:'¿De dónde viene la corriente eléctrica?',desc:'Seguí la energía desde el río hasta el tomacorriente de tu casa.'},
- {id:'casas',title:'Casas y croquis',desc:'Proyectá la instalación sobre el plano, ubicá bocas, llaves y tomas según los muebles, y después cableá cada circuito.'}
+ {id:'casas',title:'Casas y croquis',desc:'Proyectá la instalación sobre el plano, ubicá bocas, llaves y tomas según los muebles, y después cableá cada circuito.'},
+ {id:'protecciones',title:'Protecciones del tablero',desc:'Cómo funcionan por dentro la llave termomagnética y el disyuntor diferencial. Ponelos transparentes, probalos, conectalos y aprendé a calcular su tamaño.'}
 ];
 const list=[
  {id:'energia',group:'origen',title:'Del río al tomacorriente',desc:'Tocá cada tramo en orden: embalse, turbina, generador, transformadores, líneas, medidor y tablero. Mirá cómo cambia la tensión.',file:'energia.html'},
  {id:'casa-dormitorio',group:'casas',title:'Dormitorio',desc:'Cama, mesas de luz, placard, escritorio y TV: ubicá la llave, la boca de luz y los tomas donde realmente se necesitan.',file:'casa.html?c=dormitorio'},
  {id:'casa-cocina',group:'casas',title:'Cocina',desc:'Mesada, bacha, cocina, heladera y microondas: tomas seguros sobre la mesada, lejos de la bacha.',file:'casa.html?c=cocina'},
  {id:'casa-living',group:'casas',title:'Living-comedor',desc:'Sofá, TV, mesa y aparador: dos focos con llave doble y tomas estratégicos.',file:'casa.html?c=living'},
- {id:'casa-escalera',group:'casas',title:'Escalera y pasillo con combinación',desc:'Casa de dos plantas. Ubicá las bocas, llaves y tomas en el plano, trazá los circuitos y cableá la luz de escalera con llaves de combinación.',file:'casa.html?c=escalera'}
+ {id:'casa-escalera',group:'casas',title:'Escalera y pasillo con combinación',desc:'Casa de dos plantas. Ubicá las bocas, llaves y tomas en el plano, trazá los circuitos y cableá la luz de escalera con llaves de combinación.',file:'casa.html?c=escalera'},
+ {id:'comp-termomagnetica',group:'protecciones',title:'La llave termomagnética',desc:'Protege contra sobrecargas (bimetal) y cortocircuitos (bobina). Ponela transparente y mirá el mecanismo, probala, conectala y calculá cuál elegir.',file:'componente.html?c=termomagnetica'},
+ {id:'comp-diferencial',group:'protecciones',title:'El disyuntor diferencial',desc:'Protege a las personas contra descargas: compara la corriente de ida y de vuelta con un toroide. Mirá su mecanismo, probalo con el botón T, conectalo y calculá su tamaño.',file:'componente.html?c=diferencial'}
 ];
 /* Protecciones y conductores (valores habituales de aula; editables) */
 const PROT={

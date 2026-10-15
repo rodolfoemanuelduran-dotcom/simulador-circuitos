@@ -60,7 +60,7 @@ td,th{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left;verti
 <tr><td>Efecto Joule (relé térmico)</td><td>P = I² · R: el calor crece con el cuadrado de la corriente</td></tr></table>
 <p class="note">Los valores son orientativos y con fines didácticos. Consultá siempre las normas vigentes (AEA 90364, IEC 60947) y los datos del fabricante.</p>
 </main>
-<script>
+<script src="comun.js"></script><script>
 (()=>{const S=(x)=>`<svg viewBox="0 0 80 80" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round">${x}</svg>`;
 const L=[
 ['Contacto NA','13-14 · normalmente abierto',S('<path d="M40 6V22M40 58V74"/><circle cx="40" cy="22" r="3" fill="var(--ink)"/><circle cx="40" cy="58" r="3" fill="var(--ink)"/><path d="M40 58L22 24"/>')],
@@ -78,6 +78,6 @@ const L=[
 document.getElementById('sym').innerHTML=L.map(a=>`<div class="card">${a[2]}<div><b>${a[0]}</b><small>${a[1]}</small></div></div>`).join('');
 const params=new URLSearchParams(location.search);let tema=params.get('tema')||'dark',piz=params.get('pizarra')==='1';
 function ap(){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',piz)}ap();
-addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)piz=!!d.pizarra;ap()}});
+SIM.alRecibir(e=>{const d=e.data;if(!d)return;if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)piz=!!d.pizarra;ap()}});
 })();
 </script><script src="autor.js"></script></body></html>

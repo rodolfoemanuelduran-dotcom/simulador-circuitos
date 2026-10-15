@@ -213,7 +213,7 @@ E.tierra={
   if(S.falla){if(!S.pe){Vc=220;Ip=Vc/Rp*1000;If=Ip/1000*1000;if(S.dif&&Ip>=30){trip=true}}
    else{If=220/(Rt+2);Vc=If*Rt;Ip=Vc/Rp*1000;if(S.dif)trip=true}}
   const mA=S.falla?(trip?0:Ip):0;
-  if(S.falla){txt=trip?'El diferencial cortó la alimentación en menos de 0,04 s.':(S.pe&&!S.dif)?'La tierra limita la tensión, pero sin diferencial la falla persiste: la carcasa sigue energizada.':(!S.pe&&S.dif&&Ip<30)?'Corriente por la persona menor que 30 mA: el diferencial no corta y sigue circulando.':'La carcasa está energizada: quien la toque cierra el circuito.'}
+  if(S.falla){txt=trip?'El diferencial cortó la alimentación en menos de 0,04 s.':(S.pe&&!S.dif)?'La tierra limita la tensión, pero sin diferencial la falla persiste: la carcasa sigue energizada.':(!S.pe&&S.dif&&Ip<30)?'Corriente por la persona menor que 30 mA: el diferencial todavía puede no actuar (debe cortar antes de llegar a 30 mA y no debe cortar por debajo de 15 mA) y la corriente sigue circulando.':'La carcasa está energizada: quien la toque cierra el circuito.'}
   return{mA,Vc,Ip,If,trip,reads:[{l:'TENSIÓN DE LA CARCASA',v:H_volt(Vc)},{l:'CORRIENTE POR LA PERSONA',v:H_amp(trip?0:Ip)},{l:'CORRIENTE DE FALLA',v:H_amp(If*(S.pe?1:1))},{l:'PROTECCIÓN',v:trip?'cortó':'no cortó'}],mA,
    verdict:{cls:!S.falla||trip?'ok':mA<10?'warn':'bad',t:txt}}},
  draw(S,R,H){let s=H.sky()+H.ground(450,'var(--gnd2)');
@@ -224,7 +224,7 @@ E.tierra={
   s+=H.person({x:850,y:450,s:1.3,lh:[-26,-96],rh:[-120,-108],puddle:S.piso==='mojado',glow:S.falla&&!R.trip&&R.Ip>=.1?[[-120,-108],[0,-136],[0,-85],[-16,0]]:null,gc:effectColor(R.Ip)});
   if(S.dif)s+=`<rect x="170" y="310" width="70" height="120" rx="8" fill="${R.trip?'#2a8f61':'var(--p2)'}" stroke="var(--line)"/>`+H.t(205,350,'Dif.',{})+H.t(205,376,'30 mA',{})+(R.trip?H.t(205,404,'CORTÓ',{}):'');
   return s},
- que(S){return S.falla?(S.pe?'El conductor de tierra conecta la carcasa a la jabalina: la falla genera una corriente a tierra y el diferencial detecta la fuga y corta. Sin diferencial, la falla puede persistir.':'Sin tierra, la carcasa queda a 220 V: cualquiera que la toque cierra el circuito. El diferencial solo corta si la corriente por la persona supera unos 30 mA.'):'Con la heladera sin falla, la carcasa está a 0 V.'},
+ que(S){return S.falla?(S.pe?'El conductor de tierra conecta la carcasa a la jabalina: la falla genera una corriente a tierra y el diferencial detecta la fuga y corta. Sin diferencial, la falla puede persistir.':'Sin tierra, la carcasa queda a 220 V: cualquiera que la toque cierra el circuito. Un diferencial de 30 mA corta cuando la fuga llega a unos 30 mA (según el aparato, entre 15 y 30 mA).'):'Con la heladera sin falla, la carcasa está a 0 V.'},
  clave:'La puesta a tierra y el disyuntor diferencial se complementan: la tierra da un camino a la corriente de falla y el diferencial la detecta y corta rápido. Tener solo uno no alcanza.',
  dato:'Los tomas de 3 patas (la del medio es la tierra) existen para que la carcasa de los artefactos esté unida al conductor de protección.'};
 

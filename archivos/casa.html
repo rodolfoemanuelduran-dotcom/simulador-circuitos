@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Casa y croquis</title>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Casa y croquis</title>
 <style>
 :root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--card:#0a1827ee;--okbg:#12382f;--oktx:#d6ffe9;--warnbg:#3b2f12;--warntx:#ffe7a6;--goalbg:#10263a;
  --paper:#101f31;--room:#1a3047;--hall:#223b57;--stair:#2b4a69;--wall:#cfdcea;--ink:#e9f1fa;--lab:#9fb3c8;--grid:#1d3149;--furn:#294863;--furn2:#38597a;--furns:#7f9fbf;--win:#7fd0ff}
@@ -12,6 +12,7 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
 .tabs{display:flex;gap:4px;flex:1 1 auto;min-width:0;overflow:auto}
 .tab{flex:0 0 auto;padding:6px 11px;border:1px solid var(--line);border-radius:10px;background:var(--p2);font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap}.tab[aria-selected=true]{background:var(--bl);color:#04202b;border-color:var(--bl)}.tab.done:after{content:" ✔";color:var(--gr)}.tab[aria-selected=true].done:after{color:#04202b}
 .tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button:disabled{opacity:.35}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1;color:#fff}
+@media (pointer:coarse) and (min-height:521px){.tools button{width:44px;height:44px}.tools{gap:6px}}
 .top .autor-badge{margin-left:6px}
 .work{flex:1 1 auto;min-height:0;display:flex}
 .panel{flex:0 0 300px;overflow:auto;padding:10px 12px;background:var(--p);border-right:1px solid var(--line);font-size:.8rem}.panel.closed{display:none}
@@ -80,7 +81,7 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
   <div class="fin" id="fin" hidden><h2>🏠 ¡Casa terminada!</h2><div id="finTxt"></div><div class="row"><button class="btn primary" id="finClose">Cerrar</button><button class="btn" id="finAgain">Repetir desde el plano</button></div></div>
  </section>
 </div>
-<script src="casas-datos.js"></script>
+<script src="comun.js"></script><script src="casas-datos.js"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s),svg=$('#plan'),wf=$('#wf');
@@ -95,7 +96,7 @@ function tone(f,d,ty='sine',v=.05,dl=0,f2){const a=audio();if(!a)return;const o=
 function noise(d,v,dl,f,q){const a=audio();if(!a)return;if(!nb){nb=a.createBuffer(1,a.sampleRate,a.sampleRate);const c=nb.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1}const s=a.currentTime+(dl||0),src=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();src.buffer=nb;fl.type='bandpass';fl.frequency.value=f||1500;fl.Q.value=q||1;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);src.connect(fl).connect(g).connect(a.destination);src.start(s);src.stop(s+d+.02)}
 const SND={arm(){tone(480,.07,'triangle',.04);tone(640,.07,'triangle',.03,.05)},place(){noise(.04,.05,0,900,2);tone(180,.1,'sine',.07,0,90);tone(520,.08,'sine',.03,.05)},select(){tone(660,.05,'triangle',.035)},remove(){tone(520,.15,'sine',.04,0,200);noise(.08,.03,.02,1200,1)},connect(){noise(.05,.05,0,3000,2);tone(520,.09,'sine',.055);tone(784,.12,'sine',.045,.07)},grab(){tone(380,.08,'sine',.045,0,620)},error(){tone(170,.16,'sawtooth',.05);tone(125,.18,'sawtooth',.04,.1)},ok(){[523,659,784].forEach((f,i)=>tone(f,.25,'sine',.05,i*.1))},fin(){[523,659,784,1047].forEach((f,i)=>tone(f,.32,'sine',.05,i*.12));noise(.3,.02,.45,6000,1)},reset(){tone(700,.25,'sine',.03,0,250)}};
 const play=n=>{try{SND[n]&&SND[n]()}catch{}};
-function buzz(p){try{if(soundOn&&navigator.vibrate)navigator.vibrate(p)}catch{}}
+function buzz(p){try{if(soundOn&&navigator.vibrate&&(!navigator.userActivation||navigator.userActivation.hasBeenActive))navigator.vibrate(p)}catch{}}
 /* ---------- geometría ---------- */
 const floorAt=(x,y)=>P.floors.find(f=>x>=f.ox-30&&x<=f.ox+f.w+30&&y>=f.oy-30&&y<=f.oy+f.h+30)||P.floors.reduce((a,f)=>Math.abs(x-(f.ox+f.w/2))<Math.abs(x-(a.ox+a.w/2))?f:a,P.floors[0]);
 const abs=(fl,lx,ly)=>({x:FL[fl].ox+lx,y:FL[fl].oy+ly});
@@ -268,13 +269,13 @@ $('#finClose').onclick=()=>{$('#fin').hidden=true};$('#finAgain').onclick=()=>{$
 const embedded=window.parent!==window;if(embedded)document.querySelectorAll('.solo').forEach(b=>b.hidden=true);
 const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
 let tema=params.get('tema')||stg.get('sim-tema')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'),pizarra=params.has('pizarra')?params.get('pizarra')==='1':stg.get('sim-pizarra')==='1';
-function apply(relay){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra));if(!P.steps[step-1].scenario)drawPlan();if(relay){try{wf.contentWindow&&wf.contentWindow.postMessage({tipo:'ajustes',tema,pizarra},'*')}catch{}}}
-function avisar(){try{if(embedded)parent.postMessage({tipo:'ajustes-desde-practica',tema,pizarra},'*')}catch{}}
-window.addEventListener('message',e=>{const d=e.data;if(!d)return;
+function apply(relay){document.documentElement.dataset.theme=tema;document.body.classList.toggle('pizarra',pizarra);$('#bProj').setAttribute('aria-pressed',String(pizarra));if(!P.steps[step-1].scenario)drawPlan();if(relay){try{SIM.post(wf.contentWindow,{tipo:'ajustes',tema,pizarra})}catch{}}}
+function avisar(){try{if(embedded)SIM.post(parent,{tipo:'ajustes-desde-practica',tema,pizarra})}catch{}}
+SIM.alRecibir(e=>{const d=e.data;if(!d)return;
  if(e.source===wf.contentWindow){if(d.tipo==='hecho'){const n=P.steps.findIndex(s=>s.scenario===d.id)+1;if(n){done[n]=true;tabs();play('ok')}}else if(d.tipo==='continuar')next();else if(d.tipo==='ajustes-desde-practica'){tema=d.tema;pizarra=d.pizarra;stg.set('sim-tema',tema);stg.set('sim-pizarra',pizarra?'1':'0');apply(false);avisar()}return}
  if(d.tipo==='reserva'){const h=document.querySelector('header.top');if(h)h.style.paddingRight=d.px+'px';return}
  if(d.tipo==='ajustes'){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;apply(true)}});
-wf.addEventListener('load',()=>{try{wf.contentWindow.postMessage({tipo:'reserva',px:12},'*');wf.contentWindow.postMessage({tipo:'ajustes',tema,pizarra},'*')}catch{}});
+wf.addEventListener('load',()=>{try{SIM.post(wf.contentWindow,{tipo:'reserva',px:12});SIM.post(wf.contentWindow,{tipo:'ajustes',tema,pizarra})}catch{}});
 $('#bTheme').onclick=()=>{tema=tema==='light'?'dark':'light';stg.set('sim-tema',tema);apply(true);avisar()};
 $('#bProj').onclick=()=>{pizarra=!pizarra;stg.set('sim-pizarra',pizarra?'1':'0');apply(true);avisar()};
 const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$('#bFull').hidden=!canFull||embedded;

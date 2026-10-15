@@ -12,7 +12,7 @@ E.diferencial={
  calc(S){const leak=SIT11[S.sit].leak,If=6+leak/1000,trip=S.dif&&leak>=30;const persona=S.sit==='persona';
   const mA=persona?(trip?0:60):undefined;
   return{leak,If,trip,mA,reads:[{l:'CORRIENTE POR LA FASE',v:f(If,3)+' A'},{l:'CORRIENTE POR EL NEUTRO',v:'6,000 A'},{l:'DIFERENCIA (FUGA A TIERRA)',v:amp(leak)},{l:'ESTADO',v:trip?'cortó (< 40 ms)':'conectado'}],
-   verdict:{cls:trip?'ok':leak===0?'ok':persona||leak>=5000?'bad':'warn',t:trip?'El diferencial detectó la diferencia y abrió el circuito en menos de 0,04 s.':leak===0?'Corriente de ida igual a la de vuelta: no hay fuga.':leak<30?'La fuga es menor que 30 mA: el diferencial no corta (está por debajo del umbral).':(S.dif?'':'Sin diferencial: la fuga continúa hasta que actúe otra protección.')}}},
+   verdict:{cls:trip?'ok':leak===0?'ok':persona||leak>=5000?'bad':'warn',t:trip?'El diferencial detectó la diferencia y abrió el circuito en menos de 0,04 s.':leak===0?'Corriente de ida igual a la de vuelta: no hay fuga.':leak<30?'La fuga es menor que 30 mA: el diferencial todavía puede no actuar (la norma pide que corte antes de llegar a 30 mA y que no corte por debajo de 15 mA).':(S.dif?'':'Sin diferencial: la fuga continúa hasta que actúe otra protección.')}}},
  draw(S,R,H){let s=H.room(450);
   s+=`<rect x="60" y="150" width="80" height="170" rx="10" fill="var(--p2)" stroke="var(--line)"/>`+H.t(100,200,'RED',{})+H.t(100,230,'220 V',{});
   const wc=R.trip?'#8a8a8a':'#d83a3a',wn=R.trip?'#8a8a8a':'#4db5ee';

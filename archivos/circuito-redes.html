@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><title>Simulador de circuitos</title>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Simulador de circuitos</title>
 <style>
 :root{color-scheme:dark;--bg:#07111f;--p:#0d1a2b;--p2:#14263c;--tx:#f4f8ff;--mu:#a8b7ca;--bl:#79d9f1;--gr:#5ce0a0;--yl:#ffd65a;--rd:#ff6b6b;--line:#2b425f;--hdr:#08141f;--goalbg:#10263a;--meterbg:#0a1623;--meterin:#06101a;--tvc:#8ff0b8;--okbg:#12382f;--oktx:#d6ffe9;--errbg:#421d28;--errtx:#ffd1d1;--hintbg:#07111fe6;--hintline:#2b435f;--boardbg:radial-gradient(circle at 50% 45%,#17304b,#0d1a2b 70%);--grid:#2a4565;--svgtx:#dbe7f4;--lead:#aeb9c7;--wsh:#02060ccc;--tfill:#14243a;--tstroke:#d5deea;--contact:#d5deea}
 :root[data-theme=light]{color-scheme:light;--bg:#eef3f8;--p:#ffffff;--p2:#e3ebf4;--tx:#0f1b2a;--mu:#48597a;--bl:#0a6f9a;--gr:#0f7a45;--yl:#a56a00;--rd:#c62828;--line:#b3c2d4;--hdr:#ffffff;--goalbg:#e2f0fa;--meterbg:#f2f6fb;--meterin:#e3ecf5;--tvc:#0b6d3d;--okbg:#e1f5ea;--oktx:#0b4a2b;--errbg:#fde4e4;--errtx:#7a1212;--hintbg:#ffffffee;--hintline:#b3c2d4;--boardbg:radial-gradient(circle at 50% 45%,#ffffff,#e4ecf5 72%);--grid:#9db2c9;--svgtx:#10223a;--lead:#566a82;--wsh:#2b3f5a66;--tfill:#ffffff;--tstroke:#33506f;--contact:#667a91}
@@ -11,6 +11,7 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
 .status{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--p2);font-size:.75rem;font-weight:650;white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis}
 .status i{flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:var(--bl)}.status.ready i{background:var(--yl)}.status.on i{background:var(--gr);box-shadow:0 0 10px #5ce0a099}.status.error i{background:var(--rd);box-shadow:0 0 10px #ff6b6b99}
 .tools{flex:0 0 auto;display:flex;gap:4px}.tools button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--p2);font-size:.95rem;line-height:1;cursor:pointer}.tools button:disabled{opacity:.35}.tools button[hidden]{display:none}.tools button[aria-pressed=true]{background:#1d4d63;border-color:#79d9f1}
+@media (pointer:coarse) and (min-height:521px){.tools button{width:44px;height:44px}.tools{gap:6px}}
 .top .autor-badge{margin-left:6px}
 .work{flex:1 1 auto;min-height:0;display:flex}
 .panel{flex:0 0 280px;overflow:auto;padding:10px 12px;background:var(--p);border-right:1px solid var(--line);font-size:.8rem}
@@ -20,7 +21,7 @@ header.top{flex:0 0 auto;display:flex;align-items:center;gap:8px;min-height:46px
 .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
 .btn{padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--p2);cursor:pointer;font-size:.76rem}.btn:disabled{opacity:.35;cursor:default}.btn.primary{background:#eaf8ff;color:#06101c;border-color:#fff;font-weight:700}
 .colors{display:flex;gap:7px;flex-wrap:wrap}.colors button{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}.colors button[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px #fff3}.colors .earthc{background:repeating-linear-gradient(45deg,#37c870 0 5px,#f2d13c 5px 10px)}
-.meter{padding:8px;border-radius:10px;background:var(--meterbg);border:1px solid var(--line);font-variant-numeric:tabular-nums}.meter b{color:var(--tx)}.meter .big{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px}.meter .big div{padding:5px 7px;border-radius:7px;background:var(--meterin);color:var(--tvc);font:700 1rem ui-monospace,Consolas,monospace}.meter .big small{display:block;color:var(--mu);font:600 .62rem system-ui}
+.meter{padding:8px;border-radius:10px;background:var(--meterbg);border:1px solid var(--line);font-variant-numeric:tabular-nums}.meter b{color:var(--tx)}.meter .big{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px}.meter .big div{padding:5px 7px;border-radius:7px;background:var(--meterin);color:var(--tvc);font:700 1rem ui-monospace,Consolas,monospace}.meter .big small{display:block;color:var(--mu);font:600 .7rem system-ui}
 .vbar{height:12px;border-radius:7px;border:1px solid var(--line)}.vlab{display:flex;justify-content:space-between;font-size:.7rem;font-weight:700;color:var(--mu);margin-top:2px}.vtxt{font-size:.74rem;line-height:1.35}
 .bands{display:inline-flex;gap:2px;vertical-align:middle;margin-right:5px}.bands i{display:block;width:7px;height:14px;border-radius:1px}
 table{width:100%;border-collapse:collapse;font-size:.72rem;font-variant-numeric:tabular-nums}th,td{padding:3px 4px;text-align:right;border-bottom:1px solid #1e3248}th:first-child,td:first-child{text-align:left}th{color:var(--mu);font-weight:600}tr.sel td{background:#173651}
@@ -31,7 +32,7 @@ table{width:100%;border-collapse:collapse;font-size:.72rem;font-variant-numeric:
 .tools button.examBtn{width:auto;height:34px;padding:0 16px;border-radius:9px;border:2px solid #ffd43b;background:#ffd43b;color:#241a00;font-size:.95rem;font-weight:800;cursor:pointer;white-space:nowrap;animation:examPulse 1.6s ease-in-out infinite}.tools button.examBtn[hidden]{display:none}.pizarra .tools button.examBtn{height:48px;font-size:1.15rem;width:auto}.tools button.examBtn:disabled{animation:none;opacity:.45}@keyframes examPulse{0%,100%{box-shadow:0 0 0 0 #ffd43b66}50%{box-shadow:0 0 0 7px #ffd43b00}}
 .modal{position:absolute;inset:0;z-index:9;display:grid;place-items:center;padding:14px;background:#04101bcc}.modal[hidden]{display:none}.modal-card{width:min(420px,100%);padding:18px 20px;border-radius:20px;border:2px solid #ffd43b;background:var(--p);color:var(--tx);text-align:center;box-shadow:0 20px 60px #000b}.modal-card h3{margin:0 0 6px;font-size:1.2rem}.modal-card p{margin:4px 0 12px;color:var(--mu);font-size:.86rem}
 .pal{position:absolute;z-index:4;left:6px;top:8px;bottom:62px;width:62px;display:flex;flex-direction:column;gap:6px;overflow:auto;padding:5px;border-radius:16px;background:var(--hintbg);border:1px solid var(--hintline);scrollbar-width:none}.pal[hidden],.fly[hidden],.toast[hidden]{display:none}
-.pal button{flex:0 0 auto;width:100%;min-height:50px;padding:4px 0;border-radius:12px;border:1px solid var(--line);background:var(--p2);color:var(--tx);cursor:pointer;font-size:1.35rem;line-height:1.1}.pal button:hover,.pal button:focus-visible{border-color:var(--bl)}.pal button small{display:block;margin-top:2px;font:700 .58rem system-ui;color:var(--mu)}
+.pal button{flex:0 0 auto;width:100%;min-height:50px;padding:4px 0;border-radius:12px;border:1px solid var(--line);background:var(--p2);color:var(--tx);cursor:pointer;font-size:1.35rem;line-height:1.1}.pal button:hover,.pal button:focus-visible{border-color:var(--bl)}.pal button small{display:block;margin-top:2px;font:700 .7rem system-ui;color:var(--mu)}
 .pal #palDel{margin-top:auto}
 .fly{position:absolute;z-index:5;left:76px;top:10px;display:grid;grid-template-columns:repeat(3,auto);gap:6px;padding:8px;border-radius:14px;background:var(--p);border:1px solid var(--bl);box-shadow:0 12px 30px #000a}.fly b{grid-column:1/-1;font-size:.72rem;color:var(--mu)}.fly button{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--p2);color:var(--tx);font-weight:700;cursor:pointer;white-space:nowrap}.fly button:hover{border-color:var(--bl);background:#1d4d63}
 body.free #board{left:72px;width:calc(100% - 72px)}
@@ -57,6 +58,7 @@ body.exam .hint{-webkit-line-clamp:4;font-size:.95rem}body.exam.pizarra .hint{fo
 .hint.error{background:var(--errbg);color:var(--errtx);border-color:#ff6969}.hint.ok{background:var(--okbg);color:var(--oktx);border-color:var(--gr)}.hint strong{color:var(--tx)}
 .tx{fill:var(--svgtx);font:600 14px system-ui,sans-serif;text-anchor:middle}.tv{fill:var(--tvc);font:600 13px ui-monospace,Consolas,monospace;text-anchor:middle}.tl{fill:var(--mu);font:700 12px system-ui,sans-serif;text-anchor:middle;pointer-events:none}
 .sel-box{fill:none;stroke:var(--bl);stroke-width:2;stroke-dasharray:6 5}
+g[data-c]:focus,g[data-t]:focus{outline:none}g[data-c]:focus-visible{outline:3px solid #ffd43b;outline-offset:3px}g[data-t]:focus-visible .term-ring{stroke:#ffd43b;stroke-width:5px}g[data-t]:focus-visible{outline:3px solid #ffd43b;outline-offset:6px;border-radius:50%}
 .wbad{fill:none;stroke:#ffd43b;stroke-width:4.5;stroke-dasharray:4 10;stroke-linecap:round;pointer-events:none;animation:wbad .8s linear infinite}@keyframes wbad{to{stroke-dashoffset:-14}}.wbadt{fill:#3b2a00;font:800 12px system-ui,sans-serif;text-anchor:middle}
 .wshadow{fill:none;stroke:var(--wsh);stroke-width:13;stroke-linecap:round}.wire{fill:none;stroke-width:7;stroke-linecap:round}.wire.sel{stroke-width:9}.wstripe{fill:none;stroke:#f2d13c;stroke-width:3.4;stroke-linecap:butt;stroke-dasharray:9 9}
 .flow{fill:none;stroke:#fff7b0;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:4 17;animation:flow .55s linear infinite}@keyframes flow{to{stroke-dashoffset:-21}}
@@ -135,7 +137,7 @@ table.tt{margin-top:6px}table.tt th,table.tt td{text-align:center;padding:3px 3p
 <div class="mvmain" id="mvmain">
 <header class="top">
  <div class="ttl"><h1 id="title">Simulador</h1><small id="sub"></small></div>
- <div id="status" class="status"><i></i><span id="statusText"></span></div>
+ <div id="status" class="status" role="status" aria-live="polite"><i></i><span id="statusText"></span></div>
  <div class="tools">
   <button id="bPanel" title="Consigna y mediciones" aria-label="Consigna y mediciones" aria-pressed="true">☰</button>
   <button id="bUndo" title="Quitar último cable" aria-label="Quitar último cable">↶</button>
@@ -153,7 +155,7 @@ table.tt{margin-top:6px}table.tt th,table.tt td{text-align:center;padding:3px 3p
   <div class="goal" id="pGoal"></div><div id="chTab" hidden></div><div id="quiz" class="quiz" hidden><h3>Pregunta</h3><p id="qq"></p><div id="qo"></div></div><p id="pStars" style="margin:6px 0 0;font-size:.78rem"></p>
   <div class="row"><button class="btn" id="tipBtn">💡 Pista</button><button class="btn" id="solBtn">👁 Ver solución</button><button class="btn" id="unplugBtn" hidden>🔌 Desenchufar</button><button class="btn" id="chExit" hidden>↩ Taller libre</button></div>
   <p id="pTip" hidden></p>
-  <h3>Color del cable</h3><div class="colors" id="colors"></div>
+  <h3>Color del cable</h3><div class="colors" id="colors"></div><p class="vtxt" id="colNote" hidden>En corriente continua este programa usa su propio código: <b>rojo = polo +</b> y <b>celeste = polo −</b>. Es una convención del simulador para poder revisar las conexiones; en una instalación real los colores los fija la norma (IEC 60445, AEA 90364).</p><p class="vtxt kb">⌨ <b>Con teclado:</b> Tab recorre las piezas y los bornes; Enter o Espacio en un borne empieza o termina un cable, y en una llave la acciona.</p>
   <h3>Cables con energía</h3><div class="vbar" id="vbar"></div><div class="vlab"><span id="vlo">−</span><span id="vhi">+</span></div>
   <p class="vtxt">Un cable <b>se ilumina</b> en cuanto queda unido a un polo de la batería: su color indica la tensión que tiene. Los <b>electrones</b> solo se mueven cuando el circuito está <b>cerrado</b>.</p>
   <h3>Multímetro</h3>
@@ -183,20 +185,23 @@ table.tt{margin-top:6px}table.tt th,table.tt td{text-align:center;padding:3px 3p
 </div>
 <div class="mvsheet" id="mvsheet"><div class="mvdiag" id="mvdiag"></div></div>
 </div>
-<script src="redes-datos.js"></script><script src="componentes-cristal.js"></script><script src="progreso.js"></script><script src="taller-desafios.js"></script>
+<script src="comun.js"></script><script src="redes-datos.js"></script><script src="componentes-cristal.js"></script><script src="progreso.js"></script><script src="taller-desafios.js"></script>
 <script>
 (()=>{
 const D=window.REDES,$=s=>document.querySelector(s),svg=$('#board'),gW=$('#gWires'),gC=$('#gComps'),gT=$('#gTerms'),gP=$('#gPlug'),gFx=$('#gFx'),prev=$('#prev'),prevS=$('#prevS');
 const params=new URLSearchParams(location.search);
 /* problema generado: gen=<json> o gen=@clave (la clave apunta a un problema guardado en localStorage: URL corta) */
-let GENSC=null;try{const gp=params.get('gen');if(gp)GENSC=JSON.parse(gp[0]==='@'?localStorage.getItem('sim-gen-'+gp.slice(1)):gp)}catch{}
+/* un problema que llega por la dirección o por lo guardado solo se acepta si tiene la forma esperada */
+const specOk=o=>!!o&&typeof o==='object'&&!Array.isArray(o)&&typeof o.title==='string'&&Array.isArray(o.comps)&&o.comps.length>0&&o.comps.length<40&&o.comps.every(c=>c&&typeof c==='object'&&typeof c.id==='string'&&typeof c.t==='string')&&Array.isArray(o.sol)&&o.sol.every(p=>Array.isArray(p)&&p.length===2&&typeof p[0]==='string'&&typeof p[1]==='string');
+let GENSC=null,specMala=false;try{const gp=params.get('gen');if(gp){const o=JSON.parse(gp[0]==='@'?localStorage.getItem('sim-gen-'+gp.slice(1)):gp);if(specOk(o))GENSC=o;else specMala=true}}catch{specMala=true}
+const idMalo=!GENSC&&!!params.get('c')&&!D.items[params.get('c')];
 const sc=GENSC||D.items[params.get('c')]||D.items[D.order[0]];
 const H=500,VH=548;let W=1000,scale=1;
 const AC=!!sc.ac;
 /* modo teléfono: piel táctil; SHEET = problemas de pregunta o de falla (hoja inferior, se resuelven en vertical) */
 const MOVIL=params.get('movil')==='1',NIVEL=+params.get('nivel')||0,SHEET=MOVIL&&!!(sc.quiz||sc.fault),TR=MOVIL?19:13;let hintPair=null;
 if(MOVIL){document.body.classList.add('movil',SHEET?'sheet':'wire')}
-const parentPost=m=>{try{if(window.parent!==window)window.parent.postMessage(m,'*')}catch{}};
+const parentPost=m=>{try{if(window.parent!==window)SIM.post(window.parent,m)}catch{}};
 const DCW=[['red','Rojo','#e5484d'],['blue','Celeste','#4db5ee'],['green','Verde','#3ecf7a'],['yellow','Amarillo','#f2c94c'],['gray','Gris','#c3ccd8']];
 const ACW=[['brown','Marrón · Fase','#b5651d'],['blue','Celeste · Neutro','#4db5ee'],['earth','Verde/amarillo · Tierra','#37c870']];
 const WIRE_COLORS=AC?ACW:DCW,wcol=k=>{const c=(WIRE_COLORS.find(c=>c[0]===k)||WIRE_COLORS[0])[2];return k==='gray'&&document.documentElement.dataset.theme==='light'?'#7b889b':c};
@@ -243,7 +248,7 @@ const fR=r=>r>=1000?dc(+(r/1000).toFixed(2))+' kΩ':dc(+r.toFixed(1))+' Ω';
 const fP=p=>{p=Math.abs(p);return dc(p<1?(p*1000).toFixed(p<.01?2:0)+' mW':p.toFixed(2)+' W')};
 const DIG=['#111','#7b4a1e','#d33','#f80','#fd2','#3a3','#36e','#94c','#888','#eee'],DIGN=['negro','marrón','rojo','naranja','amarillo','verde','azul','violeta','gris','blanco'];
 function bands(r){const e=Math.floor(Math.log10(r)),d=Math.round(r/Math.pow(10,e-1));return[Math.floor(d/10),d%10,e-1]}
-const buzz=ms=>{try{if(soundOn&&navigator.vibrate)navigator.vibrate(ms)}catch{}};
+const buzz=ms=>{try{if(soundOn&&navigator.vibrate&&(!navigator.userActivation||navigator.userActivation.hasBeenActive))navigator.vibrate(ms)}catch{}};
 
 /* ---------- audio ---------- */
 let actx=null,noiseBuf=null,lastSnap=0;
@@ -352,7 +357,7 @@ function ctx(sim){return{sim,links,broken,swState,plugTo,allClosed:sws.every(c=>
 
 /* ---------- cartel "¿Por qué pasó?" y estadísticas de la práctica ---------- */
 const EXAM=params.get('examen')==='1',FREE=!!sc.free;
-const stat={shorts:0,burns:0,tShorts:0,tBurns:0,hint:false,sol:false,swaps:0,t0:Date.now()};const T00=Date.now();
+const stat={shorts:0,burns:0,tShorts:0,tBurns:0,hint:false,sol:false,fallo:false,swaps:0,t0:Date.now()};const T00=Date.now();
 const whyEl=$('#why');let whyKind=null;const pendEv=[];
 const WHY={
  short:()=>({ico:'⚡',tit:'¡Cortocircuito!',what:AC?'Un cable unió directamente la fase con el neutro.':'Un cable unió directamente el polo + con el polo − de la batería.',why:'La corriente elige siempre el camino más fácil. Sin lámpara ni resistor que la frene, se vuelve enorme (I = V ÷ R, con R casi cero): los cables se calientan, saltan chispas y la batería o el fusible sufren.',fix:'Quitá el último cable (botón ↶) y hacé pasar la corriente por una lámpara o un resistor.'}),
@@ -374,10 +379,11 @@ function hideWhy(){clearTimeout(whyTm);clearTimeout(whyTm2);whyEl.hidden=true;wh
 $('#whyOk').onclick=hideWhy;whyEl.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;e.preventDefault();clearTimeout(whyTm);clearTimeout(whyTm2);if(whyEl.classList.contains("mini")){whyEl.classList.remove("mini");whyTm=setTimeout(()=>{if(!whyEl.hidden)whyEl.classList.add("mini")},22000)}else whyEl.classList.add("mini")});
 
 /* ---------- pregunta de opción múltiple (modo examen / niveles) ---------- */
-let quizSel=null,quizLocked=false,quizWrong=0;
+let quizSel=null,quizLocked=false,quizWrong=0,mvTermino=false,tipNivel='';const quizOff=new Set();   /* quizOff: opciones descartadas (con la pista, o ya probadas y mal en un nivel del camino) */
+const MAX_MAL=2;   /* en un nivel del camino, la 2.ª respuesta equivocada (o el 3.er reemplazo sano) termina el intento: no se puede acertar probando una por una */
 function buildQuiz(){const q=sc.quiz,box=$('#quiz');if(!q){box.hidden=true;return}box.hidden=false;$('#qq').textContent=q.q;const o=$('#qo');o.innerHTML='';
- q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=t;b.onclick=()=>{if(quizLocked||b.classList.contains('off'))return;audio();quizSel=i;if(!EXAM&&i!==q.ans)quizWrong++;play(EXAM||i===q.ans?'select':'error');paintQuiz();update()};o.append(b)})}
-function paintQuiz(){if(!sc.quiz)return;document.querySelectorAll('#qo .qopt').forEach((b,i)=>{b.className='qopt'+(quizSel===i?' sel':'')+(!EXAM&&quizSel===i?(i===sc.quiz.ans?' good':' bad'):'')})}
+ q.opts.forEach((t,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=t;b.onclick=()=>{if(quizLocked||quizOff.has(i))return;audio();quizSel=i;const mal=i!==q.ans;if(!EXAM&&mal){quizWrong++;if(NIVEL)quizOff.add(i)}play(EXAM||!mal?'select':'error');paintQuiz();update();if(mal)mvFallaPorErrores(quizWrong)};o.append(b)})}
+function paintQuiz(){if(!sc.quiz)return;document.querySelectorAll('#qo .qopt').forEach((b,i)=>{b.className='qopt'+(quizSel===i?' sel':'')+(!EXAM&&quizSel===i?(i===sc.quiz.ans?' good':' bad'):'')+(quizOff.has(i)?' off':'');b.style.opacity=quizOff.has(i)?'.35':'';b.setAttribute('aria-disabled',quizOff.has(i)?'true':'false')})}
 
 /* ---------- colores de los cables en corriente continua ----------
    La polaridad manda: el cable unido al polo + (y todo lo que sigue por llaves y fusibles hasta la primera carga) va ROJO;
@@ -387,7 +393,7 @@ function colorNets(lk){const par={};allT.forEach(t=>par[t]=t);const find=t=>par[
  return{P:find(SRCP),N:find(SRCN),find}}
 function colorIssues(){if(AC||sc.quiz||sc.fault||(CH&&CH.noColor))return[];const cn=colorNets(links);if(cn.P===cn.N)return[];const bad=[];
  links.forEach((l,i)=>{if(l.locked)return;const n=cn.find(l.a),want=n===cn.P?'red':n===cn.N?'blue':null;if(want&&l.color!==want)bad.push({i,want})});return bad}
-const COLOR_MSG='Los colores importan: el cable del polo + (y lo que sigue por llaves y fusibles) va ROJO y el que vuelve al polo − va CELESTE. Los cables marcados con ⚠ tienen el color equivocado.';
+const COLOR_MSG='Los colores importan en este simulador: el cable del polo + (y lo que sigue por llaves y fusibles) va ROJO y el que vuelve al polo − va CELESTE (es el código del programa, no el de una norma). Los cables marcados con ⚠ tienen el color equivocado.';
 let lastBad=[];
 /* color correcto de un cable de la solución (para «Ver solución» y las pruebas) */
 let REFPOT=null;
@@ -476,7 +482,12 @@ function labelOf(c,r){
 const potOf=id=>{if(!lastSim||!lastSim.pot)return null;const p=lastSim.pot(id);return p.live?{live:true,f:SRCV?Math.max(0,Math.min(1,p.v/SRCV)):0,short:!!p.short,v:p.v}:null};
 const hasLink=id=>links.some(l=>l.a===id||l.b===id);
 function enOf(c){const o={};c.defs.forEach(d=>{const id=c.id+'.'+d.k;if(c.t==='bat'||hasLink(id)){const p=potOf(id);if(p)o[d.k]=p}});return o}
+/* nombre hablado de un borne (para lectores de pantalla y para el teclado) */
+function bornName(id){const d=TM[id];if(!d)return id;const c=d.c,k=d.k;
+ const s=c.t==='bat'?(k==='p'?'polo +':'polo −'):c.t==='led'?(k==='a'?'ánodo':'cátodo'):(c.t==='dcm'||c.t==='buz')?(k==='a'?'pata +':'pata −'):c.t==='sw3'?(k==='c'?'común':'posición '+(k==='a'?'1':'2')):c.t==='sw4'?(k[0]==='a'?'entrada ':'salida ')+k[1]:c.t==='toma'||c.t==='src'||c.t==='box'||c.t==='rod'?(d.label||k):(k==='a'?'borne izquierdo':'borne derecho');
+ return 'Borne '+s+' de '+(c.name||c.id)}
 function render(){
+ const af=document.activeElement,fk=af&&af.closest&&af.closest('#board')&&af.dataset?(af.dataset.t?['t',af.dataset.t]:af.dataset.c?['c',af.dataset.c]:null):null;   /* para devolverle el foco al elemento que lo tenía */
  let w='';
  links.forEach((l,i)=>{const fl=lastSim?lastSim.flows[i]:0,d=wirePath(l.a,l.b,false),sel=selWire===i;w+=CRISTAL.wire(d,wirePath(l.a,l.b,fl>=0),wcol(l.color),Math.abs(fl),sel,l.color==='earth'?`<path class="wstripe" d="${d}"/>`:'',potOf(l.a));w+=`<path data-w="${i}" d="${d}" fill="none" stroke="transparent" stroke-width="34" pointer-events="stroke"/>`;
   const bad=!EXAM&&lastBad.find(b=>b.i===i);if(bad){const m=wireMid(l.a,l.b);w+=`<path class="wbad" d="${d}"/><g transform="translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})" pointer-events="none"><rect x="-44" y="-13" width="88" height="26" rx="13" fill="#ffd43b" stroke="#7a5b00" stroke-width="1.5"/><text class="wbadt" y="5">⚠ va ${bad.want==='red'?'ROJO':'CELESTE'}</text></g>`}});
@@ -489,13 +500,14 @@ function render(){
   const ty=c.t==='lamp'?50:c.t==='led'?50:c.t==='dcm'?60:c.t==='buz'?52:c.t==='cal'?40:c.t==='bat'?98:c.t==='src'?102:c.t==='toma'?94:c.t==='rod'?78:c.t==='box'?(c.rows.length*58+54)/2+22:c.t==='motor'?58:c.t==='sw3'||c.t==='sw4'?54:42;
   const hh=c.t==='box'?(c.rows.length*58+54)+50:c.t==='bat'?210:c.t==='src'?190:c.t==='toma'?180:c.t==='rod'?150:c.t==='dcm'?132:c.t==='buz'?116:c.t==='lamp'||c.t==='led'?122:c.t==='sw3'||c.t==='sw4'?132:c.t==='sw'?112:110,hy=c.t==='box'?-hh/2:c.t==='bat'?-84:c.t==='src'?-92:c.t==='toma'?-80:c.t==='rod'?-60:c.t==='dcm'?-64:c.t==='buz'?-58:c.t==='lamp'||c.t==='led'?-68:c.t==='sw3'||c.t==='sw4'?-66:c.t==='sw'?-66:-48;
   const hw=c.t==='dcm'?162:140,lx=c.t==='dcm'?8:0;
-  s+=`<g data-c="${c.id}" transform="translate(${x} ${y})"><rect x="-70" y="${hy}" width="${hw}" height="${hh}" fill="transparent"/>${sel?`<rect class="sel-box" x="-70" y="${hy}" width="${hw}" height="${hh}" rx="12"/>`:''}${compBody(c,r)}<text class="tx" x="${lx}" y="${ty}" style="${broken[c.id]&&!sc.fault?'fill:#ff9a9a':''}">${esc(nm)}${broken[c.id]&&!sc.fault?' ✖':''}</text>${vals?`<text class="tv" x="${lx}" y="${ty+18}">${vals}</text>`:''}</g>`});
+  s+=`<g data-c="${c.id}" tabindex="0" role="${isSw(c)?'button':'group'}" aria-label="${esc((c.name||c.id)+(isSw(c)?': '+(c.t==='sw'?(swState[c.id]?'cerrada':'abierta'):c.t==='sw3'?'posición '+(swState[c.id]?2:1):(swState[c.id]?'cruzada':'recta')):''))}"${isSw(c)?` aria-pressed="${!!swState[c.id]}"`:''} transform="translate(${x} ${y})"><rect x="-70" y="${hy}" width="${hw}" height="${hh}" fill="transparent"/>${sel?`<rect class="sel-box" x="-70" y="${hy}" width="${hw}" height="${hh}" rx="12"/>`:''}${compBody(c,r)}<text class="tx" x="${lx}" y="${ty}" style="${broken[c.id]&&!sc.fault?'fill:#ff9a9a':''}">${esc(nm)}${broken[c.id]&&!sc.fault?' ✖':''}</text>${vals?`<text class="tv" x="${lx}" y="${ty+18}">${vals}</text>`:''}</g>`});
  gC.innerHTML=s;
  let t='';allT.forEach(id=>{const p=tp(id),d=TM[id],con=links.some(l=>l.a===id||l.b===id),lab=(AC||d.c.t==='bat')?d.label:'',pe=(con||d.c.t==='bat')?potOf(id):null,hr=hintPair&&hintPair.includes(id)?`<circle class="hintring" r="${TR+4}"/>`:'',glow=pe?`<circle r="22" fill="${pe.short?'#ff5a3c':CRISTAL.potColor(pe.f)}" opacity=".5" filter="url(#fB3)" class="widle2" pointer-events="none"/>`:'';
   const fill=AC?(d.role==='L'?'#b5651d':d.role==='N'?'#4db5ee':'#37c870'):'';
   const lx=d.dx>0?-27:d.dx<0?27:0,ly=d.dy<0?-21:d.dy>0?27:(d.dx===0?-21:5);
-  t+=`<g class="term${con?' connected':''}${pend===id?' pend':''}" data-t="${id}" transform="translate(${p.x} ${p.y})">${glow}${hr}<circle class="term-ring" r="${TR}"/><circle class="term-dot" r="${MOVIL?9:6}"${fill&&!con?` style="fill:${fill}"`:''}/>${lab&&d.c.t!=='box'?(d.c.t==='bat'?`<g pointer-events="none"><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ff7a3d':'#35c8ff'};filter:url(#fB3)">${d.label==='+'?'+':'−'}</text><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ffc2a0':'#c8f3ff'}">${d.label==='+'?'+':'−'}</text></g>`:`<text x="${d.dy?0:lx}" y="${d.dy?ly:5}" class="tl">${lab}</text>`):''}</g>`});
+  t+=`<g class="term${con?' connected':''}${pend===id?' pend':''}" data-t="${id}" tabindex="0" role="button" aria-label="${esc(bornName(id))}${pend===id?' (elegido: elegí otro borne para unirlos con un cable)':''}" transform="translate(${p.x} ${p.y})">${glow}${hr}<circle class="term-ring" r="${TR}"/><circle class="term-dot" r="${MOVIL?9:6}"${fill&&!con?` style="fill:${fill}"`:''}/>${lab&&d.c.t!=='box'?(d.c.t==='bat'?`<g pointer-events="none"><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ff7a3d':'#35c8ff'};filter:url(#fB3)">${d.label==='+'?'+':'−'}</text><text x="26" y="${d.label==='+'?-22:34}" class="tl" style="font-size:30px;font-weight:900;fill:${d.label==='+'?'#ffc2a0':'#c8f3ff'}">${d.label==='+'?'+':'−'}</text></g>`:`<text x="${d.dy?0:lx}" y="${d.dy?ly:5}" class="tl">${lab}</text>`):''}</g>`});
  gT.innerHTML=t;
+ if(fk){const el=(fk[0]==='t'?gT:gC).querySelector('[data-'+fk[0]+'="'+fk[1]+'"]');if(el&&document.activeElement!==el){try{el.focus({preventScroll:true})}catch{}}}
  renderPlug();
 }
 function plugXY(){if(plugTo){const c=cm[plugTo],p=tomaPos(c);return{x:p.x,y:p.y-4}}return{x:plugPos.fx*W,y:plugPos.fy*H}}
@@ -540,7 +552,7 @@ function updatePanel(){
  const bb=$('#burnBtn');bb.hidden=EXAM||sc.fault||sc.quiz||AC||!(c&&LIM[c.t]&&!broken[c.id]);if(!bb.hidden)bb.textContent='💥 Quemar '+c.id;
  const rb=$('#replBtn');rb.hidden=!(sc.fault||sc.comps.some(x=>broken[x.id]));rb.disabled=!canRepl;rb.textContent=c&&canRepl?'🔧 Reemplazar '+c.id:'🔧 Reemplazar (elegí uno)';
  $('#unplugBtn').hidden=!motor;$('#unplugBtn').disabled=!plugTo;
- const rs=$('#result');if(lastDiag&&lastDiag.done&&!EXAM){const nx=CH?chNext():sc.hidden?null:D.order[D.order.indexOf(sc.id)+1],cont=!CH&&sc.hidden&&!sc.gen&&window.parent!==window;rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:inherit;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">${CH?'Siguiente desafío ▶':'Siguiente práctica ▶'}</button>`:''}${CH?`<button class="btn" id="chMore">🎯 Todos los desafíos</button>`:''}${cont?`<button class="btn primary" id="nextBtn">Continuar ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{if(CH)chStart(nx);else if(cont)parent.postMessage({tipo:'continuar',id:sc.id},'*');else location.search='?c='+nx};const cmb=$('#chMore');if(cmb)cmb.onclick=chOpen}else rs.hidden=true;
+ const rs=$('#result');if(lastDiag&&lastDiag.done&&!EXAM){const nx=CH?chNext():sc.hidden?null:D.order[D.order.indexOf(sc.id)+1],cont=!CH&&sc.hidden&&!sc.gen&&window.parent!==window;rs.hidden=false;rs.innerHTML=`<b>✔ ${esc(lastDiag.head)}</b><p style="color:inherit;margin:5px 0">${esc(sc.explain)}</p>${nx?`<button class="btn primary" id="nextBtn">${CH?'Siguiente desafío ▶':'Siguiente práctica ▶'}</button>`:''}${CH?`<button class="btn" id="chMore">🎯 Todos los desafíos</button>`:''}${cont?`<button class="btn primary" id="nextBtn">Continuar ▶</button>`:''}`;const nb=$('#nextBtn');if(nb)nb.onclick=()=>{if(CH)chStart(nx);else if(cont)SIM.post(parent,{tipo:'continuar',id:sc.id});else location.search='?c='+nx};const cmb=$('#chMore');if(cmb)cmb.onclick=chOpen}else rs.hidden=true;
  $('#bDel').disabled=selWire===null||!!links[selWire]?.locked;$('#bUndo').disabled=!links.some(l=>!l.locked);
  if(MOVIL){mvUpdate();$('#mvUndo').disabled=$('#bUndo').disabled}
 }
@@ -574,7 +586,8 @@ function update(){
   if(ser&&dif){key='A';msg='💡 <b>Misma corriente, distinto brillo:</b> en serie pasa la misma corriente por todas, pero la tensión se reparte según la resistencia y brilla más la lámpara de mayor resistencia (P = I² × R). Una lámpara de más watts tiene menos resistencia: ¡en serie brilla menos!'}
   else if(ser&&ls.every(c=>ac(c)<c.vr*.9)){key='B';msg='💡 <b>En serie las lámparas se reparten la tensión:</b> cada una recibe solo '+fV(ac(ls[0]))+' de los '+ls[0].vr+' V que necesita, por eso brillan menos que en paralelo, donde cada una recibe los '+SRCV+' V completos.'}
   else if(par){key='C';msg='💡 <b>En paralelo cada lámpara recibe la tensión completa</b> ('+fV(ac(ls[0]))+') y brilla al máximo. ¡Y si una se quema, las otras siguen encendidas! Probalo: tocá una lámpara y usá 💥 Quemar.'}
-  if(key&&key!==update.sm)toast(msg,10000);update.sm=key}
+  /* en un nivel del camino el aviso no se tira encima del circuito (y no puede adelantar la respuesta de la pregunta): queda para el detalle del resultado */
+  if(key&&key!==update.sm){if(MOVIL&&NIVEL>0)tipNivel=msg;else toast(msg,10000)}update.sm=key}
  if(!sim.short)FX.stop('short');wrap.classList.toggle('alarm',!!sim.short);update.wasShort=sim.short;
  /* arco eléctrico al cerrar una llave con corriente alta */
  sws.forEach(c=>{const on=!!swState[c.id];if(update.sw&&update.sw[c.id]===false&&on&&(sim.ibat>.6||sim.short)){const q={x:c.fx*W,y:c.fy*H};FX.spark(q.x+30,q.y,14,{v:200,up:true});FX.flash(q.x+30,q.y,50);play('zap')}update.sw=update.sw||{};update.sw[c.id]=on});
@@ -595,13 +608,17 @@ let celebrated=false,levelSent=false;
 function onDone(){
  const info={s:0};
  if(EXAM){exam.ok=true;exam.t=Math.round((Date.now()-stat.t0)/1000);exam.shorts=stat.shorts;exam.burns=stat.burns;return}
- if(MOVIL&&NIVEL>0){if(levelSent)return;levelSent=true;const errs=stat.tShorts+stat.tBurns+quizWrong+(sc.fault?attempts:0),stars=Math.max(1,3-(stat.hint?1:0)-(errs>0?1:0));
-  setTimeout(()=>play('success'),150);parentPost({tipo:'movil-resultado',ok:true,stars,t:Math.round((Date.now()-T00)/1000),hint:!!stat.hint,errs,nivel:NIVEL});return}
+ if(MOVIL&&NIVEL>0){if(levelSent)return;levelSent=true;
+  /* si en esta partida se vio la solución, el nivel NO se acredita (el padre ya fue avisado con «movil-fallo») */
+  if(stat.sol)return;
+  const errs=stat.tShorts+stat.tBurns+quizWrong+(sc.fault?attempts:0),stars=Math.max(1,3-(stat.hint?1:0)-(errs>0?1:0));
+  setTimeout(()=>play('success'),150);mvCelebra();
+  parentPost({tipo:'movil-resultado',ok:true,stars,t:Math.round((Date.now()-T00)/1000),hint:!!stat.hint,errs,nivel:NIVEL,corto:stat.tShorts,quemo:stat.tBurns,mal:quizWrong+(sc.fault?attempts:0),tip:tipNivel.replace(/<[^>]+>/g,'').slice(0,420)});return}
  setTimeout(()=>play('success'),150);
- if(!sc.hidden&&!celebrated){celebrated=true;const n=starsFor(),r=PROG.record(CH?CH.pid:sc.id,n,{g:CH?'tdes':sc.group,cat:sc.group==='ca'?'ca':'cc',t:Math.round((Date.now()-stat.t0)/1000)});info.s=n;updateStars();
+ if(!sc.hidden&&!celebrated){celebrated=true;const n=starsFor(),r=PROG.record(CH?CH.pid:sc.id,n,{g:CH?'tdes':sc.group,cat:sc.group==='ca'?'ca':'cc',t:Math.round((Date.now()-stat.t0)/1000),sol:!!stat.sol,hint:!!stat.hint,mal:stat.shorts+stat.burns+(sc.fault?attempts:0),ti:CH?sc.title:''});info.s=n;updateStars();
   /* si hay un cartel explicativo abierto se espera a que se lea antes de festejar */
   let waited=0;const go=()=>{if(!whyEl.hidden&&!whyEl.classList.contains('mini')&&waited<24000){waited+=600;setTimeout(go,600)}else showWin(n,r)};go()}
- try{if(window.parent!==window)parent.postMessage({tipo:'hecho',id:sc.id,estrellas:info.s},'*')}catch{}}
+ try{if(window.parent!==window)SIM.post(parent,{tipo:'hecho',id:sc.id,estrellas:info.s})}catch{}}
 const winEl=$('#win');
 function shakeBoard(){wrap.classList.remove('shake');void wrap.offsetWidth;wrap.classList.add('shake');setTimeout(()=>wrap.classList.remove('shake'),520)}
 function showWin(n,r){
@@ -648,9 +665,13 @@ function endDrag(e){if(!drag||drag.id!==e.pointerId)return;const pos=toSvg(e),d=
   if(pend&&pend!==from){const a=pend;pend=null;tryConnect(a,from)}else if(pend===from){pend=null;play('select')}else{pend=from;play('pending')}update();return}
  pend=null;const best=nearestTerm(pos,52,62);
  if(best&&best!==from)tryConnect(from,best);else play('error');update()}
+/* teclado: Tab recorre las piezas y los bornes; Enter o Espacio en un borne empieza o termina un cable, y en una llave la acciona */
+svg.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target.closest&&e.target.closest('[data-t]'),c=e.target.closest&&e.target.closest('[data-c]');
+ if(t&&!sc.quiz){e.preventDefault();audio();const id=t.dataset.t;selWire=null;selComp=null;if(pend&&pend!==id){const a=pend;pend=null;tryConnect(a,id)}else if(pend===id){pend=null;play('select')}else{pend=id;play('pending')}update();return}
+ if(c){const comp=cm[c.dataset.c];if(!comp)return;e.preventDefault();audio();selComp=comp.id;selWire=null;pend=null;if(isSw(comp)){swState[comp.id]=!swState[comp.id];stat.swaps++;play(comp.t!=='sw'?'sw3':swState[comp.id]?'on':'off')}else play('select');update()}});
 svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',e=>{if(drag&&drag.id===e.pointerId){drag=null;updatePreview();update()}});
 
-function buildColors(){const el=$('#colors');el.innerHTML='';WIRE_COLORS.forEach(([k,n,c],i)=>{const b=document.createElement('button');if(k==='earth')b.className='earthc';else b.style.background=c;b.title=n;b.setAttribute('aria-label','Cable '+n);b.setAttribute('aria-pressed',String(k===color));b.onclick=()=>{color=k;play('color',i);el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true')};el.append(b)})}
+function buildColors(){const el=$('#colors');el.innerHTML='';const cn=$('#colNote');if(cn)cn.hidden=AC||!!sc.quiz;WIRE_COLORS.forEach(([k,n,c],i)=>{const b=document.createElement('button');if(k==='earth')b.className='earthc';else b.style.background=c;b.title=n;b.setAttribute('aria-label','Cable '+n);b.setAttribute('aria-pressed',String(k===color));b.onclick=()=>{color=k;play('color',i);el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true')};el.append(b)})}
 /* ---------- aviso breve ---------- */
 const toastEl=$('#toast');let toastTm=null;
 function toast(html,ms){toastEl.innerHTML=html;toastEl.hidden=false;toastEl.style.animation='none';void toastEl.offsetWidth;toastEl.style.animation='';clearTimeout(toastTm);toastTm=setTimeout(()=>{toastEl.hidden=true},ms||3200)}
@@ -755,7 +776,7 @@ function delSelected(){if(selComp&&selComp!==SRC.id)delComp(selComp);else toast(
 window.addEventListener('keydown',e=>{if(FREE&&(e.key==='Delete'||e.key==='Backspace')&&selComp&&selComp!==SRC.id&&!/INPUT|SELECT|TEXTAREA/.test((e.target||{}).tagName||'')){e.preventDefault();delComp(selComp)}});
 /* el taller se guarda solo en este dispositivo */
 const TKEY='sim-taller-v1';
-let tReady=false;function saveTaller(){if(!FREE||!tReady||CH)return;try{localStorage.setItem(TKEY,JSON.stringify({v:SRCV,comps:sc.comps.map(c=>({id:c.id,t:c.t,fx:+c.fx.toFixed(4),fy:+c.fy.toFixed(4),r:c.r,vr:c.vr,w:c.w,tol:c.tol,amp:c.amp,flip:c.flip,name:c.name})),links:links.map(l=>({a:l.a,b:l.b,color:l.color})),sw:swState}))}catch{}}
+let tReady=false;function saveTaller(){if(!FREE||!tReady||CH)return;try{localStorage.setItem(TKEY,JSON.stringify({v:SRCV,comps:sc.comps.map(c=>({id:c.id,t:c.t,fx:+c.fx.toFixed(4),fy:+c.fy.toFixed(4),r:c.r,vr:c.vr,w:c.w,tol:c.tol,amp:c.amp,flip:c.flip,name:c.name})),links:links.map(l=>({a:l.a,b:l.b,color:l.color})),sw:swState}))}catch{if(!saveTaller.avisado){saveTaller.avisado=true;SIM.avisar('No se pudo guardar tu mesa del taller en este dispositivo (¿poco espacio?).',7000)}}}
 function loadTaller(){if(!FREE)return;try{const o=JSON.parse(localStorage.getItem(TKEY));if(!o||!o.comps){tReady=true;return}SRC.v=o.v||12;SRC.name='Batería '+dc(SRC.v)+' V';SRCV=SRC.v;
  const b=o.comps.find(c=>c.t==='bat');if(b){SRC.fx=b.fx;SRC.fy=b.fy}
  sc.comps=[SRC].concat(o.comps.filter(c=>c.t!=='bat'&&['lamp','led','res','fuse','sw','sw3','sw4','dcm','buz','cal'].includes(c.t)).map(c=>{const x={id:c.id,t:c.t,fx:c.fx,fy:c.fy,name:c.name};if(c.r!==undefined)x.r=c.r;if(c.vr!==undefined)x.vr=c.vr;if(c.w!==undefined)x.w=c.w;if(c.tol!==undefined)x.tol=c.tol;if(c.amp!==undefined)x.amp=c.amp;if(c.flip)x.flip=true;return x}));
@@ -822,7 +843,7 @@ function chExit(){if(!CH)return;CH=null;chLast=null;
  $('#solBtn').hidden=true;$('#pTip').hidden=true;tReady=false;applyVolt(12);reset(true);loadTaller();chText();toast('Volviste al taller libre. Tu mesa quedó como la dejaste.',3000)}
 $('#chExit').onclick=chExit;
 /* ----- mis desafíos (los crea el docente a partir de un circuito que funciona) ----- */
-const loadProp=()=>{try{const a=JSON.parse(localStorage.getItem(PKEY));return Array.isArray(a)?a:[]}catch{return[]}};
+const loadProp=()=>{try{const a=JSON.parse(localStorage.getItem(PKEY));return Array.isArray(a)?a.filter(x=>x&&typeof x==='object'&&typeof x.title==='string'&&Array.isArray(x.parts)&&Array.isArray(x.rows)&&Array.isArray(x.sws)&&Array.isArray(x.outs)&&Array.isArray(x.sol)):[]}catch{return[]}};
 const saveProp=a=>{try{localStorage.setItem(PKEY,JSON.stringify(a))}catch{}};
 const propSpec=s=>Object.assign(JSON.parse(JSON.stringify(s)),{custom:true,pid:'tu-'+s.id});
 const encCode=o=>'DESAFIO1:'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));
@@ -848,7 +869,7 @@ function chScreen(inner){chBack.innerHTML='<div class="chcard" role="dialog" ari
 function chOpen(){closeFly();const mine=loadProp();
  let h='<h2>🎯 Desafíos del taller</h2><p>Te damos las piezas sueltas y una consigna. Armá el circuito: el simulador prueba todas las combinaciones de las llaves y vale cualquier cableado que funcione.</p>';
  if(CH)h+='<div class="row" style="margin:0 0 4px"><button class="btn" data-a="exit">↩ Volver al taller libre</button></div>';
- TD.groups.forEach(g=>{h+='<h3>'+esc(g.title)+'</h3><p class="gd">'+esc(g.desc)+'</p><div class="chgrid">'+TD.list.filter(s=>s.grupo===g.id).map(s=>{const st=PROG.stars(s.pid);return'<button class="chit'+(CH===s?' cur':'')+'" data-a="go" data-id="'+s.id+'"><span class="lv">NIVEL '+s.nivel+'</span><b>'+esc(s.title)+'</b><span class="st'+(st?'':' off')+'">'+PROG.starsHTML(st)+'</span></button>'}).join('')+'</div>'});
+ TD.groups.forEach(g=>{h+='<h3>'+esc(g.title)+'</h3><p class="gd">'+esc(g.desc)+'</p><div class="chgrid">'+TD.list.filter(s=>s.grupo===g.id).map(s=>{const st=PROG.stars(s.pid);return'<button class="chit'+(CH===s?' cur':'')+'" data-a="go" data-id="'+s.id+'"><span class="lv">NIVEL '+s.nivel+'</span><b>'+esc(s.title)+'</b><span class="st'+(st?'':' off')+'">'+PROG.starsHTML(st)+(PROG.soloSolucion(s.pid)?' <small title="Solo se completó viendo la solución" style="letter-spacing:0">👁 con solución</small>':'')+'</span></button>'}).join('')+'</div>'});
  h+='<h3>Mis desafíos</h3>';
  h+=mine.length?mine.map((s,i)=>'<div class="chmine"><button class="t" data-a="mine" data-i="'+i+'" title="Jugar este desafío">▶ '+esc(s.title)+'</button><span style="color:#ffd43b;letter-spacing:2px;font-size:.8rem">'+PROG.starsHTML(PROG.stars('tu-'+s.id))+'</span><button class="b" data-a="share" data-i="'+i+'" title="Copiar el código para compartirlo" aria-label="Compartir">📋</button><button class="b" data-a="del" data-i="'+i+'" title="Borrar" aria-label="Borrar">🗑</button></div>').join(''):'<p class="gd">Todavía no creaste ninguno. Armá en el taller libre un circuito que funcione, tocá «Crear desafío» y quedará acá para tus alumnos.</p>';
  h+='<div class="row"><button class="btn" data-a="new">➕ Crear desafío con mi circuito</button><button class="btn" data-a="imp">📥 Importar código</button></div>';
@@ -886,8 +907,8 @@ chBack.addEventListener('click',e=>{if(e.target===chBack){chClose();return}const
  else if(a==='del'){const s=loadProp()[i];if(s&&confirm('¿Borrar el desafío «'+s.title+'»?')){const arr=loadProp();arr.splice(i,1);saveProp(arr);chOpen()}}
  else if(a==='copy'){const ta=$('#cfK');ta.select();try{navigator.clipboard.writeText(ta.value).then(()=>toast('Código copiado.',2200),()=>{document.execCommand('copy');toast('Código copiado.',2200)})}catch{try{document.execCommand('copy');toast('Código copiado.',2200)}catch{}}}
  else if(a==='doimp'){try{const s=chSanitize(decCode($('#cfC').value));const arr=loadProp();arr.push(s);saveProp(arr);chOpen();toast('✔ Desafío importado: «'+esc(s.title)+'».',3500)}catch{chImport('El código no es válido o está incompleto. Copialo de nuevo completo, desde DESAFIO1: hasta el final.')}}});
-function replaceSel(){if(!selComp)return;const c=cm[selComp];
- if(sc.fault){if(c.id===faultId&&broken[c.id]){delete broken[c.id];fixed=true;play('repair')}else{attempts++;play('error');$('#hint').className='hint error';$('#hint').innerHTML='<strong>'+c.id+' estaba en buen estado.</strong> Medí otra vez: el dañado tiene tensión pero no deja pasar corriente.';lastSim=simulate(links);updatePanel();setTimeout(update,2600);return}}
+function replaceSel(){if(!selComp||stat.fallo)return;const c=cm[selComp];
+ if(sc.fault){if(c.id===faultId&&broken[c.id]){delete broken[c.id];fixed=true;play('repair')}else{attempts++;mvFallaPorErrores(attempts);play('error');$('#hint').className='hint error';$('#hint').innerHTML='<strong>'+c.id+' estaba en buen estado.</strong> Medí otra vez: el dañado tiene tensión pero no deja pasar corriente.';lastSim=simulate(links);updatePanel();setTimeout(update,2600);return}}
  else if(broken[c.id]){delete broken[c.id];play('repair')}
  update()}
 
@@ -912,16 +933,17 @@ if(FREE)$('#solBtn').hidden=true;
 if(EXAM){['#tipBtn','#solBtn','#pStars','#pTip'].forEach(s=>$(s).hidden=true);$('#bExam').hidden=false;document.body.classList.add('exam')}
 function examOk(){if(sc.quiz)return quizSel===sc.quiz.ans;if(lastDiag&&lastDiag.done)return true;if(!sws.length)return false;
  const sv=Object.assign({},swState),bk=Object.assign({},broken);sws.forEach(c=>{swState[c.id]=true});let ok=false;
- try{const r=settle();ok=!!diagnose(r.sim).done}catch{}
+ try{const r=settle();ok=!!diagnose(r.sim).done}catch(e){examErr=true;try{console.error('[simulador] no se pudo corregir el problema:',e)}catch{}}
  swState=sv;broken=bk;return ok}
+let examErr=false;   /* true si la corrección automática falló: el docente tiene que revisar ese problema a mano */
 $('#bExam').onclick=()=>{audio();$('#exConf').hidden=false};
 $('#cfNo').onclick=()=>{$('#exConf').hidden=true};
 let entregado=false;
-function entregar(tiempoAgotado){if(entregado)return;entregado=true;quizLocked=true;$('#exConf').hidden=true;const ok=examOk(),msg={tipo:'examen-entrega',id:sc.id,ok,t:Math.round((Date.now()-T00)/1000),shorts:stat.tShorts,burns:stat.tBurns,agotado:!!tiempoAgotado};
- try{if(window.parent!==window)parent.postMessage(msg,'*');else toast('Entregado (modo prueba): '+(ok?'correcto':'incorrecto'),4000)}catch{}
+function entregar(tiempoAgotado){if(entregado)return;entregado=true;quizLocked=true;$('#exConf').hidden=true;examErr=false;const ok=examOk(),msg={tipo:'examen-entrega',id:sc.id,ok,t:Math.round((Date.now()-T00)/1000),shorts:stat.tShorts,burns:stat.tBurns,agotado:!!tiempoAgotado,revisar:examErr};
+ try{if(window.parent!==window)SIM.post(parent,msg);else toast('Entregado (modo prueba): '+(ok?'correcto':'incorrecto'),4000)}catch{}
  $('#bExam').disabled=true;update()}
 $('#cfYes').onclick=()=>entregar(false);
-window.addEventListener('message',e=>{const d=e.data;if(d&&d.tipo==='examen-forzar'&&EXAM)entregar(true)});
+SIM.alRecibir(e=>{const d=e.data;if(d&&d.tipo==='examen-forzar'&&EXAM)entregar(true)});
 if(params.get('solucion')==='1')setTimeout(()=>{$('#solBtn').click();if(sc.quiz){quizSel=sc.quiz.ans;paintQuiz();update()}},60);
 $('#valsBtn').setAttribute('aria-pressed',String(showVals));
 
@@ -959,8 +981,8 @@ const embedded=window.parent!==window;if(params.get('anidado'))document.body.cla
 const stg={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}}};
 let tema=params.get("tema")||stg.get("sim-tema")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"),pizarra=params.has("pizarra")?params.get("pizarra")==="1":stg.get("sim-pizarra")==="1";
 function applyAjustes(){document.documentElement.dataset.theme=tema;document.body.classList.toggle("pizarra",pizarra);$("#bProj").setAttribute("aria-pressed",String(pizarra));if(lastSim)render()}
-function avisarPadre(){try{if(embedded)parent.postMessage({tipo:"ajustes-desde-practica",tema,pizarra},"*")}catch{}}
-window.addEventListener("message",e=>{const d=e.data;if(d&&d.tipo==="reserva"){const hd=document.querySelector("header.top");if(hd)hd.style.paddingRight=d.px+"px";return}if(d&&d.tipo==="ajustes"){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;applyAjustes()}});
+function avisarPadre(){try{if(embedded)SIM.post(parent,{tipo:"ajustes-desde-practica",tema,pizarra})}catch{}}
+SIM.alRecibir(e=>{const d=e.data;if(d&&d.tipo==="reserva"){const hd=document.querySelector("header.top");if(hd)hd.style.paddingRight=d.px+"px";return}if(d&&d.tipo==="ajustes"){if(d.tema)tema=d.tema;if(d.pizarra!==undefined)pizarra=!!d.pizarra;applyAjustes()}});
 $("#bTheme").onclick=()=>{tema=tema==="light"?"dark":"light";stg.set("sim-tema",tema);applyAjustes();avisarPadre()};
 $("#bProj").onclick=()=>{pizarra=!pizarra;stg.set("sim-pizarra",pizarra?"1":"0");applyAjustes();avisarPadre()};
 const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);$("#bFull").hidden=!canFull||embedded;
@@ -968,26 +990,44 @@ $("#bFull").onclick=()=>{const d=document,el=d.documentElement;if(d.fullscreenEl
 applyAjustes();
 $('#vbar').style.background='linear-gradient(90deg,'+[0,.25,.5,.75,1].map(f=>CRISTAL.potColor(f)).join(',')+')';$('#vlo').textContent='− 0 V';$('#vhi').textContent='+ '+SRCV+' V';
 buildColors();buildPalette();buildQuiz();setPanel(!phone()||!!sc.quiz);fit();reset(true);loadTaller();
+if(idMalo||specMala)setTimeout(()=>toast(specMala?'El problema guardado no es válido. Abrí otro desde el menú.':'No encontré esa práctica: te muestro la primera.',5500),500);
 /* ---------- teléfono: barra superior, consigna inicial, pistas y lectura del multímetro ---------- */
 let hintStep=0,hintTm=null,started=false;
 const termName=id=>{const d=TM[id],c=d.c;if(c.t==='bat')return d.k==='p'?'el polo + de la batería':'el polo − de la batería';
  const s=c.t==='led'?(d.k==='a'?'ánodo A':'cátodo K'):(c.t==='dcm'||c.t==='buz')?(d.k==='a'?'pata +':'pata −'):c.t==='sw3'?(d.k==='c'?'común':'posición '+(d.k==='a'?'1':'2')):c.t==='sw4'?(d.k[0]==='a'?'entrada ':'salida ')+d.k[1]:(d.k==='a'?'borne izquierdo':'borne derecho');
  return (c.name||c.id)+' ('+s+')'};
 function mvMission(first){const m=$('#mvmission');$('#mmLv').textContent=NIVEL?'Nivel '+NIVEL:CH?'Desafío · '+sc.desc:EXAM?'Examen':'Misión';$('#mmTit').textContent=sc.title||'';$('#mmTxt').textContent=sc.goal||'';$('#mmTab').innerHTML=mmTabHTML(false);
- $('#mmGo').textContent=first?'¡Empezar!':'Cerrar';$('#mmSol').hidden=!(NIVEL>0&&!EXAM&&!first);m.classList.add('on')}
+ $('#mmGo').textContent=first?'¡Empezar!':'Cerrar';$('#mmSol').hidden=!(NIVEL>0&&!EXAM&&!first&&!levelSent);m.classList.add('on')}
 function mvHint(){if(EXAM)return;stat.hint=true;hintStep++;
  if(sc.quiz){if(hintStep===1){toast('💡 '+(sc.tip||'Tocá cada componente del circuito y mirá su tensión y su corriente.'),6500);return}
-  const bad=[...document.querySelectorAll('#qo .qopt')].filter((b,i)=>i!==sc.quiz.ans&&!b.classList.contains('off'));
-  if(bad.length>1){const b=bad[Math.floor(Math.random()*bad.length)];b.classList.add('off');b.style.opacity='.35';toast('💡 Descarté una opción incorrecta.',3000)}else toast('💡 Quedan pocas opciones: ¡tocá cada componente y medí!',3500);return}
+  const bad=sc.quiz.opts.map((t,i)=>i).filter(i=>i!==sc.quiz.ans&&!quizOff.has(i));
+  if(bad.length>1){quizOff.add(bad[Math.floor(Math.random()*bad.length)]);paintQuiz();toast('💡 Descarté una opción incorrecta.',3000)}else toast('💡 Quedan pocas opciones: ¡tocá cada componente y medí!',3500);return}
  if(sc.fault){toast('💡 '+(sc.tip||'La lámpara quemada es la que no deja pasar corriente (0 A).'),7000);return}
  if(hintStep===1&&sc.tip){toast('💡 '+sc.tip,7000);return}
  const miss=sc.sol.find(p=>!links.some(l=>(l.a===p[0]&&l.b===p[1])||(l.a===p[1]&&l.b===p[0])));
  if(!miss){toast('💡 Los cables están completos: revisá los colores y cerrá la llave.',5000);return}
  hintPair=miss;clearTimeout(hintTm);hintTm=setTimeout(()=>{hintPair=null;render()},8000);render();toast('💡 Unilo así: '+esc(termName(miss[0]))+' con '+esc(termName(miss[1])),8000)}
+/* resumen del circuito (se muestra cuando el nivel ya está superado y no hay nada tocado): sigue vivo si se mueve una llave */
+function mvResumen(){if(!lastSim)return'';const b=sc.comps.find(c=>c.t==='bat'||c.t==='src'),r=b&&lastSim.c[b.id];if(!r)return'';
+ const cargas=sc.comps.filter(c=>['lamp','led','dcm','buz','cal'].includes(c.t)&&!broken[c.id]),on=cargas.filter(c=>lastSim.c[c.id].level>.01).length,I=Math.abs(r.i),V=Math.abs(r.v);
+ return(mvTermino==='sol'?'Solución · ':'✔ ')+fV(V)+' · '+fI(I)+' · '+fP(V*I)+(cargas.length?' · '+on+' de '+cargas.length+' en marcha':'')}
 function mvUpdate(){const rd=$('#mvread');if(SHEET||!rd)return;let txt='';
  if(selComp&&cm[selComp]&&lastSim&&lastSim.c[selComp]&&!['rod','box'].includes(cm[selComp].t)){const r=lastSim.c[selComp];txt=selComp+' · '+fV(r.v)+' · '+fI(r.i)}
  else if(selWire!==null&&links[selWire]&&lastSim){const p=potOf(links[selWire].a);txt='Cable · '+(p?fV(p.v):'sin energía')+' · '+fI(Math.abs(lastSim.flows[selWire]))}
+ else if(mvTermino)txt=mvResumen();
  rd.textContent=txt;rd.hidden=!txt}
+/* nivel terminado (superado o con la solución a la vista): el circuito sigue funcionando, con sus valores en el esquema y un resumen arriba;
+   el aviso con las estrellas lo muestra el celular en una barrita aparte, sin tapar nada */
+function mvCelebra(conSolucion){if(!MOVIL||conSolucion===undefined&&mvTermino)return;mvTermino=conSolucion?'sol':'ok';showVals=true;const vb=$('#valsBtn');if(vb)vb.setAttribute('aria-pressed','true');
+ if(SHEET){const t=$('#table');if(t&&!t.dataset.mv){t.dataset.mv='1';$('#mvsheet').insertBefore(t,$('#mvdiag'))}tableOn=true}
+ else if(!conSolucion)for(let k=0;k<3;k++)setTimeout(()=>FX.spark(W*(.25+Math.random()*.5),H*(.2+Math.random()*.4),16,{v:200}),k*220);
+ if(lastSim){render();updatePanel()}}
+/* nivel del camino: demasiados errores = el intento termina (así no se acierta probando una opción tras otra) */
+function mvFallaPorErrores(n){if(!MOVIL||!(NIVEL>0)||EXAM||levelSent||stat.sol)return;if(n<(sc.fault?MAX_MAL+1:MAX_MAL))return;
+ levelSent=true;quizLocked=true;stat.fallo=true;
+ if(sc.quiz){const bs=document.querySelectorAll('#qo .qopt');if(bs[sc.quiz.ans])bs[sc.quiz.ans].classList.add('good')}
+ toast('✖ Demasiados errores: este intento no cuenta. Probá otra variante.',6000);
+ parentPost({tipo:'movil-fallo',motivo:'errores',nivel:NIVEL})}
 if(MOVIL){
  $('#mvbar').hidden=false;
  $('#mvLvl').textContent=NIVEL?'Nivel '+NIVEL:(sc.title||'Práctica');$('#mvSub').textContent=NIVEL?(sc.title||'').replace(/^Nivel \d+ · /,''):(sc.desc||'');
@@ -998,7 +1038,9 @@ if(MOVIL){
  $('#mvEnt').onclick=()=>$('#bExam').click();$('#mvEnt').hidden=!EXAM;$('#mvHint').hidden=EXAM;
  $('#mvUndo').hidden=$('#mvReset').hidden=SHEET;$('#mvInfo').hidden=SHEET;
  $('#mmGo').onclick=()=>{$('#mvmission').classList.remove('on');if(!started){started=true;parentPost({tipo:'movil-empezo'})}audio()};
- $('#mmSol').onclick=()=>{$('#mvmission').classList.remove('on');stat.sol=true;$('#solBtn').click();parentPost({tipo:'movil-fallo',motivo:'solucion'})};
+ /* «Ver solución» en un nivel del camino: primero se avisa que el intento termina (no cuenta) y recién después se arma el circuito resuelto,
+    así nunca llega un «superado» por la solución. Queda registrado para el informe del docente. */
+ $('#mmSol').onclick=()=>{$('#mvmission').classList.remove('on');if(stat.sol||levelSent)return;stat.sol=true;levelSent=true;parentPost({tipo:'movil-fallo',motivo:'solucion',nivel:NIVEL});$('#solBtn').click();mvCelebra(true)};
  if(!SHEET){$('#mvcols').append($('#colors'))}
  else{const sh=$('#mvsheet'),dg=$('#mvdiag'),rr=document.createElement('div'),h=document.createElement('h3');rr.className='row';rr.append($('#replBtn'));h.textContent='Medición (tocá un componente)';
   sh.append($('#pGoal'),$('#quiz'),h,$('#meter'),rr,dg);$('#pGoal').innerHTML='<b>Consigna:</b> '+esc(sc.goal||'')}

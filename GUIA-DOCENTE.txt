@@ -1,7 +1,33 @@
-GUIA DOCENTE - SIMULADOR DE CIRCUITOS ELECTRICOS
+﻿GUIA DOCENTE - SIMULADOR DE CIRCUITOS ELECTRICOS
 ==================================================
 Escuela Tecnica Crucero ARA General Belgrano - Escuela Tecnica N.o 1 de Bella Vista
 Autor: Rodolfo Emanuel Duran
+
+NOVEDADES DE LA VERSIÓN 1.3.0 PARA EL DOCENTE
+---------------------------------------------
+INFORME DE LO QUE EL ALUMNO REALMENTE LOGRÓ
+- En el celular: pestaña "Mi progreso" > "Informe para mi docente". En la PC: botón "Mis medallas" > "Informe para el docente".
+  Se puede copiar o guardar como archivo de texto y mandar por mensaje o correo.
+- El informe separa: superado por su cuenta y sin ayuda (✔), superado con pista o errores, superado después de VER LA SOLUCIÓN (⚠)
+  y todavía no superado (✘). También cuenta cuántas veces apretó "Ver solución" y cuántas partidas jugó.
+- Ver la solución no acredita el nivel: el alumno tiene que resolver otra variante. En las preguntas, dos respuestas
+  equivocadas terminan el intento. Todo queda anotado.
+- Los logros de la PC cuentan sólo las prácticas resueltas sin ver la solución.
+- Límite honesto: los datos se guardan en el teléfono o la PC del alumno. Alguien con herramientas de desarrollador podría
+  alterarlos; con el uso normal no se puede avanzar con trampa.
+- Privacidad: el simulador no pide ni guarda datos personales. El nombre del informe es opcional, no se guarda y sólo viaja
+  dentro del texto que el alumno decide compartir.
+
+PROTECCIONES DEL TABLERO (Corriente alterna)
+- Secuencia sugerida: 1) "La llave termomagnética": mirar el corte con la carcasa transparente, probar sobrecarga (2,55 × In) y
+  cortocircuito, ver las curvas y el poder de corte. 2) "El disyuntor diferencial": el toroide, una fuga de 8 mA (no dispara)
+  y de 88 mA (dispara), el botón T. 3) "Conectar": cada alumno cablea fase, neutro y tierra; probar los errores típicos
+  (fase salteando la llave, neutro salteando el diferencial). 4) "Calcular": corriente de proyecto, In, cable, curva,
+  poder de corte, sensibilidad, In del diferencial, tipo y resistencia de tierra.
+- Los valores de cables y de poder de corte de los ejercicios son ejemplos didácticos: para obras reales usar las tablas
+  vigentes (AEA 90364 / IEC 60364). Los efectos de la corriente en el cuerpo son orientativos (IEC 60479-1).
+- El modelo térmico es un modelo simplificado calibrado con los puntos de la norma IEC 60898-1 (1,13 × In no dispara en 1 h;
+  1,45 × In dispara en menos de 1 h; 2,55 × In entre 1 y 60 s; curvas B 3-5, C 5-10 y D 10-20 × In).
 
 COMO USARLO EN CLASE (PIZARRA / PROYECTOR)
 - Abrir con "Abrir simulador.bat" (no necesita internet).
